@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PhotonOrbit — Photon Trajectories</title>
 
   <!-- MathJax for inline and display equations -->
@@ -16,309 +17,335 @@
   <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <style>
+    /* ── Reset & custom properties ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #f7f3e8;
-      --bg-alt: #f0ede4;
-      --fg: #1c1c1c;
-      --accent: #7b2d00;
-      --accent-soft: #b5811a;
-      --border-soft: #d3c4a3;
-      --link: #005a8c;
-      --link-hover: #003d5c;
-      --code-bg: #f0ede4;
-      --card-bg: #ffffff;
-      --shadow-soft: 0 2px 6px rgba(0,0,0,0.08);
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    html { scroll-behavior: smooth; }
     body {
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-                   sans-serif;
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.80;
+      color: var(--text);
       background: var(--bg);
-      color: var(--fg);
-      line-height: 1.6;
     }
-
-    a {
-      color: var(--link);
-      text-decoration: none;
-    }
-    a:hover {
-      color: var(--link-hover);
-      text-decoration: underline;
-    }
-
+    /* ── Page grid ── */
     .page-wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px 40px;
       display: grid;
-      grid-template-columns: 260px minmax(0, 1fr);
-      gap: 24px;
+      grid-template-columns: 230px 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
     }
-
+    /* ── Header ── */
     header {
       grid-column: 1 / -1;
-      padding: 24px 0 16px;
-      border-bottom: 1px solid var(--border-soft);
-      margin-bottom: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 26px 38px 20px;
+      border-bottom: 4px solid var(--gold);
     }
-
-    header h1 {
-      margin: 0.2em 0 0.1em;
-      font-size: 1.9em;
-      letter-spacing: 0.02em;
-    }
-
     header .badge {
       display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #fff7e0;
-      border: 1px solid #f0cf7a;
-      font-size: 0.78em;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #7b2d00;
-    }
-
-    header .sub {
-      margin-top: 0.4em;
-      font-size: 0.9em;
-      color: #4a3b2a;
-    }
-
-    #sidebar {
-      position: sticky;
-      top: 12px;
-      align-self: flex-start;
-      padding: 14px 12px;
-      border-radius: 8px;
-      background: var(--bg-alt);
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      font-size: 0.9em;
-    }
-
-    #sidebar .nav-label {
-      font-size: 0.78em;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #7b2d00;
-      margin: 0.8em 0 0.3em;
-    }
-
-    #sidebar a {
-      display: block;
-      padding: 3px 2px;
-      border-radius: 4px;
-      color: #1c1c1c;
-    }
-
-    #sidebar a.active {
-      background: #fff;
-      border: 1px solid #d3c4a3;
-      padding-left: 6px;
-      font-weight: 600;
-    }
-
-    main {
-      padding-top: 8px;
-    }
-
-    main section {
-      margin-bottom: 2.4em;
-      scroll-margin-top: 80px;
-    }
-
-    main h2 {
-      margin: 0 0 0.4em;
-      font-size: 1.4em;
-      border-bottom: 1px solid #d3c4a3;
-      padding-bottom: 0.2em;
-    }
-
-    main h3 {
-      margin: 1.4em 0 0.3em;
-      font-size: 1.1em;
-    }
-
-    .eq-block {
-      margin: 0.8em 0;
-      padding: 0.7em 0.9em;
-      border-radius: 6px;
-      background: #fff;
-      border: 1px solid #d3c4a3;
-      box-shadow: var(--shadow-soft);
-      font-size: 0.95em;
-    }
-
-    .eq-label {
-      font-size: 0.8em;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #7b2d00;
-      margin-bottom: 0.3em;
-    }
-
-    code {
-      background: var(--code-bg);
-      padding: 1px 4px;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
       border-radius: 3px;
-      font-size: 0.9em;
+      padding: 2px 7px;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
     }
-
+    header h1 {
+      font-size: 1.95rem;
+      font-weight: normal;
+      letter-spacing: -.02em;
+    }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub {
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: #f0d0b8;
+      line-height: 1.55;
+    }
+    header .sub a {
+      color: #ffd8b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,200,150,.4);
+    }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    /* ── Sidebar ── */
+    nav {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 14px 18px 4px;
+    }
+    nav a {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 18px 5px 22px;
+      border-left: 3px solid transparent;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: #fdf0e0;
+      border-left-color: var(--gold);
+    }
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      background: #fdecd8;
+    }
+    /* ── Main content ── */
+    main {
+      padding: 38px 52px 60px;
+      max-width: 900px;
+    }
+    h2 {
+      font-size: 1.40rem;
+      font-weight: normal;
+      color: var(--accent);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 6px;
+      margin: 2.2rem 0 1.0rem;
+    }
+    h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 1.6rem 0 .5rem;
+    }
+    h4 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 1.2rem 0 .35rem;
+    }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block {
+      background: var(--eq-bg);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 22px 10px;
+      margin: 1.1rem 0 1.3rem;
+      overflow-x: auto;
+    }
+    .eq-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.865em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    pre {
+      font-family: var(--mono);
+      font-size: 0.855em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: .8rem 0 1.1rem;
+      line-height: 1.55;
+    }
+    .note {
+      background: var(--note-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .note strong { color: var(--accent2); }
     .module-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 16px;
+      margin: 1.1rem 0 1.4rem;
     }
-
     .module-card {
-      background: var(--card-bg);
-      border-radius: 8px;
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      padding: 0.9em 1em;
-      font-size: 0.92em;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
     }
-
-    .mc-role {
-      font-size: 0.78em;
+    .module-card .mc-name {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .module-card .mc-role {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #7b2d00;
-      margin-bottom: 0.2em;
+      color: var(--gold);
+      margin-bottom: 8px;
     }
-
-    .mc-name {
-      font-weight: 600;
-      margin-bottom: 0.4em;
+    .module-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: .5rem;
     }
-
-    .sig {
-      margin-top: 0.6em;
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      font-size: 0.82em;
-      white-space: pre;
-      background: #f8f5ee;
-      border-radius: 6px;
-      padding: 0.5em 0.7em;
-      border: 1px dashed #d3c4a3;
+    .module-card .sig {
+      font-family: var(--mono);
+      font-size: 0.80rem;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 7px 10px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
-
-    .param-table,
-    .out-table {
+    .param-table, .out-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 0.8em;
-      font-size: 0.9em;
+      font-size: 0.875rem;
+      margin: 1.0rem 0 1.4rem;
     }
-
-    .param-table thead th,
-    .out-table thead th {
-      background: #f0ede4;
-      border-bottom: 1px solid #d3c4a3;
-      padding: 0.4em 0.5em;
+    .param-table th, .out-table th {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
       text-align: left;
     }
-
-    .param-table tbody td,
-    .out-table tbody td {
-      border-bottom: 1px solid #e2d6bd;
-      padding: 0.35em 0.5em;
+    .out-table th { background: var(--accent2); }
+    .param-table td, .out-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0d8c8;
       vertical-align: top;
     }
-
-    .pname,
-    .oname {
-      font-family: "SF Mono", Menlo, Consolas, monospace;
-      font-size: 0.85em;
-    }
-
-    .pdefault {
-      color: #7b2d00;
-    }
-
-    .note {
-      margin-top: 0.8em;
-      padding: 0.6em 0.8em;
-      border-radius: 6px;
-      background: #fff7e0;
-      border: 1px solid #f0cf7a;
-      font-size: 0.88em;
-    }
-
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table tr:hover td, .out-table tr:hover td { background: #f3ecdf; }
+    .param-table .pname, .out-table .oname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
     .exp-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 14px;
+      margin: 1.0rem 0 1.4rem;
     }
-
     .exp-card {
-      background: var(--card-bg);
-      border-radius: 8px;
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      padding: 0.8em 0.9em;
-      font-size: 0.9em;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      box-shadow: var(--shadow);
     }
-
-    .ec-num {
-      font-size: 0.78em;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #7b2d00;
-      margin-bottom: 0.2em;
+    .exp-card .ec-num {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin-bottom: 7px;
     }
-
+    .exp-card h4 {
+      font-size: 0.94rem;
+      color: var(--accent2);
+      margin: 0 0 5px;
+    }
+    .exp-card p {
+      font-size: 0.855rem;
+      color: var(--muted);
+      margin: 0;
+    }
     .related-list {
       list-style: none;
-      padding-left: 0;
-      font-size: 0.92em;
+      margin: .6rem 0 1.2rem;
+      padding: 0;
     }
-
     .related-list li {
-      margin-bottom: 0.4em;
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 7px;
+      font-size: 0.90rem;
     }
-
+    .related-list li strong {
+      font-family: var(--mono);
+      color: var(--accent2);
+    }
     footer {
       grid-column: 1 / -1;
-      margin-top: 1.8em;
-      padding-top: 0.8em;
-      border-top: 1px solid #d3c4a3;
-      font-size: 0.85em;
-      color: #4a3b2a;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      text-align: center;
+      padding: 18px 24px;
+      line-height: 1.7;
     }
-
-    @media (max-width: 900px) {
-      .page-wrap {
-        grid-template-columns: 1fr;
-      }
-      #sidebar {
-        position: static;
-        order: -1;
-        margin-bottom: 8px;
-      }
-      .module-grid,
-      .exp-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 600px) {
-      header {
-        padding: 20px 20px 16px;
-      }
-      .module-grid,
-      .exp-grid {
-        grid-template-columns: 1fr;
-      }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -353,10 +380,10 @@
     <div class="nav-label">Code</div>
     <a href="#modules">Module Overview</a>
     <a href="#parameters">Parameters</a>
-    <a href="#restore">Restoring Defaults</a>
 
     <div class="nav-label">Experiments</div>
     <a href="#experiments">Suggested Experiments</a>
+    <a href="#restore">Restoring Defaults</a>    
     <a href="#related">Related Programs</a>
 
     <div class="nav-label">Legal</div>
@@ -551,23 +578,6 @@ def integrate_photon_orbit(
       <div class="note"><strong>Meaning of <code>escaped</code>:</strong> The program uses this status after a photon has turned outward and reached <code>escape_radius = 2*r0</code>. It is a practical stopping convention; the program does not integrate the photon all the way to infinity.</div>
     </section>
 
-    <!-- Restore defaults -->
-    <section id="restore" style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
-      <div style="border: 1.5px solid #b5811a; border-left: 5px solid #b5811a; border-radius: 6px; background: #fffbeb; padding: 1.1em 1.4em; display: flex; gap: 1em; align-items: flex-start;">
-        <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
-        <div>
-          <div style="font-weight: 700; font-size: 0.95em; color: #7b2d00; margin-bottom: 0.35em; text-transform: uppercase; letter-spacing: 0.04em;">Restoring Default Parameter Values</div>
-          <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">After experimenting with parameter values in <code>main.py</code>, you can restore the originals using any of the following methods:</p>
-          <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
-            <li><strong>Same session:</strong> Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd> (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd> (macOS) repeatedly in your editor to undo your edits.</li>
-            <li><strong>If you are using PyCharm:</strong> Right-click <code>main.py</code> in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.</li>
-            <li><strong>Full reset:</strong> Re-download the ZIP from <a href="https://github.com/tomyee3-org/GFTGU-Programs" target="_blank">github.com/tomyee3-org/GFTGU-Programs</a> and replace this program's folder with the fresh copy.</li>
-          </ul>
-          <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">For additional ways to restore program files, see the corresponding recovery instructions in the <em>GFTGU Python Setup Guide</em>.</p>
-        </div>
-      </div>
-    </section>
-
     <!-- Suggested Experiments -->
     <section id="experiments">
       <h2>Suggested Experiments</h2>
@@ -584,6 +594,23 @@ def integrate_photon_orbit(
         <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Numerical Convergence Near the Photon Sphere</h4><p>Repeat one near-critical case with <code>d_lambda=0.04, 0.02, 0.01, 0.005</code>. Make a small table of step size, status, closest approach, \(\Delta\phi\), and step count. Do not use visual smoothness alone as an accuracy test.</p></div>
       </div>
     </section>
+    
+    <!-- Restore defaults -->
+    <section id="restore" style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
+      <div style="border: 1.5px solid #b5811a; border-left: 5px solid #b5811a; border-radius: 6px; background: #fffbeb; padding: 1.1em 1.4em; display: flex; gap: 1em; align-items: flex-start;">
+        <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
+        <div>
+          <div style="font-weight: 700; font-size: 0.95em; color: #7b2d00; margin-bottom: 0.35em; text-transform: uppercase; letter-spacing: 0.04em;">Restoring Default Parameter Values</div>
+          <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">After experimenting with parameter values in <code>main.py</code>, you can restore the originals using any of the following methods:</p>
+          <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
+            <li><strong>Same session:</strong> Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd> (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd> (macOS) repeatedly in your editor to undo your edits.</li>
+            <li><strong>If you are using PyCharm:</strong> Right-click <code>main.py</code> in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.</li>
+            <li><strong>Full reset:</strong> Re-download the ZIP from <a href="https://github.com/tomyee3-org/GFTGU-Programs" target="_blank">github.com/tomyee3-org/GFTGU-Programs</a> and replace this program's folder with the fresh copy.</li>
+          </ul>
+          <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">For additional ways to restore program files, see the corresponding recovery instructions in the <em>GFTGU Python Setup Guide</em>.</p>
+        </div>
+      </div>
+    </section>    
 
     <!-- Related Programs -->
     <section id="related">
