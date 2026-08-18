@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GravitationalWaveSources – Help File | GFtGU Programs</title>
+  <!-- MathJax 3 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams'
+      },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
+  <style>
+    /* ── Reset & custom properties ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.80;
+      color: var(--text);
+      background: var(--bg);
+    }
+    /* ── Page grid ── */
+    .page-wrap {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    /* ── Header ── */
+    header {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      padding: 26px 38px 20px;
+      border-bottom: 4px solid var(--gold);
+    }
+    header .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 3px;
+      padding: 2px 7px;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.95rem;
+      font-weight: normal;
+      letter-spacing: -.02em;
+    }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub {
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: #f0d0b8;
+      line-height: 1.55;
+    }
+    header .sub a {
+      color: #ffd8b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,200,150,.4);
+    }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    /* ── Sidebar ── */
+    nav {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 14px 18px 4px;
+    }
+    nav a {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 18px 5px 22px;
+      border-left: 3px solid transparent;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: #fdf0e0;
+      border-left-color: var(--gold);
+    }
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      background: #fdecd8;
+    }
+    /* ── Main content ── */
+    main {
+      padding: 38px 52px 60px;
+      max-width: 900px;
+    }
+    h2 {
+      font-size: 1.40rem;
+      font-weight: normal;
+      color: var(--accent);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 6px;
+      margin: 2.2rem 0 1.0rem;
+    }
+    h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 1.6rem 0 .5rem;
+    }
+    h4 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 1.2rem 0 .35rem;
+    }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block {
+      background: var(--eq-bg);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 22px 10px;
+      margin: 1.1rem 0 1.3rem;
+      overflow-x: auto;
+    }
+    .eq-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.865em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    pre {
+      font-family: var(--mono);
+      font-size: 0.855em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: .8rem 0 1.1rem;
+      line-height: 1.55;
+    }
+    .note {
+      background: var(--note-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .note strong { color: var(--accent2); }
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin: 1.1rem 0 1.4rem;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .module-card .mc-name {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .module-card .mc-role {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .module-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    .module-card .sig {
+      font-family: var(--mono);
+      font-size: 0.80rem;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 7px 10px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .param-table, .out-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .param-table th, .out-table th {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .out-table th { background: var(--accent2); }
+    .param-table td, .out-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0d8c8;
+      vertical-align: top;
+    }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table tr:hover td, .out-table tr:hover td { background: #f3ecdf; }
+    .param-table .pname, .out-table .oname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      box-shadow: var(--shadow);
+    }
+    .exp-card .ec-num {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin-bottom: 7px;
+    }
+    .exp-card h4 {
+      font-size: 0.94rem;
+      color: var(--accent2);
+      margin: 0 0 5px;
+    }
+    .exp-card p {
+      font-size: 0.855rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .related-list {
+      list-style: none;
+      margin: .6rem 0 1.2rem;
+      padding: 0;
+    }
+    .related-list li {
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 7px;
+      font-size: 0.90rem;
+    }
+    .related-list li strong {
+      font-family: var(--mono);
+      color: var(--accent2);
+    }
+    footer {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      text-align: center;
+      padding: 18px 24px;
+      line-height: 1.7;
+    }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+  <div class="badge">Supplement · Gravity from the Ground Up</div>
+  <h1><em>GravitationalWaveSources</em> — Inspirals, Chirps, and Strain</h1>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGU-Programs"
+       target="_blank">https://github.com/tomyee3-org/GFTGU-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGU-Documentation"
+       target="_blank">https://github.com/tomyee3-org/GFTGU-Documentation</a>
+  </div>
+</header>
+<nav id="sidebar">
+  <div class="nav-label">Overview</div>
+  <a href="#description">Description</a>
+  <a href="#background">Physical Background</a>
+  <div class="nav-label">Mathematics</div>
+  <a href="#equations">Governing Equations</a>
+  <a href="#algorithm">Algorithm</a>
+  <div class="nav-label">Code</div>
+  <a href="#modules">Module Overview</a>
+  <a href="#parameters">Parameters</a>
+  <a href="#output">Output and Plot Panels</a>
+  <div class="nav-label">Experiments</div>
+  <a href="#experiments">Suggested Experiments</a>
+  <a href="#related">Related Programs</a>
+  <div class="nav-label">Legal</div>
+  <a href="#license">License</a>
+</nav>
+<main>
+  <section id="description">
+    <h2>Description</h2>
+    <p>
+      <strong>GravitationalWaveSources</strong> is a numerical investigation of the signal produced by a compact binary system as the two bodies spiral together. It follows a quasi-circular inspiral from a starting gravitational-wave frequency up to the innermost stable circular orbit, then appends a simple quasi-normal-mode ringdown.
+    </p>
+    <p>
+      The program's main purpose is visual: it lets a student see the <em>chirp</em>. The wave oscillations become closer together as the gravitational-wave frequency rises, while the strain amplitude grows until the merger region. The three plots show the waveform strain \(h(t)\), the amplitude envelope \(A(t)\), and the instantaneous gravitational-wave frequency \(f(t)\).
+    </p>
+    <div class="note"><strong>Ringdown visibility:</strong> the ringdown occurs on a very short time scale compared with the default full binary-neutron-star display. It will not be visible in an ordinary 150-second plot. To see it, zoom to the last fraction of a second and a few hundredths of a second after merger, for example with <code>--t_before 0.05 --t_after 0.02</code>.</div>
+  </section>
+  <section id="background">
+    <h2>Physical Background</h2>
+    <h3>What LIGO Measures</h3>
+    <p>
+      A passing gravitational wave changes the relative separation of freely falling test masses. The plotted waveform is a dimensionless strain, conventionally written \(h\). A value of \(h=10^{-21}\), for example, means a fractional length change of one part in \(10^{21}\). The simulator uses an averaged leading-order amplitude, so students should treat the plotted signal as a pedagogical waveform rather than a detector-specific matched-filter template.
+    </p>
+    <h3>Chirp Mass</h3>
+    <p>
+      The inspiral is controlled especially strongly by the chirp mass, the mass combination that appears in the leading frequency evolution:
+    </p>
+    <div class="eq-block"><div class="eq-label">Chirp mass</div>
+      \[
+        \mathcal{M}=\frac{(m_1m_2)^{3/5}}{(m_1+m_2)^{1/5}}.
+      \]
+    </div>
+    <p>
+      Increasing \(\mathcal{M}\) makes the chirp evolve faster in the detector band and raises the characteristic strain amplitude at a fixed distance.
+    </p>
+    <h3>ISCO and Ringdown</h3>
+    <p>
+      The inspiral portion stops at the Schwarzschild innermost stable circular orbit, abbreviated ISCO. After that point the code appends a damped sinusoidal quasi-normal-mode signal. This is a deliberately simple model of the final ringing of the remnant object.
+    </p>
+  </section>
+  <section id="equations">
+    <h2>Governing Equations</h2>
+    <h3>Frequency Sweep</h3>
+    <p>The leading quadrupole-order evolution for the gravitational-wave frequency is</p>
+    <div class="eq-block"><div class="eq-label">Peters quadrupole chirp</div>
+      \[
+        \frac{df}{dt}=\frac{96}{5}\pi^{8/3}\left(\frac{G\mathcal{M}}{c^3}\right)^{5/3} f^{11/3}.
+      \]
+    </div>
+    <p>
+      The exponent \(11/3\) is responsible for the accelerating chirp. As \(f\) rises, \(df/dt\) rises even more rapidly.
+    </p>
+    <h3>Strain Amplitude</h3>
+    <p>The simulator uses a leading-order, sky-and-polarisation averaged amplitude:</p>
+    <div class="eq-block"><div class="eq-label">Averaged strain amplitude</div>
+      \[
+        A(f)=\frac{4G\mathcal{M}}{c^2d}\left(\frac{\pi G\mathcal{M}f}{c^3}\right)^{2/3}.
+      \]
+    </div>
+    <p>
+      The amplitude scales inversely with luminosity distance \(d\), and grows with frequency during the inspiral.
+    </p>
+    <h3>ISCO Frequency</h3>
+    <div class="eq-block"><div class="eq-label">Schwarzschild ISCO</div>
+      \[
+        f_{\rm ISCO}=\frac{c^3}{6^{3/2}\pi G M},\qquad M=m_1+m_2.
+      \]
+    </div>
+    <p>
+      Larger total mass gives a lower ISCO frequency, so heavy black-hole binaries leave the inspiral band much sooner than neutron-star binaries.
+    </p>
+  </section>
+  <section id="algorithm">
+    <h2>Algorithm</h2>
+    <ol>
+      <li>Read binary masses, distance, starting frequency, timestep, ringdown, zoom, plotting, and output options.</li>
+      <li>Convert the input masses and distance to SI units.</li>
+      <li>Compute \(\mathcal{M}\), total mass, the ISCO cutoff frequency, and approximate ringdown parameters.</li>
+      <li>Integrate \(df/dt\) forward in time using the configured RK4 timestep until \(f_{\rm ISCO}\) is reached.</li>
+      <li>Compute the amplitude envelope and waveform phase throughout the inspiral.</li>
+      <li>Append a damped quasi-normal-mode ringdown after the merger time.</li>
+      <li>Render the three-panel figure, either on screen or as a timestamped PNG.</li>
+      <li>Print a summary table with masses, chirp mass, distance, band start, ISCO frequency, time in band, peak strain, final mass estimate, QNM frequency, and QNM decay time.</li>
+    </ol>
+    <div class="note"><strong>Numerical caution:</strong> decreasing <code>--dt</code> gives a smoother waveform and more samples, but costs more computation. Very heavy binaries or high starting frequencies may have short in-band times, so a coarse timestep can visibly undersample the last cycles.</div>
+  </section>
+  <section id="modules">
+    <h2>Module Overview</h2>
+    <div class="module-grid">
+      <div class="module-card">
+        <div class="mc-role">Physics Layer</div>
+        <div class="mc-name">physics_gw.py</div>
+        <p>Defines constants, computes the chirp mass, evaluates the quadrupole frequency derivative, calculates the leading-order strain amplitude, supplies the Schwarzschild ISCO frequency, and integrates the inspiral plus ringdown.</p>
+        <div class="sig">def chirp_mass(m1_kg, m2_kg)
+def dfdt(f, Mc_kg)
+def strain_amplitude(f_hz, Mc_kg, d_m)
+def f_isco(M_total_kg)
+def integrate_inspiral(...)</div>
+      </div>
+      <div class="module-card">
+        <div class="mc-role">Driver Layer</div>
+        <div class="mc-name">driver_gw.py</div>
+        <p>Runs the full calculation pipeline, passes the result to the plotter, and prints a compact run summary for the student.</p>
+        <div class="sig">def run(m1_msun=1.4, m2_msun=1.4,
+        d_mpc=400.0, dt=1e-4,
+        f_start=10.0, ...)</div>
+      </div>
+      <div class="module-card">
+        <div class="mc-role">Plot Layer</div>
+        <div class="mc-name">plot_gw.py</div>
+        <p>Produces the three-panel Matplotlib display: waveform strain, amplitude envelope, and instantaneous gravitational-wave frequency. When requested, it saves a timestamped PNG.</p>
+        <div class="sig">def plot_inspiral(result, outdir=None,
+        t_before=None, t_after=None,
+        lw=0.4, dpi=150, figsize=(12, 9))</div>
+      </div>
+      <div class="module-card">
+        <div class="mc-role">Entry Point</div>
+        <div class="mc-name">main.py</div>
+        <p>Defines command-line arguments for binary parameters, integration, zooming, plot style, and output. Run this file from the command line to perform an experiment.</p>
+        <div class="sig">python main.py
+python main.py --m1 36 --m2 29 --d 440
+python main.py --t_before 0.05 --t_after 0.02</div>
+      </div>
+    </div>
+  </section>
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <p>Experiment settings are exposed as command-line options in <code>main.py</code>.</p>
+    <table class="param-table">
+      <thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="pname">--m1</td><td class="pdefault">1.4</td><td>\(M_\odot\)</td><td>Primary component mass.</td></tr>
+        <tr><td class="pname">--m2</td><td class="pdefault">1.4</td><td>\(M_\odot\)</td><td>Secondary component mass.</td></tr>
+        <tr><td class="pname">--d</td><td class="pdefault">400.0</td><td>Mpc</td><td>Luminosity distance to the source. Increasing this value lowers the observed strain.</td></tr>
+        <tr><td class="pname">--dt</td><td class="pdefault">1e-4</td><td>s</td><td>RK4 integration timestep. Smaller values give smoother curves.</td></tr>
+        <tr><td class="pname">--f_start</td><td class="pdefault">10.0</td><td>Hz</td><td>Starting gravitational-wave frequency.</td></tr>
+        <tr><td class="pname">--n_tau</td><td class="pdefault">6</td><td>—</td><td>Ringdown duration in units of the QNM decay time.</td></tr>
+        <tr><td class="pname">--rd_pts</td><td class="pdefault">4000</td><td>—</td><td>Number of sample points used for the ringdown.</td></tr>
+        <tr><td class="pname">--t_before</td><td class="pdefault">None</td><td>s</td><td>Show only this many seconds before merger. Omit for the full inspiral.</td></tr>
+        <tr><td class="pname">--t_after</td><td class="pdefault">None</td><td>s</td><td>Show only this many seconds after merger. Omit for the full ringdown.</td></tr>
+        <tr><td class="pname">--lw</td><td class="pdefault">0.4</td><td>pt</td><td>Waveform line width.</td></tr>
+        <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>PNG resolution when saving to a folder.</td></tr>
+        <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>Output directory. Omit to show the graph on screen.</td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section id="output">
+    <h2>Output and Plot Panels</h2>
+    <table class="out-table">
+      <thead><tr><th>Output</th><th>What to Look For</th></tr></thead>
+      <tbody>
+        <tr><td class="oname">Waveform h(t)</td><td>Oscillations grow in amplitude and become more closely spaced as the binary approaches merger. In a long default plot the early oscillations may look like a dense band.</td></tr>
+        <tr><td class="oname">Envelope A(t)</td><td>The envelope rises during inspiral. Compare runs at different distances to verify inverse-distance scaling.</td></tr>
+        <tr><td class="oname">Frequency f(t)</td><td>The curve sweeps upward. More massive systems reach lower ISCO frequencies and spend less time in band.</td></tr>
+        <tr><td class="oname">Summary table</td><td>Records the numerical outputs needed for a lab notebook: chirp mass, time in band, ISCO frequency, peak strain, QNM frequency, and decay time.</td></tr>
+        <tr><td class="oname">PNG file</td><td>If <code>--outdir PATH</code> is supplied, the figure is saved in that folder with a timestamped filename.</td></tr>
+      </tbody>
+    </table>
+    <pre># Full default binary-neutron-star plot on screen
+python main.py
+
+# Save a plot into a folder
+python main.py --outdir ./runs
+
+# Zoom near merger to make ringdown visible
+python main.py --t_before 0.05 --t_after 0.02 --lw 0.5</pre>
+  </section>
+  <section id="experiments">
+    <h2>Suggested Experiments</h2>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-1</div><h4>Default Binary Neutron Star Chirp</h4><p>Run <code>python main.py</code>. Record the time in band, chirp mass, ISCO frequency, and peak strain from the summary table. In the top panel, identify how the waveform spacing changes as merger approaches.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2</div><h4>Make the Ringdown Visible</h4><p>Run <code>python main.py --t_before 0.05 --t_after 0.02 --lw 0.5</code>. Compare with the default plot. The ringdown should be discussed only on this zoomed view, not on the full 150-second display.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-3</div><h4>Distance Scaling of Strain</h4><p>Run the same masses with <code>--d 100</code>, <code>--d 200</code>, <code>--d 400</code>, and <code>--d 800</code>. Record the peak strain and test whether doubling the distance approximately halves the strain.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4</div><h4>Chirp Mass Controls the Sweep</h4><p>Compare <code>--m1 1.4 --m2 1.4</code>, <code>--m1 10 --m2 10</code>, and <code>--m1 36 --m2 29</code>. Record the chirp mass and time in band. Heavier systems should chirp in a shorter time from the same starting frequency.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-5</div><h4>Unequal-Mass Binary</h4><p>Keep the total mass roughly fixed but vary the mass ratio, for example compare <code>--m1 20 --m2 20</code> with <code>--m1 30 --m2 10</code>. Note how the chirp mass, time in band, and peak strain change.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-6</div><h4>Starting Frequency and Detector Band</h4><p>Try <code>--f_start 10</code>, <code>--f_start 20</code>, and <code>--f_start 40</code>. A higher starting frequency removes the early, slower part of the inspiral and shortens the displayed time in band.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-7</div><h4>Numerical Time Step</h4><p>Try <code>--dt 1e-3</code>, <code>--dt 1e-4</code>, and <code>--dt 5e-5</code> on a short zoom near merger. Look for changes in smoothness and in the printed summary values.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-8</div><h4>Ringdown Sampling</h4><p>On a ringdown zoom, compare <code>--rd_pts 500</code>, <code>--rd_pts 4000</code>, and <code>--rd_pts 10000</code>. The purpose is not to change the physical model, but to see how plotting resolution affects a rapidly damped oscillation.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-9</div><h4>Line Width and Dense Waveforms</h4><p>For the full default display, try <code>--lw 0.2</code>, <code>--lw 0.4</code>, and <code>--lw 1.0</code>. A thin line is often clearer when many oscillations are compressed into one panel.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10</div><h4>Notebook Challenge: Infer Trends</h4><p>Make a table with columns for masses, chirp mass, distance, starting frequency, time in band, ISCO frequency, and peak strain. Use the table to state which parameters mainly control duration, frequency cutoff, and amplitude.</p></div>
+    </div>
+  </section>
+  <section style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
+    <div style="border: 1.5px solid #b5811a; border-left: 5px solid #b5811a; border-radius: 6px; background: #fffbeb; padding: 1.1em 1.4em; display: flex; gap: 1em; align-items: flex-start;">
+      <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
+      <div>
+        <div style="font-weight: 700; font-size: 0.95em; color: #7b2d00; margin-bottom: 0.35em; text-transform: uppercase; letter-spacing: 0.04em;">Restoring Default Parameter Values</div>
+        <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">After experimenting, the easiest way to return to the default setup is to rerun <code style="background:#f0ede4; padding:1px 5px; border-radius:3px; font-size:0.9em;">python main.py</code> with no command-line options.</p>
+        <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
+          <li><strong>Same session:</strong> rerun the command without optional arguments.</li>
+          <li><strong>If source files were edited:</strong> use PyCharm undo or Local History to restore the edited file.</li>
+          <li><strong>Full reset:</strong> re-download the ZIP from <a href="https://github.com/tomyee3-org/GFTGU-Programs" target="_blank" style="color:#7b2d00; text-decoration:underline;">github.com/tomyee3-org/GFTGU-Programs</a> and replace this program's folder with the fresh copy.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section id="related">
+    <h2>Related Programs</h2>
+    <ul class="related-list">
+      <li><strong>BinaryOrbit</strong> — Useful preparation for circular and elliptical two-body motion before adding gravitational radiation reaction.</li>
+      <li><strong>BlackHole</strong> — Useful for discussing compact remnants and characteristic relativistic length scales.</li>
+    </ul>
+  </section>
+  <section id="license">
+    <h2>License</h2>
+    <p>
+      GravitationalWaveSources accompanies supplemental investigations inspired by Bernard Schutz's <em>Gravity from the Ground Up</em> (Cambridge University Press, 2003). It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.
+    </p>
+  </section>
+</main>
+<footer>
+  <em>Gravity from the Ground Up</em> — Python Programs ·
+  Bernard Schutz © 2003 (Cambridge University Press) ·
+  Python programs © 2024–2026 Thomas Yee ·
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> ·
+</footer>
+</div>
+<script>
+  (function () {
+    const links = document.querySelectorAll('nav a');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const match = document.querySelector(`nav a[href="#${e.target.id}"]`);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('main section[id]').forEach(s => observer.observe(s));
+  })();
+</script>
+</body>
+</html>
