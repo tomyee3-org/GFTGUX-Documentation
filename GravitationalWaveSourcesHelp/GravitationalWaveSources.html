@@ -357,11 +357,11 @@
   <h1><em>GravitationalWaveSources</em> — Inspirals, Chirps, and Strain</h1>
   <div class="sub">
     Source Code:
-    <a href="https://github.com/tomyee3-org/GFTGU-Programs"
-       target="_blank">https://github.com/tomyee3-org/GFTGU-Programs</a><br/>
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
     Documentation:
-    <a href="https://github.com/tomyee3-org/GFTGU-Documentation"
-       target="_blank">https://github.com/tomyee3-org/GFTGU-Documentation</a>
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
   </div>
 </header>
 <nav id="sidebar">
@@ -481,8 +481,45 @@
     </tbody></table>
   </section>
 
+  <section id="output">
+    <h2>Output and Plot Panels</h2>
+    <table class="out-table"><thead><tr><th>Output</th><th>What to Look For</th></tr></thead><tbody>
+      <tr><td class="oname">Waveform h(t)</td><td>The dimensionless oscillations become closer together and their leading-order amplitude scale rises toward the ISCO cutoff.</td></tr>
+      <tr><td class="oname">Envelope A(t)</td><td>Shows the Newtonian face-on amplitude scale twice for clarity: as the dashed \(\pm A(t)\) envelope around the waveform in Panel 1 and by itself, on its own vertical scale, in Panel 2.</td></tr>
+      <tr><td class="oname">Frequency f(t)</td><td>Shows the accelerating chirp and terminates at the computed Schwarzschild ISCO frequency.</td></tr>
+      <tr><td class="oname">Run summary</td><td>Reports masses, chirp mass, distance, start and cutoff frequencies, time to ISCO, strain scale at ISCO, and sample count; QNM quantities appear only when ringdown is enabled.</td></tr>
+      <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>, saves a timestamped figure in the requested folder.</td></tr>
+    </tbody></table>
+    <pre># Default BNS inspiral from 20 Hz
+python main.py
 
-  
+# Heavier binary
+python main.py --m1 36 --m2 29 --d 440
+
+# Illustrative QNM extension for a BBH example
+python main.py --m1 36 --m2 29 --d 440 --ringdown --t_before 0.2 --t_after 0.05
+
+# Save a timestamped PNG instead of displaying the figure
+python main.py --outdir ./runs</pre>
+  </section>
+
+  <section id="experiments">
+    <h2>Suggested Experiments</h2>
+    <p>The exercises below are arranged in approximate order of difficulty. The first few emphasize direct observation and simple proportionalities; later exercises require controlled comparisons, numerical convergence, or interpretation of model limitations.</p>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-1 · introductory</div><h4>Identify the Chirp</h4><p>Run <code>python main.py</code>. Record the chirp mass, time to ISCO, and ISCO frequency. Identify which panel shows the increasing frequency directly and which panel isolates the increasing amplitude scale. Then explain how both changes appear together in the waveform panel as the cutoff approaches.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2 · introductory</div><h4>Verify Inverse-Distance Scaling</h4><p>Repeat the default calculation with <code>--d 100</code>, <code>200</code>, <code>400</code>, and <code>800</code>. Record the strain scale at ISCO and test quantitatively whether doubling the distance halves it. Confirm that the chirp time and ISCO frequency do not change.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-3 · introductory/intermediate</div><h4>Starting Frequency and Time in Band</h4><p>Compare <code>--f_start 20</code>, <code>30</code>, and <code>40</code> for the default masses. Record the time to ISCO, compare the ratios of the times as well as their absolute differences, and explain why raising the low-frequency cutoff removes a disproportionately large fraction of the signal duration.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4 · intermediate</div><h4>Chirp Mass Controls the Sweep</h4><p>Compare 1.4+1.4, 10+10, and 36+29 solar-mass systems at the same distance and starting frequency. Record chirp mass, total mass, ISCO frequency, and time to ISCO. Because both chirp mass and total mass change in this comparison, distinguish the faster frequency sweep associated with larger chirp mass from the lower ISCO cutoff associated with larger total mass.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-5 · intermediate</div><h4>Mass Ratio at Fixed Total Mass</h4><p>Compare <code>20+20</code>, <code>25+15</code>, and <code>30+10</code> solar masses at the same distance and start frequency. Make a table of total mass, chirp mass, ISCO frequency, time to ISCO, and strain scale at ISCO. Verify that \(f_{\rm ISCO}\) stays fixed because the total mass is fixed, while the chirp time and amplitude change with chirp mass.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-6 · intermediate</div><h4>Test the Inspiral-Time Power Law</h4><p>For the default binary, compare several starting frequencies such as 20, 25, 30, and 40 Hz. Using the printed times, test the prediction \(T\propto f_{\rm start}^{-8/3}\) by comparing time ratios with the corresponding \(f_{\rm start}^{-8/3}\) ratios (or by finding the slope of a log-log plot). Explain why the finite ISCO-frequency term causes a small departure from an exact power law.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-7 · intermediate/advanced</div><h4>Numerical Convergence</h4><p>Use the 36+29 \(M_\odot\) example for a short run and repeat it with <code>--dt 8e-4</code>, <code>4e-4</code>, <code>2e-4</code>, and <code>1e-4</code>, using the same <code>--t_before 0.15</code> zoom. Compare the printed time to ISCO and the locations of the final waveform peaks relative to the cutoff. Decide when further timestep reduction ceases to make a meaningful difference. Do not use plot smoothness alone as the accuracy test.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-8 · advanced</div><h4>Illustrative Black-Hole Ringdown</h4><p>For the black-hole-binary example, run <code>python main.py --m1 36 --m2 29 --d 440 --ringdown --t_before 0.2 --t_after 0.05</code>. Measure the time between neighboring ringdown peaks (preferably averaging over several cycles), convert it to a frequency, and compare with the printed QNM frequency. Then explain why the transition at ISCO should not be interpreted as a realistic merger waveform.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-9 · advanced</div><h4>QNM Scaling with Remnant Mass</h4><p>Enable ringdown for equal-mass black-hole binaries such as <code>20+20</code>, <code>40+40</code>, and <code>80+80</code> \(M_\odot\), keeping the mass ratio fixed while scaling the total mass. Compare the reported QNM frequencies and decay times. Test the Schwarzschild-model prediction that frequency scales as \(1/M_f\) while the decay time scales as \(M_f\).</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10 · synthesis</div><h4>Map the Model's Domain of Validity</h4><p>Make a table listing which ingredients of the displayed signal are included at leading order and which are omitted or idealized. Classify at least spins, orbital eccentricity, source orientation, detector response, cosmological redshift, neutron-star tides, merger dynamics, and remnant spin. Explain which omissions matter most for early inspiral, late inspiral, and ringdown.</p></div>
+    </div>
+   </section>
+
     <!-- ============================================================
      RESTORE TO DEFAULTS CALLOUT
      ============================================================ -->
@@ -550,46 +587,6 @@
 <!-- ============================================================
      END RESTORE TO DEFAULTS CALLOUT
      ============================================================ -->
-
-  <section id="output">
-    <h2>Output and Plot Panels</h2>
-    <table class="out-table"><thead><tr><th>Output</th><th>What to Look For</th></tr></thead><tbody>
-      <tr><td class="oname">Waveform h(t)</td><td>The dimensionless oscillations become closer together and their leading-order amplitude scale rises toward the ISCO cutoff.</td></tr>
-      <tr><td class="oname">Envelope A(t)</td><td>Shows the Newtonian face-on amplitude scale twice for clarity: as the dashed \(\pm A(t)\) envelope around the waveform in Panel 1 and by itself, on its own vertical scale, in Panel 2.</td></tr>
-      <tr><td class="oname">Frequency f(t)</td><td>Shows the accelerating chirp and terminates at the computed Schwarzschild ISCO frequency.</td></tr>
-      <tr><td class="oname">Run summary</td><td>Reports masses, chirp mass, distance, start and cutoff frequencies, time to ISCO, strain scale at ISCO, and sample count; QNM quantities appear only when ringdown is enabled.</td></tr>
-      <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>, saves a timestamped figure in the requested folder.</td></tr>
-    </tbody></table>
-    <pre># Default BNS inspiral from 20 Hz
-python main.py
-
-# Heavier binary
-python main.py --m1 36 --m2 29 --d 440
-
-# Illustrative QNM extension for a BBH example
-python main.py --m1 36 --m2 29 --d 440 --ringdown --t_before 0.2 --t_after 0.05
-
-# Save a timestamped PNG instead of displaying the figure
-python main.py --outdir ./runs</pre>
-  </section>
-
-  <section id="experiments">
-    <h2>Suggested Experiments</h2>
-    <p>The exercises below are arranged in approximate order of difficulty. The first few emphasize direct observation and simple proportionalities; later exercises require controlled comparisons, numerical convergence, or interpretation of model limitations.</p>
-    <div class="exp-grid">
-      <div class="exp-card"><div class="ec-num">EXP-1 · introductory</div><h4>Identify the Chirp</h4><p>Run <code>python main.py</code>. Record the chirp mass, time to ISCO, and ISCO frequency. Identify which panel shows the increasing frequency directly and which panel isolates the increasing amplitude scale. Then explain how both changes appear together in the waveform panel as the cutoff approaches.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-2 · introductory</div><h4>Verify Inverse-Distance Scaling</h4><p>Repeat the default calculation with <code>--d 100</code>, <code>200</code>, <code>400</code>, and <code>800</code>. Record the strain scale at ISCO and test quantitatively whether doubling the distance halves it. Confirm that the chirp time and ISCO frequency do not change.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-3 · introductory/intermediate</div><h4>Starting Frequency and Time in Band</h4><p>Compare <code>--f_start 20</code>, <code>30</code>, and <code>40</code> for the default masses. Record the time to ISCO, compare the ratios of the times as well as their absolute differences, and explain why raising the low-frequency cutoff removes a disproportionately large fraction of the signal duration.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-4 · intermediate</div><h4>Chirp Mass Controls the Sweep</h4><p>Compare 1.4+1.4, 10+10, and 36+29 solar-mass systems at the same distance and starting frequency. Record chirp mass, total mass, ISCO frequency, and time to ISCO. Because both chirp mass and total mass change in this comparison, distinguish the faster frequency sweep associated with larger chirp mass from the lower ISCO cutoff associated with larger total mass.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-5 · intermediate</div><h4>Mass Ratio at Fixed Total Mass</h4><p>Compare <code>20+20</code>, <code>25+15</code>, and <code>30+10</code> solar masses at the same distance and start frequency. Make a table of total mass, chirp mass, ISCO frequency, time to ISCO, and strain scale at ISCO. Verify that \(f_{\rm ISCO}\) stays fixed because the total mass is fixed, while the chirp time and amplitude change with chirp mass.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-6 · intermediate</div><h4>Test the Inspiral-Time Power Law</h4><p>For the default binary, compare several starting frequencies such as 20, 25, 30, and 40 Hz. Using the printed times, test the prediction \(T\propto f_{\rm start}^{-8/3}\) by comparing time ratios with the corresponding \(f_{\rm start}^{-8/3}\) ratios (or by finding the slope of a log-log plot). Explain why the finite ISCO-frequency term causes a small departure from an exact power law.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-7 · intermediate/advanced</div><h4>Numerical Convergence</h4><p>Use the 36+29 \(M_\odot\) example for a short run and repeat it with <code>--dt 8e-4</code>, <code>4e-4</code>, <code>2e-4</code>, and <code>1e-4</code>, using the same <code>--t_before 0.15</code> zoom. Compare the printed time to ISCO and the locations of the final waveform peaks relative to the cutoff. Decide when further timestep reduction ceases to make a meaningful difference. Do not use plot smoothness alone as the accuracy test.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-8 · advanced</div><h4>Illustrative Black-Hole Ringdown</h4><p>For the black-hole-binary example, run <code>python main.py --m1 36 --m2 29 --d 440 --ringdown --t_before 0.2 --t_after 0.05</code>. Measure the time between neighboring ringdown peaks (preferably averaging over several cycles), convert it to a frequency, and compare with the printed QNM frequency. Then explain why the transition at ISCO should not be interpreted as a realistic merger waveform.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-9 · advanced</div><h4>QNM Scaling with Remnant Mass</h4><p>Enable ringdown for equal-mass black-hole binaries such as <code>20+20</code>, <code>40+40</code>, and <code>80+80</code> \(M_\odot\), keeping the mass ratio fixed while scaling the total mass. Compare the reported QNM frequencies and decay times. Test the Schwarzschild-model prediction that frequency scales as \(1/M_f\) while the decay time scales as \(M_f\).</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-10 · synthesis</div><h4>Map the Model's Domain of Validity</h4><p>Make a table listing which ingredients of the displayed signal are included at leading order and which are omitted or idealized. Classify at least spins, orbital eccentricity, source orientation, detector response, cosmological redshift, neutron-star tides, merger dynamics, and remnant spin. Explain which omissions matter most for early inspiral, late inspiral, and ringdown.</p></div>
-    </div>
-   </section>
-
 
 
   <section id="related">
