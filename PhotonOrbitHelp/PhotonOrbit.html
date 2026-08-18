@@ -372,27 +372,9 @@
     <!-- Description -->
     <section id="description">
       <h2>Description</h2>
-      <p>
-        <strong>PhotonOrbit</strong> investigates null geodesics—photon trajectories—in the
-        Schwarzschild spacetime, restricted to the equatorial plane. It integrates the
-        general-relativistic equations of motion using a fourth-order Runge–Kutta (RK4)
-        scheme and plots the resulting path in Cartesian coordinates \((x,y)\) around a
-        non-rotating black hole.
-      </p>
-      <p>
-        The program focuses on how the impact parameter and starting radius determine
-        whether a photon is captured by the black hole, escapes to infinity, or asymptotically
-        approaches the unstable photon sphere at \(r=3GM/c^2\). The plot shows the event
-        horizon, the photon sphere, and the computed trajectory, allowing direct visual
-        comparison with the qualitative discussion in the text.
-      </p>
-      <p>
-        PhotonOrbit reports basic geometric quantities such as the closest approach radius,
-        whether the photon crosses the horizon, and how many radians of azimuthal angle
-        \(\phi\) are accumulated before the integration terminates. By varying the impact
-        parameter, you can numerically explore the critical value separating capture from
-        escape.
-      </p>
+      <p><strong>PhotonOrbit</strong> investigates null geodesics—photon trajectories—in Schwarzschild spacetime, restricted to the equatorial plane. It integrates the general-relativistic equations of motion with a fourth-order Runge–Kutta (RK4) scheme and plots the resulting path in Cartesian coordinates \((x,y)\) around a non-rotating black hole.</p>
+      <p>An initially ingoing photon can be captured by the black hole or, if its angular momentum is large enough, reach a turning point and escape. Near the critical impact parameter, trajectories can spend a long time close to the unstable photon sphere at \(r=3GM/c^2\). The plot marks both the event horizon and photon sphere.</p>
+      <p>The program reports the outcome, closest-approach radius, accumulated azimuthal angle \(\Delta\phi\), number of integration steps, and related geometric quantities. These diagnostics make it possible to explore the boundary between capture and scattering as well as the numerical sensitivity of near-critical trajectories.</p>
     </section>
 
     <!-- Physical Background -->
@@ -479,299 +461,107 @@
     <!-- Governing Equations -->
     <section id="equations">
       <h2>Governing Equations</h2>
-
-      <h3>Radial Equation for Null Geodesics</h3>
-      <p>
-        In the equatorial plane, the radial motion of a photon can be written in terms
-        of an affine parameter \(\lambda\). A convenient form of the radial equation is
-      </p>
-      <div class="eq-block"><div class="eq-label">Radial equation</div>
-        
-
-\[
-          \left(\frac{dr}{d\lambda}\right)^2
-          = E^2 - \left(1-\frac{2GM}{c^2 r}\right)\frac{L^2}{r^2},
-        \]
-
-
+      <h3>First Integral of the Radial Motion</h3>
+      <p>In the equatorial plane, choose the affine-parameter normalization \(E=1\), so the conserved angular momentum is numerically \(L=b\). The radial first integral is</p>
+      <div class="eq-block"><div class="eq-label">Radial first integral</div>
+      \[\left(\frac{dr}{d\lambda}\right)^2=1-\left(1-\frac{2GM}{c^2r}\right)\frac{b^2}{r^2}.\]
       </div>
-      <p>
-        where \(E\) and \(L\) are constants along the geodesic. PhotonOrbit works in
-        units where \(c=1\) and uses the combination \(GM/c^2\) as a length scale,
-        supplied as <code>GM_over_c2</code>.
-      </p>
-
+      <p>The initial photon is chosen to be ingoing, so \(dr/d\lambda\) begins with the negative square root. A scattered photon must later pass continuously through \(dr/d\lambda=0\) and emerge with a positive radial velocity.</p>
+      <h3>Second-Order Radial Equation</h3>
+      <p>To handle a turning point without manually switching the sign of a square root, PhotonOrbit integrates the equivalent second-order equation</p>
+      <div class="eq-block"><div class="eq-label">Radial acceleration</div>
+      \[\frac{d^2r}{d\lambda^2}=\frac{L^2}{r^3}\left(1-\frac{3GM}{c^2r}\right).\]
+      </div>
+      <p>Together with \(v_r=dr/d\lambda\), this lets the numerical solution reverse from inward to outward radial motion naturally at closest approach.</p>
       <h3>Azimuthal Equation</h3>
-      <p>
-        The azimuthal angle \(\phi\) evolves according to
-      </p>
-      <div class="eq-block"><div class="eq-label">Azimuthal equation</div>
-        
-
-\[
-          \frac{d\phi}{d\lambda} = \frac{L}{r^2},
-        \]
-
-
-      </div>
-      <p>
-        so that the photon’s path can be reconstructed in polar coordinates \((r,\phi)\)
-        and then converted to Cartesian coordinates via
-        \(x = r\cos\phi\), \(y = r\sin\phi\).
-      </p>
-
-      <h3>Dimensionless Form and Units</h3>
-      <p>
-        For numerical work, it is convenient to measure all radii in units of
-        \(GM/c^2\), so that the event horizon lies at \(r_s=2\) and the photon sphere
-        at \(r_\text{photon}=3\). PhotonOrbit adopts this convention by default, with
-        <code>GM_over_c2 = 1.0</code>, so that the plotted radii are already in units
-        of \(GM/c^2\).
-      </p>
+      <div class="eq-block"><div class="eq-label">Azimuthal equation</div>\[\frac{d\phi}{d\lambda}=\frac{L}{r^2}.\]</div>
+      <p>The plotted coordinates are \(x=r\cos\phi\) and \(y=r\sin\phi\).</p>
+      <h3>Photon Sphere and Critical Impact Parameter</h3>
+      <p>The unstable circular null orbit is at \(r=3GM/c^2\). For a photon arriving from infinity, the capture threshold is</p>
+      <div class="eq-block"><div class="eq-label">Critical impact parameter</div>\[b_{\rm crit}=3\sqrt{3}\,\frac{GM}{c^2}.\]</div>
+      <p>Because the program begins at a finite radius \(r_0\), its initial radial velocity is computed from the first integral rather than assuming the photon literally starts at infinity. Values of \(b\) for which that initial radial velocity would be imaginary are rejected.</p>
+      <h3>Units and Scaling</h3>
+      <p>All lengths must use the same unit. With <code>GM_over_c2 = 1.0</code>, the event horizon is at \(r=2\), the photon sphere at \(r=3\), and \(b_{\rm crit}=3\sqrt{3}\approx5.196\). The affine parameter has the corresponding length scale under the chosen \(E=1\) normalization.</p>
     </section>
 
     <!-- Algorithm -->
     <section id="algorithm">
       <h2>Algorithm</h2>
       <ol>
-        <li>Validate the mass scale <code>GM_over_c2</code>, starting radius <code>r0</code>, impact parameter <code>b</code>, integration step <code>d_lambda</code>, and maximum affine parameter <code>lambda_max</code>.</li>
-        <li>Initialize the photon at radius <code>r0</code> with an inward or outward radial derivative consistent with the chosen impact parameter and energy normalization.</li>
-        <li>Integrate the coupled first-order equations for \(r(\lambda)\) and \(\phi(\lambda)\) using a standard fourth-order Runge–Kutta (RK4) scheme.</li>
-        <li>At each step, convert \((r,\phi)\) to Cartesian coordinates \((x,y)\) and append them to the trajectory arrays.</li>
-        <li>Monitor whether the photon crosses the event horizon \(r_s\) or escapes beyond a chosen outer radius, and terminate the integration accordingly.</li>
-        <li>Track the minimum radius reached (closest approach) and the total change in azimuthal angle \(\Delta\phi\) before termination.</li>
-        <li>Return the sampled trajectory and summary diagnostics to the plotting layer.</li>
+        <li>Validate that all inputs are finite and that <code>GM_over_c2</code>, <code>lambda_max</code>, and <code>d_lambda</code> are positive.</li>
+        <li>Require the starting radius to lie outside the event horizon and the impact parameter <code>b</code> to be nonnegative.</li>
+        <li>Check the radial first integral at <code>r0</code>; reject a value of <code>b</code> incompatible with an initially ingoing null geodesic there.</li>
+        <li>Normalize <code>E=1</code>, set <code>L=b</code>, and initialize the negative (ingoing) radial velocity.</li>
+        <li>Integrate \((r,v_r,\phi)\) using RK4. The second-order radial equation permits <code>v_r</code> to cross zero at a scattering turning point.</li>
+        <li>Terminate on horizon crossing, on outward escape to <code>2*r0</code>, or when <code>lambda_max</code> is reached.</li>
+        <li>Return Cartesian trajectory samples plus diagnostics including status, closest approach, \(\Delta\phi\), and step count.</li>
       </ol>
-
-      <h3>Integration Stability and Step Size</h3>
-      <p>
-        The RK4 integrator balances accuracy and performance. Too large a step
-        <code>d_lambda</code> can miss sharp curvature near the photon sphere, while
-        too small a step increases runtime without significant visual benefit.
-        The default values are chosen to resolve typical trajectories cleanly.
-      </p>
+      <h3>Integration Accuracy</h3>
+      <p>Near-critical trajectories are especially sensitive to numerical error because a photon can spend a long affine time near the unstable photon sphere. Repeat such calculations with smaller <code>d_lambda</code> and compare quantitative diagnostics, not merely the visual smoothness of the plotted curve. The program also refuses parameter combinations that would request more than five million RK4 steps.</p>
     </section>
 
     <!-- Modules -->
     <section id="modules">
       <h2>Module Overview</h2>
       <div class="module-grid">
-
-        <div class="module-card">
-          <div class="mc-role">Physics Layer</div>
-          <div class="mc-name">physics_photon.py</div>
-          <p>
-            Implements the general-relativistic equations of motion for photons in
-            Schwarzschild spacetime, restricted to the equatorial plane. Provides
-            the radial and azimuthal derivatives and the RK4 integrator that advances
-            \((r,\phi)\) as functions of the affine parameter.
-          </p>
-          <div class="sig">def dr_dlambda(r, L, E, GM_over_c2)
-  -> dr/dλ
+        <div class="module-card"><div class="mc-role">Physics Layer</div><div class="mc-name">physics_photon.py</div><p>Validates the physical/numerical inputs, computes the Schwarzschild null-geodesic equations, advances \((r,v_r,\phi)\) with RK4, recognizes capture or escape, and returns trajectory diagnostics.</p><div class="sig">def radial_acceleration(r, L, GM_over_c2)
+  -&gt; d²r/dλ²
 
 def dphi_dlambda(r, L)
-  -> dφ/dλ
+  -&gt; dφ/dλ
 
 def integrate_photon_orbit(
   GM_over_c2, r0, b,
   lambda_max, d_lambda
-) -> (x_values, y_values, info)</div>
-        </div>
-
-        <div class="module-card">
-          <div class="mc-role">Driver Layer</div>
-          <div class="mc-name">driver_photon.py</div>
-          <p>
-            Sets up the physical parameters, calls the physics integrator, and passes
-            the resulting trajectory to the plotting layer. Encapsulates the choice
-            of starting radius, impact parameter, and integration limits in a single
-            callable function.
-          </p>
-          <div class="sig">from physics_photon import integrate_photon_orbit
-from plot_photon    import plot_photon_orbit
-
-def driver_photon_orbit(
+) -&gt; (x_values, y_values, info)</div></div>
+        <div class="module-card"><div class="mc-role">Driver Layer</div><div class="mc-name">driver_photon.py</div><p>Calls the physics integrator, passes the result to the plotting layer, and returns the diagnostics dictionary to a caller that wants to inspect it programmatically.</p><div class="sig">def driver_photon_orbit(
   GM_over_c2=1.0,
   r0=20.0,
   b=5.0,
   lambda_max=200.0,
   d_lambda=0.01
-) -> None</div>
-        </div>
-
-        <div class="module-card">
-          <div class="mc-role">Plot Layer</div>
-          <div class="mc-name">plot_photon.py</div>
-          <p>
-            Uses Matplotlib to render the photon trajectory in the \((x,y)\) plane.
-            Marks the event horizon and photon sphere as circles, and optionally
-            annotates the impact parameter and closest approach radius. The plot
-            provides a direct visual comparison between different impact parameters.
-          </p>
-          <div class="sig">import matplotlib.pyplot as plt
-
-def plot_photon_orbit(
-  x_values, y_values,
-  r_s, r_photon, b
-) -> None (displays figure)</div>
-        </div>
-
-        <div class="module-card">
-          <div class="mc-role">Entry Point</div>
-          <div class="mc-name">main.py</div>
-          <p>
-            User-editable entry point. Set the mass scale, starting radius, impact
-            parameter, integration limits, and plotting options here, then run the
-            calculation to visualize the trajectory.
-          </p>
-          <div class="sig">from driver_photon import driver_photon_orbit
-
-if __name__ == "__main__":
+) -&gt; info</div></div>
+        <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_photon.py</div><p>Plots the trajectory, event horizon, and photon sphere, and annotates the integration status, closest approach, and accumulated azimuth.</p><div class="sig">def plot_photon_orbit(
+  x_values, y_values, b, info
+) -&gt; None</div></div>
+        <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>User-editable launcher. Change the mass scale, starting radius, impact parameter, integration limit, or step size here, then run the file.</p><div class="sig">if __name__ == "__main__":
   driver_photon_orbit(
     GM_over_c2=1.0,
     r0=20.0,
     b=5.0,
     lambda_max=200.0,
     d_lambda=0.01
-  )</div>
-        </div>
-
+  )</div></div>
       </div>
     </section>
 
     <!-- Parameters -->
     <section id="parameters">
       <h2>Parameters</h2>
-      <p>
-        All ordinary experiment settings are exposed near the top of
-        <code>main.py</code> and in <code>driver_photon.py</code>.
-      </p>
-      <table class="param-table">
-        <thead>
-          <tr>
-            <th>Parameter</th><th>Default</th><th>Units</th><th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="pname">GM_over_c2</td>
-            <td class="pdefault">1.0</td>
-            <td>length</td>
-            <td>
-              Gravitational radius \(GM/c^2\) used as the unit of length. With
-              <code>GM_over_c2 = 1.0</code>, the event horizon lies at \(r_s=2\)
-              and the photon sphere at \(r_\text{photon}=3\).
-            </td>
-          </tr>
-          <tr>
-            <td class="pname">r0</td>
-            <td class="pdefault">20.0</td>
-            <td>\(GM/c^2\)</td>
-            <td>
-              Starting radius of the photon. Large values approximate an incoming
-              photon from far away.
-            </td>
-          </tr>
-          <tr>
-            <td class="pname">b</td>
-            <td class="pdefault">5.0</td>
-            <td>\(GM/c^2\)</td>
-            <td>
-              Impact parameter \(b=L/E\). Controls whether the photon is captured,
-              escapes, or skims the photon sphere.
-            </td>
-          </tr>
-          <tr>
-            <td class="pname">lambda_max</td>
-            <td class="pdefault">200.0</td>
-            <td>affine parameter</td>
-            <td>
-              Maximum affine parameter used in the integration. Larger values allow
-              longer trajectories but increase runtime.
-            </td>
-          </tr>
-          <tr>
-            <td class="pname">d_lambda</td>
-            <td class="pdefault">0.01</td>
-            <td>affine parameter</td>
-            <td>
-              RK4 step size in the affine parameter. Smaller values improve accuracy
-              near the photon sphere at the cost of more steps.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="note">
-        <strong>Input checking:</strong> Invalid mass scales, starting radii, impact
-        parameters, step sizes, or integration limits should be guarded with
-        explanatory <code>ValueError</code> messages in the driver and physics
-        layers, mirroring the style used in other GFTGU programs.
-      </div>
+      <p>All ordinary experiment settings are exposed in <code>main.py</code> and accepted by <code>driver_photon.py</code>.</p>
+      <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="pname">GM_over_c2</td><td class="pdefault">1.0</td><td>length</td><td>The gravitational length \(GM/c^2\). Must be finite and greater than zero.</td></tr>
+        <tr><td class="pname">r0</td><td class="pdefault">20.0</td><td>length</td><td>Starting Schwarzschild radius. It must lie outside the event horizon: <code>r0 &gt; 2*GM_over_c2</code>.</td></tr>
+        <tr><td class="pname">b</td><td class="pdefault">5.0</td><td>length</td><td>Nonnegative impact parameter \(b=L/E\). It must also be compatible with a real initial radial velocity at the selected <code>r0</code>.</td></tr>
+        <tr><td class="pname">lambda_max</td><td class="pdefault">200.0</td><td>affine parameter</td><td>Maximum affine parameter. Must be finite and greater than zero.</td></tr>
+        <tr><td class="pname">d_lambda</td><td class="pdefault">0.01</td><td>affine parameter</td><td>RK4 step size. Must be finite and greater than zero. Reduce it for convergence tests near the critical orbit.</td></tr>
+      </tbody></table>
+      <div class="note"><strong>Input checking:</strong> The physics layer raises explanatory <code>ValueError</code> exceptions for invalid inputs and caps a single run at five million requested RK4 steps. A <code>RuntimeError</code> is raised if numerical stepping produces a nonphysical or nonfinite state.</div>
     </section>
 
     <!-- Suggested Experiments -->
     <section id="experiments">
       <h2>Suggested Experiments</h2>
+      <p>The exercises below are arranged approximately from introductory to more demanding.</p>
       <div class="exp-grid">
-        <div class="exp-card">
-          <div class="ec-num">EXP-1</div>
-          <h4>Visualizing the Photon Sphere</h4>
-          <p>
-            Use <code>GM_over_c2=1.0</code>, <code>r0=20</code>, and vary
-            <code>b</code> near the value that produces a trajectory skimming
-            \(r_\text{photon}=3\). Observe how the photon loops around the black
-            hole before escaping or falling in.
-          </p>
-        </div>
-        <div class="exp-card">
-          <div class="ec-num">EXP-2</div>
-          <h4>Capture vs. Escape</h4>
-          <p>
-            Fix <code>r0=20</code> and scan <code>b</code> from small to large
-            values. Record which trajectories cross the event horizon and which
-            escape to large radius. Estimate the critical impact parameter
-            \(b_\text{crit}\) separating capture from escape.
-          </p>
-        </div>
-        <div class="exp-card">
-          <div class="ec-num">EXP-3</div>
-          <h4>Multiple Loops Around the Black Hole</h4>
-          <p>
-            Choose <code>b</code> just above the capture threshold. The photon
-            can orbit the black hole several times before escaping. Measure the
-            total change in azimuthal angle \(\Delta\phi\) and compare with the
-            qualitative discussion of strong lensing.
-          </p>
-        </div>
-        <div class="exp-card">
-          <div class="ec-num">EXP-4</div>
-          <h4>Step Size and Trajectory Smoothness</h4>
-          <p>
-            Run the same parameters with <code>d_lambda = 0.1, 0.05, 0.01,
-            0.005</code>. Compare the smoothness of the trajectory near the
-            photon sphere and note how the number of integration steps grows.
-          </p>
-        </div>
-        <div class="exp-card">
-          <div class="ec-num">EXP-5</div>
-          <h4>Scaling with Black-Hole Mass</h4>
-          <p>
-            Change <code>GM_over_c2</code> to represent different black-hole
-            masses. The plotted radii scale with \(GM/c^2\), but the qualitative
-            shape of the trajectories remains the same. Relate this to the
-            dimensionless nature of the geodesic equations.
-          </p>
-        </div>
-        <div class="exp-card">
-          <div class="ec-num">EXP-6</div>
-          <h4>Near-Radial Infall</h4>
-          <p>
-            Use very small impact parameters <code>b</code> and observe nearly
-            radial infall trajectories. Compare these with the more strongly
-            bent paths at larger <code>b</code>, and connect the behavior to
-            the effective potential for null geodesics.
-          </p>
-        </div>
+        <div class="exp-card"><div class="ec-num">EXP-1 · Introductory</div><h4>Capture and Escape</h4><p>With <code>GM_over_c2=1</code> and <code>r0=20</code>, compare <code>b=5.0</code> with <code>b=6.0</code>. Record the reported status and closest approach. Explain why increasing angular momentum can prevent capture.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-2 · Introductory</div><h4>Radial and Nearly Radial Infall</h4><p>Run <code>b=0</code> and then several small positive values of <code>b</code>. Describe how the trajectory and accumulated azimuth change as angular momentum is introduced.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-3 · Intermediate</div><h4>Locate the Capture Threshold</h4><p>For <code>GM_over_c2=1</code> and <code>r0=20</code>, bracket the transition between capture and escape by varying <code>b</code>. Refine the bracket until you can compare your estimate with the theoretical value \(3\sqrt{3}\approx5.19615\). Discuss how step size and finite bracketing precision limit the numerical estimate.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>Closest Approach and the Radial First Integral</h4><p>Choose several escaping trajectories. For each reported closest-approach radius \(r_{\min}\), test the turning-point relation \(1=(1-2M/r_{\min})b^2/r_{\min}^2\). How closely does the numerical result satisfy it?</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div><h4>The Circular Photon Orbit</h4><p>Set <code>r0=3</code> and <code>b=5.196152422706632</code>. The ideal solution is the unstable circular orbit at the photon sphere. Then make a small change in the initial parameters and observe the loss of that exact behavior.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-6 · Advanced</div><h4>Near-Critical Whirling</h4><p>Choose an escaping <code>b</code> progressively closer to the capture threshold. Record \(\Delta\phi\) and closest approach. Observe how the photon can accumulate large azimuth near \(r=3\) before escaping.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-7 · Advanced</div><h4>Numerical Convergence Near the Photon Sphere</h4><p>Repeat one near-critical case with <code>d_lambda=0.04, 0.02, 0.01, 0.005</code>. Compare status, closest approach, and \(\Delta\phi\). Do not use visual smoothness alone as an accuracy test.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Scale Invariance</h4><p>Multiply <code>GM_over_c2</code>, <code>r0</code>, <code>b</code>, <code>lambda_max</code>, and <code>d_lambda</code> by the same positive factor. Compare the rescaled trajectory with the original. Explain why keeping only <code>GM_over_c2</code> changed would describe a physically different dimensionless orbit rather than a simple change of black-hole mass.</p></div>
       </div>
     </section>
 
