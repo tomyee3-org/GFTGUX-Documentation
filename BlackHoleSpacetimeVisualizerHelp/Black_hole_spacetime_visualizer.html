@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Black_hole_spacetime_visualizer – Help File | GFtGU Programs</title>
+  <!-- MathJax 3 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams'
+      },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
+  <style>
+    /* ── Reset & custom properties ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.80;
+      color: var(--text);
+      background: var(--bg);
+    }
+    /* ── Page grid ── */
+    .page-wrap {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    /* ── Header ── */
+    header {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      padding: 26px 38px 20px;
+      border-bottom: 4px solid var(--gold);
+    }
+    header .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 3px;
+      padding: 2px 7px;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.95rem;
+      font-weight: normal;
+      letter-spacing: -.02em;
+    }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub {
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: #f0d0b8;
+      line-height: 1.55;
+    }
+    header .sub a {
+      color: #ffd8b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,200,150,.4);
+    }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    /* ── Sidebar ── */
+    nav {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 14px 18px 4px;
+    }
+    nav a {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 18px 5px 22px;
+      border-left: 3px solid transparent;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: #fdf0e0;
+      border-left-color: var(--gold);
+    }
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      background: #fdecd8;
+    }
+    /* ── Main content ── */
+    main {
+      padding: 38px 52px 60px;
+      max-width: 900px;
+    }
+    h2 {
+      font-size: 1.40rem;
+      font-weight: normal;
+      color: var(--accent);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 6px;
+      margin: 2.2rem 0 1.0rem;
+    }
+    h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 1.6rem 0 .5rem;
+    }
+    h4 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 1.2rem 0 .35rem;
+    }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block {
+      background: var(--eq-bg);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 22px 10px;
+      margin: 1.1rem 0 1.3rem;
+      overflow-x: auto;
+    }
+    .eq-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.865em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    pre {
+      font-family: var(--mono);
+      font-size: 0.855em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: .8rem 0 1.1rem;
+      line-height: 1.55;
+    }
+    .note {
+      background: var(--note-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .note strong { color: var(--accent2); }
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin: 1.1rem 0 1.4rem;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .module-card .mc-name {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .module-card .mc-role {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .module-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    .module-card .sig {
+      font-family: var(--mono);
+      font-size: 0.80rem;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 7px 10px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .param-table, .out-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .param-table th, .out-table th {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .out-table th { background: var(--accent2); }
+    .param-table td, .out-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0d8c8;
+      vertical-align: top;
+    }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table tr:hover td, .out-table tr:hover td { background: #f3ecdf; }
+    .param-table .pname, .out-table .oname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      box-shadow: var(--shadow);
+    }
+    .exp-card .ec-num {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin-bottom: 7px;
+    }
+    .exp-card h4 {
+      font-size: 0.94rem;
+      color: var(--accent2);
+      margin: 0 0 5px;
+    }
+    .exp-card p {
+      font-size: 0.855rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .related-list {
+      list-style: none;
+      margin: .6rem 0 1.2rem;
+      padding: 0;
+    }
+    .related-list li {
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 7px;
+      font-size: 0.90rem;
+    }
+    .related-list li strong {
+      font-family: var(--mono);
+      color: var(--accent2);
+    }
+    footer {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      text-align: center;
+      padding: 18px 24px;
+      line-height: 1.7;
+    }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+    .warn {
+      background: #fff6e8;
+      border: 1px solid var(--gold);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .warn strong { color: var(--accent); }
+    .mode-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1rem 0 1.4rem; }
+    .mode-table th { background: var(--gold); color: #fff; font-family: var(--sans); font-size: 11px;
+      letter-spacing: .06em; text-transform: uppercase; padding: 8px 12px; text-align: left; }
+    .mode-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .mode-table tr:nth-child(even) td { background: #faf5ec; }
+    .mode-table .mname { font-family: var(--mono); font-size: 0.85rem; color: var(--accent2); font-weight: 700; }
+    .tag {
+      display: inline-block; font-family: var(--sans); font-size: 9.5px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase; border-radius: 3px;
+      padding: 1px 6px; margin-right: 5px; vertical-align: 1px;
+    }
+    .tag-ode  { background: #d9ead3; color: #274e13; border: 1px solid #a8c69a; }
+    .tag-fit  { background: #fce5cd; color: #7f3f00; border: 1px solid #e0b183; }
+    .tag-cal  { background: #e6e0f8; color: #3d2c73; border: 1px solid #b7abdd; }
+    .tag-der  { background: #dbe8f5; color: #1c3f63; border: 1px solid #a4c0da; }
+    .tag-exact{ background: #d3ecec; color: #0d3d3d; border: 1px solid #8fc7c7; }
+    .cred-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin: 1rem 0 1.4rem; }
+    .cred-table th { background: var(--gold); color: #fff; font-family: var(--sans); font-size: 11px;
+                     letter-spacing: .06em; text-transform: uppercase; padding: 7px 12px; text-align: left; }
+    .cred-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .cred-table tr:nth-child(even) td { background: #faf5ec; }
+    .cred-table .cname { font-family: var(--mono); font-size: 0.85rem; color: var(--accent2); font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+  <div class="badge">Supplement · Gravity from the Ground Up</div>
+  <h1><em>Black_hole_spacetime_visualizer</em> — Embedding Diagrams, Tidal Forces, Infall, and the Two Horizons</h1>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+  </div>
+</header>
+<nav id="sidebar">
+  <div class="nav-label">Overview</div>
+  <a href="#description">Description</a>
+  <a href="#modes">The Four Modes</a>
+  <a href="#background">Physical Background</a>
+  <div class="nav-label">Mathematics</div>
+  <a href="#equations">Governing Equations</a>
+  <a href="#algorithm">Algorithm</a>
+  <div class="nav-label">Code</div>
+  <a href="#modules">Module Overview</a>
+  <a href="#parameters">Parameters</a>
+  <a href="#output">Output and Plot Panels</a>
+  <div class="nav-label">Experiments</div>
+  <a href="#experiments">Suggested Experiments</a>
+  <a href="#validity">Domain of Validity</a>
+  <a href="#related">Related Programs</a>
+  <div class="nav-label">Legal</div>
+  <a href="#license">License</a>
+</nav>
+<main>
+
+  <!-- ================================================================ -->
+  <section id="description">
+    <h2>Description</h2>
+    <p><strong>Black_hole_spacetime_visualizer</strong> takes the single most striking prediction of general relativity — the black hole — and gives a student four different, quantitative ways to look at it. One program covers four calculations, selected with <code>--mode</code>: <code>embed</code> draws the embedding diagram of the curved spatial geometry around the hole; <code>tidal</code> computes the stretching and compressing tidal acceleration a body feels at a given radius, and compares that across black-hole masses; <code>infall</code> follows a test particle dropped from rest all the way to the horizon, in both its own time and a distant observer's; and <code>horizons</code> makes visible a distinction that is usually only stated in words — the difference between the local, instantaneous <em>apparent</em> horizon and the global, teleological <em>event</em> horizon of a black hole that is actively gaining mass.</p>
+    <p>The default run (<code>--mode embed</code>) draws Flamm's paraboloid for a ten solar-mass black hole: a Schwarzschild radius of 29.5 km, and a throat with a vertical tangent exactly at the horizon. Switching to <code>tidal</code> for the same hole gives a radial tidal acceleration of 1.9×10⁷ g at the horizon — solidly lethal — while the supermassive black hole at the centre of the Milky Way, Sgr A* at 4.31×10⁶ solar masses, manages only about 10⁻⁴ g there: gentle enough that, by this criterion alone, you would not notice crossing its horizon. Switching to <code>infall</code>, the same ten solar-mass hole shows a particle released from rest at six Schwarzschild radii crossing the horizon after 2.26 milliseconds of its own proper time, while the Schwarzschild coordinate time used by a distant observer is already diverging logarithmically at that point and never catches up. And <code>horizons</code>, for a hole doubling its mass by accretion, shows the event horizon rising measurably <em>before</em> the accretion begins — it has to anticipate mass that has not arrived yet — while the apparent horizon only starts moving once the infalling matter is actually there.</p>
+    <div class="warn"><strong>What this program is, and what it is not.</strong> Every number in this program is an exact consequence of the Schwarzschild geometry, or, for <code>horizons</code>, its simplest time-dependent generalisation, the ingoing Vaidya metric. There is no equation of state, no fitted closure, and no calibration to real astrophysical data anywhere in this module — unlike the stellar-structure programs in this suite. What <em>is</em> idealised is the physical scenario: point test particles and test rods with no mass or extent of their own, purely radial motion with zero angular momentum, and, in <code>horizons</code>, a mass function chosen by the student rather than one derived from a real accretion flow. No rotation (a real astrophysical black hole is a Kerr hole, not a Schwarzschild one), no radiation reaction, and no back-reaction of the infalling matter on the geometry beyond the prescribed mass function.</div>
+    <div class="note"><strong>What is exact and what is numerical:</strong> a teal <span class="tag tag-exact">EXACT</span> tag marks a formula that is an exact closed-form consequence of the metric, a green <span class="tag tag-ode">ODE</span> tag marks a quantity obtained by numerically integrating a stated differential equation, and a blue <span class="tag tag-der">DERIVED</span> tag marks an algebraic result derived from the exact formulae. There are no fitted or calibrated quantities anywhere in this module — a deliberate contrast with the stellar-structure programs, worth pointing out explicitly the first time a student meets both.</div>
+
+    <h3>How seriously to take each number</h3>
+    <table class="cred-table"><thead><tr><th>Calculation</th><th>Status</th><th>Read it as</th></tr></thead><tbody>
+      <tr><td class="cname">embed — Flamm's paraboloid</td><td>exact closed-form embedding of the exact Schwarzschild spatial metric</td><td>quantitatively exact, for the idealisation of a static, spherical, uncharged, non-rotating hole</td></tr>
+      <tr><td class="cname">tidal — geodesic deviation</td><td>exact tidal tensor components of the Schwarzschild curvature</td><td>quantitatively exact for a point test body; a real extended body also self-gravitates and has finite strength, neither of which is modelled</td></tr>
+      <tr><td class="cname">infall — radial geodesic</td><td>exact conserved quantities, integrated numerically with RK4</td><td>numerically exact to the step size used; convergence is one of the exercises</td></tr>
+      <tr><td class="cname">infall — redshift</td><td>exact combination of the gravitational and special-relativistic Doppler factors</td><td>exact for a point emitter and a point receiver at rest at infinity; no accretion-disk radiative transfer of any kind</td></tr>
+      <tr><td class="cname">horizons — apparent horizon</td><td>exact algebraic consequence of the prescribed Vaidya mass function</td><td>exact for the model, but the mass function itself is chosen by the student, not derived from an accretion calculation</td></tr>
+      <tr><td class="cname">horizons — event horizon</td><td>a numerical shooting-method approximation to an exact geometric definition</td><td>convergent and controllable (see the algorithm section), but never exact at any finite <code>--v_start_margin_rs0</code> or <code>--bisect_iters</code></td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modes">
+    <h2>The Four Modes</h2>
+    <table class="mode-table"><thead><tr><th>Mode</th><th>What it computes</th><th>Core numerical content</th></tr></thead><tbody>
+      <tr><td class="mname">embed</td><td>The embedding of the equatorial, constant-time Schwarzschild spatial slice as a surface of revolution in flat 3-D space: Flamm's paraboloid.</td><td>Closed-form evaluation; no integration.</td></tr>
+      <tr><td class="mname">tidal</td><td>Radial (stretching) and tangential (compressing) tidal acceleration between the two ends of a test rod, vs. radius, plus an optional table comparing the tidal acceleration at the horizon and a "survival radius" across a list of black-hole masses.</td><td>Closed-form evaluation of the exact Schwarzschild tidal tensor.</td></tr>
+      <tr><td class="mname">infall</td><td>A test particle released from rest at some radius and dropped radially inward: its radius, proper time, the distant observer's Schwarzschild coordinate time, its local speed relative to static observers along the way, and the redshift of light it sends outward.</td><td>RK4 integration, in proper time, of the exact radial geodesic equations, with the step size refined geometrically near the stopping radius.</td></tr>
+      <tr><td class="mname">horizons</td><td>The event horizon and the apparent horizon of a black hole that gains mass by swallowing an infalling null-dust shell (an ingoing Vaidya spacetime), plus a family of nearby light rays showing how the event horizon is located.</td><td>RK4 integration, with an adaptive step capped by the current radius, of outgoing null geodesics; a bisection shooting method over the initial radius locates the one geodesic that neither escapes nor plunges.</td></tr>
+    </tbody></table>
+    <pre># Flamm's paraboloid for a 10 solar-mass black hole
+python main.py --mode embed --M 10
+
+# Tidal acceleration, a stellar-mass hole against Sgr A*
+python main.py --mode tidal --M 10 --compare_masses 10,4.31e6
+
+# Radial infall released at 6 Schwarzschild radii
+python main.py --mode infall --M 10 --r0_rs 6
+
+# A black hole doubling in mass: event horizon vs. apparent horizon
+python main.py --mode horizons --M0 5 --M1 10</pre>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="background">
+    <h2>Physical Background</h2>
+
+    <h3>Curved Space You Can Draw</h3>
+    <p>The full Schwarzschild spacetime is four-dimensional and cannot be embedded in ordinary 3-D space at all. But a single instant of it — the spatial geometry alone, at fixed Schwarzschild time <em>t</em>, restricted to the equatorial plane — is a 2-D curved surface, and <em>that</em> can be embedded exactly in flat 3-D Euclidean space. The resulting picture, Flamm's paraboloid, is not a metaphor or an artist's impression: every distance measured along the drawn surface equals the corresponding proper distance computed from the Schwarzschild metric. It is the one genuinely quantitative "rubber sheet" picture of a black hole, and it is worth being precise about what it does and does not depict: it says nothing about time, nothing about gravity as a force, and the popular image of a ball rolling toward the centre to represent gravitational attraction is not part of what the embedding actually shows.</p>
+
+    <h3>Why Tidal Forces Are the Honest Danger</h3>
+    <p>Crossing a black hole's event horizon is not, by itself, locally violent: for a large enough hole nothing dramatic happens right at the horizon. What can kill you is the <em>tidal</em> force — the difference in gravitational acceleration between your head and your feet — and that difference depends on the size of the hole in a way most people find surprising. Because the Schwarzschild radius grows linearly with mass while the tidal acceleration at that radius falls as the inverse square of the mass, a bigger black hole is gentler at its horizon, not fiercer. This program lets a student verify that scaling directly rather than take it on faith.</p>
+
+    <h3>Two Clocks, One Infall</h3>
+    <p>A particle falling into a Schwarzschild black hole experiences nothing pathological at the horizon: its proper time runs smoothly and it crosses in a finite, ordinary interval. A distant observer watching it fall sees something entirely different. The Schwarzschild <em>t</em> coordinate — which is also the time kept by a clock very far from the hole — takes longer and longer to advance the closer the particle gets to the horizon, formally diverging as the particle approaches it, so that a distant observer never actually sees the crossing happen. The two clocks are not in conflict: they are simply measuring different things, one the particle's own elapsed time, the other a coordinate defined by, and only meaningful to, observers who stay far away. Accompanying the coordinate-time divergence is a genuine, observable effect: light sent outward by the falling particle is progressively redshifted and, in the strict mathematical limit, never quite finishes arriving — which is the precise sense in which an object falling into a black hole is said to "freeze and fade" as seen from outside, even though nothing freezes from the particle's own point of view.</p>
+
+    <h3>Apparent Horizon and Event Horizon: Local vs. Global</h3>
+    <p>In an unchanging (static) black hole spacetime, "the horizon" is unambiguous, and the two definitions in this section's title agree exactly. Once the hole is allowed to change — by swallowing matter, or, in principle, by evaporating — they come apart, and the distinction is one of the more important ideas in modern black-hole physics.</p>
+    <p>The <strong>apparent horizon</strong> is defined locally, at a single instant: it is the outermost surface where outward-pointing light rays instantaneously fail to increase their radius. You can find it from the geometry at that moment alone, with no knowledge of the future. The <strong>event horizon</strong> is defined globally: it is the boundary of the set of events from which a light ray can never escape to arbitrarily large distance, no matter how long you wait. Answering "can it ever escape" requires knowing the entire future of the spacetime — which is exactly why the event horizon is called teleological, and why, in a dynamical spacetime, it can begin moving in response to infalling matter that has not arrived yet. This program makes that abstract statement into a picture: for a black hole that gains mass over some interval of time, the located event horizon is demonstrably larger than the apparent horizon throughout the accretion, and it starts rising perceptibly <em>before</em> the accretion begins.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="equations">
+    <h2>Governing Equations</h2>
+
+    <h3>The Schwarzschild Metric</h3>
+    <div class="eq-block"><div class="eq-label">Schwarzschild line element <span class="tag tag-exact">EXACT</span></div>
+      \[ds^2 = -\left(1-\frac{r_s}{r}\right)c^2dt^2 + \frac{dr^2}{1-r_s/r} + r^2\left(d\theta^2+\sin^2\theta\,d\phi^2\right), \qquad r_s = \frac{2GM}{c^2}.\]
+    </div>
+    <p>Every formula in this program follows from this line element (or, for <code>horizons</code>, from its ingoing-null-coordinate generalisation below), together with the geodesic equation for a freely falling test particle or photon. Nothing here is fitted to data or calibrated against a more detailed model.</p>
+
+    <h3>Mode <code>embed</code>: Flamm's Paraboloid</h3>
+    <p>Restrict the metric to \(t=\text{const}\), \(\theta=\pi/2\): \(ds^2 = dr^2/(1-r_s/r) + r^2 d\phi^2\). Embed this as a surface of revolution \(z(r)\) in flat 3-D space, where \(ds^2=dz^2+dr^2+r^2d\phi^2\):</p>
+    <div class="eq-block"><div class="eq-label">Embedding profile <span class="tag tag-der">DERIVED</span></div>
+      \[\left(\frac{dz}{dr}\right)^2 = \frac{r_s}{r-r_s} \quad\Longrightarrow\quad z(r) = 2\sqrt{r_s(r-r_s)}, \qquad r\ge r_s.\]
+    </div>
+    <p>The derivative diverges as \(r\to r_s\): the throat has a vertical tangent, a real geometric feature, not a numerical artefact. The embedding is undefined for \(r<r_s\); nothing here corresponds to a passage through to "another side," a picture that belongs to the different, larger maximally-extended (Kruskal) spacetime.</p>
+
+    <h3>Mode <code>tidal</code>: Geodesic Deviation</h3>
+    <p>Two nearby free-falling test particles separated by proper distance \(\delta\ell\) accelerate relative to each other according to the geodesic deviation equation, governed by the Riemann tensor. For Schwarzschild, in the local orthonormal frame of an observer at radius \(r\) (static or radially infalling — the radial components turn out to be the same for both):</p>
+    <div class="eq-block"><div class="eq-label">Tidal acceleration <span class="tag tag-exact">EXACT</span></div>
+      \[a_{\rm radial} = +\frac{2GM}{r^3}\,\delta r \quad(\text{stretching}), \qquad a_{\rm tangential} = -\frac{GM}{r^3}\,\delta\ell \quad(\text{compressing, each transverse direction}).\]
+    </div>
+    <p>These are exactly the tidal-acceleration formulae of Newtonian gravity for a point mass \(M\) — general relativity adds no correction to the radial or tangential tidal terms of Schwarzschild at any order in this frame. What differs from Newtonian intuition is only where you are allowed to evaluate them: general relativity insists the formula holds however close to \(r_s\) you go, all the way to (and through) the horizon.</p>
+    <div class="eq-block"><div class="eq-label">Illustrative survival radius <span class="tag tag-der">DERIVED</span></div>
+      \[r_{\rm crit} = \left(\frac{2GM\,\delta\ell}{a_{\rm limit}}\right)^{1/3}, \qquad a_{\rm limit} = (\text{limit\_g})\times g.\]
+    </div>
+    <p>Solving \(a_{\rm radial}=a_{\rm limit}\) for \(r\) gives the radius at which a body of length \(\delta\ell\) first experiences a chosen illustrative tidal-acceleration threshold. Comparing \(r_{\rm crit}\) with \(r_s\) tells you whether that threshold is reached outside the horizon (the body is destroyed before crossing) or only inside it (the body crosses intact, by this criterion). <code>--limit_g</code> is a deliberately round illustrative number, not a precise physiological claim, and one of the exercises asks what changes if you adopt a different one.</p>
+
+    <h3>Mode <code>infall</code>: Radial Free Fall</h3>
+    <p>For a particle released from rest at \(r_0\), the conserved specific energy is \(E=\sqrt{1-r_s/r_0}\) (E \(\to 1\) as \(r_0\to\infty\)). The exact radial equations of motion are:</p>
+    <div class="eq-block"><div class="eq-label">Radial geodesic equations <span class="tag tag-exact">EXACT</span>, integrated <span class="tag tag-ode">ODE</span></div>
+      \[\left(\frac{dr}{d\tau}\right)^2 = c^2\left(\frac{r_s}{r}-\frac{r_s}{r_0}\right), \qquad \frac{dt}{d\tau} = \frac{E}{1-r_s/r}.\]
+    </div>
+    <p>\(dr/d\tau\) is finite and smooth all the way through \(r=r_s\): nothing pathological happens to the particle there. \(dt/d\tau\) diverges as \(r\to r_s\): this is what makes the distant observer's coordinate time run away. Both are integrated numerically with RK4 in the particle's own proper time \(\tau\), with the step size capped at a fraction of the remaining distance to the stopping radius, exactly as the structure integrators of the other GFtGU programs cap their step by a fraction of the current integration variable.</p>
+    <div class="eq-block"><div class="eq-label">Local speed and redshift <span class="tag tag-der">DERIVED</span></div>
+      \[v_{\rm local}(r) = \frac{1}{E}\sqrt{\frac{r_s}{r}-\frac{r_s}{r_0}}\ \longrightarrow\ 1 \text{ as } r\to r_s, \]
+      \[\frac{\nu_{\rm obs}}{\nu_{\rm emit}} = \sqrt{1-\frac{r_s}{r}}\ \sqrt{\frac{1-v_{\rm local}}{1+v_{\rm local}}}\ \longrightarrow\ 0 \text{ as } r\to r_s.\]
+    </div>
+    <p>The redshift factor is the product of the ordinary gravitational redshift for a static source at \(r\) and the special-relativistic Doppler factor for that source's local motion relative to a static observer it is passing. For a particle released from rest at infinity (\(E=1\)) this collapses to the well-known closed form \(\nu_{\rm obs}/\nu_{\rm emit}=1-\sqrt{r_s/r}\); Exercise EXP-11 asks you to verify that limit directly from the program's output.</p>
+
+    <h3>Mode <code>horizons</code>: the Ingoing Vaidya Metric</h3>
+    <p>To model a hole that gains mass, replace the constant \(M\) in the Schwarzschild metric with a prescribed, non-decreasing function \(M(v)\) of the ingoing null (advanced-time) coordinate \(v\):</p>
+    <div class="eq-block"><div class="eq-label">Ingoing Vaidya line element <span class="tag tag-exact">EXACT</span> (as a solution of the Einstein field equations for infalling null dust)</div>
+      \[ds^2 = -\left(1-\frac{2M(v)}{r}\right)dv^2 + 2\,dv\,dr + r^2d\Omega^2 \qquad (G=c=1 \text{ in this line}).\]
+    </div>
+    <p>This program uses a mass function that ramps linearly from \(M_0\) to \(M_1\) between advanced times \(v_1\) and \(v_2=v_1+\)<code>--duration_rs0</code>, and is constant before and after — a simple, explicit, student-chosen stand-in for an accretion episode, not a result of an accretion-physics calculation.</p>
+    <div class="eq-block"><div class="eq-label">Apparent horizon <span class="tag tag-der">DERIVED</span> (algebraic, from the mass function alone)</div>
+      \[r_{AH}(v) = 2M(v).\]
+    </div>
+    <div class="eq-block"><div class="eq-label">Outgoing radial null geodesics <span class="tag tag-exact">EXACT</span>, integrated <span class="tag tag-ode">ODE</span></div>
+      \[\frac{dr}{dv} = \frac{1}{2}\left(1-\frac{2M(v)}{r}\right).\]
+    </div>
+    <p>The event horizon is the one outgoing null geodesic that neither escapes to \(r\to\infty\) nor falls to \(r=0\): it is located by firing trial geodesics from deep in the static region before \(v_1\) (where the true horizon generator sits exponentially close to \(r=2M_0\)) and bisecting the initial radius until the trajectory neither clearly escapes nor clearly plunges by a late time \(v_{\rm end}\). See the algorithm section for the numerical details and for exactly what "exponentially close" costs you in practice.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="algorithm">
+    <h2>Algorithm</h2>
+
+    <h3>Mode <code>embed</code></h3>
+    <ol>
+      <li>Validate the mass and the outer radius (must exceed \(r_s\)); compute \(r_s\) and evaluate \(z(r)=2\sqrt{r_s(r-r_s)}\) on a linear grid from \(r_s\) to <code>--r_max_rs</code>\(\times r_s\).</li>
+      <li>Also evaluate the proper radial distance \(\int_{r_s}^r dr'/\sqrt{1-r_s/r'}\) by a singularity-removing substitution \(r'=r_s+u^2\), for the exercises that compare it with the naive coordinate difference \(r-r_s\).</li>
+      <li>Hand the profile to the plotting layer, which also constructs the 3-D surface of revolution for display.</li>
+    </ol>
+
+    <h3>Mode <code>tidal</code></h3>
+    <ol>
+      <li>Validate the mass, the innermost radius (must exceed \(r_s\)) and the test-rod separation; evaluate the exact tidal-acceleration formulae on a logarithmic radial grid.</li>
+      <li>If <code>--compare_masses</code> is supplied, repeat the horizon-value calculation and the survival-radius inversion for each mass in the list and tabulate the results.</li>
+    </ol>
+
+    <h3>Mode <code>infall</code></h3>
+    <ol>
+      <li>Validate the mass, the release radius \(r_0\) (must exceed \(r_s\)) and the stopping radius \(r_{\rm stop}\) (must lie strictly between \(r_s\) and \(r_0\)); compute \(E=\sqrt{1-r_s/r_0}\).</li>
+      <li>Start the integration an infinitesimal distance inside \(r_0\): \(r_0\) itself is an exact fixed point of \(dr/d\tau\) (the particle is released from rest there), so beginning exactly at \(r_0\) would never move.</li>
+      <li>Advance \(r\) and \(t\) together with RK4 in \(\tau\), with the step \(d\tau\) capped at a fraction (<code>--step_frac</code>) of the remaining proper-time-equivalent distance to \(r_{\rm stop}\), so the step shrinks geometrically as the particle approaches the stopping radius. Interpolate the final partial step so the recorded track ends exactly at \(r_{\rm stop}\).</li>
+      <li>At each recorded point, evaluate the local speed and the outward redshift factor from the closed-form expressions above.</li>
+      <li>The integration deliberately stops just outside the horizon, at \(r_{\rm stop}=\)<code>--r_stop_rs</code>\(\times r_s\) (default 1.0005), because the Schwarzschild \(t\) coordinate used for the distant observer's clock diverges there; the particle's own \(\tau\) does not, and nothing in the underlying physics is singular at the horizon itself — only this particular coordinate choice is.</li>
+    </ol>
+
+    <h3>Mode <code>horizons</code></h3>
+    <ol>
+      <li>Validate \(M_0\), \(M_1\) (must satisfy \(M_1\ge M_0\): this Vaidya mass function models only accretion, never mass loss), and the accretion-window and margin parameters. Build the piecewise-linear mass function \(M(v)\) and the corresponding apparent horizon \(r_{AH}(v)=2M(v)\) directly.</li>
+      <li>Integrate a trial outgoing null geodesic \(dr/dv=\tfrac12(1-2M(v)/r)\) with RK4, from a chosen starting radius at \(v_{\rm start}=v_1-\)<code>--v_start_margin_rs0</code>\(\times r_{s0}\), out to \(v_{\rm end}=v_2+\)<code>--v_end_margin_rs0</code>\(\times r_{s0}\). The step in \(v\) is adaptive, capped at a fraction of the <em>current radius</em>: a fixed step overshoots straight through \(r=0\) as the derivative diverges there, which makes a plunging geodesic appear, spuriously, to bounce back out and escape. A trajectory that reaches a small radius is declared to have plunged and the integration for that trial stops.</li>
+      <li>Bisect the starting radius between a value that clearly falls in and one that clearly escapes (bracketed near \(r=2M_0\)) for <code>--bisect_iters</code> iterations (default 60, i.e. a residual of order \(2^{-60}\) of the bracket width). The midpoint of the final bracket is the located event-horizon generator's starting radius; integrating it forward gives \(r_{EH}(v)\).</li>
+      <li>Because the true event-horizon generator only sits exactly at \(r=2M_0\) in the limit \(v_{\rm start}\to-\infty\), starting the shooting method at any finite \(v_{\rm start}\) leaves a small, quantifiable residual in the located horizon near \(v_{\rm start}\), which decays as \(v_{\rm start}\) is moved earlier. This is a genuine, controllable feature of the calculation, not an embarrassment; Exercise EXP-10 asks you to demonstrate the decay directly and connect it to the exponential instability of a geodesic sitting near an unstable fixed point.</li>
+      <li>Finally, integrate a small family of geodesics with starting radii spread around the located critical radius, for the panel that shows directly which ones escape and which plunge.</li>
+    </ol>
+
+    <div class="note"><strong>Input and runtime safeguards:</strong> masses, radii and separations must be finite and positive; embedding and tidal radii must exceed \(r_s\); an infall release radius must exceed \(r_s\) and the stopping radius must lie strictly between \(r_s\) and the release radius; <code>--step_frac</code> must lie in \((10^{-5}, 0.2]\); a Vaidya run requires \(M_1\ge M_0\); the null-geodesic integrator caps its own step size against the current radius specifically to prevent the horizon-shooting bisection from being corrupted by an overshoot instability; and <code>--no_plot</code> is refused unless a CSV directory is given, so a run always produces something. Masses far outside the observed black-hole mass range are still computed exactly — general relativity supplies no natural mass scale — but are flagged, since the point of running one is usually precisely to see the numbers become extreme.</div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modules">
+    <h2>Module Overview</h2>
+    <div class="module-grid">
+      <div class="module-card"><div class="mc-role">Physics Layer</div><div class="mc-name">physics_bh.py</div><p>Constants, the Schwarzschild radius, Flamm's paraboloid, the exact tidal-acceleration formulae and survival-radius inversion, the radial-infall RK4 integrator with its local-speed and redshift formulae, the Vaidya mass function, the adaptive-step outgoing-null-geodesic integrator, and the bisection shooting method that locates the event horizon. All validation of physical inputs lives here.</p></div>
+      <div class="module-card"><div class="mc-role">Driver Layer</div><div class="mc-name">driver_bh.py</div><p>Validates presentation-level inputs, parses the comma-separated comparison-mass list, dispatches on <code>--mode</code>, prints the run summary, writes timestamped CSV files (including secondary files for the tidal cross-mass comparison and the horizon geodesic family), and calls the plotter.</p></div>
+      <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_bh.py</div><p>Four figure layouts, one per mode — including a 3-D surface of revolution for the embedding diagram and a two-colour escapes/plunges geodesic-family panel for the horizons mode — with shared save-or-display logic.</p></div>
+      <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>Defines the student-facing command-line options, grouped by mode, and converts validation or runtime failures into concise command-line error messages.</p></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <p>Run <code>python main.py --help</code> for the current command summary, and <code>python main.py --version</code> for the model version, which is also written into every CSV header. Options that do not apply to the selected mode are ignored silently — <code>--mode embed --r0_rs 6</code> will not change anything — so check the printed summary, or the parameter block at the top of the CSV file, to confirm which values the run actually used.</p>
+
+    <h3>Mode selection and output</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--mode</td><td class="pdefault">embed</td><td>—</td><td>One of <code>embed</code>, <code>tidal</code>, <code>infall</code>, <code>horizons</code>.</td></tr>
+      <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>Save a timestamped PNG in this folder instead of displaying the figure.</td></tr>
+      <tr><td class="pname">--csvdir</td><td class="pdefault">None</td><td>path</td><td>Also write timestamped CSV data files here. Combine freely with <code>--outdir</code>.</td></tr>
+      <tr><td class="pname">--no_plot</td><td class="pdefault">off</td><td>—</td><td>Skip the figure entirely; requires <code>--csvdir</code>. Useful for parameter sweeps in a shell loop.</td></tr>
+      <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>PNG resolution, 10 to 1200.</td></tr>
+      <tr><td class="pname">--lw</td><td class="pdefault">1.6</td><td>pt</td><td>Curve line width.</td></tr>
+      <tr><td class="pname">--version</td><td class="pdefault">—</td><td>—</td><td>Print the model version and exit. Every CSV file records the same string.</td></tr>
+    </tbody></table>
+
+    <h3>Embedding diagram (mode <code>embed</code>)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--M</td><td class="pdefault">10.0</td><td>\(M_\odot\)</td><td>Black-hole mass, shared by <code>embed</code>, <code>tidal</code> and <code>infall</code>. Any positive value is accepted; masses outside the range of astrophysically known black holes (roughly 2 to 5×10¹⁰ \(M_\odot\)) are flagged, not refused.</td></tr>
+      <tr><td class="pname">--r_max_rs</td><td class="pdefault">8.0</td><td>\(r_s\)</td><td>Outer radius of the embedding diagram, in units of \(r_s\); must exceed 1.</td></tr>
+      <tr><td class="pname">--n_r</td><td class="pdefault">400</td><td>—</td><td>Radial points, shared by <code>embed</code> and <code>tidal</code>.</td></tr>
+    </tbody></table>
+
+    <h3>Tidal acceleration (mode <code>tidal</code>)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--r_min_rs</td><td class="pdefault">1.01</td><td>\(r_s\)</td><td>Innermost radius plotted, in units of \(r_s\); must exceed 1.</td></tr>
+      <tr><td class="pname">--separation</td><td class="pdefault">1.8</td><td>m</td><td>Proper length of the test rod, e.g. a human height.</td></tr>
+      <tr><td class="pname">--limit_g</td><td class="pdefault">100.0</td><td>g</td><td>Illustrative tidal-acceleration survival threshold. Deliberately round; not a precise physiological claim.</td></tr>
+      <tr><td class="pname">--compare_masses</td><td class="pdefault">None</td><td>\(M_\odot\)</td><td>Comma-separated masses for the cross-mass comparison table and the two extra panels, e.g. <code>10,4.31e6</code>. At most 12 entries.</td></tr>
+    </tbody></table>
+
+    <h3>Radial infall (mode <code>infall</code>)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--r0_rs</td><td class="pdefault">6.0</td><td>\(r_s\)</td><td>Radius at which the particle is released from rest, in units of \(r_s\); must exceed 1.</td></tr>
+      <tr><td class="pname">--n_points</td><td class="pdefault">4000</td><td>—</td><td>Points recorded along the track (a resampling of the adaptively-stepped integration for plotting and CSV output).</td></tr>
+      <tr><td class="pname">--r_stop_rs</td><td class="pdefault">1.0005</td><td>\(r_s\)</td><td>Radius at which the integration stops, in units of \(r_s\); must lie strictly between 1 and <code>--r0_rs</code>. The distant observer's coordinate time diverges at the horizon itself, which is why the integration does not go all the way there.</td></tr>
+      <tr><td class="pname">--step_frac</td><td class="pdefault">0.02</td><td>—</td><td>Fractional step size for the infall integration, in \((10^{-5}, 0.2]\).</td></tr>
+    </tbody></table>
+
+    <h3>Event vs. apparent horizon (mode <code>horizons</code>)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--M0</td><td class="pdefault">5.0</td><td>\(M_\odot\)</td><td>Initial black-hole mass.</td></tr>
+      <tr><td class="pname">--M1</td><td class="pdefault">10.0</td><td>\(M_\odot\)</td><td>Final black-hole mass, after accretion. Must satisfy \(M_1\ge M_0\).</td></tr>
+      <tr><td class="pname">--v1_rs0</td><td class="pdefault">5.0</td><td>\(r_{s0}/c\)</td><td>Advanced time at which accretion begins, in units of the initial light-crossing time \(r_{s0}/c\).</td></tr>
+      <tr><td class="pname">--duration_rs0</td><td class="pdefault">10.0</td><td>\(r_{s0}/c\)</td><td>Duration of the accretion episode.</td></tr>
+      <tr><td class="pname">--v_start_margin_rs0</td><td class="pdefault">25.0</td><td>\(r_{s0}/c\)</td><td>How far before <code>--v1_rs0</code> the shooting method starts firing trial light rays. Larger values reduce the residual error in the located event horizon before \(v_1\), at the cost of run time.</td></tr>
+      <tr><td class="pname">--v_end_margin_rs0</td><td class="pdefault">15.0</td><td>\(r_{s0}/c\)</td><td>How far past the end of accretion the integration and the plot extend.</td></tr>
+      <tr><td class="pname">--n_steps</td><td class="pdefault">6000</td><td>—</td><td>Output-grid resolution in advanced time, for the plot and the CSV file (the integration itself is adaptively stepped, not fixed to this count).</td></tr>
+      <tr><td class="pname">--bisect_iters</td><td class="pdefault">60</td><td>—</td><td>Bisection iterations used to locate the event horizon.</td></tr>
+      <tr><td class="pname">--n_family</td><td class="pdefault">9</td><td>—</td><td>Number of nearby geodesics drawn around the located event-horizon generator, for the "how the shooting method finds it" panel.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="output">
+    <h2>Output and Plot Panels</h2>
+    <table class="out-table"><thead><tr><th>Output</th><th>What to Look For</th></tr></thead><tbody>
+      <tr><td class="oname">embed — radial profile</td><td>A vertical tangent exactly at \(r=r_s\): the throat. The dashed lower branch is a plotting convenience (a mirror image), not a second physical sheet — the surface does not continue anywhere the way a wormhole picture might suggest.</td></tr>
+      <tr><td class="oname">embed — 3-D surface</td><td>The same profile revolved about the vertical axis. Notice how quickly the curvature (the bend of the surface) flattens out beyond a few \(r_s\): far from the hole, space is nearly flat, exactly as it must be.</td></tr>
+      <tr><td class="oname">tidal — acceleration vs. radius</td><td>Both curves fall off as \(1/r^3\): a factor of 2 in radius is a factor of 8 in tidal force. The radial (stretching) curve is always exactly twice the tangential (compressing) one.</td></tr>
+      <tr><td class="oname">tidal — cross-mass panels</td><td>The tidal acceleration at the horizon falls as \(M^{-2}\): a straight line of slope \(-2\) on log–log axes. The survival-radius panel shows directly, for each mass, whether the illustrative threshold is reached outside the horizon (destroyed before crossing) or only inside it.</td></tr>
+      <tr><td class="oname">infall — r(τ)</td><td>A smooth curve reaching \(r=r_s\) at a finite, unremarkable proper time. Nothing signals a horizon crossing from the particle's own point of view.</td></tr>
+      <tr><td class="oname">infall — t(τ)</td><td>Pulls away from the \(t=\tau\) reference line and would formally diverge as \(\tau\) approaches the (finite) horizon-crossing proper time; the plotted curve only reaches the point where the integration was deliberately stopped, just outside the horizon.</td></tr>
+      <tr><td class="oname">infall — local speed</td><td>Climbs toward \(v=c\) as \(r\to r_s\), for every release radius \(r_0\) — even a particle dropped from just above the horizon is measured, by the local static observers it passes, to be moving at very nearly the speed of light there.</td></tr>
+      <tr><td class="oname">infall — redshift</td><td>Falls toward zero (log scale) as \(r\to r_s\): a distant observer receives light from the infall ever more redshifted, ever more faintly, and ever more delayed, which is the precise, quantitative version of "you never see it fall in."</td></tr>
+      <tr><td class="oname">horizons — apparent vs. event</td><td>The event horizon lies at or above the apparent horizon everywhere, coincides with it once the mass has stopped changing, and — the most important feature of the whole mode — begins rising measurably before the shaded accretion window starts.</td></tr>
+      <tr><td class="oname">horizons — geodesic family</td><td>Green trajectories (starting just outside the located event-horizon generator) escape to large radius; red ones (starting just inside it) plunge to \(r=0\). The event-horizon curve is literally the boundary between the two families.</td></tr>
+      <tr><td class="oname">Run summary</td><td>Printed to the terminal for every mode: inputs, derived quantities, and the key results. A <em>notes on this run</em> block appears whenever a mass lies outside the astrophysically known range, or, for <code>horizons</code>, always — to report the shooting method's residual explicitly. Read it.</td></tr>
+      <tr><td class="oname">CSV files</td><td>With <code>--csvdir PATH</code>: the full numerical table for the run. The commented header records the model version, the run time, and every parameter the selected mode actually used. <code>tidal</code> additionally writes a comparison-table CSV when <code>--compare_masses</code> is given, and <code>horizons</code> additionally writes the geodesic-family CSV.</td></tr>
+      <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>: a timestamped figure instead of a screen display.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="experiments">
+    <h2>Suggested Experiments</h2>
+    <p>The exercises are divided into a <strong>core sequence</strong>, arranged from reading the output through controlled comparisons to numerical work, and a set of <strong>optional projects</strong> that ask for a somewhat larger investigation. Two <strong>synthesis</strong> exercises close the set. Nothing here needs anything beyond the program, a spreadsheet or short script, and the printed summary.</p>
+
+    <h3>Core sequence · introductory</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-1 · introductory</div><h4>Read the Throat</h4><p>Run <code>python main.py --mode embed --M 10</code>. Identify the throat in both panels. Why does the profile have a vertical tangent exactly at \(r=r_s\), and why is that not a numerical mistake? The dashed lower branch is a mirror image drawn for visual symmetry only — state, in your own words, what would and would not be true if you instead interpreted it as a tunnel through to "the other side."</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-2 · introductory</div><h4>How Gentle Is the Tide?</h4><p>Run <code>python main.py --mode tidal --M 10 --compare_masses 10,4.31e6</code>. Record the radial tidal acceleration at the horizon, in g, for both masses. 4.31×10⁶ solar masses is (very nearly) the mass of Sgr A*, the black hole at the centre of our galaxy. Which of the two would you survive crossing, by the program's illustrative 100 g threshold? Which scales as you might have naively guessed — bigger hole, stronger tide, or the reverse — and why?</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-3 · introductory</div><h4>Falling In</h4><p>Run <code>python main.py --mode infall --M 10 --r0_rs 6</code>. Record the proper time and the Schwarzschild coordinate time at which the integration stops, just outside the horizon. Which one is "how long it took," from the falling observer's own point of view? At roughly what value of \(r/r_s\) does the local infall speed first exceed half the speed of light?</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-4 · introductory</div><h4>Two Kinds of Horizon</h4><p>Run <code>python main.py --mode horizons --M0 5 --M1 10</code>. In your own words, state the difference between how the apparent horizon and the event horizon are each defined — one sentence for each, using the words "instantaneous" and "future" somewhere. At what value of \(v/r_{s0}\) do the two curves become indistinguishable in the left panel, and how does that compare with the end of the shaded accretion window?</p></div>
+
+    </div>
+
+    <h3>Core sequence · introductory to intermediate</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-5 · introductory/intermediate</div><h4>Coordinate Distance Is Not Proper Distance</h4><p>Using <code>--mode embed --csvdir ./data</code>, compare the <code>proper_radial_distance_m</code> column with the naive coordinate difference \(r-r_s\) at a few radii out to 8 \(r_s\). By what percentage do they differ at \(r=2r_s\)? At \(r=8r_s\)? State, in one sentence, why the two are not equal even though both are "distance from the horizon."</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-6 · introductory/intermediate</div><h4>Would You Survive?</h4><p>Run <code>--mode tidal --compare_masses 3,10,100,1e4,1e6,4.31e6,1e9</code> and study the fourth panel. Find, by trial and error or by inverting the \(M^{-2}\) scaling algebraically, the approximate mass at which \(r_{\rm crit}=r_s\) exactly for the default 1.8 m separation and 100 g limit. Then repeat with <code>--limit_g 10</code> and again with <code>--limit_g 1000</code>: how much does the crossover mass move, and why does an order-of-magnitude change in your assumed survival threshold move it by so much less than an order of magnitude?</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-7 · introductory/intermediate</div><h4>The Rain-Frame Limit</h4><p>Run <code>--mode infall --M 10 --r0_rs 1000 --csvdir ./data</code> (a release radius large enough to approximate "from rest at infinity"). From the CSV, compare the local speed at a few radii with the closed-form \(v=\sqrt{r_s/r}\), and the redshift factor with the closed form \(1-\sqrt{r_s/r}\) quoted in the equations section. How small is the discrepancy, and why does it shrink as <code>--r0_rs</code> grows?</p></div>
+
+    </div>
+
+    <h3>Core sequence · intermediate</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-8 · intermediate</div><h4>Verify the \(M^{-2}\) Scaling</h4><p>Run <code>--mode tidal --compare_masses 1,3,10,30,100,300,1000</code> and, from the CSV comparison table, fit \(\log(a_{\rm radial,\ horizon})\) against \(\log M\). Confirm the slope is \(-2\) to within your fitting uncertainty, and derive that exponent yourself algebraically from \(a_{\rm radial}=2GM\delta r/r^3\) together with \(r_s\propto M\).</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-9 · intermediate</div><h4>Compressing and Stretching Are Locked Together</h4><p>Using the <code>tidal</code> CSV for any mass, verify numerically that <code>a_tangential</code> is exactly half of <code>a_radial</code> at every radius. Prove algebraically, from the two formulae in the equations section, that this ratio holds at <em>every</em> radius for <em>every</em> mass, not just as an approximation. What property of the Schwarzschild Riemann tensor is responsible — specifically, why must the sum of all three principal tidal accelerations (one radial, two tangential) vanish for vacuum, and how does that alone force the factor of 2?</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-10 · intermediate</div><h4>The Event Horizon's Memory</h4><p>Run <code>--mode horizons --M0 5 --M1 10 --v_start_margin_rs0 5</code>, then repeat with 10, 15, 20 and 30, holding <code>--bisect_iters 60</code> fixed each time, and record <code>r_crit_over_rs0</code> and <code>residual_rs0</code> from the printed summary. Plot \(\log(r_{\rm crit}/r_{s0}-1)\) against <code>--v_start_margin_rs0</code>. Is the decay consistent with an exponential? This is the numerical face of the event horizon's teleological character: the earlier you have to "know the answer" (start the shooting method), the more precisely you must aim.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-11 · intermediate</div><h4>Convergence of the Infall Integration</h4><p>Run <code>--mode infall --M 10 --r0_rs 6</code> with <code>--step_frac</code> set to 0.1, 0.05, 0.02, 0.01 and 0.005, recording the total proper time <code>tau_total_ms</code> to six figures each time. Demonstrate convergence and estimate the order of the method from the rate at which successive differences shrink. (You should find behaviour consistent with the RK4 integrator used internally, though the geometric step refinement near the stopping radius means the estimate will not be as clean as a textbook fixed-step convergence test.)</p></div>
+
+    </div>
+
+    <h3>Core sequence · intermediate to advanced</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-12 · intermediate/advanced</div><h4>Sudden vs. Gradual Accretion</h4><p>Run <code>--mode horizons --M0 5 --M1 10 --duration_rs0 0.5</code> (a near-instantaneous mass jump) and compare the left-panel event-horizon curve with the default <code>--duration_rs0 10</code> run. Does the sudden case still rise smoothly before \(v_1\), or does its shape change qualitatively? Increase <code>--n_steps</code> if the sudden case looks under-resolved. What would you expect to happen to the "anticipation" lead-time (how far before \(v_1\) the event horizon becomes measurably distinct from the apparent horizon) as the accretion becomes more sudden?</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-13 · intermediate/advanced</div><h4>How Many Bisections Are Enough?</h4><p>Run <code>--mode horizons --M0 5 --M1 10</code> with <code>--bisect_iters</code> set to 10, 20, 30, 40, 50 and 60, recording <code>residual_rs0</code> each time. Confirm the residual halves (roughly) with each additional iteration, consistent with bisection's linear convergence, and explain why a shooting method built on bisection is a reasonable choice here even though far faster root-finders exist — think about what "escapes" vs. "plunges" costs to evaluate, and what smoothness properties the underlying function does or does not have near the critical value.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-14 · advanced</div><h4>A Black Hole That Barely Grows, and One That Grows a Lot</h4><p>Run <code>--mode horizons --M0 10 --M1 10.5</code> and <code>--mode horizons --M0 10 --M1 100</code>. Compare the shapes of the two \(r_{EH}(v)\) curves, in particular how far in advance of \(v_1\) each event horizon becomes distinguishable from its apparent horizon, and how sharply each one turns over near \(v_2\). Connect what you see to the fact that a black hole's horizon area can never decrease (the area theorem): check, from your CSV output, that both \(r_{AH}\) and \(r_{EH}\) are non-decreasing functions of \(v\) in both runs.</p></div>
+
+    </div>
+
+    <h3>Optional projects · advanced</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-15 · advanced</div><h4>Newtonian Tides, Relativistic Reach</h4><p>By hand, derive the Newtonian tidal acceleration between two points separated by \(\delta r\) along the line to a point mass \(M\) at distance \(r\), starting from \(g(r)=GM/r^2\) and a first-order Taylor expansion. Compare your result term-for-term with the program's <code>a_radial</code> formula. Given that they agree exactly, what precisely does general relativity add to this particular calculation? (Consider what it means that the formula is asserted to hold arbitrarily close to, and inside, \(r_s\) — a regime where the Newtonian derivation's own assumptions No longer straightforwardly apply, even though the formula survives.)</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-16 · advanced</div><h4>Map the Proper-Distance Divergence</h4><p>Using the <code>embed</code> CSV out to a large <code>--r_max_rs</code> (try 50), fit the excess proper distance \(\Delta = (\text{proper\_radial\_distance\_m}) - (r-r_s)\) as a function of \(r/r_s\) at large radius. Does \(\Delta\) approach a constant, grow, or shrink as \(r\to\infty\)? Separately, examine the near-horizon behaviour: does your fit, or a direct look at the embedding formula, suggest \(\Delta\) diverges, vanishes, or stays finite as \(r\to r_s^+\)? Support your answer with the closed form for \(z(r)\) and its relationship to proper distance along the embedded surface.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-17 · advanced</div><h4>Beyond This Program: Rotation</h4><p>This is a short reading-and-reasoning project, not a coding one. Every real astrophysical black hole is expected to rotate, and is therefore better described by the Kerr metric than by Schwarzschild. Research (from Chapter 21 of <em>Gravity from the Ground Up</em>, or another source) how the Kerr event horizon and ergosphere differ from their Schwarzschild counterparts, and identify, specifically, which of this program's four calculations would need the most substantial revision for a rotating hole and which would need the least. Justify each answer in two or three sentences grounded in what actually changes in the metric.</p></div>
+
+    </div>
+
+    <h3>Synthesis</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-18 · synthesis</div><h4>One Black Hole, Four Views</h4><p>Choose a single mass, say 10 solar masses, and run all four modes for it (for <code>horizons</code>, use <code>--M0 10 --M1 10</code>, the no-accretion case, so the horizon is unambiguous and matches the other three). Write a short, connected paragraph — not four separate answers — that uses the Schwarzschild radius from one run to make sense of a number from each of the other three: the throat's curvature scale from <code>embed</code>, the tidal acceleration at the horizon from <code>tidal</code>, the proper infall time from <code>infall</code>, and the (trivial, in this no-accretion case) horizon radius from <code>horizons</code>. The point of the exercise is the connections, not the individual numbers.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-19 · synthesis</div><h4>Exact, Numerical, and Idealised: Map the Whole Program</h4><p>Make a three-column table of every calculation in this program — Flamm's paraboloid, the tidal-acceleration formulae, the survival-radius inversion, the radial geodesic equations, the local-speed and redshift formulae, the Vaidya apparent horizon, the outgoing-null-geodesic integration, and the event-horizon bisection — classified as an exact closed-form result, a numerically integrated (and therefore step-size- or iteration-dependent) result, or an idealisation of the physical scenario rather than of the mathematics. Then name the three physical effects you judge most significant among those this program leaves out entirely — candidates include rotation (Kerr geometry), Hawking radiation, radiation reaction / self-force on the infalling particle, the finite strength and self-gravity of a real body in the tidal calculation, and realistic (rather than prescribed) accretion-flow physics — and say, for each, which of the four modes it would change the most.</p></div>
+
+    </div>
+  </section>
+  <!-- ================================================================ -->
+  <section id="validity">
+    <h2>Domain of Validity</h2>
+    <p>This program is a teaching instrument built entirely from exact general-relativistic formulae. Unlike the stellar-structure programs in this suite, there is no fitted closure anywhere in it to be wary of — but there is a physical scenario being idealised, and a numerical method in <code>horizons</code> whose limits are worth stating plainly.</p>
+
+    <table class="cred-table"><thead><tr><th>Quantity</th><th>Accepted</th><th>What is idealised</th></tr></thead><tbody>
+      <tr><td class="cname">black-hole mass</td><td>any positive value</td><td>masses outside about 2 to 5×10¹⁰ \(M_\odot\) — the observed range of known black holes — are flagged, since general relativity itself supplies no mass scale</td></tr>
+      <tr><td class="cname">tidal test body</td><td>any positive separation</td><td>a point-like rod with no mass, no internal structure and no finite strength of its own; a real body's own self-gravity and material strength are absent</td></tr>
+      <tr><td class="cname">infall release radius</td><td>any \(r_0>r_s\)</td><td>purely radial free fall from rest, zero angular momentum; no radiation reaction, so the particle does not lose energy to gravitational waves as it falls, unlike a real infalling mass</td></tr>
+      <tr><td class="cname">infall stopping radius</td><td>\(1<r_{\rm stop}/r_s<r_0/r_s\)</td><td>the integration is stopped just outside the horizon because the Schwarzschild <em>t</em> coordinate diverges there; this is a coordinate limitation of the calculation, not a physical one</td></tr>
+      <tr><td class="cname">Vaidya mass function</td><td>any non-decreasing piecewise-linear ramp</td><td>prescribed by the student, not derived from an accretion-disk or infall calculation; models only accretion (mass increase), never evaporation or mass loss</td></tr>
+      <tr><td class="cname">event-horizon location</td><td>controlled by <code>--v_start_margin_rs0</code> and <code>--bisect_iters</code></td><td>a numerical shooting-method approximation with a quantified, exercisable residual error; never exact at any finite setting</td></tr>
+    </tbody></table>
+
+    <h3>What is absent</h3>
+    <ul>
+      <li><strong>Rotation.</strong> Every calculation here uses the non-rotating Schwarzschild (or Vaidya) geometry. A real astrophysical black hole is expected to be spinning and is better described by the Kerr metric, whose horizon, ergosphere and innermost stable orbit all differ from their Schwarzschild counterparts.</li>
+      <li><strong>Charge.</strong> Astrophysical black holes are expected to be very nearly electrically neutral, so this is a minor omission physically, but it is worth naming: the general static, spherical solution is Reissner-Nordström, of which Schwarzschild is the uncharged special case used throughout this program.</li>
+      <li><strong>Radiation reaction and self-force.</strong> The infalling test particle in <code>infall</code> does not lose energy to gravitational radiation as it falls, and does not back-react on the geometry at all; a real infalling mass, especially a comparable-mass one, would do both.</li>
+      <li><strong>Hawking radiation and quantum effects.</strong> Entirely classical general relativity throughout; nothing here evaporates.</li>
+      <li><strong>Realistic accretion physics.</strong> The mass function in <code>horizons</code> is a simple, explicit ramp chosen by the student. A real accretion flow has its own hydrodynamics, radiative transfer, and angular momentum transport, none of which is modelled; the Vaidya metric used here idealises the infalling matter as a pressureless, purely radial null dust.</li>
+      <li><strong>Finite-size and material effects in the tidal calculation.</strong> The tidal formulae are for a point-like separation; a real extended body has its own self-gravity, elasticity and material strength, all of which affect whether and how it is actually torn apart, and none of which this program attempts to model.</li>
+    </ul>
+    <p>What the program captures well is the <em>logic</em>: why an embedding diagram can be quantitatively exact while depicting only an instant of space and nothing about time; why bigger black holes are gentler at the horizon; why a falling observer's own clock and a distant observer's coordinate time tell two consistent but very different stories about the same infall; and why, once a black hole is allowed to change, "the horizon" splits into a local notion you can compute from the here-and-now and a global one that requires knowing the whole future.</p>
+  </section>
+
+  <!-- ============================================================
+       RESTORE TO DEFAULTS CALLOUT
+       ============================================================ -->
+
+<section style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
+  <div style="
+    border: 1.5px solid #b5811a;
+    border-left: 5px solid #b5811a;
+    border-radius: 6px;
+    background: #fffbeb;
+    padding: 1.1em 1.4em;
+    display: flex;
+    gap: 1em;
+    align-items: flex-start;
+  ">
+    <!-- Icon -->
+    <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
+
+    <!-- Content -->
+    <div>
+      <div style="
+        font-weight: 700;
+        font-size: 0.95em;
+        color: #7b2d00;
+        margin-bottom: 0.35em;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      ">Restoring Default Parameter Values</div>
+
+      <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">
+        If you edit <code style="background:#f0ede4; padding:1px 5px; border-radius:3px; font-size:0.9em;">main.py</code> or another program file while experimenting,
+        you can restore the original program files using any of the following methods:
+      </p>
+
+      <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
+        <li>
+          <strong>Same session:</strong>
+          Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd>
+          (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd>
+          (macOS) repeatedly in your editor to undo your edits.
+        </li>
+        <li>
+          <strong>If you are using PyCharm:</strong>
+          Right-click the edited file in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.
+        </li>
+        <li>
+          <strong>Full reset:</strong>
+          Re-download the ZIP from
+          <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank"
+             style="color:#7b2d00; text-decoration:underline;">
+            github.com/tomyee3-org/GFTGUX-Programs
+          </a>
+          and replace this program's folder with the fresh copy.
+        </li>
+      </ul>
+
+      <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">
+        For additional ways to restore program files, see the corresponding
+        recovery instructions in the <em>GFTGU Python Setup Guide</em>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     END RESTORE TO DEFAULTS CALLOUT
+     ============================================================ -->
+
+  <section id="related">
+    <h2>Related Programs</h2>
+    <ul class="related-list">
+      <li><strong>StellarEvolutionTracks</strong> — mode <code>nsmr</code> and the schematic remnant classification give the progenitors; this program picks up once a black hole already exists.</li>
+      <li><strong>GravitationalWaveSources</strong> — compact-object inspirals sourced by black holes and neutron stars; useful background for what the infall calculation here deliberately leaves out (radiation reaction).</li>
+      <li><strong>Orbit</strong> — Newtonian orbital dynamics, a natural point of comparison for where relativistic effects (like the exact tidal formulae here) do and do not reduce to the Newtonian result.</li>
+      <li><strong>Binary</strong> — two-body orbital dynamics, background for the angular-momentum-free radial infall modelled in mode <code>infall</code>.</li>
+    </ul>
+  </section>
+
+  <section id="license">
+    <h2>License</h2>
+    <p>Black_hole_spacetime_visualizer is an original supplemental Python investigation proposed for use with Bernard Schutz's <em>Gravity from the Ground Up</em>. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
+  </section>
+</main>
+<footer>
+  <em>Gravity from the Ground Up</em> — Python Programs ·
+  Bernard Schutz © 2003 (Cambridge University Press) ·
+  Python programs © 2024–2026 Thomas Yee ·
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> ·
+</footer>
+</div>
+<script>
+  (function () {
+    const links = document.querySelectorAll('nav a');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const match = document.querySelector(`nav a[href="#${e.target.id}"]`);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('main section[id]').forEach(s => observer.observe(s));
+  })();
+</script>
+</body>
+</html>
