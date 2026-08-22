@@ -1,0 +1,17 @@
+--------------------------------------------------------------
+  PhotonOrbit -- Run Summary
+--------------------------------------------------------------
+  GM_over_c2 (M)       : 1
+  Starting radius r0   : 20
+  Impact parameter b   : 6
+  Event horizon r_s    : 2
+  Photon sphere r_ph   : 3
+  Critical b (b_crit)  : 5.19615
+  Status               : escaped
+  Closest approach     : 4.45336
+  Delta phi            : 4.40614 rad
+  Affine parameter     : 63.04  (of 200 requested)
+  RK4 steps taken      : 6,304
+--------------------------------------------------------------
+[plot_photon] PNG saved -> SampleOutputs/02_escaping_b6.00.png
+[plot_photon] Displaying figure on screen ...

@@ -1,0 +1,17 @@
+--------------------------------------------------------------
+  PhotonOrbit -- Run Summary
+--------------------------------------------------------------
+  GM_over_c2 (M)       : 1
+  Starting radius r0   : 20
+  Impact parameter b   : 5
+  Event horizon r_s    : 2
+  Photon sphere r_ph   : 3
+  Critical b (b_crit)  : 5.19615
+  Status               : captured
+  Closest approach     : 2
+  Delta phi            : 4.37461 rad
+  Affine parameter     : 23.8741  (of 200 requested)
+  RK4 steps taken      : 2,388
+--------------------------------------------------------------
+[plot_photon] PNG saved -> SampleOutputs/01_default_captured_b5.00.png
+[plot_photon] Displaying figure on screen ...

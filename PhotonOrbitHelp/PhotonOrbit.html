@@ -380,6 +380,7 @@
     <div class="nav-label">Code</div>
     <a href="#modules">Module Overview</a>
     <a href="#parameters">Parameters</a>
+    <a href="#output">Output and the PNG File</a>
 
     <div class="nav-label">Experiments</div>
     <a href="#experiments">Suggested Experiments</a>
@@ -523,6 +524,7 @@
         <li>Integrate \((r,v_r,\phi)\) using RK4. The second-order radial equation permits <code>v_r</code> to cross zero at a scattering turning point.</li>
         <li>Terminate at the event horizon (interpolating the crossing within the final RK4 step), on outward motion reaching <code>2*r0</code>, or when <code>lambda_max</code> is reached.</li>
         <li>Return Cartesian trajectory samples plus diagnostics including status, closest approach, \(\Delta\phi\), and step count.</li>
+        <li>Print a run summary to the console and render the trajectory, event horizon, and photon sphere on screen; if <code>--outdir</code> is given, additionally save a timestamped PNG copy to that folder.</li>
       </ol>
       <h3>Integration Accuracy</h3>
       <p>Near-critical trajectories are especially sensitive to numerical error because a photon can spend a long affine time near the unstable photon sphere. Repeat such calculations with smaller <code>d_lambda</code> and compare quantitative diagnostics, not merely the visual smoothness of the plotted curve. The program also refuses parameter combinations that would request more than five million RK4 steps; this is a numerical safety limit, not a physical restriction.</p>
@@ -542,40 +544,66 @@ def integrate_photon_orbit(
   GM_over_c2, r0, b,
   lambda_max, d_lambda
 ) -&gt; (x_values, y_values, info)</div></div>
-        <div class="module-card"><div class="mc-role">Driver Layer</div><div class="mc-name">driver_photon.py</div><p>Calls the physics integrator, passes the result to the plotting layer, and returns the diagnostics dictionary to a caller that wants to inspect it programmatically.</p><div class="sig">def driver_photon_orbit(
+        <div class="module-card"><div class="mc-role">Driver Layer</div><div class="mc-name">driver_photon.py</div><p>Validates the plot-output settings, calls the physics integrator, prints a run summary to the console, passes the result to the plotting layer (including <code>outdir</code>, <code>dpi</code>, and <code>lw</code>), and returns the diagnostics dictionary to a caller that wants to inspect it programmatically.</p><div class="sig">def driver_photon_orbit(
   GM_over_c2=1.0,
   r0=20.0,
   b=5.0,
   lambda_max=200.0,
-  d_lambda=0.01
+  d_lambda=0.01,
+  outdir=None,
+  dpi=150,
+  lw=1.5
 ) -&gt; info</div></div>
-        <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_photon.py</div><p>Plots the trajectory, event horizon, and photon sphere, and annotates the integration status, closest approach, and accumulated azimuth.</p><div class="sig">def plot_photon_orbit(
-  x_values, y_values, b, info
+        <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_photon.py</div><p>Plots the trajectory, event horizon, and photon sphere, and annotates the integration status, closest approach, and accumulated azimuth. Always displays the figure on screen; when <code>outdir</code> is given, additionally saves a timestamped PNG there first.</p><div class="sig">def plot_photon_orbit(
+  x_values, y_values, b, info,
+  outdir=None, dpi=150, lw=1.5
 ) -&gt; None</div></div>
-        <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>User-editable launcher. Change the mass scale, starting radius, impact parameter, integration limit, or step size here, then run the file.</p><div class="sig">if __name__ == "__main__":
-  driver_photon_orbit(
-    GM_over_c2=1.0,
-    r0=20.0,
-    b=5.0,
-    lambda_max=200.0,
-    d_lambda=0.01
-  )</div></div>
+        <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>Defines the student-facing command-line options and converts validation or runtime failures into concise command-line error messages. Run <code>python main.py --help</code> for the current command summary.</p><div class="sig">python main.py
+  [--GM_over_c2 LEN] [--r0 LEN] [--b LEN]
+  [--lambda_max LAMBDA] [--d_lambda LAMBDA]
+  [--lw PT] [--dpi N]
+  [--outdir PATH]</div></div>
       </div>
     </section>
 
     <!-- Parameters -->
     <section id="parameters">
       <h2>Parameters</h2>
-      <p>All ordinary experiment settings are exposed in <code>main.py</code> and accepted by <code>driver_photon.py</code>. For the suggested experiments, edit the numerical values in <code>main.py</code>, save the file, and run <code>main.py</code> again.</p>
+      <p>Experiment settings are supplied as command-line options to <code>main.py</code>, which forwards them to <code>driver_photon.py</code>. Run <code>python main.py --help</code> for the current command summary. Most students should begin by running <code>python main.py</code> with no options, then vary one option at a time; if an option is rejected, read the exception message first, since most invalid parameter choices are caught by the physics layer.</p>
       <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
-        <tr><td class="pname">GM_over_c2</td><td class="pdefault">1.0</td><td>length</td><td>The gravitational length \(GM/c^2\). Must be finite and greater than zero.</td></tr>
-        <tr><td class="pname">r0</td><td class="pdefault">20.0</td><td>length</td><td>Starting Schwarzschild radius. It must lie outside the event horizon: <code>r0 &gt; 2*GM_over_c2</code>.</td></tr>
-        <tr><td class="pname">b</td><td class="pdefault">5.0</td><td>length</td><td>Nonnegative impact-parameter magnitude \(b=L/E\). It must also be compatible with a real initial radial velocity at the selected <code>r0</code>. A negative value would merely mirror the azimuthal orientation.</td></tr>
-        <tr><td class="pname">lambda_max</td><td class="pdefault">200.0</td><td>affine parameter</td><td>Maximum affine parameter. Must be finite and greater than zero. This is a path parameter, not coordinate time.</td></tr>
-        <tr><td class="pname">d_lambda</td><td class="pdefault">0.01</td><td>affine parameter</td><td>RK4 step size. Must be finite and greater than zero. Reduce it for convergence tests near the critical orbit.</td></tr>
+        <tr><td class="pname">--GM_over_c2</td><td class="pdefault">1.0</td><td>length</td><td>The gravitational length \(GM/c^2\). Must be finite and greater than zero.</td></tr>
+        <tr><td class="pname">--r0</td><td class="pdefault">20.0</td><td>length</td><td>Starting Schwarzschild radius. It must lie outside the event horizon: <code>r0 &gt; 2*GM_over_c2</code>.</td></tr>
+        <tr><td class="pname">--b</td><td class="pdefault">5.0</td><td>length</td><td>Nonnegative impact-parameter magnitude \(b=L/E\). It must also be compatible with a real initial radial velocity at the selected <code>r0</code>. A negative value would merely mirror the azimuthal orientation.</td></tr>
+        <tr><td class="pname">--lambda_max</td><td class="pdefault">200.0</td><td>affine parameter</td><td>Maximum affine parameter. Must be finite and greater than zero. This is a path parameter, not coordinate time.</td></tr>
+        <tr><td class="pname">--d_lambda</td><td class="pdefault">0.01</td><td>affine parameter</td><td>RK4 step size. Must be finite and greater than zero. Reduce it for convergence tests near the critical orbit.</td></tr>
+        <tr><td class="pname">--lw</td><td class="pdefault">1.5</td><td>points</td><td>Line width used for the plotted trajectory. Must be greater than zero.</td></tr>
+        <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>Resolution of the saved PNG. Must be a positive integer. Ignored unless <code>--outdir</code> is also given.</td></tr>
+        <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>Folder for an additional timestamped PNG. The figure is always shown on screen; supplying <code>--outdir</code> also saves a copy there and does not suppress the on-screen display. The folder is created if it does not already exist.</td></tr>
       </tbody></table>
-      <div class="note"><strong>Input checking:</strong> The physics layer raises explanatory <code>ValueError</code> exceptions for invalid inputs and caps a single run at five million requested RK4 steps. A <code>RuntimeError</code> is raised if numerical stepping produces a nonphysical or nonfinite state.</div>
+      <div class="note"><strong>Input checking:</strong> The physics layer raises explanatory <code>ValueError</code> exceptions for invalid inputs and caps a single run at five million requested RK4 steps. A <code>RuntimeError</code> is raised if numerical stepping produces a nonphysical or nonfinite state. <code>main.py</code> catches <code>ValueError</code>, <code>RuntimeError</code>, and <code>OSError</code> (for example an unwritable <code>--outdir</code>) and reports them as a single-line command-line error rather than a Python traceback.</div>
       <div class="note"><strong>Meaning of <code>escaped</code>:</strong> The program uses this status after a photon has turned outward and reached <code>escape_radius = 2*r0</code>. It is a practical stopping convention; the program does not integrate the photon all the way to infinity.</div>
+    </section>
+
+    <!-- Output -->
+    <section id="output">
+      <h2>Output and the PNG File</h2>
+      <p>Every run prints a short console summary (the physical parameters, event horizon and photon-sphere radii, the critical impact parameter, and the outcome diagnostics) and then displays the trajectory plot in an interactive window. <code>--outdir</code> does not replace either of those; it only adds a saved copy of the figure.</p>
+      <table class="out-table"><thead><tr><th>Output</th><th>What to Look For</th></tr></thead><tbody>
+        <tr><td class="oname">Console summary</td><td>Reports <code>GM_over_c2</code>, <code>r0</code>, <code>b</code>, <code>r_s</code>, <code>r_photon</code>, the critical impact parameter, status, closest approach, \(\Delta\phi\), the final affine parameter, and the RK4 step count.</td></tr>
+        <tr><td class="oname">On-screen figure</td><td>Always shown, whether or not <code>--outdir</code> is given: the trajectory, the shaded event-horizon disk, the dashed photon-sphere circle, and the same status/closest-approach/\(\Delta\phi\) summary annotated in the lower-left corner.</td></tr>
+        <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>, additionally saves a timestamped figure (named from the impact parameter and outcome status, e.g. <code>photon_b6_escaped_20260822_103520.png</code>) in the requested folder at the resolution given by <code>--dpi</code>; the figure is still shown on screen in the same run.</td></tr>
+      </tbody></table>
+      <pre># Default trajectory, on screen only
+python main.py
+
+# A scattering trajectory that escapes
+python main.py --b 6.0
+
+# Also save a timestamped PNG, in addition to the on-screen display
+python main.py --b 6.0 --outdir ./runs
+
+# Higher-resolution PNG for print or slides
+python main.py --b 6.0 --outdir ./runs --dpi 300</pre>
     </section>
 
     <!-- Suggested Experiments -->
@@ -583,15 +611,15 @@ def integrate_photon_orbit(
       <h2>Suggested Experiments</h2>
       <p>The exercises below are arranged approximately from introductory to more demanding.</p>
       <div class="exp-grid">
-        <div class="exp-card"><div class="ec-num">EXP-1 · Introductory</div><h4>Capture and Escape</h4><p>With <code>GM_over_c2=1</code> and <code>r0=20</code>, compare <code>b=5.0</code> with <code>b=6.0</code>. Record the reported status and closest approach. Explain why increasing the impact parameter can permit a turning point and prevent capture.</p></div>
-        <div class="exp-card"><div class="ec-num">EXP-2 · Introductory</div><h4>Radial and Nearly Radial Infall</h4><p>Run <code>b=0</code> and then several small positive values of <code>b</code>. Record \(\Delta\phi\) and describe how the trajectory changes as angular momentum is introduced. For <code>b=0</code>, verify from the radial-acceleration equation that the acceleration vanishes and, with the chosen normalization, the inward radial velocity remains constant.</p></div>
-        <div class="exp-card"><div class="ec-num">EXP-3 · Introductory / Intermediate</div><h4>Capture Inside the Photon Sphere</h4><p>Set <code>GM_over_c2=1</code> and <code>r0=2.5</code>, between the horizon and photon sphere. Try several legal values such as <code>b=0</code>, <code>b=3</code>, and <code>b=5.3</code>. Confirm that every run is captured. Use the radial first integral and radial-acceleration equation to explain why an initially ingoing photon in this region cannot turn around.</p></div>
-        <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>Locate the Capture Threshold</h4><p>For <code>GM_over_c2=1</code> and <code>r0=20</code>, bracket the transition between capture and escape by varying <code>b</code>. Refine the bracket and compare your estimate with \(3\sqrt{3}\approx5.19615\). Very near the threshold, increase <code>lambda_max</code> if needed and repeat with smaller <code>d_lambda</code> before trusting the classification.</p></div>
-        <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div><h4>Closest Approach and the Radial First Integral</h4><p>Choose several escaping trajectories. For each reported closest-approach radius \(r_{\min}\), test \(1=(1-2(GM/c^2)/r_{\min})b^2/r_{\min}^2\), using <code>GM_over_c2</code> for \(GM/c^2\). Compute the absolute residual between the two sides and see how it changes when <code>d_lambda</code> is reduced.</p></div>
-        <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate / Advanced</div><h4>Scale Invariance</h4><p>Multiply <code>GM_over_c2</code>, <code>r0</code>, <code>b</code>, <code>lambda_max</code>, and <code>d_lambda</code> by the same positive factor. Compare <code>x/GM_over_c2</code>, <code>y/GM_over_c2</code>, closest approach divided by <code>GM_over_c2</code>, and \(\Delta\phi\) with the original run. Explain why changing only <code>GM_over_c2</code> would instead change the dimensionless orbit.</p></div>
-        <div class="exp-card"><div class="ec-num">EXP-7 · Advanced</div><h4>The Circular Photon Orbit</h4><p>Set <code>r0=3</code> and <code>b=5.196152422706632</code>. Verify that the ideal trajectory remains on the photon sphere and normally ends with status <code>lambda_max</code>. This orbit is a finely tuned unstable separatrix. At <code>r0=3</code>, decreasing <code>b</code> slightly (for example to <code>5.196152</code>) produces capture; increasing <code>b</code> is not a legal initial condition there. For a nearby escaping case, try <code>r0=3.1</code> and <code>b=5.20</code>.</p></div>
-        <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Near-Critical Whirling</h4><p>With <code>r0=20</code>, try escaping values such as <code>b=5.3</code>, <code>5.25</code>, <code>5.22</code>, and <code>5.205</code>. Record \(\Delta\phi\) and closest approach. Observe how the photon accumulates increasing azimuth near \(r=3\) as the threshold is approached.</p></div>
-        <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Numerical Convergence Near the Photon Sphere</h4><p>Repeat one near-critical case with <code>d_lambda=0.04, 0.02, 0.01, 0.005</code>. Make a small table of step size, status, closest approach, \(\Delta\phi\), and step count. Do not use visual smoothness alone as an accuracy test.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-1 · Introductory</div><h4>Capture and Escape</h4><p>With the default <code>GM_over_c2=1</code> and <code>r0=20</code>, compare <code>python main.py --b 5.0</code> with <code>python main.py --b 6.0</code>. Record the reported status and closest approach. Explain why increasing the impact parameter can permit a turning point and prevent capture.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-2 · Introductory</div><h4>Radial and Nearly Radial Infall</h4><p>Run <code>python main.py --b 0</code> and then several small positive values, e.g. <code>python main.py --b 0.5</code>. Record \(\Delta\phi\) and describe how the trajectory changes as angular momentum is introduced. For <code>b=0</code>, verify from the radial-acceleration equation that the acceleration vanishes and, with the chosen normalization, the inward radial velocity remains constant.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-3 · Introductory / Intermediate</div><h4>Capture Inside the Photon Sphere</h4><p>Run <code>python main.py --r0 2.5 --b 0</code>, then <code>--b 3</code>, then <code>--b 5.3</code>, keeping <code>r0=2.5</code> between the horizon and photon sphere. Confirm that every run is captured. Use the radial first integral and radial-acceleration equation to explain why an initially ingoing photon in this region cannot turn around.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>Locate the Capture Threshold</h4><p>With the default <code>GM_over_c2=1</code> and <code>r0=20</code>, bracket the transition between capture and escape by running <code>python main.py --b VALUE</code> for a sequence of trial values. Refine the bracket and compare your estimate with \(3\sqrt{3}\approx5.19615\). Very near the threshold, increase <code>--lambda_max</code> if needed and repeat with a smaller <code>--d_lambda</code> before trusting the classification.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div><h4>Closest Approach and the Radial First Integral</h4><p>Choose several escaping trajectories, e.g. <code>python main.py --b 6.0</code>. For each reported closest-approach radius \(r_{\min}\), test \(1=(1-2(GM/c^2)/r_{\min})b^2/r_{\min}^2\), using <code>GM_over_c2</code> for \(GM/c^2\). Compute the absolute residual between the two sides and see how it changes when <code>--d_lambda</code> is reduced.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate / Advanced</div><h4>Scale Invariance</h4><p>Multiply <code>--GM_over_c2</code>, <code>--r0</code>, <code>--b</code>, <code>--lambda_max</code>, and <code>--d_lambda</code> by the same positive factor, e.g. <code>python main.py --GM_over_c2 2 --r0 40 --b 10 --lambda_max 400 --d_lambda 0.02</code>. Compare <code>x/GM_over_c2</code>, <code>y/GM_over_c2</code>, closest approach divided by <code>GM_over_c2</code>, and \(\Delta\phi\) with the original run. Explain why changing only <code>--GM_over_c2</code> alone would instead change the dimensionless orbit.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-7 · Advanced</div><h4>The Circular Photon Orbit</h4><p>Run <code>python main.py --r0 3 --b 5.196152422706632</code>. Verify that the ideal trajectory remains on the photon sphere and normally ends with status <code>lambda_max</code>. This orbit is a finely tuned unstable separatrix. At <code>r0=3</code>, decreasing <code>b</code> slightly (for example <code>--b 5.196152</code>) produces capture; increasing <code>b</code> is not a legal initial condition there — the program will reject anything above the printed critical value, because at <code>r0=3</code> the locally-allowed maximum <code>b</code> and the global critical impact parameter \(b_{\rm crit}=3\sqrt{3}\) coincide exactly. For a nearby escaping case, try <code>python main.py --r0 3.1 --b 5.20</code>.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Near-Critical Whirling</h4><p>With the default <code>r0=20</code>, try escaping values such as <code>python main.py --b 5.3</code>, then <code>--b 5.25</code>, <code>--b 5.22</code>, and <code>--b 5.205</code>. Record \(\Delta\phi\) and closest approach. Observe how the photon accumulates increasing azimuth near \(r=3\) as the threshold is approached.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Numerical Convergence Near the Photon Sphere</h4><p>Repeat one near-critical case, e.g. <code>b=5.205</code>, with <code>--d_lambda 0.04</code>, <code>0.02</code>, <code>0.01</code>, and <code>0.005</code> in turn. Make a small table of step size, status, closest approach, \(\Delta\phi\), and step count (all printed in the console summary). Do not use visual smoothness alone as an accuracy test.</p></div>
       </div>
     </section>
     
@@ -601,10 +629,10 @@ def integrate_photon_orbit(
         <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
         <div>
           <div style="font-weight: 700; font-size: 0.95em; color: #7b2d00; margin-bottom: 0.35em; text-transform: uppercase; letter-spacing: 0.04em;">Restoring Default Parameter Values</div>
-          <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">After experimenting with parameter values in <code>main.py</code>, you can restore the originals using any of the following methods:</p>
+          <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">Ordinary experiments are run entirely from the command line and never modify <code>main.py</code> or any other file, so there is usually nothing to restore. If you do edit <code>main.py</code> or another program file — for example, to change a default value — you can restore the original program files using any of the following methods:</p>
           <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
             <li><strong>Same session:</strong> Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd> (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd> (macOS) repeatedly in your editor to undo your edits.</li>
-            <li><strong>If you are using PyCharm:</strong> Right-click <code>main.py</code> in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.</li>
+            <li><strong>If you are using PyCharm:</strong> Right-click the edited file in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.</li>
             <li><strong>Full reset:</strong> Re-download the ZIP from <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank">github.com/tomyee3-org/GFTGUX-Programs</a> and replace this program's folder with the fresh copy.</li>
           </ul>
           <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">For additional ways to restore program files, see the corresponding recovery instructions in the <em>GFTGU Python Setup Guide</em>.</p>

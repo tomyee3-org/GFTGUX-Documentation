@@ -1,0 +1,17 @@
+--------------------------------------------------------------
+  PhotonOrbit -- Run Summary
+--------------------------------------------------------------
+  GM_over_c2 (M)       : 1
+  Starting radius r0   : 20
+  Impact parameter b   : 5.205
+  Event horizon r_s    : 2
+  Photon sphere r_ph   : 3
+  Critical b (b_crit)  : 5.19615
+  Status               : escaped
+  Closest approach     : 3.10571
+  Delta phi            : 8.72844 rad
+  Affine parameter     : 70.44  (of 400 requested)
+  RK4 steps taken      : 7,044
+--------------------------------------------------------------
+[plot_photon] PNG saved -> SampleOutputs/03_near_critical_whirl_b5.205.png
+[plot_photon] Displaying figure on screen ...

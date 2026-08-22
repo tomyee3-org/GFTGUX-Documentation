@@ -1,0 +1,124 @@
+================================================================================
+PhotonOrbit -- Sample Outputs Guide
+For a quick first look by Prof. Bernard Schutz and Vince Higgs (Editor, CUP)
+Prepared: 2026-08-22
+================================================================================
+
+WHAT THIS PROGRAM DOES, IN ONE PARAGRAPH
+-----------------------------------------
+PhotonOrbit is a small teaching program (three Python modules plus a
+browser-based help file) that integrates a photon's (null-geodesic)
+trajectory in the equatorial plane of Schwarzschild spacetime, using a
+fourth-order Runge-Kutta scheme on the second-order radial equation. Each
+run starts an initially ingoing photon at a chosen radius r0 with a chosen
+impact parameter b = L/E, and plots the resulting path in the orbital
+plane together with the shaded event horizon (r_s = 2GM/c^2) and the
+dashed photon sphere (r_photon = 3GM/c^2). Depending on b, the photon is
+either captured or, after a turning point, escapes back outward; near the
+theoretical critical value b_crit = 3*sqrt(3)*GM/c^2, it can whirl around
+the photon sphere several times first. Every run also prints a console
+summary of the physical setup and the outcome (status, closest approach,
+accumulated azimuth Delta-phi, and RK4 step count), and the program is
+explicit, in both its printed diagnostics and its help file, about the
+numerical conventions it uses to decide when a trajectory has "escaped."
+
+The five images in this folder were produced by simply running the
+program from the command line with different options; nothing about the
+underlying physics or plots was altered to make a nicer picture -- these
+are exactly what a student running the tutorial would see.
+
+NOTE ON --outdir: this delivery adds the --outdir command-line option,
+which previously did not exist for PhotonOrbit (main.py was a hardcoded,
+edit-and-rerun script with no command-line interface at all). Passing
+--outdir <folder> makes the program save a timestamped PNG copy of the
+figure into that folder IN ADDITION to showing it on screen interactively
+-- exactly as GravitationalWaveSources and the other GFTGUX programs
+already do. That is how these five sample PNGs were produced: each
+command below also popped up an interactive window in the original run,
+exactly as a student would see it. main.py now also accepts every
+physical parameter (--GM_over_c2, --r0, --b, --lambda_max, --d_lambda) as
+a command-line option instead of requiring the student to edit the file;
+see PhotonOrbit.html's Parameters section for the full list.
+
+HOW TO REPRODUCE EACH SAMPLE
+-----------------------------
+  1) python main.py --b 5.0 --outdir <folder>
+  2) python main.py --b 6.0 --outdir <folder>
+  3) python main.py --b 5.205 --lambda_max 400 --outdir <folder>
+  4) python main.py --r0 3.0 --b 5.196152422706632 --lambda_max 100 --outdir <folder>
+  5) python main.py --r0 2.5 --b 3.0 --outdir <folder>
+
+Each command also produced a console run summary, included alongside the
+PNGs as .log files, so you can see both the picture and the printed
+numbers side by side.
+
+
+IMAGE-BY-IMAGE GUIDE
+======================
+
+01_default_captured_b5.00.png
+--------------------------------------
+The program's default case: GM_over_c2=1, r0=20, b=5.0. The impact
+parameter is below the critical value (b_crit = 3*sqrt(3) = 5.19615...),
+so the ingoing photon is captured -- the trajectory runs straight into
+the shaded event horizon without ever turning around. This is the
+picture a student sees just by running "python main.py" with no options.
+
+02_escaping_b6.00.png
+--------------------------------------
+Same starting point, but b=6.0 -- just above the critical value. The
+photon now passes the photon sphere, reaches a turning point at closest
+approach r=4.4534, and swings back out to the program's escape radius
+(2*r0). Comparing this image side by side with #1 is the fastest way to
+see the capture/escape dichotomy that the tutorial's first suggested
+exercise (EXP-1) is built around.
+
+03_near_critical_whirl_b5.205.png
+--------------------------------------
+b=5.205 is only about 0.17% above the critical value. Rather than
+turning around promptly, the photon whirls around close to the photon
+sphere before finally escaping -- note the accumulated Delta-phi =
+8.7284 rad, well over a full turn (2*pi = 6.2832 rad), visible in the
+plot as the trajectory looping most of the way around the black hole
+before peeling away. This illustrates the "near-critical whirling"
+behavior described in the help file's Physical Background section and
+exercised in EXP-8.
+
+04_circular_photon_orbit_r0_3.00.png
+--------------------------------------
+The exact (to floating-point precision) unstable circular photon orbit:
+r0=3=r_photon and b=5.196152422706632=b_crit. The plotted trajectory
+traces the dashed photon-sphere reference circle essentially exactly,
+and the run ends by reaching lambda_max (100, here) rather than by
+capture or escape -- the photon simply keeps circling for as long as the
+run allows (Delta-phi = 57.735 rad, more than nine full turns). This is
+a finely tuned separatrix solution, not a generic orbit; the help file's
+EXP-7 walks students through perturbing b or r0 slightly to see it
+collapse into capture instead.
+
+05_capture_inside_photon_sphere_r0_2.50.png
+--------------------------------------
+r0=2.5 lies between the event horizon (r=2) and the photon sphere (r=3),
+where an ingoing photon can never turn around, so this run is always
+captured regardless of b (here b=3.0; see EXP-3 in the help file for the
+underlying physics argument). This particular case is also a direct
+regression check on a plotting bug identified during this delivery's
+review: with the previous plotting code, small-r0 cases like this one
+could render as an empty-looking plot with neither the event-horizon
+disk nor the photon-sphere circle visible, because the reference circles
+were added in a way that Matplotlib does not include when it
+automatically sizes the axes. That has been fixed, and this image shows
+both circles rendering correctly and to scale.
+
+WHAT TO LOOK FOR OVERALL
+--------------------------
+Across all five images: the event horizon (shaded disk) and photon
+sphere (dashed circle) are always drawn to scale and are always visible,
+regardless of how small or large the trajectory is (see #5 above); the
+capture/escape/whirl trichotomy is immediately recognizable without any
+specialist knowledge; and the printed run summaries (in the accompanying
+.log files) give the key numbers -- status, closest approach, Delta-phi,
+and step count -- for each configuration, letting a reader connect the
+picture directly to the equations and the algorithm described in the
+help file.
+================================================================================
