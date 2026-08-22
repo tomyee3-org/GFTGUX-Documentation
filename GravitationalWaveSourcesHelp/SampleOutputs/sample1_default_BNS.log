@@ -1,0 +1,19 @@
+### Sample 1: Default BNS inspiral (1.4+1.4 Msun, 400 Mpc) ###
+[driver_gw] Integrating inspiral ...
+──────────────────────────────────────────────────────────────
+  GravitationalWaveSources — Run Summary
+──────────────────────────────────────────────────────────────
+  Masses              : 1.400 + 1.400  M☉
+  Total mass          : 2.800  M☉
+  Chirp mass          : 1.2188  M☉
+  Distance            : 400.0  Mpc
+  Band start          : 20.0  Hz
+  ISCO cutoff         : 1570.0  Hz
+  Time to ISCO        : 157.800  s
+  Strain scale at ISCO: 5.584e-23
+  Inspiral samples    : 789,004
+  Ringdown            : not included
+──────────────────────────────────────────────────────────────
+[driver_gw] Rendering figure ...
+[plot_gw] PNG saved -> SampleOutputs/gw_inspiral_20260822_091542.png
+[plot_gw] Displaying figure on screen ...

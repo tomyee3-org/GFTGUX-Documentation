@@ -446,7 +446,7 @@
       <li>Evaluate the leading-order amplitude scale and strain at every stored inspiral point.</li>
       <li>After an RK4 trial step crosses the cutoff, linearly interpolate within that final step so the stored inspiral terminates at the ISCO frequency rather than overshooting it. This is a pedagogical cutoff, not a high-precision event finder.</li>
       <li>If <code>--ringdown</code> is requested, append the illustrative damped Schwarzschild QNM continuously in strain and phase at the cutoff.</li>
-      <li>Print diagnostics and render or save the three-panel figure.</li>
+      <li>Print diagnostics and render the three-panel figure on screen; if <code>--outdir</code> is given, additionally save a timestamped PNG copy to that folder.</li>
     </ol>
     <div class="note"><strong>Input and runtime safeguards:</strong> masses, distance, timestep, and starting frequency must be positive and finite; <code>f_start</code> must be below the computed ISCO frequency; the timestep must at least satisfy the Nyquist sampling requirement at the ISCO cutoff; grossly under-resolved inspirals with fewer than about 50 estimated steps are rejected; zoom widths must be non-negative; ringdown counts must be valid integers; ringdown sampling is capped at 500,000 points; and requests exceeding five million inspiral steps are rejected with an explanatory error. Passing these checks does not replace a convergence test.</div>
   </section>
@@ -456,7 +456,7 @@
     <div class="module-grid">
       <div class="module-card"><div class="mc-role">Physics Layer</div><div class="mc-name">physics_gw.py</div><p>Defines constants and the leading-order inspiral equations, advances frequency and phase with RK4, estimates inspiral duration, performs physical/numerical validation, and optionally appends the illustrative Schwarzschild QNM.</p></div>
       <div class="module-card"><div class="mc-role">Driver Layer</div><div class="mc-name">driver_gw.py</div><p>Validates plotting inputs, runs the physics calculation, prints the summary, and passes the result to the plotter.</p></div>
-      <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_gw.py</div><p>Produces the waveform, amplitude-scale, and frequency panels; marks the ISCO cutoff; shows the optional QNM separately; and can save a timestamped PNG.</p></div>
+      <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_gw.py</div><p>Produces the waveform, amplitude-scale, and frequency panels; marks the ISCO cutoff; shows the optional QNM separately; always displays the figure on screen; and, when <code>--outdir</code> is given, additionally saves a timestamped PNG.</p></div>
       <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>Defines the student-facing command-line options and converts validation or runtime failures into concise command-line error messages.</p></div>
     </div>
   </section>
@@ -477,7 +477,7 @@
       <tr><td class="pname">--t_after</td><td class="pdefault">None</td><td>s</td><td>Show only this many seconds after the cutoff; useful when ringdown is enabled.</td></tr>
       <tr><td class="pname">--lw</td><td class="pdefault">0.4</td><td>pt</td><td>Positive waveform line width.</td></tr>
       <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>Positive integer PNG resolution.</td></tr>
-      <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>Folder for a timestamped PNG; omit for screen display.</td></tr>
+      <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>Folder for an additional timestamped PNG. The figure is always shown on screen; supplying <code>--outdir</code> also saves a copy and does not suppress the on-screen display.</td></tr>
     </tbody></table>
   </section>
 
@@ -488,7 +488,7 @@
       <tr><td class="oname">Envelope A(t)</td><td>Shows the Newtonian face-on amplitude scale twice for clarity: as the dashed \(\pm A(t)\) envelope around the waveform in Panel 1 and by itself, on its own vertical scale, in Panel 2.</td></tr>
       <tr><td class="oname">Frequency f(t)</td><td>Shows the accelerating chirp and terminates at the computed Schwarzschild ISCO frequency.</td></tr>
       <tr><td class="oname">Run summary</td><td>Reports masses, chirp mass, distance, start and cutoff frequencies, time to ISCO, strain scale at ISCO, and sample count; QNM quantities appear only when ringdown is enabled.</td></tr>
-      <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>, saves a timestamped figure in the requested folder.</td></tr>
+      <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>, additionally saves a timestamped figure in the requested folder; the figure is still shown on screen in the same run.</td></tr>
     </tbody></table>
     <pre># Default BNS inspiral from 20 Hz
 python main.py
@@ -499,7 +499,7 @@ python main.py --m1 36 --m2 29 --d 440
 # Illustrative QNM extension for a BBH example
 python main.py --m1 36 --m2 29 --d 440 --ringdown --t_before 0.2 --t_after 0.05
 
-# Save a timestamped PNG instead of displaying the figure
+# Also save a timestamped PNG, in addition to the on-screen display
 python main.py --outdir ./runs</pre>
   </section>
 
