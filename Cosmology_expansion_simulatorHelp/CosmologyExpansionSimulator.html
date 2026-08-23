@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosmology_expansion_simulator – Help File | GFtGU Programs</title>
+  <!-- MathJax 3 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams'
+      },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
+  <style>
+    /* ── Reset & custom properties ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.80;
+      color: var(--text);
+      background: var(--bg);
+    }
+    /* ── Page grid ── */
+    .page-wrap {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    /* ── Header ── */
+    header {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      padding: 26px 38px 20px;
+      border-bottom: 4px solid var(--gold);
+    }
+    header .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 3px;
+      padding: 2px 7px;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.95rem;
+      font-weight: normal;
+      letter-spacing: -.02em;
+    }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub {
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: #f0d0b8;
+      line-height: 1.55;
+    }
+    header .sub a {
+      color: #ffd8b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,200,150,.4);
+    }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    /* ── Sidebar ── */
+    nav {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 14px 18px 4px;
+    }
+    nav a {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 18px 5px 22px;
+      border-left: 3px solid transparent;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: #fdf0e0;
+      border-left-color: var(--gold);
+    }
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      background: #fdecd8;
+    }
+    /* ── Main content ── */
+    main {
+      padding: 38px 52px 60px;
+      max-width: 900px;
+    }
+    h2 {
+      font-size: 1.40rem;
+      font-weight: normal;
+      color: var(--accent);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 6px;
+      margin: 2.2rem 0 1.0rem;
+    }
+    h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 1.6rem 0 .5rem;
+    }
+    h4 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 1.2rem 0 .35rem;
+    }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block {
+      background: var(--eq-bg);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 22px 10px;
+      margin: 1.1rem 0 1.3rem;
+      overflow-x: auto;
+    }
+    .eq-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.865em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    pre {
+      font-family: var(--mono);
+      font-size: 0.855em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: .8rem 0 1.1rem;
+      line-height: 1.55;
+    }
+    .note {
+      background: var(--note-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .note strong { color: var(--accent2); }
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin: 1.1rem 0 1.4rem;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .module-card .mc-name {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .module-card .mc-role {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .module-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    .module-card .sig {
+      font-family: var(--mono);
+      font-size: 0.80rem;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 7px 10px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .param-table, .out-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .param-table th, .out-table th {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .out-table th { background: var(--accent2); }
+    .param-table td, .out-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0d8c8;
+      vertical-align: top;
+    }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table tr:hover td, .out-table tr:hover td { background: #f3ecdf; }
+    .param-table .pname, .out-table .oname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      box-shadow: var(--shadow);
+    }
+    .exp-card .ec-num {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin-bottom: 7px;
+    }
+    .exp-card h4 {
+      font-size: 0.94rem;
+      color: var(--accent2);
+      margin: 0 0 5px;
+    }
+    .exp-card p {
+      font-size: 0.855rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .related-list {
+      list-style: none;
+      margin: .6rem 0 1.2rem;
+      padding: 0;
+    }
+    .related-list li {
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 7px;
+      font-size: 0.90rem;
+    }
+    .related-list li strong {
+      font-family: var(--mono);
+      color: var(--accent2);
+    }
+    footer {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      text-align: center;
+      padding: 18px 24px;
+      line-height: 1.7;
+    }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+    .warn {
+      background: #fff6e8;
+      border: 1px solid var(--gold);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .warn strong { color: var(--accent); }
+    .mode-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1rem 0 1.4rem; }
+    .mode-table th { background: var(--gold); color: #fff; font-family: var(--sans); font-size: 11px;
+      letter-spacing: .06em; text-transform: uppercase; padding: 8px 12px; text-align: left; }
+    .mode-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .mode-table tr:nth-child(even) td { background: #faf5ec; }
+    .mode-table .mname { font-family: var(--mono); font-size: 0.85rem; color: var(--accent2); font-weight: 700; }
+    .tag {
+      display: inline-block; font-family: var(--sans); font-size: 9.5px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase; border-radius: 3px;
+      padding: 1px 6px; margin-right: 5px; vertical-align: 1px;
+    }
+    .tag-ode  { background: #d9ead3; color: #274e13; border: 1px solid #a8c69a; }
+    .tag-fit  { background: #fce5cd; color: #7f3f00; border: 1px solid #e0b183; }
+    .tag-cal  { background: #e6e0f8; color: #3d2c73; border: 1px solid #b7abdd; }
+    .tag-der  { background: #dbe8f5; color: #1c3f63; border: 1px solid #a4c0da; }
+    .cred-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin: 1rem 0 1.4rem; }
+    .cred-table th { background: var(--gold); color: #fff; font-family: var(--sans); font-size: 11px;
+                     letter-spacing: .06em; text-transform: uppercase; padding: 7px 12px; text-align: left; }
+    .cred-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .cred-table tr:nth-child(even) td { background: #faf5ec; }
+    .cred-table .cname { font-family: var(--mono); font-size: 0.85rem; color: var(--accent2); font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+  <div class="badge">Supplement · Gravity from the Ground Up</div>
+  <h1><em>Cosmology_expansion_simulator</em> — FLRW Dynamics, Density Budgets, and the Age of the Universe</h1>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+  </div>
+</header>
+<nav id="sidebar">
+  <div class="nav-label">Overview</div>
+  <a href="#description">Description</a>
+  <a href="#modes">The Three Modes</a>
+  <a href="#background">Physical Background</a>
+  <div class="nav-label">Mathematics</div>
+  <a href="#equations">Governing Equations</a>
+  <a href="#closures">Approximations and Idealizations</a>
+  <a href="#algorithm">Algorithm</a>
+  <div class="nav-label">Code</div>
+  <a href="#modules">Module Overview</a>
+  <a href="#parameters">Parameters</a>
+  <a href="#output">Output and Plot Panels</a>
+  <div class="nav-label">Experiments</div>
+  <a href="#experiments">Suggested Experiments</a>
+  <a href="#validity">Domain of Validity</a>
+  <a href="#related">Related Programs</a>
+  <div class="nav-label">Legal</div>
+  <a href="#license">License</a>
+</nav>
+<main>
+
+  <!-- ================================================================ -->
+  <section id="description">
+    <h2>Description</h2>
+    <p><strong>Cosmology_expansion_simulator</strong> integrates the Friedmann equation for a homogeneous, isotropic (FLRW) universe filled with matter, radiation, spatial curvature, and a dark-energy fluid, and tracks the resulting scale factor \(a(t)\), Hubble parameter \(H(t)\), fractional energy-density budget \(\Omega_i(a)\), and deceleration parameter \(q(t)\) from deep in the radiation era to a chosen point in the future. It answers, numerically and for any cosmology you specify, the question every introductory cosmology course eventually asks: how old is the universe, and how does the answer depend on what the universe is made of?</p>
+    <p>One program covers three calculations, selected with <code>--mode</code>: a single expansion history (<code>evolve</code>), an overlay of several named or custom cosmologies with an age comparison (<code>compare</code>), and a systematic scan of the age of the universe across one cosmological parameter (<code>age</code>) — reproducing, among other things, the historical "age crisis": the Einstein-de Sitter model (flat, matter-only, \(\Omega_{m0}=1\)) could be too young for the oldest globular clusters. A lower matter density makes the universe older either by dropping flatness (an <em>open</em>, low-density, matter-only universe, no \(\Lambda\) at all, is old enough) or, if flatness is imposed instead, by adding a compensating dark-energy component to make up the difference. Either route by itself does not require dark energy — only the flatness-preserving route does, and only because flatness was assumed going in. What actually made dark energy hard to avoid was a separate line of evidence — the 1998 discovery, from Type Ia supernovae, that the expansion is <em>accelerating</em> (\(q_0&lt;0\)), which no matter-only model, open or flat, can produce. This program can demonstrate both points side by side (EXP-2 and EXP-6).</p>
+    <div class="note"><strong>Reading this page.</strong> The equations on this page are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; with no connection, the raw \(\LaTeX\) source (e.g. <code>\(a(t)\)</code>) will show as plain text instead of a formula. This has no effect on the program itself, which needs no internet access to run.</div>
+    <div class="note"><strong>Exact equations; conditional model; numerical results.</strong> This program evaluates the FLRW background equations for homogeneous, isotropic, separately conserved components and solves the resulting expansion history numerically. Given the stated energy content, the first Friedmann equation, the second (acceleration) Friedmann equation, and the fluid continuity equation are exact GR consequences of the FLRW model — not fitted. But three different claims are easy to blur together, and only the first is defensible without qualification: (1) the FLRW equations are exact consequences of General Relativity under the model's assumptions; (2) the chosen energy content and the CPL dark-energy ansatz are an exact description of nature (they are not — see below); (3) this program's finite-precision numerical output is exact (it is not — it carries ordinary RK4 truncation, root-finding, and quadrature error, typically small but never zero; see "How accurate is this, then?" below). The one deliberately phenomenological ingredient is the dark-energy equation of state \(w(a)=w_0+w_a(1-a)\) (the Chevallier–Polarski–Linder, or CPL, parametrization): nobody knows what dark energy is, so its equation of state is measured, not derived, and this program lets you dial it in and see the consequences.</div>
+    <div class="warn"><strong>What this program is, and what it does not model.</strong> This is a homogeneous-and-isotropic background calculation — it has no perturbations, no structure formation, no photons decoupling to make a cosmic microwave background, no primordial nucleosynthesis chemistry, and no inflationary epoch. \(a\to0\) is treated as a mathematical limit of the classical Friedmann equation, not a claim about what actually happened at the Big Bang, where quantum gravity is expected to take over. Use the program to build intuition for how the geometry and material content of an FLRW spacetime control its expansion history and age — not as a cosmological-parameter-fitting pipeline.</div>
+
+    <h3>How seriously to take each number</h3>
+    <table class="cred-table"><thead><tr><th>Quantity</th><th>Status</th><th>Read it as</th></tr></thead><tbody>
+      <tr><td class="cname">\(H(a)\), first Friedmann eq.</td><td>exact GR result for the stated energy content</td><td>the exact FLRW expression for the specified component model, evaluated numerically — no fitting involved, but still subject to the finite-precision caveats above</td></tr>
+      <tr><td class="cname">\(q(a)\), second Friedmann eq.</td><td>exact GR result, algebraic in \(\Omega_i(a)\) and \(w_i(a)\)</td><td>a genuine cross-check on the <em>formulas</em> (it uses the independent second Friedmann equation, not the first) — but not an independent check on the <em>numerical integration</em>, since it is evaluated from the same \(\Omega_i(a)\) the integrator already produced, not by differentiating the integrated \(a(t)\) itself. EXP-11 has you perform that stronger, genuinely independent check by hand</td></tr>
+      <tr><td class="cname">dark-energy density \(\rho_{\rm DE}(a)\)</td><td>exact integral of the continuity equation, <em>given</em> the CPL ansatz</td><td>exact algebra on top of an assumed, not derived, equation of state</td></tr>
+      <tr><td class="cname">early-time Big-Bang offset</td><td>single-component analytic solution</td><td>asymptotically accurate once <code>--a_i</code> is deep enough into the assumed-dominant era, so that the neglected terms make a demonstrably negligible contribution (checked and flagged automatically) — it is not an exact solution at finite \(a_i\), only its \(a_i\to0\) limit</td></tr>
+      <tr><td class="cname">turnaround / recollapse</td><td>root of \(E(a)^2=0\), found by direct bisection on that algebraic equation, with the turnaround time from a singularity-removing quadrature</td><td>independent of the RK4 trajectory (which cannot resolve the \(\sqrt{a_{\rm turn}-a}\) behaviour of \(da/dt\) right at a turning point); accurate to many significant figures, verified against an independent high-order quadrature benchmark. <code>--a_max</code> and <code>--t_max</code>, when given, are hard bounds: a turning point beyond either of them is never reported — the run instead stops cleanly at whichever of \(a_{\max}\), \(t_{\max}\), or the turning point comes first. The ordinary (non-turnaround) part of the trajectory is still plain RK4 with no embedded error control — check convergence with <code>--step_frac</code> (EXP-14) as you would for any such method</td></tr>
+      <tr><td class="cname">Big Rip time estimate</td><td>analytic, late-time dark-energy-domination limit</td><td>an order-of-magnitude estimate once matter and radiation are negligible; not exact for \(w_a\neq0\)</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modes">
+    <h2>The Three Modes</h2>
+    <table class="mode-table"><thead><tr><th>Mode</th><th>What it computes</th><th>Core numerical content</th></tr></thead><tbody>
+      <tr><td class="mname">evolve</td><td>Integrates one FLRW cosmology from deep radiation domination to a chosen future scale factor, tracking \(a(t)\), \(H(t)\), \(\Omega_m(a)\), \(\Omega_r(a)\), \(\Omega_k(a)\), \(\Omega_{\rm DE}(a)\), \(q(t)\), the age of the universe, the matter-radiation and matter-dark-energy equality epochs, the deceleration/acceleration transition, and (if applicable) a recollapse or a future Big Rip.</td><td>Hubble-time-scaled RK4 on \(da/dt=aH(a)\), targeting \(a=1\) and \(a_{\max}\) to the stated numerical tolerance, and a turning point (and any boundary at or near one) resolved by direct algebraic root-finding plus quadrature rather than by stepping through it.</td></tr>
+      <tr><td class="mname">compare</td><td>Runs several named preset cosmologies (or a custom one built from the command-line parameters) side by side, tabulating and plotting their ages, expansion histories, and deceleration histories.</td><td>The same integrator as <code>evolve</code>, called once per cosmology.</td></tr>
+      <tr><td class="mname">age</td><td>Scans the age of the universe (and \(H_0t_0\), and the acceleration-transition redshift) across a range of one cosmological parameter, holding the others fixed — reproducing, for example, the historical realization that \(\Omega_m=1\) makes the universe younger than its oldest stars.</td><td>The same integrator, called once per grid point; age itself is read off at \(a=1\), but each point is actually integrated out to a fixed look-ahead horizon of \(a=5\) so that a future recollapse can also be detected and flagged (see the age-mode algorithm below for the horizon's limits).</td></tr>
+    </tbody></table>
+    <pre># The concordance cosmology (Planck-2018-like flat LCDM). Omitting
+# --omega_de forces flatness exactly; passing --omega_de 0.685 explicitly
+# here instead would leave a stray Omega_k0 = -9.24e-5 from the default
+# radiation density.
+python main.py --mode evolve --H0 67.4 --omega_m 0.315
+
+# Einstein-de Sitter: flat, matter only -- the historical "age crisis" case
+python main.py --mode evolve --omega_m 1.0 --omega_de 0.0
+
+# A closed universe that recollapses; mirror the contracting branch back
+# down to a_i (not literally to the a=0 singularity -- see --continue_collapse)
+python main.py --mode evolve --omega_m 1.5 --omega_de 0.0 --continue_collapse
+
+# Phantom dark energy: w0 < -1 drives a future Big Rip
+python main.py --mode evolve --w0 -1.2 --a_max 60
+
+# Compare several textbook cosmologies side by side
+python main.py --mode compare --presets EdS,lambdaCDM,open,closed,phantom
+
+# The historical age problem: age of the universe vs Omega_m, flat by construction
+python main.py --mode age --scan_param omega_m --scan_lo 0.05 --scan_hi 1.5</pre>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="background">
+    <h2>Physical Background</h2>
+
+    <h3>The Cosmological Principle and the FLRW Metric</h3>
+    <p>On sufficiently large scales the universe looks, by observation, the same in every direction (isotropic) and from every location (homogeneous). The unique metric consistent with that symmetry is the Friedmann-Lemaître-Robertson-Walker metric,</p>
+    <div class="eq-block"><div class="eq-label">FLRW metric</div>
+      \[ds^2=-c^2dt^2+a(t)^2\left[\frac{dr^2}{1-kr^2}+r^2\left(d\theta^2+\sin^2\theta\,d\phi^2\right)\right],\]
+    </div>
+    <p>where \(a(t)\) is the dimensionless scale factor (normalised to \(a=1\) today) and \(k\in\{-1,0,+1\}\) fixes the spatial geometry: open (hyperbolic), flat (Euclidean), or closed (spherical). All of the geometry and all of the dynamics are carried by the single function \(a(t)\); this program's entire job is to compute it.</p>
+
+    <h3>Three Familiar Relations, Two of Them Independent</h3>
+    <p>Substituting the FLRW metric into the Einstein field equations with a perfect-fluid stress-energy tensor yields three familiar relations for \(a(t)\): the first Friedmann equation, the second (acceleration) Friedmann equation, and a fluid continuity equation — of which only two are independent (each pair implies the third, a consequence of the same Bianchi identity that makes the Einstein tensor's divergence vanish). The first equation is the one usually integrated; the second is an independent statement about the acceleration, given the first. This program's \(q(a)\) diagnostic evaluates that second equation algebraically from the same \(\Omega_i(a)\) the first equation already produced, so agreement between them checks that the two formulas are being applied consistently — it is not, by itself, an independent check that the numerical integration of \(a(t)\) is correct, since a systematically wrong trajectory would still satisfy both algebraic formulas at every point along it. EXP-11 has you build the genuinely independent check, by numerically differentiating the integrated \(a(t)\) itself and comparing that to the algebraic \(q(a)\).</p>
+
+    <h3>Redshift</h3>
+    <p>A photon's wavelength stretches with the universe: \(1+z\equiv a_0/a=1/a\) in this program's convention (\(a_0=1\) today). Redshift is simply a relabelling of scale factor, but it is the observationally natural one, and results are quoted in both throughout.</p>
+
+    <h3>Geometry Used to Determine Destiny; Now It Doesn't</h3>
+    <p>In a universe with no dark energy, the classical result is clean: a closed universe (\(k=+1\), equivalently \(\Omega_{\rm total}&gt;1\)) always recollapses, while an open or flat universe expands forever. Once a dark-energy component is admitted, that clean correspondence breaks: a flat or even open universe with enough phantom dark energy (\(w&lt;-1\)) can still be torn apart in finite time (a "Big Rip"), while a closed universe with enough positive cosmological constant can expand forever, never recollapsing. Geometry alone no longer determines fate; the full energy budget does. This program is built specifically so that this point can be demonstrated rather than asserted — compare the <code>closed</code> and <code>phantom</code> presets in <code>--mode compare</code>.</p>
+
+    <h3>A Short History of a Changing Answer</h3>
+    <p>Einstein originally added the cosmological constant \(\Lambda\) to permit a static universe. He is often quoted as having called it his "greatest blunder" once Hubble's 1929 observations showed the universe expanding — a colorful anecdote (attributed secondhand by George Gamow) whose sourcing is disputed and which should be read as a memorable story, not a documented quotation. For most of the twentieth century, "which Friedmann model are we in?" was framed as measuring \(\Omega_m\) alone, with an implicit assumption \(\Omega_\Lambda=0\). The 1998 discovery, from Type Ia supernovae, that the expansion is <em>accelerating</em> (Riess et al. 1998; Perlmutter et al. 1999) reintroduced \(\Lambda\) — or something behaving like it — not by theoretical preference but because the data required \(q_0&lt;0\), which no clean matter-only model can produce. What that dark-energy component actually is remains unknown; the CPL parametrization used here (Chevallier & Polarski 2001; Linder 2003) is the field's standard way of asking the data "how far from a cosmological constant can it be?" without committing to a specific model.</p>
+    <div class="note"><strong>A live question, as of this writing (2026); check for updates.</strong> Baryon acoustic oscillation measurements from the DESI survey's second data release (DESI Collaboration 2025, <em>Phys. Rev. D</em> 112, 083515, <a href="https://arxiv.org/abs/2503.14738" target="_blank">arXiv:2503.14738</a>), combined with the cosmic microwave background and Type Ia supernovae, show a preference for the quadrant \(w_0&gt;-1\), \(w_a&lt;0\) over a pure cosmological constant, at a significance that depends on which supernova compilation is combined with DESI (roughly \(2.8\)-\(4.2\sigma\) across published combinations, \(3.1\sigma\) for DESI+CMB alone) — suggestive, not yet a discovery, and an active area of debate over systematics. <strong>Note the sign of \(w_a\):</strong> the <code>evolving_de</code> preset here uses \(w_0=-0.8\), \(w_a=+0.3\) — <em>positive</em> \(w_a\), which moves \(w(a)\) toward <em>less</em> negative values into the past and is therefore in the <em>opposite</em> quadrant from DESI's hint. The separate <code>desi_like</code> preset (\(w_0=-0.7\), \(w_a=-1.0\)) sits in the sign quadrant DESI favors; it is chosen only to illustrate that quadrant and is <em>not</em> a fit to DESI's data or covariance.</div>
+
+    <h3>The Flatness Problem, Briefly</h3>
+    <p>For the standard radiation-and-matter content of our own universe, the curvature term dilutes as \(a^{-2}\) while radiation dilutes as \(a^{-4}\) and matter as \(a^{-3}\), so \(\Omega_k(a)\to0\) as \(a\to0\): the early universe looks flat almost by necessity of that scaling, which means a universe observed to be as flat as ours is today (\(|\Omega_{k0}|\lesssim10^{-3}\)) must have been flat to an extraordinary number of decimal places at, say, the Planck time. That fine-tuning puzzle is a major part of the historical motivation for cosmic inflation. This conclusion depends on radiation or matter — components that grow faster than curvature into the past — actually dominating there; it is not automatic for every CPL dark-energy or negative-density toy model this program will accept (an early-time-dominant dark-energy term, when the program detects one, can change which term wins as \(a\to0\)). This program can display the scaling directly (its \(\Omega_i(a)\) panel), but it does not model inflation and starts its clock well after any inflationary epoch would have ended.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="equations">
+    <h2>Governing Equations</h2>
+
+    <h3>First Friedmann Equation</h3>
+    <div class="eq-block"><div class="eq-label">Exact, given the stated energy content <span class="tag tag-ode">EXACT / ODE</span></div>
+      \[\left(\frac{\dot a}{a}\right)^2=H(a)^2=H_0^2\,E(a)^2,\qquad
+        E(a)^2=\Omega_{m0}a^{-3}+\Omega_{r0}a^{-4}+\Omega_{k0}a^{-2}+\Omega_{\rm DE,0}\,g(a).\]
+    </div>
+    <p>This is the equation the program integrates, written as \(da/dt=aH_0E(a)\). Neither \(G\) nor \(c\) needs to appear: both are absorbed into the definitions of \(H_0\) and the critical density \(\rho_{\rm crit}=3H_0^2/8\pi G\), and every \(\Omega_i\equiv\rho_i/\rho_{\rm crit}\) is dimensionless by construction.</p>
+
+    <h3>Closure Relation for the Curvature Density</h3>
+    <div class="eq-block"><div class="eq-label">Algebraic identity <span class="tag tag-der">DERIVED</span></div>
+      \[\Omega_{m0}+\Omega_{r0}+\Omega_{k0}+\Omega_{\rm DE,0}=1.\]
+    </div>
+    <p>This is not a fitted constraint; it is the definition of \(\Omega_{k0}\equiv-kc^2/(H_0^2a_0^2)\) rearranged. If <code>--omega_de</code> is left unset, the program sets \(\Omega_{\rm DE,0}=1-\Omega_{m0}-\Omega_{r0}\) and \(\Omega_{k0}=0\) exactly (a flat universe by construction); giving <code>--omega_de</code> explicitly lets \(\Omega_{k0}\) come out positive (open), negative (closed), or zero, whatever the arithmetic implies.</p>
+
+    <h3>Fractional Energy-Density Content</h3>
+    <div class="eq-block"><div class="eq-label">Algebraic identity, sums to unity <span class="tag tag-der">DERIVED</span></div>
+      \[\Omega_i(a)=\frac{\rho_i(a)}{\rho_{\rm crit}(a)},\qquad \Omega_m(a)+\Omega_r(a)+\Omega_k(a)+\Omega_{\rm DE}(a)=1\ \ \text{identically}.\]
+    </div>
+    <p>The program plots all four and their sum. Because every \(\Omega_i(a)\) is defined as that component's density divided by the <em>same</em> total \(\rho_{\rm crit}(a)\propto E(a)^2\), the sum is 1 by algebraic construction at every scale factor, correct or not — it cannot, by itself, reveal a wrong \(a(t)\) trajectory or a wrong \(H(a)\), since both the numerator and denominator of every term would be equally wrong together. Treat the sum-equals-1 line as a check that the plotting and bookkeeping are self-consistent, not as a check on the physics.</p>
+
+    <h3>Second Friedmann Equation (Acceleration Equation)</h3>
+    <div class="eq-block"><div class="eq-label">Exact, an independent GR result <span class="tag tag-der">EXACT / DERIVED</span></div>
+      \[\frac{\ddot a}{a}=-\frac{4\pi G}{3}\sum_i\left(\rho_i+\frac{3P_i}{c^2}\right)
+        \quad\Longrightarrow\quad
+        q(a)\equiv-\frac{\ddot a\,a}{\dot a^2}=\frac12\sum_{i=m,r,{\rm DE}}\Omega_i(a)\big(1+3w_i(a)\big).\]
+    </div>
+    <p>Only genuine stress-energy components enter this sum; spatial curvature is a geometric bookkeeping term in the first Friedmann equation, not a fluid, and correctly contributes nothing here. \(q&gt;0\) is decelerating, \(q&lt;0\) is accelerating. Checks worth doing by hand: matter alone gives \(q=1/2\); radiation alone gives \(q=1\); a cosmological constant alone gives \(q=-1\) (de Sitter expansion).</p>
+
+    <h3>Dark-Energy Equation of State (CPL)</h3>
+    <div class="eq-block"><div class="eq-label">Phenomenological ansatz <span class="tag tag-fit">FIT</span></div>
+      \[w(a)=w_0+w_a(1-a).\]
+    </div>
+    <p>\(w_0=-1,\ w_a=0\) is a cosmological constant. At \(a=1\) (today): \(w_0&lt;-1\) contributes toward phantom behavior; \(-1&lt;w_0&lt;-1/3\) contributes toward quintessence-like behavior; \(w_0&gt;-1/3\) does not by itself accelerate the expansion (the program checks \(1+3w_0\) and says so if that holds). These are classifications of the dark-energy component <em>at \(a=1\)</em>, not of the whole history: whenever \(w_a\neq0\), \(w(a)\) evolves, and a model can cross between these regimes at other epochs (the <code>evolving_de</code> preset is a worked example — see EXP-9). "Canonical quintessence" also implies specific scalar-field microphysics that an arbitrary phenomenological \(w(a)\) does not represent; the label here means only "\(w\) in that numerical range." This linear-in-\(a\) form (Chevallier-Polarski-Linder) is the standard two-parameter way of letting the equation of state evolve without committing to a specific microphysical model of dark energy.</p>
+
+    <h3>Continuity Equation and the Dark-Energy Density History</h3>
+    <div class="eq-block"><div class="eq-label">Exact consequence of energy-momentum conservation <span class="tag tag-der">EXACT / DERIVED</span></div>
+      \[\frac{d\ln\rho_i}{d\ln a}=-3\big(1+w_i(a)\big)
+        \quad\Longrightarrow\quad
+        \frac{\rho_{\rm DE}(a)}{\rho_{\rm DE}(1)}=g(a)=a^{-3(1+w_0+w_a)}\,e^{-3w_a(1-a)}.\]
+    </div>
+    <p>This follows from local energy-momentum conservation (equivalently, the Bianchi identity) for <em>any</em> equation of state \(w_i(a)\); matter (\(w=0\)) recovers the familiar \(\rho\propto a^{-3}\), radiation (\(w=1/3\)) recovers \(\rho\propto a^{-4}\). The closed-form \(g(a)\) above is the exact integral of this equation for the CPL ansatz specifically — exact given that ansatz, which is itself only a stand-in (tag <span class="tag tag-fit">FIT</span>) for whatever dark energy actually is.</p>
+
+    <h3>Early-Time Behaviour and the Big-Bang Time Offset</h3>
+    <p>The numerical integration cannot literally start at \(a=0\): every energy density \(\rho_i\propto a^{-3(1+w_i)}\) diverges there, so \(a=0\) is a genuine curvature (density) singularity of this classical description, not a mere artifact of the coordinates chosen — no relabelling of \(t\) or \(a\) removes it. (This is exactly the kind of singularity general relativity itself signals it cannot resolve, which is why quantum gravity, not this program, is where the real \(a\to0\) physics would live.) So the integration instead starts at a small \(a_i\) and is given an analytic head start representing the time already elapsed since \(a=0\). As \(a\to0\), whichever density term grows fastest dominates: radiation (\(a^{-4}\)) beats matter (\(a^{-3}\)) beats positive curvature (\(a^{-2}\)) — and, for an unusual choice of the dark-energy parameters, a CPL dark-energy term with \(w_0+w_a&gt;1/3\) can beat even radiation, a case the program also detects and handles the same way. Each single-component case has an elementary exact solution:</p>
+    <div class="eq-block"><div class="eq-label">Single-component analytic solutions <span class="tag tag-der">DERIVED</span> (exact under single-component domination)</div>
+      \[\text{radiation: } a(t)=\sqrt{2H_0\sqrt{\Omega_{r0}}\,t}\ \Rightarrow\ t_i=\frac{a_i^2}{2H_0\sqrt{\Omega_{r0}}};\qquad
+        \text{matter: } a(t)=\left(\tfrac32H_0\sqrt{\Omega_{m0}}\,t\right)^{2/3}\ \Rightarrow\ t_i=\frac{2}{3H_0\sqrt{\Omega_{m0}}}a_i^{3/2};\]
+      \[\text{curvature (Milne): } a(t)=H_0\sqrt{\Omega_{k0}}\,t\ \Rightarrow\ t_i=\frac{a_i}{H_0\sqrt{\Omega_{k0}}}.\]
+    </div>
+    <p>The program checks, after the fact, what fraction of the total early-time density budget (the sum of the absolute values of every component's term at \(a_i\), not the signed \(E(a_i)^2\) itself — a signed comparison can be fooled by cancellation from a negative component) the assumed-dominant term actually supplies; if that fraction is not extremely close to 1, it warns that <code>--a_i</code> should be made smaller. This offset is only asymptotically accurate: replacing the true CPL density by its \(a\to0\) limiting constant-\(w\) power law (when a dark-energy term is the assumed-dominant one) is exact only in that limit, not at the finite \(a_i\) actually used, and the dominance fraction is a check at the single point \(a_i\), not a bound on the integrated error over \((0,a_i)\) — treat it as a good practical diagnostic, not a proof. The empty (Milne) universe — no matter, no radiation, no dark energy, pure curvature — is exactly the curvature case above for <em>all</em> time, not just early times, which makes it an unusually clean validation case: it is exact to floating-point round-off for this particular equation of motion, though that alone does not validate the integrator's handling of nonlinear rates, checkpoints, or turnaround events (see EXP-4).</p>
+
+    <h3>Big Rip: A Finite-Time Future Singularity</h3>
+    <div class="eq-block"><div class="eq-label">Late-time, pure dark-energy-domination approximation <span class="tag tag-der">DERIVED</span> (approximate)</div>
+      \[w_0&lt;-1,\ w_a=0:\qquad t_{\rm rip}-t_0\approx\frac{1}{-\tfrac32(1+w_0)\,H_0\sqrt{\Omega_{\rm DE,0}}}.\]
+    </div>
+    <p>For phantom dark energy the density <em>grows</em> as the universe expands (\(g(a)\to\infty\) as \(a\to\infty\)), and \(da/dt\propto a^{p}\) with \(p&gt;1\), whose solution reaches \(a\to\infty\) at a <em>finite</em> time — unlike the ordinary exponential (de Sitter) expansion of an exact cosmological constant, which never does. The formula above solves that blow-up ODE exactly in the limit that matter and radiation are already negligible (an excellent approximation by the time it matters) and assumes constant \(w_0\) (\(w_a=0\)); the program reports it whenever those conditions are met.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="closures">
+    <h2>Approximations and Idealizations</h2>
+    <p>This program has almost nothing to calibrate: given the density content you specify, the Friedmann equations are exact within the FLRW model. What follows is not a list of tuned parameters but a short, honest list of what has been assumed away.</p>
+
+    <h4>The dark-energy equation of state <span class="tag tag-fit">FIT</span></h4>
+    <p>As above: \(w(a)=w_0+w_a(1-a)\) is a two-parameter phenomenological family, not a derivation. It is flexible enough to represent a cosmological constant, quintessence, or phantom dark energy, and it is the field's standard tool for this purpose, but it is not itself a theory of dark energy.</p>
+
+    <h4>Homogeneity and isotropy</h4>
+    <p>The FLRW metric assumes the universe has no structure at all — no galaxies, clusters, or voids. Real large-scale structure is a perturbation on top of the background this program computes, and describing its growth is an entirely separate (and much harder) calculation that this program does not attempt.</p>
+
+    <h4>A single effective dark-energy fluid</h4>
+    <p>Matter and radiation here are single perfect fluids with fixed equations of state (\(w=0\) and \(w=1/3\)); baryons and cold dark matter are lumped into one matter term, and photons and (relativistic) neutrinos into one radiation term. This is standard practice for background-level calculations and does not affect \(H(a)\), but it means the model cannot separately track, say, neutrino mass effects or baryon-photon coupling before recombination.</p>
+
+    <h4>No microphysics of the early universe</h4>
+    <p>Big Bang nucleosynthesis, recombination and the cosmic microwave background, neutrino decoupling, and any inflationary epoch are entirely absent. The radiation density \(\Omega_{r0}\) is simply supplied as a number, not derived from first principles; the default, \(9.24\times10^{-5}\), is a representative effective teaching value for a photon-plus-three-neutrino-species budget under commonly assumed \(T_{\rm CMB}\), \(N_{\rm eff}\), and neutrino-mass conventions, paired here with a default \(H_0=70\) km/s/Mpc rather than derived self-consistently from it — treat it as a reasonable fixed number to start from, not a precision physical prediction.</p>
+
+    <div class="warn"><strong>How accurate is this, then?</strong> For a given \((\Omega_{m0},\Omega_{r0},\Omega_{k0},\Omega_{\rm DE,0},w_0,w_a)\), the numbers this program reports are accurate to the RK4 truncation error and root-finding/quadrature tolerances used internally — typically many significant figures at the default step size, and convergence with <code>--step_frac</code> is itself a worthwhile exercise (EXP-14). The physics content, not the numerics, is where the idealizations above live: the output is a numerical solution of the stated idealized model, subject to the approximations and convergence behavior described throughout this page — not an exact reconstruction of nature, and not exact even for the toy universe beyond the program's numerical precision. The interesting scientific question is always how well that toy universe matches the real one.</div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="algorithm">
+    <h2>Algorithm</h2>
+    <h3>Mode <code>evolve</code></h3>
+    <ol>
+      <li>Validate all inputs (finite values, non-negative \(\Omega_{m0}\) and \(\Omega_{r0}\), \(0&lt;a_i&lt;1\) and \(a_i&lt;a_{\max}\), <code>step_frac</code> in range).</li>
+      <li>Resolve \(\Omega_{\rm DE,0}\) and \(\Omega_{k0}\) from the closure relation, forcing flatness if <code>--omega_de</code> was not given.</li>
+      <li>Choose the early-time regime (radiation, matter, or curvature domination) and compute the analytic Big-Bang time offset \(t_i\); warn if the assumed-dominant term does not actually dominate \(E(a_i)^2\) to better than one part in a thousand.</li>
+      <li>Integrate \(da/dt=aH_0E(a)\) forward with fourth-order Runge-Kutta, using a Hubble-time-scaled step \(dt=\text{step\_frac}/H(a)\) — approximately a fixed fractional change in \(\ln a\) per step. This is a physically motivated variable step size, not a true error-controlled adaptive method: it carries no embedded local-error estimate, so accuracy should be checked by re-running at a smaller <code>step_frac</code> and confirming the results have converged (EXP-14).</li>
+      <li>When the step that would straddle \(a=1\), or the final step toward <code>--a_max</code>, is found FAR from any turning point, do not merely interpolate between the two bracketing grid points (linear interpolation there would cap the effective accuracy at second order, regardless of RK4's fourth-order local accuracy). Instead, bisect the RK4 sub-step size itself, after first checking that the proposed upper bound actually brackets the target, so that a single RK4 step targets the requested scale factor to the stated numerical tolerance, inheriting RK4's full order.</li>
+      <li>Continuously monitor, from the exact derivative of \(E(a)^2\), whether a turning point (\(H=0\)) is close ahead — \(da/dt\propto\sqrt{a_{\rm turn}-a}\) has an infinite derivative there, so RK4's usual error behaviour breaks down in the last few steps before it, however small the step size, and a single RK4 step aimed at a target close to that singularity is unsafe regardless of step size. When the proximity check fires (or a reactive check catches \(E(a)^2\) having already gone negative, as a safety net for a very coarse <code>step_frac</code>), the remaining distance to whichever of \(a_{\max}\), \(t_{\max}\), or a genuine turnaround comes first is resolved entirely by quadrature, never by another RK4 step: first, scan for the FIRST root of \(E(a)^2=0\) ahead of the current \(a\) (checking only the sign of \(E(a_{\max})^2\) is not sufficient here, since \(E(a)^2\) can have more than one positive root — e.g. a closed universe with matter and a small positive cosmological constant can have a forbidden interval bounded by two roots, with \(E(a_{\max})^2\) positive again beyond it; the physical expanding-branch solution must stop at the first root it reaches). The scan is extended slightly past \(a_{\max}\) as well, so that a root sitting at or just beyond \(a_{\max}\) — a boundary chosen to coincide with a genuine turnaround, where \(E(a_{\max})^2\) can round to exactly zero or a tiny positive residual in floating point — is still found and handled by the accurate method below rather than being missed. If no root is found even in that extended range, \(a_{\max}\) is an ordinary (non-singular) boundary and the remaining time to it, and to any requested \(t_{\max}\), is found by plain Gauss-Legendre quadrature of \(t=\int da/[aH_0E(a)]\). If a root IS found, it is located precisely by direct bisection on the algebraic condition \(E(a_{\rm turn})^2=0\) (independent of the RK4 trajectory), and every time in that neighborhood — the time to \(a_{\rm turn}\) itself, to \(a_{\max}\) if it precedes \(a_{\rm turn}\), to \(t_{\max}\) if it is reached first, and to any checkpoint such as \(a=1\) that falls in this interval — is found by Gauss-Legendre quadrature of the same integral after a substitution (\(a=a_{\rm turn}-u^2\)) that removes the endpoint singularity; this substitution stays accurate for a target arbitrarily close to \(a_{\rm turn}\), which is what makes it safe to use for a boundary that coincides with, or sits immediately next to, the turning point itself. A turning point is reported only when it is genuinely the first of the three possible stopping events to occur; \(a_{\max}\) and \(t_{\max}\), when given, are hard bounds that a turning point can never override. Every intermediate value (the CPL density shape, \(E(a)^2\) and its derivative, each bisection midpoint, each quadrature integrand) is required to be finite; a non-finite value raises a clear error rather than being silently treated as a turning point.</li>
+      <li>If <code>--continue_collapse</code> was requested and a genuine (not <code>--a_max</code>/<code>--t_max</code>-truncated) turnaround was found, do not re-integrate the contracting branch: use the exact time-reversal symmetry of the Friedmann equation (\(E(a)^2\) depends on \(a\) alone, never on the sign of \(\dot a\)) to mirror the already-computed expanding branch about the turnaround, back down to \(a_i\) (not all the way to the \(a=0\) singularity — the omitted early interval is represented only by the analytic early-time offset), and report the total lifetime as exactly twice the time to turnaround.</li>
+      <li>Post-process the full \(a(t)\) trajectory into \(z(t)\), \(H(t)\), \(\Omega_i(a)\), \(w_{\rm DE}(a)\), and \(q(a)\) (the last from the independent second Friedmann equation, not from numerically differentiating \(a(t)\)).</li>
+      <li>Locate the matter-radiation equality scale factor algebraically (\(a_{\rm eq}=\Omega_{r0}/\Omega_{m0}\)), and locate the matter-dark-energy equality and the deceleration/acceleration transition by scanning \(\Omega_m(a)-\Omega_{\rm DE}(a)\) and \(q(a)\) on a log-spaced grid for a sign change, then bisecting it to convergence.</li>
+      <li>If \(w_a=0\), \(w_0&lt;-1\), and the universe did not recollapse, report the analytic Big Rip time estimate.</li>
+    </ol>
+
+    <h3>Mode <code>compare</code></h3>
+    <ol>
+      <li>Resolve the requested list of preset names (optionally including <code>custom</code>, built from the command-line cosmological parameters) against the built-in preset table.</li>
+      <li>Run the full <code>evolve</code> calculation above once per cosmology, with the same <code>--a_i</code>, <code>--a_max</code>, and <code>--step_frac</code> for all of them so the comparison is apples-to-apples.</li>
+      <li>Tabulate and plot the results together: overlaid \(a(t)\), overlaid \(q(t)\), a bar chart of ages (a model that never reaches \(a=1\) is marked, not silently omitted), and overlaid \(\Omega_{\rm DE}(a)\).</li>
+    </ol>
+
+    <h3>Mode <code>age</code></h3>
+    <ol>
+      <li>Build a linear grid of the scanned parameter (\(\Omega_{m0}\), \(\Omega_{\rm DE,0}\), \(w_0\), or \(H_0\)) between <code>--scan_lo</code> and <code>--scan_hi</code>.</li>
+      <li>At each grid point, run the <code>evolve</code> integrator out to \(a=5\) — the finite look-ahead horizon used by this scan, which catches a recollapse before \(a=1\) as well as one between \(a=1\) and \(a=5\), but not one beyond \(a=5\); an arbitrary scan range can always place a turnaround past whatever horizon is chosen. When <code>--no_force_flat</code> is <em>not</em> given (the default) and the scanned parameter is \(\Omega_{m0}\) or \(\Omega_{\rm DE,0}\), the other of the two is adjusted at every grid point to keep \(\Omega_{k0}=0\); with <code>--no_force_flat</code>, curvature is instead allowed to vary implicitly.</li>
+      <li>Record the age (if \(a=1\) was reached before any recollapse), the dimensionless product \(H_0t_0\), the acceleration-transition redshift, and separately flag two different outcomes: recollapse <em>before</em> reaching \(a=1\) (no age is defined at all) versus reaching \(a=1\) normally but being found, within the finite \(a=5\) look-ahead horizon, to recollapse at some \(a_{\rm turn}&gt;1\) in the future. That second flag means only "recollapses by \(a=5\) in this scan" (the CSV column is named accordingly, <code>recollapses_by_a5</code>) — a model with a genuine \(a_{\rm turn}\) beyond that horizon is reported as not recollapsing here, not confirmed to expand forever.</li>
+      <li>Plot age and \(H_0t_0\) against the scanned parameter, with reference lines at a user-supplied benchmark age (default 13 Gyr, evocative of the oldest globular clusters) and at the classic \(H_0t_0=2/3\) (Einstein-de Sitter) and \(H_0t_0=1\) (Milne) benchmarks.</li>
+    </ol>
+
+    <div class="note"><strong>Numerical safeguards.</strong> All cosmological and integration parameters must be finite; \(\Omega_{m0},\Omega_{r0}\ge0\); \(a_i\) must lie strictly between 0 and 1 and below <code>--a_max</code>; <code>--step_frac</code> is restricted to \([10^{-6},0.5]\); <code>--t_max</code>, if given, must exceed the analytic Big-Bang time offset at \(a_i\); <code>--age_ref_gyr</code> (mode <code>age</code>) must be greater than zero. Before integrating, the program estimates the number of RK4 steps a run would need and refuses immediately, with a clear message, if that would exceed the internal safety limit (2,000,000 steps) — this matters because the smallest allowed <code>--step_frac</code> combined with the default <code>--a_i</code>/<code>--a_max</code> range would need tens of millions of steps, so not every technically-in-range <code>step_frac</code> is actually feasible with every <code>a_i</code>/<code>a_max</code> choice. The dark-energy density shape \(g(a)\) is evaluated in log space with an explicit domain check, and every intermediate quantity (\(E(a)^2\), its derivative, each RK4 stage, each root-bisection midpoint, each quadrature evaluation, and the final output arrays) is required to be finite; a non-finite value raises a clear error immediately rather than being clipped, floored, or silently reinterpreted as a physical event such as a turning point. Every run also records <em>why</em> it stopped (<code>a_max</code> reached, <code>t_max</code> reached, or a genuine turnaround), printed in the run summary and written to CSV provenance. <code>--no_plot</code> is refused unless a CSV directory is given, so a run always produces something. Passing these checks is not a substitute for a convergence test (EXP-14).</div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modules">
+    <h2>Module Overview</h2>
+    <div class="module-grid">
+      <div class="module-card"><div class="mc-role">Physics Layer</div><div class="mc-name">physics_cosmo.py</div><p>Constants and unit conversion, the closure relation for \(\Omega_{k0}\), the CPL dark-energy shape and equation of state, the first and second Friedmann equations, the RK4 integrator with a_max/t_max/turnaround stop-precedence handling and turnaround (recollapse) detection by direct algebraic root-finding and singularity-removing quadrature, the exact time-reversal mirroring of a contracting branch (with the correct sign flip of \(H\) on that branch), the early-time analytic offset, the generic sign-change root finder used for equality and transition epochs, the Big Rip estimate, and the named preset cosmologies. Validation of the core physical/numerical inputs (finiteness, non-negative densities, the \(a_i\)/\(a_{\max}\)/step_frac/t_max relationships, the step-count preflight check) lives here; the driver layer below separately validates presentation- and scan-level inputs.</p></div>
+      <div class="module-card"><div class="mc-role">Driver Layer</div><div class="mc-name">driver_cosmo.py</div><p>Validates presentation-level and mode-specific inputs (output paths, DPI/line width, scan range and count, <code>age_ref_gyr</code>), dispatches on <code>--mode</code>, prints the run summary, writes timestamped CSV files with a self-documenting provenance header, and calls the plotter. Prints a short note if you supply a mode-irrelevant option changed from its default, rather than ignoring it with no feedback.</p></div>
+      <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_cosmo.py</div><p>One figure layout per mode. Every figure is displayed on screen unless <code>--no_plot</code> is given; <code>--outdir</code> additionally saves the same figure.</p></div>
+      <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>Defines the student-facing command-line options, grouped by mode, and converts validation or runtime failures into concise command-line error messages.</p></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <p>Run <code>python main.py --help</code> for the current command summary, and <code>python main.py --version</code> for the model version, which is also written into every CSV header. Options that do not apply to the selected mode are ignored, and the driver prints a short note if you changed one of them from its default anyway, so a scan option left on by accident during an <code>evolve</code> run does not go unnoticed. Check the printed summary, or the parameter block at the top of the CSV file, to confirm which values a given run actually used.</p>
+
+    <h3>Cosmological parameters (all modes)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--H0</td><td class="pdefault">70.0</td><td>km/s/Mpc</td><td>Hubble constant today. 67.4 (Planck) and about 73 (local distance-ladder measurements) bracket the current "Hubble tension" -- an unresolved discrepancy between two families of inference, not a settled bug in either.</td></tr>
+      <tr><td class="pname">--omega_m</td><td class="pdefault">0.30</td><td>—</td><td>Matter density parameter today, \(\Omega_{m0}\) (baryons plus cold dark matter, lumped together).</td></tr>
+      <tr><td class="pname">--omega_r</td><td class="pdefault">9.24e-5</td><td>—</td><td>Radiation density parameter today, \(\Omega_{r0}\) (photons plus three neutrino species). A representative effective teaching value, not a precise prediction for the paired default \(H_0\) -- the true value depends on \(H_0\), \(T_{\rm CMB}\), \(N_{\rm eff}\), and neutrino-mass treatment. Negligible today, it dominated the universe below about \(a\approx3\times10^{-4}\).</td></tr>
+      <tr><td class="pname">--omega_de</td><td class="pdefault">None (flat)</td><td>—</td><td>Dark-energy density parameter today, \(\Omega_{\rm DE,0}\). Left unset, the program forces a flat universe by setting \(\Omega_{\rm DE,0}=1-\Omega_{m0}-\Omega_{r0}\); give an explicit value to obtain an open or closed model instead.</td></tr>
+      <tr><td class="pname">--w0</td><td class="pdefault">-1.0</td><td>—</td><td>Dark-energy equation of state at \(a=1\) (today). \(-1\) is a cosmological constant; \(&lt;-1\) contributes toward phantom behavior (drives a future Big Rip if \(w_a=0\)); \(&gt;-1/3\) does not by itself accelerate the expansion. If <code>--wa</code> is nonzero, these describe only today, not the whole history -- see EXP-9.</td></tr>
+      <tr><td class="pname">--wa</td><td class="pdefault">0.0</td><td>—</td><td>CPL evolution parameter, \(w(a)=w_0+w_a(1-a)\); 0 means a constant equation of state. Very large \(|w_a|\) (with a wide <code>a_i</code>-to-<code>a_max</code> range) can push \(g(a)\) outside this program's representable range; such combinations are rejected with a clear error rather than silently overflowing.</td></tr>
+    </tbody></table>
+
+    <h3>Integration control (modes <code>evolve</code>, <code>compare</code>)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--a_i</td><td class="pdefault">1e-8</td><td>—</td><td>Scale factor at which the numerical integration starts, deep in radiation (or matter, or curvature) domination.</td></tr>
+      <tr><td class="pname">--a_max</td><td class="pdefault">5.0</td><td>—</td><td>Stop the forward integration here, unless a recollapse or <code>--t_max</code> intervenes first.</td></tr>
+      <tr><td class="pname">--t_max</td><td class="pdefault">None</td><td>Gyr</td><td>Also stop at this cosmic time if reached before <code>--a_max</code>.</td></tr>
+      <tr><td class="pname">--step_frac</td><td class="pdefault">0.005</td><td>—</td><td>Hubble-time-scaled RK4 step size, \(dt=\text{step\_frac}/H(a)\): approximately the fractional change in \(\ln a\) per step. Range \([10^{-6},0.5]\), though very small values may exceed the internal step-count limit for a wide <code>a_i</code>-to-<code>a_max</code> range (the program checks and says so before running).</td></tr>
+      <tr><td class="pname">--continue_collapse</td><td class="pdefault">off</td><td>—</td><td>If the model recollapses, also report the contracting branch, mirrored back down to \(a_i\) (not literally to the \(a=0\) singularity) by the exact time-reversal symmetry of the Friedmann equation (no re-integration).</td></tr>
+    </tbody></table>
+
+    <h3>Mode <code>compare</code></h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--presets</td><td class="pdefault">EdS,lambdaCDM,closed,phantom</td><td>—</td><td>Comma-separated list, at most 12 entries. Choices: <code>EdS</code>, <code>radiation</code>, <code>milne</code>, <code>lambdaCDM</code>, <code>open</code>, <code>closed</code>, <code>phantom</code>, <code>evolving_de</code>, <code>desi_like</code> (illustrative only -- see the DESI note above; not a fit), or <code>custom</code> (the cosmology built from the parameters above).</td></tr>
+    </tbody></table>
+
+    <h3>Mode <code>age</code> (parameter scan)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--scan_param</td><td class="pdefault">omega_m</td><td>—</td><td>One of <code>omega_m</code>, <code>omega_de</code>, <code>w0</code>, <code>H0</code>; the others are held at the values given above.</td></tr>
+      <tr><td class="pname">--scan_lo</td><td class="pdefault">0.05</td><td>—</td><td>Lowest value of the scanned parameter.</td></tr>
+      <tr><td class="pname">--scan_hi</td><td class="pdefault">1.5</td><td>—</td><td>Highest value of the scanned parameter; must exceed <code>--scan_lo</code>.</td></tr>
+      <tr><td class="pname">--scan_n</td><td class="pdefault">40</td><td>—</td><td>Number of grid points, 3 to 500.</td></tr>
+      <tr><td class="pname">--no_force_flat</td><td class="pdefault">off</td><td>—</td><td>When scanning \(\Omega_{m0}\) or \(\Omega_{\rm DE,0}\), do not compensate the other density to preserve flatness -- let curvature vary implicitly instead. Irrelevant when scanning \(w_0\) or \(H_0\).</td></tr>
+      <tr><td class="pname">--age_ref_gyr</td><td class="pdefault">13.0</td><td>Gyr</td><td>Reference age drawn on the age-scan plot, e.g. the age of the oldest globular clusters.</td></tr>
+    </tbody></table>
+
+    <h3>Mode selection and output</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--mode</td><td class="pdefault">evolve</td><td>—</td><td>One of <code>evolve</code>, <code>compare</code>, <code>age</code>.</td></tr>
+      <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>In addition to displaying the figure on screen, save a timestamped PNG in this folder.</td></tr>
+      <tr><td class="pname">--csvdir</td><td class="pdefault">None</td><td>path</td><td>Also write timestamped CSV data files here; does not affect the screen display and can be combined freely with <code>--outdir</code>.</td></tr>
+      <tr><td class="pname">--no_plot</td><td class="pdefault">off</td><td>—</td><td>Skip the figure entirely; requires <code>--csvdir</code>. Useful for parameter sweeps in a shell loop.</td></tr>
+      <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>PNG resolution, 10 to 1200.</td></tr>
+      <tr><td class="pname">--lw</td><td class="pdefault">1.6</td><td>pt</td><td>Curve line width.</td></tr>
+      <tr><td class="pname">--version</td><td class="pdefault">—</td><td>—</td><td>Print the model version and exit. Every CSV file records the same string.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="output">
+    <h2>Output and Plot Panels</h2>
+    <table class="out-table"><thead><tr><th>Output</th><th>What to Look For</th></tr></thead><tbody>
+      <tr><td class="oname">evolve — \(a(t)\)</td><td>Rapid early expansion compressed near \(t=0\) on this linear time axis, a dashed line marking today, and — for a closed model — a second dash-dot line marking the turnaround. If a model never reaches \(a=1\), no "today" line appears.</td></tr>
+      <tr><td class="oname">evolve — \(H(t)\)</td><td>\(H\) falls by many orders of magnitude from the radiation era to today. Its future behavior depends on which dark-energy case you ran: it flattens toward a constant only for an exact cosmological constant / de Sitter domination (\(w_0=-1\), \(w_a=0\)); for constant \(w_0&gt;-1\) it instead falls toward zero; for phantom (\(w_0&lt;-1\)) it grows without bound toward the Big Rip; for evolving CPL (\(w_a\neq0\)) the future trend can do any of these depending on the parameters. Matter-only (no dark energy) models keep falling.</td></tr>
+      <tr><td class="oname">evolve — \(\Omega_i(a)\)</td><td>Three eras in sequence — radiation, then matter, then dark energy — with the sum-check line pinned exactly at 1 throughout. The two equality epochs are marked; compare their scale factors with the algebraic estimate \(a_{\rm eq}=\Omega_{r0}/\Omega_{m0}\) for the first one.</td></tr>
+      <tr><td class="oname">evolve — \(q(t)\)</td><td>Starts near \(+1\) (radiation domination), settles near \(+1/2\) (matter domination), crosses zero at the acceleration transition, and approaches \(-1\) if a cosmological constant eventually dominates. For a recollapsing model, \(q\) diverges as the turnaround is approached, since \(H\to0\) while the densities stay finite.</td></tr>
+      <tr><td class="oname">compare — \(a(t)\) overlay</td><td>Each cosmology's history, with a dot marking where it crosses \(a=1\); reading the dots' horizontal positions directly compares their ages.</td></tr>
+      <tr><td class="oname">compare — \(q(t)\) overlay</td><td>The deceleration axis is deliberately clipped (\(-1.6\) to \(3.0\)): a recollapsing model's \(q\) diverges near its turnaround and would otherwise swamp the comparison, which is the point of the panel.</td></tr>
+      <tr><td class="oname">compare — age bar chart</td><td>A direct visual ranking of ages; a cosmology that never reaches \(a=1\) (recollapses first) is drawn hatched at zero height rather than omitted.</td></tr>
+      <tr><td class="oname">compare — \(\Omega_{\rm DE}(a)\) overlay</td><td>Models with no dark energy sit at zero throughout; the <code>phantom</code> and <code>evolving_de</code> presets separate visibly from a cosmological constant only close to and after \(a=1\), which is exactly why distinguishing them observationally is hard.</td></tr>
+      <tr><td class="oname">age — age vs. parameter</td><td>The classic "age crisis" plot: age falls monotonically as \(\Omega_{m0}\) rises (flat case), crossing the reference globular-cluster age near \(\Omega_{m0}\approx0.3\)-\(0.4\) — which is close to, but not identical to, the concordance value, and figuring out why is a good exercise in itself.</td></tr>
+      <tr><td class="oname">age — \(H_0t_0\) vs. parameter</td><td>The dimensionless version of the same plot, with reference lines at the Einstein-de Sitter value \(2/3\) and the Milne value \(1\).</td></tr>
+      <tr><td class="oname">Run summary</td><td>Printed to the terminal for every mode: inputs, derived epochs, which of \(a_{\max}\), \(t_{\max}\), or a genuine turnaround actually stopped the run, and a <em>notes on this run</em> block whenever the model has been pushed outside typical bounds (extreme curvature, a decelerating "dark energy," an unresolved early-time offset, a t_max stop before reaching \(a=1\), an impending recollapse or Big Rip). Read it.</td></tr>
+      <tr><td class="oname">CSV files</td><td>With <code>--csvdir PATH</code>: the full numerical table, with a commented header recording the model version, the run time, and every parameter that mode actually used. <code>compare</code> mode writes both an age-comparison table and a long-format table of every cosmology's curves.</td></tr>
+      <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>: a timestamped copy of the figure, saved in addition to the on-screen display. Use <code>--no_plot --csvdir PATH</code> for a data-only sweep.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="experiments">
+    <h2>Suggested Experiments</h2>
+    <p>The exercises are divided into a <strong>core sequence</strong>, arranged from reading the output through controlled comparisons to numerical work, and a set of <strong>optional projects</strong> that connect to open questions in cosmology. Two <strong>synthesis</strong> exercises close the set. Nothing here needs anything beyond the program, a spreadsheet or short script, and the printed summary.</p>
+
+    <h3>Core sequence · introductory</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-1 · introductory</div><h4>Read the Concordance Universe</h4><p>Run <code>python main.py --mode evolve --H0 67.4 --omega_m 0.315</code> (omit <code>--omega_de</code> so the program forces flatness exactly; passing <code>--omega_de 0.685</code> here would leave a stray \(\Omega_{k0}=-9.24\times10^{-5}\) from the default radiation density). Record the age of the universe, \(q_0\), the matter-radiation and matter-dark-energy equality redshifts, and the acceleration-transition redshift. Which happened more recently: matter-dark-energy equality, or the onset of accelerated expansion? Should those two necessarily coincide, given the formula for \(q(a)\)? For a bonus, derive \(a_{m\Lambda}=(\Omega_{m0}/\Omega_{\Lambda0})^{1/3}\) and \(a_{\rm accel}=(\Omega_{m0}/2\Omega_{\Lambda0})^{1/3}\) for flat matter+\(\Lambda\) with negligible radiation, verify both against the printed values, and explain the factor of two between them.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-2 · introductory</div><h4>The Historical Age Crisis</h4><p>Run <code>--mode evolve --H0 70 --omega_m 1.0 --omega_de 0.0</code> (Einstein-de Sitter). Record the age. The oldest globular clusters in the Milky Way are reliably dated to roughly 12-13 Gyr. Is this matter-only, flat universe old enough to contain them? This was a real crisis in cosmology before 1998 -- explain, in one sentence using only the formula \(t_0=(2/3)/H_0\), why raising \(H_0\) cannot solve the problem. Now run <code>--mode evolve --H0 70 --omega_m 0.3 --omega_de 0.0</code> (an <em>open</em>, low-density, still matter-only universe -- no \(\Lambda\) at all) and compare its age. This is the historically important point: an open universe alone could relieve the pre-1998 age problem without dark energy. What finally made dark energy hard to avoid was a separate observation (EXP-6), not the age alone.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-3 · introductory</div><h4>Three Eras</h4><p>Run <code>--mode evolve</code> with default (flat, concordance-like) parameters and study the \(\Omega_i(a)\) panel. Identify by eye the radiation era, the matter era, and the dark-energy era. Using the closed-form \(a_{\rm eq}=\Omega_{r0}/\Omega_{m0}\), predict the matter-radiation equality scale factor before checking it against the printed summary.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-4 · intermediate</div><h4>An Analytic Validation Case (Milne)</h4><p>Run <code>--mode evolve --omega_m 0 --omega_r 0 --omega_de 0</code> (the Milne universe: pure curvature, nothing else). The exact solution is \(a=H_0t\) for <em>all</em> time, where \(H_0\) must first be converted from km/s/Mpc to Gyr\(^{-1}\) (the program does this once, internally; do it yourself by hand here). Using the CSV output, compute the relative error \(|a_{\rm program}(t)-H_0t|/(H_0t)\) at several rows spanning the run, being careful how you handle the \(t=0\) row where the denominator vanishes. Why should this particular cosmology make an unusually clean test of the integrator, and what does it <em>not</em> test (checkpoints, turnaround handling, a nonlinear \(H(a)\))?</p></div>
+
+    </div>
+
+    <h3>Core sequence · introductory to intermediate</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-5 · introductory/intermediate</div><h4>The Bookkeeping Identity</h4><p>Using the evolve-mode CSV for any cosmology of your choice, verify numerically that \(\Omega_m(a)+\Omega_r(a)+\Omega_k(a)+\Omega_{\rm DE}(a)=1\) at every row, to within floating-point round-off. Then derive this identity algebraically in one line, starting from the definition \(\Omega_i(a)\equiv\rho_i(a)/\rho_{\rm crit}(a)\) and the first Friedmann equation. Because every term shares the same denominator, this identity holds by construction regardless of whether \(a(t)\) was integrated correctly -- it checks that the program's internal bookkeeping and CSV export are self-consistent, not that the numerical integration of \(a(t)\) is right (EXP-11 builds that independent check).</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-6 · introductory/intermediate</div><h4>1998 in One Plot</h4><p>Run the concordance cosmology and read the sign of \(q(t)\) at early times versus today. Using only the formula \(q=\tfrac12\sum\Omega_i(1+3w_i)\), explain algebraically why a universe with only matter and radiation can never have \(q&lt;0\), and why, within General Relativity and the FLRW model, accelerating expansion requires a component with negative effective \(\rho+3p\) -- \(w&lt;-1/3\) in the fluid picture this program implements. A cosmological constant is one realization of that component (it can be written either geometrically, on the left side of Einstein's equation, or as an exactly equivalent \(w=-1\) fluid on the right side, as this program treats it); modified gravity, which changes the left side of Einstein's equation instead of adding a fluid, is a genuinely different route to \(q&lt;0\) and lies outside what this program can model.</p></div>
+
+    </div>
+
+    <h3>Core sequence · intermediate</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-7 · intermediate</div><h4>Open and Closed, Side by Side</h4><p>Run <code>--mode compare --presets open,closed</code> first: these two share zero dark energy but differ in both \(\Omega_{m0}\) and the derived \(\Omega_{k0}\) (curvature makes up whatever matter does not, under flatness being dropped), so their very different fates can be explained using only the matter+curvature first Friedmann equation \(E(a)^2=\Omega_{m0}a^{-3}+\Omega_{k0}a^{-2}\), without reference to dark energy at all -- do that, tracking both terms. Then add <code>lambdaCDM</code> to the comparison (<code>--presets EdS,lambdaCDM,open,closed</code>) and note that it differs from the other three in \(H_0\), \(\Omega_{m0}\), <em>and</em> the presence of dark energy simultaneously, so any single difference you see there cannot be attributed to curvature alone -- fate follows from the full \(E(a)^2\) budget, not from \(\Omega_{k0}\) in isolation once dark energy is present.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-8 · intermediate</div><h4>Reproducing the Age-vs-\(\Omega_m\) Plot</h4><p>Run <code>--mode age --scan_param omega_m --scan_lo 0.05 --scan_hi 1.5 --scan_n 60</code>. A finite grid will almost never land exactly on the \(\Omega_{m0}\) where the age equals your chosen <code>--age_ref_gyr</code> -- find the two adjacent grid rows that bracket it and linearly interpolate between them, then state your result together with the grid spacing as an honest uncertainty. Double <code>--scan_n</code> and see how much the estimate moves. Is your interpolated value closer to the historical assumption \(\Omega_m=1\) or to the modern concordance value \(\Omega_m\approx0.3\)? (For the specific historical question of whether a flat, positive-\(\Lambda\) universe is needed at all, restricting the scan to \(\Omega_{m0}\le1\) keeps the comparison to the flat-\(\Lambda\)-vs-\(\Lambda=0\) family discussed in EXP-2.)</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-9 · intermediate</div><h4>Evolving Dark Energy, Phantom, and the Cosmological Constant</h4><p>Run <code>--mode compare --presets lambdaCDM,evolving_de,phantom,desi_like</code>. All four share the same \(H_0\) and \(\Omega_{m0}\); only \(w_0\) and \(w_a\) differ, so any difference you see is attributable to the dark-energy sector alone. Compare their ages, their \(q_0\), and their \(\Omega_{\rm DE}(a)\) curves. Find the scale factor at which \(|\Omega_{\rm DE,evolving\_de}(a)-\Omega_{\rm DE,\Lambda CDM}(a)|\) first exceeds, say, 1% of \(\Omega_{\rm DE,\Lambda CDM}(a)\) (a concrete threshold, not "visibly"), and use that to say how recent an epoch you would need to observe precisely to tell the two apart. Caution: despite its name, <code>evolving_de</code> (\(w_0=-0.8\), \(w_a=0.3\)) is not pure quintessence over the whole range this program can show you -- using \(w(a)=w_0+w_a(1-a)\), verify for yourself that it crosses \(w=-1\) at \(a=5/3\) (since \(dw/da=-w_a\ne0\), it genuinely crosses rather than merely touching); describe it as quintessence-like for \(a\lesssim5/3\) and phantom-like beyond, both squarely within \(a\ge1\) (future) CPL extrapolation, not "three regimes from today onward." Separately, using \(w(a)=w_0+w_a(1-a)\), explain why <code>desi_like</code> (\(w_0=-0.7,\ w_a=-1.0\)) moves in the <em>opposite</em> direction into the past from <code>evolving_de</code> -- this is the sign distinction behind the DESI note above.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-10 · intermediate</div><h4>The Flatness Problem, Quantitatively</h4><p>Run <code>--mode evolve</code> with \(\Omega_{m0}=0.3\), \(\Omega_{\rm de}=0.6999\) (so \(\Omega_{k0}=1-0.3-9.24\times10^{-5}-0.6999\approx7.6\times10^{-6}\), already tiny). With the default \(\Omega_{r0}=9.24\times10^{-5}\), matter-radiation equality is at \(a_{\rm eq}=\Omega_{r0}/\Omega_{m0}\approx3.08\times10^{-4}\), so both \(a=10^{-6}\) and \(a=10^{-8}\) lie in the <em>radiation</em>-dominated era, not the matter-dominated one. Using the CSV output, find the rows nearest \(a=10^{-2}\) (matter-dominated), \(a=10^{-6}\), and \(a=10^{-8}\) (both radiation-dominated; the CSV grid will not land on these exactly -- use the nearest row, or interpolate, and say which you did) and read off \(\Omega_k(a)\) at each. By what factor does \(|\Omega_k|\) shrink for each factor of 100 decrease in \(a\)? State the scaling as a power law at each pair of points, and explain from the \(a^{-2}\) (curvature) vs. \(a^{-3}\) (matter) vs. \(a^{-4}\) (radiation) scalings in \(E(a)^2\) why it is \(\Omega_k(a)\propto a\) between \(a=10^{-2}\) and matter-radiation equality, but \(\Omega_k(a)\propto a^2\) between \(a=10^{-6}\) and \(a=10^{-8}\), deep in the radiation era.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-11 · advanced</div><h4>Verify the Second Friedmann Equation Independently</h4><p>Using the evolve-mode CSV for the concordance cosmology, numerically differentiate \(a(t)\) twice to estimate \(q(t)=-\ddot a\,a/\dot a^2\) directly from the trajectory, at several times of your choosing, and compare with the program's own \(q(t)\) (built on the algebraic <em>second</em> Friedmann equation, not on differentiating the first). The output time grid is <strong>not</strong> uniform in \(t\) (the step size is Hubble-time-scaled), so a simple equal-spacing second-difference formula is not directly valid -- either use the general three-point finite-difference formula for unevenly spaced points, or first resample \(a(t)\) onto a uniform grid by interpolation before differentiating. Exclude rows right at a checkpoint or turnaround. Define precisely what you mean by "coarser cadence" (e.g., use only every \(k\)-th CSV row) before asking whether agreement gets better or worse with it.</p></div>
+
+    </div>
+
+    <h3>Core sequence · intermediate to advanced</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-12 · intermediate/advanced</div><h4>A Universe That Recollapses</h4><p>Run <code>--mode evolve --omega_m 1.5 --omega_de 0.0 --continue_collapse</code>. Record \(a_{\rm turn}\), \(t_{\rm turn}\), and the total lifetime. First derive \(a_{\rm turn}\) algebraically by setting \(E(a)^2=0\) with only matter and curvature (neglecting the tiny radiation term, so your hand value will be <em>approximately</em>, not exactly, 3) and compare with the program's value, which does include that small radiation term. Then explain, using only the fact that \(E(a)^2\) depends on \(a\) but never on the sign of \(\dot a\), why the total lifetime must be exactly twice the time to turnaround -- with no need to re-integrate the contracting half. Note that the mirrored data in the CSV run back down only to \(a_i\), not to \(a=0\); the quoted total-lifetime figure extrapolates the missing interval near each end through the analytic early-time offset, not through additional integrated points. For a convergence check, repeat at a few values of <code>--a_i</code> and <code>--step_frac</code> and see how much \(t_{\rm turn}\) moves.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-13 · intermediate/advanced</div><h4>Racing Toward a Big Rip</h4><p>Run <code>--mode evolve --w0 -1.2 --wa 0 --a_max 60</code> (the Big Rip formula used here assumes \(w_a=0\); leaving <code>--wa</code> at its default already satisfies this, but say so explicitly) and record the reported Big Rip time. Using the closed-form estimate in the help file's equations section, compute your own estimate by hand from \(H_0\), \(\Omega_{\rm DE,0}\), and \(w_0\), and compare -- being careful to distinguish the reported <em>absolute</em> cosmic time \(t_{\rm rip}\) from the <em>time remaining</em> \(t_{\rm rip}-t_0\) you compute by hand from the formula. Then repeat for \(w_0=-1.05\) and \(w_0=-1.5\): how sensitively does the time to the Big Rip depend on how far \(w_0\) sits below \(-1\)? Finally, run \(w_0=-1.0\) exactly and confirm the program reports no Big Rip at all -- explain why an infinitesimal change in \(w_0\) at the boundary produces a qualitative change in the universe's fate, and note that this whole estimate is a late-time, dark-energy-dominated approximation, not valid while matter or radiation still contribute.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-14 · advanced</div><h4>Numerical Convergence</h4><p>Repeat the concordance run with <code>--step_frac 0.05, 0.02, 0.01, 0.005, 0.001</code> and record the age of the universe to six significant figures each time (0.05 is coarse enough to show visibly non-asymptotic behavior -- include it anyway, as a lesson in what "not yet converged" looks like). Demonstrate convergence, quantify the residual spread at the finest setting relative to a very fine reference run (e.g. <code>step_frac=1e-4</code>), and estimate the empirical order of convergence from how the error scales as <code>step_frac</code> is halved. Then repeat for the closed-universe turnaround in EXP-12. This is <em>not</em> the same convergence question as the ordinary trajectory: \(a_{\rm turn}\) is found by algebraic bisection (converges to bisection tolerance, essentially independent of <code>step_frac</code>), while \(t_{\rm turn}\) additionally depends on the RK4-integrated time accumulated <em>before</em> the handoff to that root-finder plus a separate Gauss-Legendre quadrature -- so ask separately how \(a_{\rm turn}\) and \(t_{\rm turn}\) each behave as <code>step_frac</code> is refined, rather than expecting one single RK4 convergence order to describe both.</p></div>
+
+    </div>
+
+    <h3>Optional projects · advanced</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-15 · advanced (instructor-led optional)</div><h4>Negative Dark Energy and Forced Flatness</h4><p>Run <code>--mode age --scan_param omega_m --scan_lo 0.5 --scan_hi 2.0 --scan_n 30</code> (flatness enforced by default, so \(\Omega_{\rm DE,0}=1-\Omega_{m0}\) becomes negative once \(\Omega_{m0}&gt;1\)). A negative energy density violates the weak energy condition -- it is a legitimate object to explore mathematically within the Friedmann equation, but not a candidate description of the real universe. Find, from the CSV, the first grid point flagged as recollapsing (recall this scan's <code>recollapses_by_a5</code> column only means "found by \(a=5\)," and the exact threshold you locate depends on the grid resolution -- bracket it between adjacent grid points and refine with a second, finer scan rather than quoting the first coarse row as if it were exact). Compare your bracketed threshold with the recollapse condition you would derive for matter and curvature alone with no dark energy at all. Are they the same condition in disguise, or genuinely different?</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-16 · advanced</div><h4>The Dark-Energy Degeneracy Problem</h4><p>Find a second pair \((w_0,w_a)\), different from the <code>evolving_de</code> preset's \((-0.8,0.3)\), that reproduces the concordance cosmology's age and \(q_0\) to three significant figures (a little trial and error with <code>--mode evolve</code> is expected; note that at fixed present densities, \(q_0\) depends on \(w_0\) alone and not on \(w_a\) at all, since \(w(a{=}1)=w_0\) exactly -- so your search only needs to adjust \(w_0\) to match \(q_0\), then use \(w_a\) freely for the age match). Now compare the two models' \(\Omega_{\rm DE}(a)\) curves at \(a=0.3\) (a past epoch actually reachable by real surveys) and at \(a=3\) (a CPL extrapolation into the future, not a prediction -- CPL has no guarantee of remaining valid that far from \(a=1\); label it as such). This near-degeneracy -- similar today, different in the past -- is exactly why real dark-energy surveys need data spanning a wide range of redshift, not just a single-epoch measurement, to break it.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-17a · intermediate</div><h4>\(H_0\) Scaling</h4><p>Holding every dimensionless density and \(w(a)\) fixed, run the concordance cosmology at a few different values of \(H_0\) (e.g. 60, 67.4, 70, 73). Show that the dimensionless product \(H_0t_0\) stays fixed while \(t_0\) itself scales as \(1/H_0\) -- derive why this must be true directly from the Friedmann equation before checking it numerically.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-17b · advanced (dated, outside-program extension)</div><h4>The Hubble Tension</h4><p>Using EXP-17a's scaling result, note that this program's Friedmann-equation machinery has no mechanism that prefers one \(H_0\) over another -- changing <code>--H0</code> here is not itself a resolution of anything. As a separately sourced, dated research extension (check for updates beyond 2026), briefly research outside this program what the "Hubble tension" between Planck-inferred and local distance-ladder \(H_0\) values currently stands at, and identify one physical effect a genuine resolution would need to leave imprinted on \(H(a)\) at some epoch -- e.g. an early-universe modification (visible before recombination) versus a late-time one (visible in this program's \(H(a)\) at low \(a\)).</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-17c · advanced (numerical-methods project)</div><h4>Stop-Event Ordering</h4><p>Using the closed-universe model of EXP-12 (\(\Omega_{m0}=1.5\), \(\Omega_{\rm DE,0}=0\)), first run it to completion to find its \(a_{\rm turn}\) and \(t_{\rm turn}\). Then run it four more times, choosing <code>--a_max</code> once just below and once just above \(a_{\rm turn}\), and separately choosing <code>--t_max</code> once just below and once just above \(t_{\rm turn}\) (using a generous <code>--a_max</code> for the <code>--t_max</code> runs so it does not interfere). Before running each, predict from the help file's stopping-precedence rule which of \(a_{\max}\), \(t_{\max}\), or the turnaround should stop the run, and check the printed "Run stopped because" line against your prediction. This directly exercises the event-ordering logic described in the Algorithm section above.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-17d · advanced (numerical-methods project)</div><h4>The Closed-Matter-Only Universe, Exactly</h4><p>The flat matter-only case has a closed form (\(a\propto t^{2/3}\)), but so does the <em>closed</em> matter-only case (\(\Omega_{r0}=\Omega_{\rm DE,0}=0\), \(\Omega_{m0}&gt;1\)): it is the classic cycloid, \(a(\eta)=\tfrac{\Omega_{m0}}{2(\Omega_{m0}-1)}(1-\cos\eta)\), \(H_0t(\eta)=\tfrac{\Omega_{m0}}{2(\Omega_{m0}-1)^{3/2}}(\eta-\sin\eta)\), parametrized by the development angle \(\eta\in[0,2\pi]\) (\(\eta=\pi\) is turnaround). Derive this yourself from \(E(a)^2=\Omega_{m0}a^{-3}+(1-\Omega_{m0})a^{-2}\), or look up the standard derivation, and implement it (a short script, or even a spreadsheet) to compute \(a_{\rm turn}\) and \(t_{\rm turn}\) for \(\Omega_{m0}=2\) directly from these closed-form expressions, with no numerical integration at all. Compare against this program's <code>--omega_m 2 --omega_de 0</code> output. Then repeat EXP-17c's experiment using this exact solution as the reference instead of the program's own first run: place <code>--a_max</code> and <code>--t_max</code> progressively closer to the exact \(a_{\rm turn}\)/\(t_{\rm turn}\) (say, at 90%, 99%, 99.9%, and 99.99% of the exact value) and track how the program's reported stopping time and scale factor converge to the exact cycloid values as the boundary approaches the singularity. This is the most demanding test of the event-ordering and turnaround machinery in the program, because it checks it against an independent solution with no numerical error of its own, not just against the program's own self-consistency.</p></div>
+
+    </div>
+
+    <h3>Synthesis</h3>
+    <div class="exp-grid">
+
+      <div class="exp-card"><div class="ec-num">EXP-18 · synthesis</div><h4>Every Ingredient, Classified</h4><p>Make a table of every equation and assumption this program relies on -- FLRW symmetry (homogeneity/isotropy), General Relativity itself, the perfect-fluid treatment of each component, separate (non-interacting) conservation of matter/radiation/dark energy, the first Friedmann equation, the second Friedmann equation, the continuity equation, the CPL ansatz, the closure relation for \(\Omega_{k0}\), the early-time analytic offset, and the Big Rip estimate. Give each row four separate classifications, not one: its mathematical status (exact identity, exact consequence of the field equations, or phenomenological fit), the physical assumption it depends on, whether it involves a measured/inferred parameter, and whether this program's numerical treatment of it is itself exact, asymptotic, or approximate. How many rows have a phenomenological or parameter-inference entry? What does that tell you about where the real scientific uncertainty in cosmology lives, as opposed to where the mathematical uncertainty (numerical error) lives?</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-19 · synthesis</div><h4>Destiny Revisited</h4><p>Before dark energy was known, "will the universe expand forever?" had a one-word answer determined by \(\Omega_{k0}\) alone. Using what you found in EXP-7, EXP-12, and EXP-13, plus a fourth case you must construct yourself -- a <em>closed</em> universe (\(\Omega_{k0}&lt;0\), e.g. try <code>--omega_m 1.5 --omega_de 0.3</code> or similar and check the sign) with enough positive \(\Omega_{\rm DE,0}\) that it expands forever rather than recollapsing -- write a short, precise replacement statement of the destiny question that is actually correct given everything this program can compute, one that correctly classifies both that closed-but-eternal case and a flat-but-doomed (phantom) one. State explicitly that any such fate statement is conditional on the assumed component model remaining valid arbitrarily far from today, which for a phenomenological ansatz like CPL is itself an assumption, not a guarantee.</p></div>
+
+      <div class="exp-card"><div class="ec-num">EXP-20 · synthesis</div><h4>Map the Model's Domain of Validity</h4><p>Pick one major phenomenon this program omits entirely -- structure formation, recombination and the cosmic microwave background, Big Bang nucleosynthesis, cosmic inflation, or quantum gravity at \(a\to0\) -- and, for that one phenomenon only, list: which new state variables it would require beyond \(a(t)\), which new equations or data it would need, and specifically why \(H(a)\) alone (this program's entire computational core) is insufficient to capture it. This is meant to be a focused case study, not a ranking of "hardest" or an estimate of code size.</p></div>
+
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="validity">
+    <h2>Domain of Validity</h2>
+    <p>This program numerically solves the FLRW background equations for an idealized universe; it is not a cosmological-parameter-fitting pipeline and not a simulation of structure. The following are absent by design.</p>
+
+    <h3>Accepted range is not the same as a physically meaningful range</h3>
+    <table class="cred-table"><thead><tr><th>Quantity</th><th>Accepted</th><th>Physically well-motivated</th></tr></thead><tbody>
+      <tr><td class="cname">\(\Omega_{m0}\), \(\Omega_{r0}\)</td><td>any non-negative finite value</td><td>\(\Omega_{m0}\approx0.3\), \(\Omega_{r0}\approx9\times10^{-5}\) for our universe; other values are legitimate toy models, explicitly the point of several exercises above</td></tr>
+      <tr><td class="cname">\(\Omega_{k0}\)</td><td>any value implied by the other three densities</td><td>\(|\Omega_{k0}|\lesssim10^{-3}\) observationally; the program warns above \(|\Omega_{k0}|=0.05\)</td></tr>
+      <tr><td class="cname">\(w_0\), \(w_a\)</td><td>any finite values that keep the CPL density shape numerically representable (very large \(|w_a|\) over a wide \(a\)-range is rejected with a clear error instead)</td><td>dataset- and model-dependent: current analyses are consistent with a pure \(w_0=-1\) cosmological constant in some combinations, and show a several-\(\sigma\) preference for evolving \(w_0&gt;-1\), \(w_a&lt;0\) in others (see the dated DESI DR2 note above) -- this is an active, unsettled area, not a single settled number; large excursions are legitimate for exploring the CPL parameter space, not claims about the real universe</td></tr>
+      <tr><td class="cname">\(a_i\)</td><td>any value strictly between 0 and 1</td><td>deep enough into radiation (or matter, or curvature) domination that the analytic Big-Bang offset is asymptotically accurate; the program checks and warns</td></tr>
+    </tbody></table>
+
+    <h3>What is absent</h3>
+    <ul>
+      <li><strong>Structure formation.</strong> Galaxies, clusters, and the cosmic web are density perturbations on top of the homogeneous background computed here; their growth is a separate (linear, then nonlinear) calculation this program does not attempt.</li>
+      <li><strong>Recombination and the cosmic microwave background.</strong> Photon decoupling at \(z\approx1100\) and the resulting CMB anisotropies require radiative transfer physics entirely outside a background-only Friedmann solver.</li>
+      <li><strong>Big Bang nucleosynthesis.</strong> The synthesis of light elements in the first few minutes depends on nuclear reaction rates and particle physics not modeled here; \(\Omega_{r0}\) is simply supplied as a number.</li>
+      <li><strong>Cosmic inflation.</strong> The flatness and horizon problems are mentioned in the physical background, but no inflationary epoch is modeled; the integration starts well after any such epoch would have ended.</li>
+      <li><strong>Anything at or before the Planck time.</strong> \(a\to0\) is a mathematical limit of the classical field equations, not a physical claim; quantum gravity is expected to take over long before the model's own \(a\to0\) singularity is reached.</li>
+      <li><strong>Neutrino mass effects, baryon-photon coupling, and multiple dark-matter species.</strong> Matter and radiation are each treated as a single perfect fluid.</li>
+    </ul>
+    <p>What the program does capture well is the background dynamics implied by whatever energy content you choose: how \(H(a)\), the density budget, the deceleration parameter, and the age of the universe all follow from the Friedmann equations, exactly at the level of the equations themselves, once that content is given -- subject to this program's own numerical integration, root-finding, and quadrature error, which is typically small but never literally zero (see "How accurate is this, then?" above).</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="related">
+    <h2>Related Programs</h2>
+    <ul class="related-list">
+      <li><strong>GravitationalWaveSources</strong> — like this program, integrates an exact leading-order GR result (the quadrupole inspiral) forward in time with adaptive RK4; a useful comparison of numerical technique across very different physical settings.</li>
+      <li><strong>StellarEvolutionTracks</strong> — a one-zone model of stellar structure and evolution; unlike the Friedmann equations here, the underlying stellar-structure equations require calibrated closures (opacity, convection, nuclear reaction rates) that this program's problem does not need, since each program's governing equations call for whatever level of closure the underlying physics actually requires.</li>
+      <li><em>A distance-redshift / CMB module</em> (not yet implemented) would be the natural next step: computing the luminosity distance \(d_L(z)\) and angular-diameter distance \(d_A(z)\) from the same \(a(t)\) this program already produces is a short addition, and is exactly the calculation that made the 1998 acceleration discovery possible.</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================
+       RESTORE TO DEFAULTS CALLOUT
+       ============================================================ -->
+
+<section style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
+  <div style="
+    border: 1.5px solid #b5811a;
+    border-left: 5px solid #b5811a;
+    border-radius: 6px;
+    background: #fffbeb;
+    padding: 1.1em 1.4em;
+    display: flex;
+    gap: 1em;
+    align-items: flex-start;
+  ">
+    <!-- Icon -->
+    <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
+
+    <!-- Content -->
+    <div>
+      <div style="
+        font-weight: 700;
+        font-size: 0.95em;
+        color: #7b2d00;
+        margin-bottom: 0.35em;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      ">Restoring Default Parameter Values</div>
+
+      <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">
+        If you edit <code style="background:#f0ede4; padding:1px 5px; border-radius:3px; font-size:0.9em;">main.py</code> or another program file while experimenting,
+        you can restore the original program files using any of the following methods:
+      </p>
+
+      <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
+        <li>
+          <strong>Same session:</strong>
+          Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd>
+          (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd>
+          (macOS) repeatedly in your editor to undo your edits.
+        </li>
+        <li>
+          <strong>If you are using PyCharm:</strong>
+          Right-click the edited file in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.
+        </li>
+        <li>
+          <strong>Full reset:</strong>
+          Re-download the ZIP from
+          <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank"
+             style="color:#7b2d00; text-decoration:underline;">
+            github.com/tomyee3-org/GFTGUX-Programs
+          </a>
+          and replace this program's folder with the fresh copy.
+        </li>
+      </ul>
+
+      <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">
+        For additional ways to restore program files, see the corresponding
+        recovery instructions in the <em>GFTGU Python Setup Guide</em>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     END RESTORE TO DEFAULTS CALLOUT
+     ============================================================ -->
+
+  <section id="license">
+    <h2>License</h2>
+    <p>Cosmology_expansion_simulator is an original supplemental Python investigation proposed for use with Bernard Schutz's <em>Gravity from the Ground Up</em>. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
+  </section>
+</main>
+<footer>
+  <em>Gravity from the Ground Up</em> — Python Programs ·
+  Bernard Schutz © 2003 (Cambridge University Press) ·
+  Python programs © 2024–2026 Thomas Yee ·
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> ·
+</footer>
+</div>
+<script>
+  (function () {
+    const links = document.querySelectorAll('nav a');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const match = document.querySelector(`nav a[href="#${e.target.id}"]`);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('main section[id]').forEach(s => observer.observe(s));
+  })();
+</script>
+</body>
+</html>
