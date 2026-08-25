@@ -383,11 +383,7 @@
   </style>
 </head>
 <body>
-<div style="border:2px solid #444;padding:10px;margin:10px;background:#f5f5f5;">
-<h2>Version Information</h2>
-<p><strong>Cosmology Expansion Simulator Help File</strong><br>Version 1.5.0<br>Build 9ef1e60257d3</p>
-<p>This help file is intended to correspond to Cosmology Expansion Simulator version 1.5.0.</p>
-</div>
+
 <div class="page-wrap">
 <header>
   <div class="badge">Supplement · Gravity from the Ground Up</div>
@@ -401,6 +397,7 @@
        target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
   </div>
 </header>
+
 <nav id="sidebar">
   <div class="nav-label">Overview</div>
   <a href="#description">Description</a>
@@ -422,9 +419,11 @@
   <a href="#license">License</a>
 </nav>
 <main>
-
+<p style="font-size:0.7em; color:#666; margin-top:-32px;">
+  Version 1.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build 9ef1e60257d3
+</p>
   <!-- ================================================================ -->
-  <section id="description">
+  <section id="description" style="margin-top:-24px" >
     <h2>Description</h2>
     <p><strong>Cosmology_expansion_simulator</strong> integrates the Friedmann equation for a homogeneous, isotropic (FLRW) universe filled with matter, radiation, spatial curvature, and a dark-energy fluid, and tracks the resulting scale factor \(a(t)\), Hubble parameter \(H(t)\), fractional energy-density budget \(\Omega_i(a)\), and deceleration parameter \(q(t)\) from deep in the radiation era to a chosen point in the future. It answers, numerically and for any cosmology you specify, the question every introductory cosmology course eventually asks: how old is the universe, and how does the answer depend on what the universe is made of?</p>
     <p>One program covers three calculations, selected with <code>--mode</code>: a single expansion history (<code>evolve</code>), an overlay of several named or custom cosmologies with an age comparison (<code>compare</code>), and a systematic scan of the age of the universe across one cosmological parameter (<code>age</code>) — reproducing, among other things, the historical "age crisis": the Einstein-de Sitter model (flat, matter-only, \(\Omega_{m0}=1\)) could be too young for the oldest globular clusters. A lower matter density makes the universe older either by dropping flatness (an <em>open</em>, low-density, matter-only universe, no \(\Lambda\) at all, is old enough) or, if flatness is imposed instead, by adding a compensating dark-energy component to make up the difference. Either route by itself does not require dark energy — only the flatness-preserving route does, and only because flatness was assumed going in. What actually made dark energy hard to avoid was a separate line of evidence — the 1998 discovery, from Type Ia supernovae, that the expansion is <em>accelerating</em> (\(q_0&lt;0\)), which no matter-only model, open or flat, can produce. This program can demonstrate both points side by side (EXP-2 and EXP-6).</p>
@@ -799,43 +798,7 @@ python main.py --mode age --scan_param omega_m --scan_lo 0.05 --scan_hi 1.5</pre
 
     </div>
   </section>
-
-  <!-- ================================================================ -->
-  <section id="validity">
-    <h2>Domain of Validity</h2>
-    <p>This program numerically solves the FLRW background equations for an idealized universe; it is not a cosmological-parameter-fitting pipeline and not a simulation of structure. The following are absent by design.</p>
-
-    <h3>Accepted range is not the same as a physically meaningful range</h3>
-    <table class="cred-table"><thead><tr><th>Quantity</th><th>Accepted</th><th>Physically well-motivated</th></tr></thead><tbody>
-      <tr><td class="cname">\(\Omega_{m0}\), \(\Omega_{r0}\)</td><td>any non-negative finite value</td><td>\(\Omega_{m0}\approx0.3\), \(\Omega_{r0}\approx9\times10^{-5}\) for our universe; other values are legitimate toy models, explicitly the point of several exercises above</td></tr>
-      <tr><td class="cname">\(\Omega_{k0}\)</td><td>any value implied by the other three densities</td><td>\(|\Omega_{k0}|\lesssim10^{-3}\) observationally; the program warns above \(|\Omega_{k0}|=0.05\)</td></tr>
-      <tr><td class="cname">\(w_0\), \(w_a\)</td><td>any finite values that keep the CPL density shape numerically representable (very large \(|w_a|\) over a wide \(a\)-range is rejected with a clear error instead)</td><td>dataset- and model-dependent: current analyses are consistent with a pure \(w_0=-1\) cosmological constant in some combinations, and show a several-\(\sigma\) preference for evolving \(w_0&gt;-1\), \(w_a&lt;0\) in others (see the dated DESI DR2 note above) -- this is an active, unsettled area, not a single settled number; large excursions are legitimate for exploring the CPL parameter space, not claims about the real universe</td></tr>
-      <tr><td class="cname">\(a_i\)</td><td>any value strictly between 0 and 1</td><td>deep enough into radiation (or matter, or curvature) domination that the analytic Big-Bang offset is asymptotically accurate (the program checks and warns if not); separately, the program also certifies that \(a_i\) sits on a branch continuously connected back to the true Big Bang at \(a=0\), with no hidden forbidden interval (two nearby roots of \(E(a)^2=0\)) in between and no asymptotically negative \(E(a)^2\) as \(a\to0\) -- an \(a_i\) that fails this connectivity check is rejected with a clear error, not merely warned about</td></tr>
-    </tbody></table>
-    <p>One outcome deserves calling out explicitly here because it is easy to mistake for a bug: a flat model built entirely from a cosmological constant or a permanently phantom (\(w_0+w_a\leq-1\)) dark-energy term, with no matter, radiation, or curvature at all, will legitimately pass the connectivity check above yet be classified <code>past_status="past_eternal"</code> rather than given a finite age -- see "Past-Eternal Models" in the Physical Background section and EXP-21. This is expected, documented behavior for that specific, narrow parameter combination, not a numerical failure; every other supported combination (anything with a nonzero \(\Omega_{m0}\), \(\Omega_{r0}\), or \(\Omega_{k0}\) contribution at early times) yields an ordinary finite-age Big Bang.</p>
-
-    <h3>What is absent</h3>
-    <ul>
-      <li><strong>Structure formation.</strong> Galaxies, clusters, and the cosmic web are density perturbations on top of the homogeneous background computed here; their growth is a separate (linear, then nonlinear) calculation this program does not attempt.</li>
-      <li><strong>Recombination and the cosmic microwave background.</strong> Photon decoupling at \(z\approx1100\) and the resulting CMB anisotropies require radiative transfer physics entirely outside a background-only Friedmann solver.</li>
-      <li><strong>Big Bang nucleosynthesis.</strong> The synthesis of light elements in the first few minutes depends on nuclear reaction rates and particle physics not modeled here; \(\Omega_{r0}\) is simply supplied as a number.</li>
-      <li><strong>Cosmic inflation.</strong> The flatness and horizon problems are mentioned in the physical background, but no inflationary epoch is modeled; the integration starts well after any such epoch would have ended.</li>
-      <li><strong>Anything at or before the Planck time.</strong> \(a\to0\) is a mathematical limit of the classical field equations, not a physical claim; quantum gravity is expected to take over long before the model's own \(a\to0\) singularity is reached.</li>
-      <li><strong>Neutrino mass effects, baryon-photon coupling, and multiple dark-matter species.</strong> Matter and radiation are each treated as a single perfect fluid.</li>
-    </ul>
-    <p>What the program does capture well is the background dynamics implied by whatever energy content you choose: how \(H(a)\), the density budget, the deceleration parameter, and the age of the universe all follow from the Friedmann equations, exactly at the level of the equations themselves, once that content is given -- subject to this program's own numerical integration, root-finding, and quadrature error, which is typically small but never literally zero (see "How accurate is this, then?" above).</p>
-  </section>
-
-  <!-- ================================================================ -->
-  <section id="related">
-    <h2>Related Programs</h2>
-    <ul class="related-list">
-      <li><strong>GravitationalWaveSources</strong> — like this program, integrates an exact leading-order GR result (the quadrupole inspiral) forward in time with adaptive RK4; a useful comparison of numerical technique across very different physical settings.</li>
-      <li><strong>StellarEvolutionTracks</strong> — a one-zone model of stellar structure and evolution; unlike the Friedmann equations here, the underlying stellar-structure equations require calibrated closures (opacity, convection, nuclear reaction rates) that this program's problem does not need, since each program's governing equations call for whatever level of closure the underlying physics actually requires.</li>
-      <li><em>A distance-redshift / CMB module</em> (not yet implemented) would be the natural next step: computing the luminosity distance \(d_L(z)\) and angular-diameter distance \(d_A(z)\) from the same \(a(t)\) this program already produces is a short addition, and is exactly the calculation that made the 1998 acceleration discovery possible.</li>
-    </ul>
-  </section>
-
+  
   <!-- ============================================================
        RESTORE TO DEFAULTS CALLOUT
        ============================================================ -->
@@ -903,6 +866,43 @@ python main.py --mode age --scan_param omega_m --scan_lo 0.05 --scan_hi 1.5</pre
 <!-- ============================================================
      END RESTORE TO DEFAULTS CALLOUT
      ============================================================ -->
+  
+
+  <!-- ================================================================ -->
+  <section id="validity">
+    <h2>Domain of Validity</h2>
+    <p>This program numerically solves the FLRW background equations for an idealized universe; it is not a cosmological-parameter-fitting pipeline and not a simulation of structure. The following are absent by design.</p>
+
+    <h3>Accepted range is not the same as a physically meaningful range</h3>
+    <table class="cred-table"><thead><tr><th>Quantity</th><th>Accepted</th><th>Physically well-motivated</th></tr></thead><tbody>
+      <tr><td class="cname">\(\Omega_{m0}\), \(\Omega_{r0}\)</td><td>any non-negative finite value</td><td>\(\Omega_{m0}\approx0.3\), \(\Omega_{r0}\approx9\times10^{-5}\) for our universe; other values are legitimate toy models, explicitly the point of several exercises above</td></tr>
+      <tr><td class="cname">\(\Omega_{k0}\)</td><td>any value implied by the other three densities</td><td>\(|\Omega_{k0}|\lesssim10^{-3}\) observationally; the program warns above \(|\Omega_{k0}|=0.05\)</td></tr>
+      <tr><td class="cname">\(w_0\), \(w_a\)</td><td>any finite values that keep the CPL density shape numerically representable (very large \(|w_a|\) over a wide \(a\)-range is rejected with a clear error instead)</td><td>dataset- and model-dependent: current analyses are consistent with a pure \(w_0=-1\) cosmological constant in some combinations, and show a several-\(\sigma\) preference for evolving \(w_0&gt;-1\), \(w_a&lt;0\) in others (see the dated DESI DR2 note above) -- this is an active, unsettled area, not a single settled number; large excursions are legitimate for exploring the CPL parameter space, not claims about the real universe</td></tr>
+      <tr><td class="cname">\(a_i\)</td><td>any value strictly between 0 and 1</td><td>deep enough into radiation (or matter, or curvature) domination that the analytic Big-Bang offset is asymptotically accurate (the program checks and warns if not); separately, the program also certifies that \(a_i\) sits on a branch continuously connected back to the true Big Bang at \(a=0\), with no hidden forbidden interval (two nearby roots of \(E(a)^2=0\)) in between and no asymptotically negative \(E(a)^2\) as \(a\to0\) -- an \(a_i\) that fails this connectivity check is rejected with a clear error, not merely warned about</td></tr>
+    </tbody></table>
+    <p>One outcome deserves calling out explicitly here because it is easy to mistake for a bug: a flat model built entirely from a cosmological constant or a permanently phantom (\(w_0+w_a\leq-1\)) dark-energy term, with no matter, radiation, or curvature at all, will legitimately pass the connectivity check above yet be classified <code>past_status="past_eternal"</code> rather than given a finite age -- see "Past-Eternal Models" in the Physical Background section and EXP-21. This is expected, documented behavior for that specific, narrow parameter combination, not a numerical failure; every other supported combination (anything with a nonzero \(\Omega_{m0}\), \(\Omega_{r0}\), or \(\Omega_{k0}\) contribution at early times) yields an ordinary finite-age Big Bang.</p>
+
+    <h3>What is absent</h3>
+    <ul>
+      <li><strong>Structure formation.</strong> Galaxies, clusters, and the cosmic web are density perturbations on top of the homogeneous background computed here; their growth is a separate (linear, then nonlinear) calculation this program does not attempt.</li>
+      <li><strong>Recombination and the cosmic microwave background.</strong> Photon decoupling at \(z\approx1100\) and the resulting CMB anisotropies require radiative transfer physics entirely outside a background-only Friedmann solver.</li>
+      <li><strong>Big Bang nucleosynthesis.</strong> The synthesis of light elements in the first few minutes depends on nuclear reaction rates and particle physics not modeled here; \(\Omega_{r0}\) is simply supplied as a number.</li>
+      <li><strong>Cosmic inflation.</strong> The flatness and horizon problems are mentioned in the physical background, but no inflationary epoch is modeled; the integration starts well after any such epoch would have ended.</li>
+      <li><strong>Anything at or before the Planck time.</strong> \(a\to0\) is a mathematical limit of the classical field equations, not a physical claim; quantum gravity is expected to take over long before the model's own \(a\to0\) singularity is reached.</li>
+      <li><strong>Neutrino mass effects, baryon-photon coupling, and multiple dark-matter species.</strong> Matter and radiation are each treated as a single perfect fluid.</li>
+    </ul>
+    <p>What the program does capture well is the background dynamics implied by whatever energy content you choose: how \(H(a)\), the density budget, the deceleration parameter, and the age of the universe all follow from the Friedmann equations, exactly at the level of the equations themselves, once that content is given -- subject to this program's own numerical integration, root-finding, and quadrature error, which is typically small but never literally zero (see "How accurate is this, then?" above).</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="related">
+    <h2>Related Programs</h2>
+    <ul class="related-list">
+      <li><strong>GravitationalWaveSources</strong> — like this program, integrates an exact leading-order GR result (the quadrupole inspiral) forward in time with adaptive RK4; a useful comparison of numerical technique across very different physical settings.</li>
+      <li><strong>StellarEvolutionTracks</strong> — a one-zone model of stellar structure and evolution; unlike the Friedmann equations here, the underlying stellar-structure equations require calibrated closures (opacity, convection, nuclear reaction rates) that this program's problem does not need, since each program's governing equations call for whatever level of closure the underlying physics actually requires.</li>
+      <li><em>A distance-redshift / CMB module</em> (not yet implemented) would be the natural next step: computing the luminosity distance \(d_L(z)\) and angular-diameter distance \(d_A(z)\) from the same \(a(t)\) this program already produces is a short addition, and is exactly the calculation that made the 1998 acceleration discovery possible.</li>
+    </ul>
+  </section>
 
   <section id="license">
     <h2>License</h2>
