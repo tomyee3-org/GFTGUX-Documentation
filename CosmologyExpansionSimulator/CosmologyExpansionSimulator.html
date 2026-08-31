@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cosmology_expansion_simulator – Help File | GFtGU Programs</title>
+  <title>CosmologyExpansionSimulator – Help File | GFtGU Programs</title>
   <!-- MathJax 3 -->
   <script>
     MathJax = {
@@ -387,7 +387,7 @@
 <div class="page-wrap">
 <header>
   <div class="badge">Supplement · Gravity from the Ground Up</div>
-  <h1><em>Cosmology_expansion_simulator</em> — FLRW Dynamics, Density Budgets, and the Age of the Universe</h1>
+  <h1><em>CosmologyExpansionSimulator</em> — FLRW Dynamics, Density Budgets, and the Age of the Universe</h1>
   <div class="sub">
     Source Code:
     <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
@@ -425,11 +425,15 @@
   <!-- ================================================================ -->
   <section id="description" style="margin-top:-24px" >
     <h2>Description</h2>
-    <p><strong>Cosmology_expansion_simulator</strong> integrates the Friedmann equation for a homogeneous, isotropic (FLRW) universe filled with matter, radiation, spatial curvature, and a dark-energy fluid, and tracks the resulting scale factor \(a(t)\), Hubble parameter \(H(t)\), fractional energy-density budget \(\Omega_i(a)\), and deceleration parameter \(q(t)\) from deep in the radiation era to a chosen point in the future. It answers, numerically and for any cosmology you specify, the question every introductory cosmology course eventually asks: how old is the universe, and how does the answer depend on what the universe is made of?</p>
+    <p><strong>CosmologyExpansionSimulator</strong> integrates the Friedmann equation for a homogeneous, isotropic (FLRW) universe filled with matter, radiation, spatial curvature, and a dark-energy fluid, and tracks the resulting scale factor \(a(t)\), Hubble parameter \(H(t)\), fractional energy-density budget \(\Omega_i(a)\), and deceleration parameter \(q(t)\) from deep in the radiation era to a chosen point in the future. It answers, numerically and for any cosmology you specify, the question every introductory cosmology course eventually asks: how old is the universe, and how does the answer depend on what the universe is made of?</p>
     <p>One program covers three calculations, selected with <code>--mode</code>: a single expansion history (<code>evolve</code>), an overlay of several named or custom cosmologies with an age comparison (<code>compare</code>), and a systematic scan of the age of the universe across one cosmological parameter (<code>age</code>) — reproducing, among other things, the historical "age crisis": the Einstein-de Sitter model (flat, matter-only, \(\Omega_{m0}=1\)) could be too young for the oldest globular clusters. A lower matter density makes the universe older either by dropping flatness (an <em>open</em>, low-density, matter-only universe, no \(\Lambda\) at all, is old enough) or, if flatness is imposed instead, by adding a compensating dark-energy component to make up the difference. Either route by itself does not require dark energy — only the flatness-preserving route does, and only because flatness was assumed going in. What actually made dark energy hard to avoid was a separate line of evidence — the 1998 discovery, from Type Ia supernovae, that the expansion is <em>accelerating</em> (\(q_0&lt;0\)), which no matter-only model, open or flat, can produce. This program can demonstrate both points side by side (EXP-2 and EXP-6).</p>
-    <div class="note"><strong>Reading this page.</strong> The equations on this page are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; with no connection, the raw \(\LaTeX\) source (e.g. <code>\(a(t)\)</code>) will show as plain text instead of a formula. This has no effect on the program itself, which needs no internet access to run.</div>
+   
     <div class="note"><strong>Exact equations; conditional model; numerical results.</strong> This program evaluates the FLRW background equations for homogeneous, isotropic, separately conserved components and solves the resulting expansion history numerically. Given the stated energy content, the first Friedmann equation, the second (acceleration) Friedmann equation, and the fluid continuity equation are exact GR consequences of the FLRW model — not fitted. But three different claims are easy to blur together, and only the first is defensible without qualification: (1) the FLRW equations are exact consequences of General Relativity under the model's assumptions; (2) the chosen energy content and the CPL dark-energy ansatz are an exact description of nature (they are not — see below); (3) this program's finite-precision numerical output is exact (it is not — it carries ordinary RK4 truncation, root-finding, and quadrature error, typically small but never zero; see "How accurate is this, then?" below). The one deliberately phenomenological ingredient is the dark-energy equation of state \(w(a)=w_0+w_a(1-a)\) (the Chevallier–Polarski–Linder, or CPL, parametrization): nobody knows what dark energy is, so its equation of state is measured, not derived, and this program lets you dial it in and see the consequences.</div>
+    
     <div class="warn"><strong>What this program is, and what it does not model.</strong> This is a homogeneous-and-isotropic background calculation — it has no perturbations, no structure formation, no photons decoupling to make a cosmic microwave background, no primordial nucleosynthesis chemistry, and no inflationary epoch. \(a\to0\) is treated as a mathematical limit of the classical Friedmann equation, not a claim about what actually happened at the Big Bang, where quantum gravity is expected to take over. Use the program to build intuition for how the geometry and material content of an FLRW spacetime control its expansion history and age — not as a cosmological-parameter-fitting pipeline.</div>
+    
+    <div class="note"><strong>Reading this page.</strong> The equations on this page are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; with no connection, the raw \(\LaTeX\) source (e.g. <code>\(a(t)\)</code>) will show as plain text instead of a formula. This has no effect on the program itself, which needs no internet access to run.</div>
+    
 
     <h3>How seriously to take each number</h3>
     <table class="cred-table"><thead><tr><th>Quantity</th><th>Status</th><th>Read it as</th></tr></thead><tbody>

@@ -420,6 +420,7 @@
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
     Version 1.1.1&nbsp;&nbsp;&nbsp;&nbsp;Build 4412fce2fda3
   </p>
+ 
   <!-- ================================================================ -->
   <section id="description">
     <h2>Description</h2>
@@ -428,7 +429,8 @@
     <p>The default run follows a one-solar-mass star. It spends about 9.7 Gyr on the main sequence, brightening from 0.72 to 2.2 solar luminosities, then climbs the red-giant branch in a further 2.0 Gyr to a helium flash at 2500 solar luminosities. Its eventual remnant is <em>classified</em> as a 0.50 solar-mass carbon–oxygen white dwarf, which you can then hand to mode <code>wdcool</code> yourself.</p>
     <div class="warn"><strong>What this program is, and what it does not integrate.</strong> This is not MESA or any other stellar-evolution code, and it should not be read as one. Two genuine evolution equations are integrated — central hydrogen depletion, and helium-core growth by shell burning — and everything else is an explicit empirical fit or a calibrated closure. Three limits are worth knowing before your first run: a <strong>track stops at helium ignition</strong>, so core helium burning, the asymptotic giant branch, mass loss and envelope ejection are all absent; the <strong>remnant is a classification from the initial mass</strong>, not a computed endpoint, and the compact-object modes are separate calculations you invoke yourself; and <strong>absolute ages and luminosities are approximate</strong>. Use the program for scalings, turning points and limiting masses, which it captures far better than absolute values.</div>
     <div class="note"><strong>What is integrated and what is prescribed:</strong> the help file distinguishes these throughout. A green <span class="tag tag-ode">ODE</span> tag marks a quantity obtained by integrating a stated differential equation, a blue <span class="tag tag-der">DERIVED</span> tag marks an algebraic result derived from stated assumptions, an orange <span class="tag tag-fit">FIT</span> tag marks an empirical formula fitted to detailed stellar models, and a violet <span class="tag tag-cal">CLOSURE</span> tag marks a calibrated parameter that stands in for physics a one-zone model cannot capture. Distinguishing the four is itself part of the pedagogy, and several of the exercises turn on it.</div>
-
+    <div class="note"><strong>Reading this page.</strong> The equations on this page are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; with no connection, the raw \(\LaTeX\) source (e.g. <code>\(a(t)\)</code>) will show as plain text instead of a formula. This has no effect on the program itself, which needs no internet access to run.</div>
+    
     <h3>How seriously to take each number</h3>
     <table class="cred-table"><thead><tr><th>Calculation</th><th>Status</th><th>Read it as</th></tr></thead><tbody>
       <tr><td class="cname">tracks — main sequence</td><td>two integrated ODEs on top of empirical anchors and three calibrated closures</td><td>quantitative near the solar calibration, qualitative away from it</td></tr>
