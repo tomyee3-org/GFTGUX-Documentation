@@ -383,7 +383,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.6.0&nbsp;&nbsp;&nbsp;&nbsp;Build 1b72b493ad0d
+    Version 1.7.0&nbsp;&nbsp;&nbsp;&nbsp;Build 54e086464f39
   </p>
   <section id="description">
     <h2>Description</h2>
@@ -501,7 +501,7 @@
       <tr><td class="oname">Frequency f(t)</td><td>Shows the accelerating chirp and terminates at the computed Schwarzschild ISCO frequency.</td></tr>
       <tr><td class="oname">Run summary</td><td>Reports masses, chirp mass, distance, start and cutoff frequencies, time to ISCO, strain scale at ISCO, and sample count; QNM quantities appear only when ringdown is enabled.</td></tr>
       <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>, additionally saves a timestamped figure in the requested folder; the figure is still shown on screen in the same run.</td></tr>
-      <tr><td class="oname">CSV file</td><td>With <code>--csvdir PATH</code>, additionally saves a timestamped, self-documenting <code>t_s,f_hz,A,h,phase_rad</code> table (with a commented header recording the model version, build, and every waveform-affecting run parameter) in the requested folder -- a no-programming-required route to the numbers behind the plot, used by <a href="#experiments">EXP-7</a> and EXP-8. The write is atomic with respect to the published filename: on any ordinary failure partway through, no file bearing the public <code>gw_inspiral_*.csv</code> name is ever left partial or empty. This does not guarantee the folder is left completely free of debris in every case -- an abrupt kill of the program (rather than an ordinary error) can strand the private, dot-prefixed random-named temporary file it was building into; that file never carries the public name and is safe to remove once no GravitationalWaveSources process is still writing to the folder.</td></tr>
+      <tr><td class="oname">CSV file</td><td>With <code>--csvdir PATH</code>, additionally saves a timestamped, self-documenting <code>t_s,f_hz,A,h,phase_rad</code> table (with a commented header recording the model version, build, and every waveform-affecting run parameter) in the requested folder -- a no-programming-required route to the numbers behind the plot, used by <a href="#experiments">EXP-7</a> and EXP-8. The write is atomic with respect to the published filename: on any ordinary failure partway through, no file bearing the public <code>gw_inspiral_*.csv</code> name is ever left partial or empty. This does not guarantee the folder is left completely free of debris in every case -- an abrupt kill of the program (rather than an ordinary error) can strand the private, dot-prefixed random-named temporary file it was building into (named <code>.gw_tmp_*</code>); that file never carries the public name and is safe to remove once no GravitationalWaveSources process is still writing to the folder. A second, unrelated debris pattern, <code>.gw_modeprobe_*</code>, can very occasionally appear too: it exists only for an instant, to let the program discover the ordinary file-creation permissions your umask implies, and normally deletes itself immediately, but the same abrupt-kill scenario (or, rarely, a filesystem error on its own deletion) can leave an empty copy behind -- it is always empty, never contains any of your data, and is likewise safe to delete.</td></tr>
     </tbody></table>
     <p>Requires Python 3.10 or later; see the <em>GFTGU Python Setup Guide</em>.</p>
     <pre># Default BNS inspiral from 20 Hz
