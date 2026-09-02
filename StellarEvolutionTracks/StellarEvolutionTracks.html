@@ -418,7 +418,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.3.0&nbsp;&nbsp;&nbsp;&nbsp;Build 7703fa47bf20
+    Version 1.4.0&nbsp;&nbsp;&nbsp;&nbsp;Build 16faf4c1e9f5
   </p>
  
   <!-- ================================================================ -->
@@ -657,7 +657,7 @@ python main.py --mode nsmr --eos neutron</pre>
     <div class="module-grid">
       <div class="module-card"><div class="mc-role">Physics Layer</div><div class="mc-name">physics_sev.py</div><p>Constants, composition formulae, homology exponents, ZAMS fits, the two evolution ODEs, the exact Fermi-gas and polytropic equations of state, the Newtonian and TOV structure integrators, the Chandrasekhar mass–radius relation, the Mestel coefficient and cooling ODE, and the neutron-star model sequence. All validation of physical inputs lives here.</p></div>
       <div class="module-card"><div class="mc-role">Driver Layer</div><div class="mc-name">driver_sev.py</div><p>Validates presentation-level inputs, parses comma-separated mass and isochrone lists, dispatches on <code>--mode</code>, prints the run summary, writes timestamped CSV files, and calls the plotter.</p></div>
-      <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_sev.py</div><p>Four figure layouts, one per mode, with a shared HR-diagram convention (hot and bright at upper left). Every figure is displayed on screen; <code>--outdir</code> additionally saves the same figure.</p></div>
+      <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_sev.py</div><p>Four figure layouts, one per mode, with a shared HR-diagram convention (hot and bright at upper left). Every figure is displayed on screen; <code>--outdir</code> additionally saves the same figure as a timestamped PNG, together with a same-stem <code>.provenance.txt</code> text file recording the rendering settings and, for a normal CLI run, every mode-specific parameter used — independently of whether <code>--csvdir</code> was also given.</p></div>
       <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>Defines the student-facing command-line options, grouped by mode, and converts validation or runtime failures into concise command-line error messages.</p></div>
     </div>
   </section>
@@ -670,7 +670,7 @@ python main.py --mode nsmr --eos neutron</pre>
     <h3>Mode selection and output</h3>
     <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
       <tr><td class="pname">--mode</td><td class="pdefault">tracks</td><td>—</td><td>One of <code>tracks</code>, <code>hr</code>, <code>wdcool</code>, <code>nsmr</code>.</td></tr>
-      <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>In addition to displaying the figure on screen, save a timestamped PNG in this folder.</td></tr>
+      <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>In addition to displaying the figure on screen, save a timestamped PNG in this folder, together with a same-stem <code>&lt;name&gt;.provenance.txt</code> sidecar. The sidecar always records the rendering settings (<code>--dpi</code>, <code>--lw</code>) and, for an ordinary run through this program, every mode-specific scientific parameter the run used — so the figure can be reproduced without also asking for <code>--csvdir</code>. Keep the PNG and its sidecar together; a lone PNG is missing the record of how it was made.</td></tr>
       <tr><td class="pname">--csvdir</td><td class="pdefault">None</td><td>path</td><td>Also write timestamped CSV data files here. This option does not suppress or otherwise change the screen display, and it can be combined freely with <code>--outdir</code>.</td></tr>
       <tr><td class="pname">--no_plot</td><td class="pdefault">off</td><td>—</td><td>Skip the figure entirely; requires <code>--csvdir</code>. This is the only output option that turns off the screen display. Useful for parameter sweeps in a shell loop.</td></tr>
       <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>PNG resolution, 10 to 1200.</td></tr>
@@ -701,7 +701,7 @@ python main.py --mode nsmr --eos neutron</pre>
 
     <h3>White dwarf (mode <code>wdcool</code>)</h3>
     <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
-      <tr><td class="pname">--wd_mass</td><td class="pdefault">0.6</td><td>\(M_\odot\)</td><td>White-dwarf mass; must be below \(M_{\rm Ch}(\mu_e)\).</td></tr>
+      <tr><td class="pname">--wd_mass</td><td class="pdefault">0.6</td><td>\(M_\odot\)</td><td>White-dwarf mass. Formally rejected outright at or above \(0.999\,M_{\rm Ch}(\mu_e)\); in practice the bisection search that finds the matching central density can also fail, with a clear error naming the reachable direction, for a mass extremely close to that limit or extremely far below it, if the default search bracket is not widened enough by <code>--max_bracket_expansions</code>-style widening (built in, not a CLI option). The 0.2&ndash;1.2 \(M_\odot\) range used throughout the exercises is comfortably inside where this always succeeds.</td></tr>
       <tr><td class="pname">--mu_e</td><td class="pdefault">2.0</td><td>—</td><td>Mean molecular weight per electron of the degenerate core: the mass per electron in atomic mass units, which is roughly the number of <em>nucleons per electron</em>. It is 1 for pure hydrogen, 2 for helium, carbon and oxygen, about 2.15 for iron. (The electrons per nucleon is the reciprocal, about 0.5 for helium, carbon and oxygen.) Must be at least 1.</td></tr>
       <tr><td class="pname">--A_ion</td><td class="pdefault">14.0</td><td>—</td><td>Mean ion mass number setting the heat capacity; 14 for a carbon–oxygen mixture, 12 for carbon, 16 for oxygen, 4 for helium. It has no effect on the structure, which is controlled by \(\mu_e\).</td></tr>
       <tr><td class="pname">--X_env</td><td class="pdefault">0.70</td><td>—</td><td>Hydrogen fraction of the radiative envelope.</td></tr>
@@ -741,7 +741,7 @@ python main.py --mode nsmr --eos neutron</pre>
       <tr><td class="oname">nsmr — third panel</td><td>Compactness on the left axis and surface redshift on the right for a TOV run. For a Newtonian run the redshift is withheld and the panel instead shows where \(GM/Rc^2\) leaves the regime in which Newtonian gravity is even approximately valid.</td></tr>
       <tr><td class="oname">Run summary</td><td>Printed to the terminal for every mode: inputs, derived exponents or coefficients, and the key results. A <em>notes on this run</em> block appears whenever the model has been pushed outside the range in which it can be trusted — an unfinished track, a mass outside the reliable band, a sequence with no turning point, an acausal equation of state. Read it.</td></tr>
       <tr><td class="oname">CSV files</td><td>With <code>--csvdir PATH</code>: the full numerical table for the run, ready for a spreadsheet or a fitting script. The commented header records the model version, the time of the run, and every parameter the selected mode actually used, so a data file is self-documenting and cannot suggest that an irrelevant option affected it. The isochrone file also carries the evolutionary phase of each point and the turn-off mass for each age. CSV output does not turn off the figure or change how it is displayed.</td></tr>
-      <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>: save a timestamped copy of the figure in addition to displaying it on screen. Use <code>--no_plot --csvdir PATH</code> only when a data-only run is intended.</td></tr>
+      <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>: save a timestamped copy of the figure in addition to displaying it on screen, and save a same-stem <code>.provenance.txt</code> text file beside it. The sidecar records the code version/build, the run time, the rendering settings (<code>--dpi</code>, <code>--lw</code>), and every parameter the selected mode actually used, so a saved PNG is independently reproducible even without <code>--csvdir</code>. Use <code>--no_plot --csvdir PATH</code> only when a data-only run is intended.</td></tr>
     </tbody></table>
   </section>
 
