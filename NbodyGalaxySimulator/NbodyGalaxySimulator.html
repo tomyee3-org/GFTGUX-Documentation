@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NbodyGalaxySimulator &ndash; Help File | GFtGU Programs</title>
+  <!-- MathJax 3 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams'
+      },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
+  <style>
+    /* ── Reset & custom properties ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.80;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .page-wrap {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    header {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      padding: 26px 38px 20px;
+      border-bottom: 4px solid var(--gold);
+    }
+    header .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 3px;
+      padding: 2px 7px;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.80rem;
+      font-weight: normal;
+      letter-spacing: -.02em;
+    }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub {
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: #f0d0b8;
+      line-height: 1.55;
+    }
+    header .sub a {
+      color: #ffd8b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,200,150,.4);
+    }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    nav {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 14px 18px 4px;
+    }
+    nav a {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 18px 5px 22px;
+      border-left: 3px solid transparent;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: #fdf0e0;
+      border-left-color: var(--gold);
+    }
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      background: #fdecd8;
+    }
+    main {
+      padding: 38px 52px 60px;
+      max-width: 900px;
+    }
+    h2 {
+      font-size: 1.40rem;
+      font-weight: normal;
+      color: var(--accent);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 6px;
+      margin: 2.2rem 0 1.0rem;
+    }
+    h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 1.6rem 0 .5rem;
+    }
+    h4 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 1.2rem 0 .35rem;
+    }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block {
+      background: var(--eq-bg);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 22px 10px;
+      margin: 1.1rem 0 1.3rem;
+      overflow-x: auto;
+    }
+    .eq-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.865em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    pre {
+      font-family: var(--mono);
+      font-size: 0.855em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: .8rem 0 1.1rem;
+      line-height: 1.55;
+    }
+    .note {
+      background: var(--note-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .note strong { color: var(--accent2); }
+    .warn {
+      background: #fff6e8;
+      border: 1px solid var(--gold);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .warn strong { color: var(--accent); }
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin: 1.1rem 0 1.4rem;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .module-card .mc-name {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .module-card .mc-role {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .module-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    .module-card .sig {
+      font-family: var(--mono);
+      font-size: 0.80rem;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 7px 10px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .param-table, .out-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .param-table th, .out-table th {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .out-table th { background: var(--accent2); }
+    .param-table td, .out-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0d8c8;
+      vertical-align: top;
+    }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table tr:hover td, .out-table tr:hover td { background: #f3ecdf; }
+    .param-table .pname, .out-table .oname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      box-shadow: var(--shadow);
+    }
+    .exp-card .ec-num {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin-bottom: 7px;
+    }
+    .exp-card h4 {
+      font-size: 0.94rem;
+      color: var(--accent2);
+      margin: 0 0 5px;
+    }
+    .exp-card p {
+      font-size: 0.855rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .related-list {
+      list-style: none;
+      margin: .6rem 0 1.2rem;
+      padding: 0;
+    }
+    .related-list li {
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 7px;
+      font-size: 0.90rem;
+    }
+    .related-list li strong {
+      font-family: var(--mono);
+      color: var(--accent2);
+    }
+    footer {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      text-align: center;
+      padding: 18px 24px;
+      line-height: 1.7;
+    }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+    .mode-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1rem 0 1.4rem; }
+    .mode-table th { background: var(--gold); color: #fff; font-family: var(--sans); font-size: 11px;
+      letter-spacing: .06em; text-transform: uppercase; padding: 8px 12px; text-align: left; }
+    .mode-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .mode-table tr:nth-child(even) td { background: #faf5ec; }
+    .mode-table .mname { font-family: var(--mono); font-size: 0.85rem; color: var(--accent2); font-weight: 700; }
+    .cred-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin: 1rem 0 1.4rem; }
+    .cred-table th { background: var(--gold); color: #fff; font-family: var(--sans); font-size: 11px;
+                     letter-spacing: .06em; text-transform: uppercase; padding: 7px 12px; text-align: left; }
+    .cred-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .cred-table tr:nth-child(even) td { background: #faf5ec; }
+    .cred-table .cname { font-family: var(--mono); font-size: 0.85rem; color: var(--accent2); font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+  <div class="badge">Speculative Supplement &middot; Gravity from the Ground Up</div>
+  <h1><em>NbodyGalaxySimulator</em> &mdash; Barnes&ndash;Hut Tree-Code Gravity, Star-Cluster Evaporation, and Cold-Collapse Galaxy Formation</h1>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation" target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+  </div>
+</header>
+<nav id="sidebar">
+  <div class="nav-label">Overview</div>
+  <a href="#description">Description</a>
+  <a href="#modes">The Three Modes</a>
+  <a href="#background">Physical Background</a>
+  <div class="nav-label">Mathematics</div>
+  <a href="#equations">Governing Equations</a>
+  <a href="#algorithm">Algorithm</a>
+  <div class="nav-label">Code</div>
+  <a href="#modules">Module Overview</a>
+  <a href="#parameters">Parameters</a>
+  <a href="#output">Output and Plot Panels</a>
+  <div class="nav-label">Experiments</div>
+  <a href="#experiments">Suggested Experiments</a>
+  <a href="#validity">Domain of Validity</a>
+  <a href="#related">Related Programs</a>
+  <div class="nav-label">Legal</div>
+  <a href="#license">License</a>
+</nav>
+<main>
+  <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
+    Version 1.0.0&nbsp;&nbsp;&nbsp;&nbsp;Build 469b49184fbd
+  </p>
+
+  <!-- ================================================================ -->
+  <section id="description">
+    <h2>Description</h2>
+    <p><strong>NbodyGalaxySimulator</strong> is a standalone gravitational N-body program built around a Barnes&ndash;Hut octree (Barnes &amp; Hut 1986, <em>Nature</em> 324, 446) and Plummer-softened gravity. It exists to teach the two ideas that let a simulation move beyond a handful of exactly integrated bodies to hundreds or thousands of mutually interacting ones: <strong>force softening</strong>, which regularizes the otherwise-singular point-mass force at close range, and <strong>hierarchical force approximation</strong>, which reduces the cost of computing every body's force from every other body from \(O(N^2)\) to \(O(N\log N)\) by treating a distant clump of bodies as a single point mass.</p>
+    <p>One program covers three calculations, selected with <code>--mode</code>: <code>cluster</code>, a Plummer sphere of stars evolved long enough to show the onset of two-body relaxation and (with tuned parameters) genuine evaporation; <code>galaxy</code>, a cold uniform sphere that gravitationally collapses and &ldquo;violently relaxes&rdquo; (Lynden-Bell 1967) into a quasi-equilibrium remnant, the classic toy galaxy-formation experiment; and <code>chaos</code>, two indistinguishably close realizations of the same small cluster, integrated identically, whose separation is tracked to measure the Lyapunov time of gravitational motion.</p>
+    <div class="note"><strong>This program assumes <em>Multiple</em> as a prerequisite.</strong> Multiple already covers exact, direct-summation Newtonian gravity for a handful of bodies, integrated with an adaptive predictor-corrector scheme accurate enough to follow a single close encounter. This program does not re-derive Newtonian two-body motion, re-teach what a gravitational acceleration is, or re-explain leapfrog integration from scratch; it starts exactly where Multiple's exact \(O(N^2)\) approach stops being practical, and asks what has to change &mdash; the force law, the integrator, the very question you can ask of the output &mdash; to reach fifty, five hundred, or five thousand bodies. It was written as a <strong>standalone program</strong> rather than an added mode of Multiple, deliberately, so that tree codes, force softening and their attendant subtleties do not intrude on Multiple's own introductory tutorial flow; whether and how to incorporate any of this into a second edition of <em>Gravity from the Ground Up</em> is a decision for Prof.&nbsp;Schutz alone.</div>
+    <div class="warn"><strong>What this program is, and what it is not.</strong> This is a from-scratch, transparent, pure-Python teaching implementation, not a research N-body code. There is no individual (per-body) or block timestepping, no higher-order symplectic integrator, no quadrupole or higher multipole correction in the tree (monopole only), no parallelism or GPU acceleration, no gas or radiative physics, no external tidal field or cosmological expansion, and every simulation particle carries the same mass. Three limits are worth knowing before your first run: the tree code's <strong>wall-clock speed advantage over direct summation is not guaranteed at the body counts this program targets</strong> &mdash; see the Algorithm section for measured numbers and why; <strong>two-body evaporation is a slow process that the default softening actively suppresses</strong> (softening chosen for force accuracy also damps the close encounters that physically drive relaxation); and a <strong>fixed global timestep only marginally resolves the sharp density spike</strong> at the deepest point of a cold collapse. All three are turned into explicit exercises below rather than hidden.</div>
+
+    <div class="note"><strong>Reading this page.</strong> The equations on this page are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; with no connection, the raw \(\LaTeX\) source (e.g. <code>\(a(t)\)</code>) will show as plain text instead of a formula. This has no effect on the program itself, which needs no internet access to run.</div>
+
+    <h3>How seriously to take each number</h3>
+    <table class="cred-table"><thead><tr><th>Calculation</th><th>Status</th><th>Read it as</th></tr></thead><tbody>
+      <tr><td class="cname">gravity (both methods)</td><td>the exact softened Newtonian force law, integrated by a standard second-order symplectic (leapfrog) scheme</td><td>quantitatively correct up to the timestep's own truncation error and (tree only) the opening-angle approximation error</td></tr>
+      <tr><td class="cname">cluster &mdash; relaxation</td><td>real N-body dynamics; the relaxation TIME formula quoted for context is an order-of-magnitude scaling, not a precise prediction</td><td>the half-mass radius growth and virial-ratio settling are genuine; formal evaporation may require non-default parameters (see Domain of Validity)</td></tr>
+      <tr><td class="cname">galaxy &mdash; collapse</td><td>real N-body dynamics; classic, reproducible numerical experiment</td><td>quantitative for THIS N and these initial conditions; the literature (van Albada 1982) shows the qualitative outcome (incomplete relaxation, final <i>Q</i> below 1) is robust to N</td></tr>
+      <tr><td class="cname">chaos &mdash; Lyapunov time</td><td>real N-body dynamics; the exponential-fit window is chosen automatically from the data</td><td>a genuine measurement for this realization; expect factor-of-a-few scatter between random seeds, consistent with the literature (Goodman, Heggie &amp; Hut 1993)</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modes">
+    <h2>The Three Modes</h2>
+    <table class="mode-table"><thead><tr><th>Mode</th><th>What it computes</th><th>Core numerical content</th></tr></thead><tbody>
+      <tr><td class="mname">cluster</td><td>A Plummer (1911) sphere of equal-mass stars, evolved for a chosen multiple of its own initial two-body relaxation time. Tracks Lagrangian radii, the virial ratio, formally escaped bodies, and a continuous near-escape-tail diagnostic.</td><td>Leapfrog time integration with Barnes-Hut (default) or direct force evaluation; run length and timestep both derived from the requested N, mass and scale radius.</td></tr>
+      <tr><td class="mname">galaxy</td><td>A uniform sphere released from a chosen initial virial ratio (0 = perfectly cold), followed through collapse, bounce, and violent relaxation into a quasi-equilibrium remnant.</td><td>As above, with the run length and timestep set from the sphere's own free-fall time.</td></tr>
+      <tr><td class="mname">chaos</td><td>Two Plummer-sphere realizations, identical except for a sub-microscopic random position offset applied to every body, integrated with identical code and parameters. Reports the growth of their separation and a fitted Lyapunov exponent.</td><td>Two independent leapfrog integrations sharing one timestep; the divergence is measured, not simulated directly.</td></tr>
+    </tbody></table>
+    <pre># A 200-star Plummer cluster
+python main.py --mode cluster
+
+# A cold protogalactic sphere, collapsing and violently relaxing
+python main.py --mode galaxy
+
+# Sensitivity to initial conditions in a 40-body cluster
+python main.py --mode chaos
+
+# Compare the tree force law against direct summation at fixed N
+python main.py --mode cluster --n_bodies 150 --method direct</pre>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="background">
+    <h2>Physical Background</h2>
+
+    <h3>Why direct summation stops scaling</h3>
+    <p>Multiple computes every body's acceleration by summing the exact Newtonian contribution from every other body: for \(N\) bodies that is \(N(N-1)/2\) pairwise terms, so the cost grows as \(O(N^2)\). Doubling \(N\) quadruples the work. That is entirely practical for the handful of bodies in a planetary or few-star encounter, which is exactly Multiple's domain, but it becomes prohibitive well before \(N\) reaches even a few thousand. A star cluster with \(10^5\)&ndash;\(10^6\) stars, or a galaxy with far more, is simply out of reach of direct summation on any one machine.</p>
+    <p>Barnes &amp; Hut (1986) noticed that a distant clump of bodies barely needs to be resolved individually: to good approximation, its combined gravitational pull can be replaced by a single point mass at its center of mass. Organizing the bodies into a spatial tree (an octree in three dimensions) and applying that approximation wherever it is accurate enough reduces the cost to \(O(N\log N)\). This is the central algorithmic idea of this program (see Algorithm below); its price is an approximate rather than exact force.</p>
+
+    <h3>Why gravity needs softening here</h3>
+    <p>The point-mass Newtonian force, \(F \propto 1/r^2\), diverges as two bodies approach each other. Multiple handles this by raising an explicit error the instant two bodies coincide, because with an adaptive, accurate integrator a genuine close encounter should simply be resolved in fine timestep detail, not glossed over. That approach does not extend to hundreds of bodies on a fixed timestep: a single close pair would demand an enormously smaller timestep than every other body needs, and Multiple's per-run predictor-corrector accuracy targets do not exist here at all &mdash; the leapfrog scheme below uses one fixed timestep for every body, for the whole run.</p>
+    <p>The standard remedy, used throughout this program, is <strong>Plummer softening</strong>: replace \(1/r^2\) with \(1/(r^2+\epsilon^2)\), where \(\epsilon\) is the softening length. This has a direct physical reading: a simulation particle here rarely represents one literal star (or one dark-matter particle); it stands in for a much larger aggregate, smeared over some finite size, and \(\epsilon\) is a reasonable proxy for that size. It also has a purely numerical reading: it caps the maximum force two bodies can exert on each other, which keeps a fixed-timestep integrator stable through what would otherwise be arbitrarily close encounters. Both readings matter here, and they pull in the same direction for choosing \(\epsilon\) &mdash; but, as the Algorithm section discusses, that same suppression of close encounters also suppresses two-body relaxation itself, which is exactly the process the <code>cluster</code> mode is trying to show.</p>
+
+    <h3>Two-body relaxation and evaporation</h3>
+    <p>A self-gravitating system of discrete bodies is not the same as a smooth mass distribution: individual gravitational encounters between bodies exchange energy and gradually drive the system toward a broader, more relaxed velocity distribution &mdash; and a system of point masses in a finite volume has, in principle, no upper limit on relative speed reachable this way. Over many crossing times, enough encounters accumulate that some bodies are kicked above the local escape speed and leave for good: this is <strong>evaporation</strong>. The characteristic timescale for this diffusive process, the two-body relaxation time, is given below; for an isolated system without a tidal boundary, full evaporation of a Plummer-like cluster is a slow process, of order a hundred or more relaxation times (Ambartsumian 1938; Spitzer 1987).</p>
+
+    <h3>Violent relaxation and cold collapse</h3>
+    <p>A self-gravitating system released far from equilibrium &mdash; the <code>galaxy</code> mode's cold, uniform sphere is the classic case &mdash; does not settle down through the slow, encounter-by-encounter process above. Instead, while the overall mass distribution is still changing rapidly (during the collapse and the violent oscillations that follow it), the gravitational potential itself fluctuates on a dynamical timescale, and those fluctuations exchange energy between bodies far faster than individual two-body encounters could. Lynden-Bell (1967) named this <strong>violent relaxation</strong> and argued it explains why collisionless self-gravitating systems (galaxies, above all) reach a quasi-equilibrium, centrally concentrated state so much faster than their two-body relaxation time would allow. Direct numerical experiments of exactly this cold-collapse scenario (van Albada 1982, and many since) show the relaxation is generically <em>incomplete</em>: the remnant typically settles with a virial ratio below the equilibrium value of 1, an extended, non-Maxwellian halo of loosely bound bodies flung out during the collapse, and a density profile only qualitatively like a real galaxy's. This program reproduces that same qualitative outcome; see Suggested Experiments.</p>
+
+    <h3>The virial theorem</h3>
+    <p>For a self-gravitating system in a statistical steady state, the virial theorem requires \(2T + W = 0\), i.e. \(2T/|W| = 1\), where \(T\) is the total kinetic energy and \(W\) the total (negative) potential energy. This program reports \(2T/|W|\) throughout as the <strong>virial ratio</strong>: substantially below 1 means the system is still contracting (or under-supported), substantially above 1 means it is expanding (or was released with excess kinetic energy), and a value oscillating around something less than 1 for a settled remnant is the incomplete-violent-relaxation signature described above, not a bug.</p>
+
+    <h3>Chaos in gravitating systems</h3>
+    <p>The gravitational \(N\)-body problem is chaotic for \(N \ge 3\): two initial conditions that differ by an arbitrarily small amount separate <em>exponentially</em> in phase space, rather than growing only linearly as they would in a well-behaved, non-chaotic dynamical system. Miller (1964) first demonstrated this numerically for self-gravitating stellar systems; later work (e.g. Goodman, Heggie &amp; Hut 1993) found that for small-\(N\) self-gravitating clusters the associated <strong>Lyapunov time</strong> &mdash; the e-folding time of that exponential growth &mdash; is typically of order a few crossing times. This program's <code>chaos</code> mode reproduces that measurement directly: see Governing Equations and Algorithm.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="equations">
+    <h2>Governing Equations</h2>
+
+    <div class="eq-block">
+      <div class="eq-label">Softened Newtonian gravity</div>
+      \[ \vec{a}_i \;=\; G \sum_{j \ne i} \frac{m_j \,(\vec{x}_j - \vec{x}_i)}{\left(|\vec{x}_j-\vec{x}_i|^2 + \epsilon^2\right)^{3/2}} \]
+      <p style="margin-top:8px; font-size:0.88rem;">\(\epsilon\) is the (fixed) softening length. \(\epsilon \to 0\) recovers the exact point-mass law used by Multiple.</p>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-label">Barnes&ndash;Hut opening-angle criterion</div>
+      \[ \frac{s}{d} < \theta \quad\Longrightarrow\quad \text{treat this tree node as one point mass at its center of mass} \]
+      <p style="margin-top:8px; font-size:0.88rem;">\(s\) is the node's (cubical) box size, \(d\) the distance from the body to the node's center of mass, and \(\theta\) the opening angle (<code>--theta</code>). \(\theta=0\) forces a full descent to individual bodies for every force evaluation (exact monopole summation, at direct-summation-like cost); \(\theta\) of order 0.5&ndash;0.8 is the usual working range.</p>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-label">Leapfrog (kick-drift-kick) integration</div>
+      \[ \vec{v}_{1/2} = \vec{v}_0 + \tfrac{1}{2}\vec{a}(\vec{x}_0)\,\Delta t, \qquad
+         \vec{x}_1 = \vec{x}_0 + \vec{v}_{1/2}\,\Delta t, \qquad
+         \vec{v}_1 = \vec{v}_{1/2} + \tfrac{1}{2}\vec{a}(\vec{x}_1)\,\Delta t \]
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-label">Plummer (1911) density profile and enclosed mass</div>
+      \[ \rho(r) = \frac{3M}{4\pi a^3}\left(1+\frac{r^2}{a^2}\right)^{-5/2}, \qquad
+         \frac{M(r)}{M} = \frac{r^3}{(r^2+a^2)^{3/2}} \]
+      <p style="margin-top:8px; font-size:0.88rem;">Sampled by inverting the enclosed-mass relation for \(r\) given a uniform random \(x_1\in(0,1)\), and drawing speeds by rejection sampling against the exact isotropic Plummer distribution function (Aarseth, H&eacute;non &amp; Wielen 1974).</p>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-label">Dehnen (2001) optimal softening</div>
+      \[ \epsilon_{\rm opt} = 0.98\, a\, N^{-0.26} \]
+      <p style="margin-top:8px; font-size:0.88rem;">The default softening length when <code>--softening_pc</code> is not given, minimizing the mean-square force error against the smooth Plummer field; used here as a general starting point for the uniform-sphere initial condition as well, not only the Plummer sphere it was derived for.</p>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-label">Characteristic timescales</div>
+      \[ t_{\rm cross} = \sqrt{\frac{r_h^3}{GM}}, \qquad
+         t_{\rm ff} = \sqrt{\frac{3\pi}{32\,G\bar\rho}}, \qquad
+         t_{\rm relax} \approx \frac{N}{8\ln N}\, t_{\rm cross} \]
+      <p style="margin-top:8px; font-size:0.88rem;">\(r_h\) is the half-mass radius; \(\bar\rho\) the mean density. The relaxation-time expression follows Binney &amp; Tremaine, <em>Galactic Dynamics</em> (2nd ed.), eq.&nbsp;1.38, with the Coulomb logarithm approximated as \(\ln N\); treat it as an order-of-magnitude scaling, not a precise prediction (real N-body codes commonly use \(\ln(0.4N)\) or \(\ln(N/2)\) instead, changing the result by an order-unity factor).</p>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-label">Virial ratio and escape criterion</div>
+      \[ Q \equiv \frac{2T}{|W|}, \qquad
+         e_i \equiv \tfrac{1}{2}v_i^2 + \Phi_i, \qquad e_i > 0 \Leftrightarrow \text{body } i \text{ is formally unbound} \]
+      <p style="margin-top:8px; font-size:0.88rem;">\(\Phi_i\) is the softened potential at body \(i\) due to every other body, evaluated in the system's own center-of-mass frame.</p>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-label">Lyapunov exponent</div>
+      \[ \Delta(t) = \sqrt{\frac{1}{N}\sum_i |\vec{x}_{A,i}(t)-\vec{x}_{B,i}(t)|^2} \;\sim\; \Delta_0\, e^{\lambda t}
+         \quad\Longrightarrow\quad t_{\rm Lyap} = 1/\lambda \]
+      <p style="margin-top:8px; font-size:0.88rem;">\(\lambda\) is estimated by an ordinary least-squares fit of \(\ln\Delta(t)\) against \(t\), restricted to the window where \(\Delta\) has grown past \(3\Delta_0\) but not yet past half of its own eventual maximum (i.e. saturated at the system's own size).</p>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="algorithm">
+    <h2>Algorithm</h2>
+
+    <h3>Building and walking the octree</h3>
+    <p>Each force evaluation over the whole body set (once per leapfrog half-step) proceeds in two stages. First, <code>build_octree()</code> recursively partitions the smallest cube enclosing all bodies into eight octants, subdividing any octant holding more than one body, down to a hard recursion-depth limit (<code>MAX_TREE_DEPTH</code>) that guarantees termination even for exactly or nearly coincident bodies &mdash; no finite number of halvings separates two identical points into different octants, so without this limit such a configuration would recurse forever. Every internal node stores its total mass and center of mass. Second, for each body, the tree is walked from the root: an internal node is accepted as a single point mass whenever the opening-angle criterion is satisfied; otherwise the walk descends into that node's (up to eight) children. A node whose accumulated mass is exactly zero (an empty octant) is skipped.</p>
+
+    <h3>Force accuracy versus &theta;</h3>
+    <p>Because the tree replaces exact per-body sums with a monopole approximation for distant clumps, its force differs from the exact (direct-summation) value by an amount that grows with &theta;. Measuring this directly (a Plummer sphere, comparing <code>compute_accelerations_tree</code> against <code>compute_accelerations_direct</code> at fixed softening) gives, typically:</p>
+    <table class="out-table"><thead><tr><th>&theta;</th><th>Median relative force error</th><th>Maximum relative force error</th></tr></thead><tbody>
+      <tr><td>0.0</td><td>0 (exact, to machine precision)</td><td>0</td></tr>
+      <tr><td>0.3</td><td>&sim;0.001</td><td>&sim;0.004&ndash;0.01</td></tr>
+      <tr><td>0.5 (default)</td><td>&sim;0.004&ndash;0.007</td><td>&sim;0.02&ndash;0.03</td></tr>
+      <tr><td>0.8</td><td>&sim;0.01&ndash;0.02</td><td>&sim;0.08&ndash;0.14</td></tr>
+      <tr><td>1.0</td><td>&sim;0.01&ndash;0.04</td><td>&sim;0.15&ndash;0.35</td></tr>
+    </tbody></table>
+    <p>These are illustrative, not guaranteed for every configuration; reproducing this table for your own <code>--n_bodies</code> and initial condition is Experiment 8 below. \(\theta=0\) is a genuine correctness check built into the test suite: it must reproduce direct summation to machine precision, because it forces the walk to the leaves for every body.</p>
+
+    <div class="warn"><strong>The tree code is not guaranteed to be faster in wall-clock terms at this program's scale.</strong> The \(O(N\log N)\) versus \(O(N^2)\) argument compares operation COUNTS. This is a pure-Python implementation: the tree walk is an explicit-stack traversal of Python objects, while direct summation is a single vectorized NumPy call per body. NumPy's vectorization has such a small constant factor per floating-point operation that, measured on this program's development machine, direct summation remained faster in wall-clock time than the tree at every body count up to <code>MAX_BODIES</code> = 5,000 &mdash; the crossover the operation-count argument predicts is real, but for an implementation shaped like this one it lies at a much larger \(N\) than a naive reading of &ldquo;\(O(N\log N)\) beats \(O(N^2)\)&rdquo; would suggest. This is not a defect to fix quietly; it is Experiment 9 below, and a genuine lesson in numerical methods: asymptotic complexity and measured wall-clock performance are different questions, and the constant factor a real implementation carries can dominate at every size you can practically test. <code>--method</code> lets you run either force law directly for exactly this comparison; the tree remains the pedagogically important algorithm regardless of which one wins a stopwatch race in this particular code.</div>
+
+    <div class="note"><strong>The tree code does not conserve momentum exactly.</strong> Direct summation computes each pairwise force once and applies it to both bodies with an equal and opposite sign, so total momentum is conserved to machine precision (typical measured drift: relative to a natural momentum scale, of order \(10^{-16}\) over hundreds of steps). The tree's monopole approximation breaks this pairwise symmetry: body A may see body B's cell approximated as a single distant mass, while body B's own force evaluation does not necessarily see an equal and opposite contribution from a matching approximation of A's surroundings. Measured total momentum drift with the tree method is small but real (typically a few times \(10^{-4}\) relative to \(M\langle v\rangle\) over a few hundred crossing times at \(\theta=0.5\)) and grows with &theta;. This is a known, published property of Barnes&ndash;Hut codes, not a bug in this implementation; see Experiment 10.</div>
+
+    <h3>Timestep selection and energy conservation</h3>
+    <p>Leapfrog is a second-order <em>symplectic</em> integrator: for a fixed timestep it does not conserve energy exactly, but its energy error oscillates around a roughly constant offset rather than drifting secularly the way a non-symplectic scheme (e.g. forward Euler) would, provided the timestep resolves the local dynamical time. Each mode chooses its own default timestep as a fraction of a physically meaningful timescale computed from the requested initial condition (a fraction of the crossing time for <code>cluster</code> and <code>chaos</code>; of the free-fall time for <code>galaxy</code>) so that a default run is well resolved without the student needing to already know what a sound \(\Delta t\) looks like.</p>
+    <div class="warn"><strong>A fixed global timestep only marginally resolves the deepest moment of a cold collapse.</strong> During a <code>galaxy</code>-mode run's deepest collapse, the local dynamical time inside the transient density spike is far shorter than the free-fall time the default timestep was sized from; energy conservation measurably worsens through that moment (typically to the percent level for the default parameters) and, perhaps counter-intuitively, does not improve proportionally just by increasing <code>--steps_per_freefall</code>, because the bottleneck is the collapse's OWN shrinking dynamical time, not simply an under-resolved but otherwise ordinary orbit. A production N-body code would use individual or block timesteps for exactly this reason; this program uses one global \(\Delta t\) throughout, by design, to keep the leapfrog loop transparent. See Experiment 14.</div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modules">
+    <h2>Module Overview</h2>
+    <div class="module-grid">
+      <div class="module-card">
+        <div class="mc-name">physics_nbg.py</div>
+        <div class="mc-role">Physics engine</div>
+        <p>Physical constants; the softened direct and Barnes-Hut force laws; the octree; the leapfrog engine (<code>integrate_nbody</code>); the Plummer and uniform-sphere initial-condition samplers; energy, virial, Lagrangian-radius, escaper and near-escape-tail diagnostics; timescale formulas; the chaos-divergence and Lyapunov-fit helpers; and the three top-level per-mode simulations, <code>run_cluster</code>, <code>run_galaxy</code>, <code>run_chaos</code>.</p>
+        <div class="sig">run_cluster(n_bodies=200, total_mass_msun=1e3,
+    scale_radius_pc=1.0, n_relax=5.0, ...)
+run_galaxy(n_bodies=300, total_mass_msun=1e6,
+    radius_pc=200.0, virial_ratio_init=0.0, ...)
+run_chaos(n_bodies=40, total_mass_msun=1e3,
+    scale_radius_pc=1.0,
+    relative_perturbation=1e-8, ...)</div>
+      </div>
+      <div class="module-card">
+        <div class="mc-name">driver_nbg.py</div>
+        <div class="mc-role">Orchestration</div>
+        <p>Validates presentation-level inputs (output paths, DPI, line width), dispatches to the requested <code>physics_nbg.run_*</code> simulation, prints a formatted run summary, optionally writes a timestamped, provenance-commented CSV, and hands the result to the plotting layer. Contains no physics of its own.</p>
+        <div class="sig">run(mode="cluster", n_bodies=None, ...,
+    outdir=None, csvdir=None,
+    no_plot=False, dpi=150, lw=1.6)</div>
+      </div>
+      <div class="module-card">
+        <div class="mc-name">plot_nbg.py</div>
+        <div class="mc-role">Visualization</div>
+        <p>One routine per mode (<code>plot_cluster</code>, <code>plot_galaxy</code>, <code>plot_chaos</code>), each a multi-panel Matplotlib figure: projected positions, Lagrangian radii, virial ratio, mode-specific diagnostics, and energy conservation. Every saved PNG carries a same-stem <code>.provenance.txt</code> sidecar recording the rendering settings and (via the CLI) the scientific run parameters.</p>
+        <div class="sig">plot_mode(mode, result, outdir=None,
+    dpi=150, lw=1.6, provenance=None)</div>
+      </div>
+      <div class="module-card">
+        <div class="mc-name">main.py</div>
+        <div class="mc-role">Entry point</div>
+        <p>Command-line interface. Defines every <code>--flag</code>, applies mode-specific argument groups, and calls <code>driver_nbg.run()</code>. Errors from the physics or driver layers are caught and reported as a clean, one-line message rather than a raw traceback.</p>
+        <div class="sig">python main.py --mode {cluster,galaxy,chaos}
+    [options]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <table class="param-table"><thead><tr><th>Flag</th><th>Default</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td class="pname">--mode</td><td class="pdefault">cluster</td><td>Which calculation to run: <code>cluster</code>, <code>galaxy</code>, or <code>chaos</code>.</td></tr>
+      <tr><td class="pname">--n_bodies</td><td class="pdefault">200 / 300 / 40</td><td>Number of simulation particles (mode-dependent default). Hard limits: 3&ndash;5,000. Every particle carries the same mass.</td></tr>
+      <tr><td class="pname">--total_mass_msun</td><td class="pdefault">1e3 / 1e6</td><td>Total mass in solar masses (mode-dependent default; <code>chaos</code> shares <code>cluster</code>'s default).</td></tr>
+      <tr><td class="pname">--scale_radius_pc</td><td class="pdefault">1.0</td><td>Plummer scale radius, parsecs (<code>cluster</code>/<code>chaos</code> modes).</td></tr>
+      <tr><td class="pname">--n_relax</td><td class="pdefault">5.0</td><td>Run length as a multiple of the initial two-body relaxation time (<code>cluster</code>).</td></tr>
+      <tr><td class="pname">--steps_per_crossing</td><td class="pdefault">60 (cluster) / 50 (chaos)</td><td>Timesteps per initial crossing time.</td></tr>
+      <tr><td class="pname">--radius_pc</td><td class="pdefault">200.0</td><td>Initial uniform-sphere radius, parsecs (<code>galaxy</code>).</td></tr>
+      <tr><td class="pname">--virial_ratio_init</td><td class="pdefault">0.0</td><td>Initial \(2T/|W|\) for the uniform sphere; 0 = perfectly cold, 0.5 = virial equilibrium. Values above 10 are refused (see below).</td></tr>
+      <tr><td class="pname">--n_freefall</td><td class="pdefault">8.0</td><td>Run length as a multiple of the initial free-fall time (<code>galaxy</code>).</td></tr>
+      <tr><td class="pname">--steps_per_freefall</td><td class="pdefault">80</td><td>Timesteps per initial free-fall time.</td></tr>
+      <tr><td class="pname">--relative_perturbation</td><td class="pdefault">1e-8</td><td>Initial relative position offset between the two <code>chaos</code>-mode realizations (as a fraction of their common RMS radius).</td></tr>
+      <tr><td class="pname">--n_cross</td><td class="pdefault">120.0</td><td>Run length as a multiple of the initial crossing time (<code>chaos</code>); deliberately much larger than <code>cluster</code>/<code>galaxy</code>'s multiples, since showing clean exponential growth typically needs tens to a hundred-plus crossing times.</td></tr>
+      <tr><td class="pname">--perturbation_seed</td><td class="pdefault">unseeded</td><td>Random seed for the position offset in <code>chaos</code> mode.</td></tr>
+      <tr><td class="pname">--softening_pc</td><td class="pdefault">Dehnen (2001) scaling</td><td>Plummer softening length, parsecs. Must be strictly positive.</td></tr>
+      <tr><td class="pname">--theta</td><td class="pdefault">0.5</td><td>Barnes-Hut opening angle, accepted in [0, 2]; negative values are refused. 0 forces an exact full-tree descent.</td></tr>
+      <tr><td class="pname">--method</td><td class="pdefault">tree</td><td><code>tree</code> or <code>direct</code> force evaluation.</td></tr>
+      <tr><td class="pname">--target_snapshots</td><td class="pdefault">150&ndash;200</td><td>Approximate number of recorded snapshots; the actual number can differ slightly so that the true final step is always included.</td></tr>
+      <tr><td class="pname">--seed</td><td class="pdefault">unseeded</td><td>Random seed for the initial-condition sampler; set it for a reproducible realization.</td></tr>
+      <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>Also save a timestamped PNG (with a <code>.provenance.txt</code> sidecar) in this directory; the figure is still displayed.</td></tr>
+      <tr><td class="pname">--csvdir</td><td class="pdefault">none</td><td>Also write a timestamped, provenance-commented CSV diagnostics file in this directory.</td></tr>
+      <tr><td class="pname">--no_plot</td><td class="pdefault">false</td><td>Skip the figure entirely; requires <code>--outdir</code> or <code>--csvdir</code> (otherwise the run would produce no output at all, and this is refused).</td></tr>
+      <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>PNG resolution, accepted in [10, 1200].</td></tr>
+      <tr><td class="pname">--lw</td><td class="pdefault">1.6</td><td>Curve line width, points.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="output">
+    <h2>Output and Plot Panels</h2>
+    <p>Every run prints a text summary to the terminal, always draws a Matplotlib figure (unless <code>--no_plot</code> is given), and can optionally save that figure as a PNG and/or write a CSV file of the tracked diagnostics over time. This mirrors <em>StellarEvolutionTracks</em>'s output conventions exactly, including the collision-safe timestamped filenames and the <code>.provenance.txt</code> sidecar written alongside every saved PNG.</p>
+
+    <h3>Figure panels</h3>
+    <p><strong><code>cluster</code> mode</strong> draws a 2&times;3 grid: initial positions (a projection scatter plot), final positions, Lagrangian radii (10/25/50/75/90% mass radii versus time), virial ratio \(2T/|W|\) versus time, an evaporation-diagnostics panel (the strict escaper count <code>n_escaped</code> and the continuous <code>high_velocity_fraction</code> on a shared time axis, since the strict criterion can stay at zero for a physically eventful run &mdash; see the note in <a href="#background">Physical Background</a>), and energy conservation (total energy relative to its initial value, with the maximum drift reported in the panel title).</p>
+    <p><strong><code>galaxy</code> mode</strong> also draws a 2&times;3 grid: initial cold-sphere positions, the deepest-collapse snapshot (the recorded time step with the smallest half-mass radius), Lagrangian radii through collapse and bounce, final quasi-equilibrium positions, virial ratio through violent relaxation, and energy conservation.</p>
+    <p><strong><code>chaos</code> mode</strong> draws a 2&times;2 grid: final positions of both realizations overlaid in one projection, the phase-space divergence between them on a logarithmic axis (with the exponential-growth fit window highlighted, and the fitted Lyapunov time in the panel title when one could be estimated), energy conservation for both realizations, and a histogram of final per-body separations between the two realizations.</p>
+    <p>Position panels use a shared axis-scaling rule: if a small number of bodies have been flung far from the bulk of the mass (common after a close encounter, and especially in <code>galaxy</code> mode's collapse), the axes are framed around the 95th-percentile radius rather than the true maximum, so the bulk of the system remains legible while outliers are still plotted, just possibly near the edge or clipped. This is a display choice only; no data is altered or discarded.</p>
+
+    <h3>CSV columns</h3>
+    <p>All three modes write one row per recorded snapshot, in physical (not SI) units, with a provenance comment header (mode, parameters, <code>BUILD_ID</code>) prepended as <code>#</code>-prefixed lines before the column header row &mdash; the same convention as <em>StellarEvolutionTracks</em>' CSV output.</p>
+    <table class="out-table"><thead><tr><th>Mode</th><th>Columns</th></tr></thead><tbody>
+      <tr><td class="pname">cluster</td><td><code>t_Myr, r10_pc, r25_pc, r50_pc, r75_pc, r90_pc, virial_ratio, n_escaped, high_velocity_fraction, kinetic_J, potential_J, energy_J</code></td></tr>
+      <tr><td class="pname">galaxy</td><td><code>t_Myr, r10_pc, r25_pc, r50_pc, r75_pc, r90_pc, virial_ratio, kinetic_J, potential_J, energy_J</code></td></tr>
+      <tr><td class="pname">chaos</td><td><code>t_Myr, divergence_pc, energy_a_J, energy_b_J</code></td></tr>
+    </tbody></table>
+    <p>Energies are reported in joules (SI), matching the internal unit convention used throughout <code>physics_nbg.py</code>; every length quantity is converted to parsecs for readability. <code>n_escaped</code> is an integer count using the strict boundedness criterion (specific energy &ge; 0 relative to the system, and moving outward); <code>high_velocity_fraction</code> is a fraction in [0, 1].</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="experiments">
+    <h2>Suggested Experiments</h2>
+    <p>Every exercise below can be done with the CLI and the printed/plotted/CSV output alone; none requires reading the source. Difficulty labels are relative to this program, not to the course as a whole.</p>
+
+    <h3>Core sequence &middot; introductory</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-1 &middot; introductory</div><h4>Watch a Cluster Relax</h4><p>Run <code>python main.py --mode cluster</code>. Read the half-mass radius <code>r50</code> at the start and end from the printed summary or the Lagrangian-radii panel. Has the cluster expanded or contracted? Two-body relaxation is supposed to drive a self-gravitating system's core to contract while its outskirts expand as stars exchange energy &mdash; which Lagrangian radius (10% or 90%) moved the most, and does that match the description in <a href="#background">Physical Background</a>?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2 &middot; introductory</div><h4>A Cold Sphere Collapses</h4><p>Run <code>python main.py --mode galaxy</code>. From the printed summary, note the initial virial ratio, the virial ratio at the deepest collapse, and the final virial ratio. Sketch (on paper, from the numbers, not the plot) how \(2T/|W|\) behaves over the run. Does it end at exactly 1, the value expected for a system in virial equilibrium? Read the note on incomplete violent relaxation in <a href="#background">Physical Background</a> before you decide whether that is a bug.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-3 &middot; introductory</div><h4>How Fast Do Nearby Orbits Diverge?</h4><p>Run <code>python main.py --mode chaos</code>. Read the fitted Lyapunov time off the divergence panel's title (or the terminal summary) and express it as a multiple of the initial crossing time. Miller (1964) and later studies put this ratio at a few crossing times for self-gravitating N-body systems; is your result in that range? Run it again (no <code>--seed</code>) and see whether the estimate is stable from realization to realization.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4 &middot; introductory</div><h4>Meet the Two Force Methods</h4><p>Run the same cluster twice, once with <code>--method tree</code> and once with <code>--method direct</code>, using a fixed <code>--seed</code> so both start identically. Compare final energy, final virial ratio and the Lagrangian radii. They will not be pixel-identical &mdash; the tree only approximates the force &mdash; but they should tell a consistent physical story. If they disagreed wildly, what would that tell you about \(\theta\)?</p></div>
+    </div>
+
+    <h3>Core sequence &middot; introductory to intermediate</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-5 &middot; introductory/intermediate</div><h4>Relaxation Time Scales with N</h4><p>Run <code>--mode cluster</code> with <code>--n_bodies</code> set to 60, 120, 250 and 500, holding <code>--total_mass_msun</code> and <code>--scale_radius_pc</code> fixed at their defaults and giving each the same <code>--n_relax</code> so they cover the same number of relaxation times. The crossing time depends only on \(M\) and \(R\) (not \(N\)), while the relaxation time formula in <a href="#equations">Governing Equations</a> scales roughly as \(N/\ln N\). Does the relative amount of core contraction/outskirt expansion you see across the four runs behave the way that scaling predicts?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-6 &middot; introductory/intermediate</div><h4>Crossing and Free-Fall Time Scaling</h4><p>Using <code>--mode galaxy</code>, halve <code>--radius_pc</code> from its default and separately double <code>--total_mass_msun</code>, in two separate runs, keeping everything else fixed. Read the initial free-fall time from the terminal summary in each case. The free-fall time for a uniform sphere scales as \(t_{\rm ff}\propto\rho^{-1/2}\propto (R^3/M)^{1/2}\): predict the two new free-fall times before running, then check.</p></div>
+    </div>
+
+    <h3>Core sequence &middot; intermediate</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-7 &middot; intermediate</div><h4>Cold, Warm and Hot Collapse</h4><p>Run <code>--mode galaxy</code> with <code>--virial_ratio_init</code> set to 0.0 (the cold default), 0.5 (already in virial equilibrium) and 1.5 (unbound, expanding). Compare the three: does the 0.5 run collapse at all? Does the 1.5 run's half-mass radius ever come back down? For the cold and warm cases, compare how far the final virial ratio overshoots or undershoots 1, and connect what you see to why colder initial conditions are described as producing more &ldquo;violent&rdquo; relaxation.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-8 &middot; intermediate</div><h4>Reproduce the Opening-Angle Accuracy Table</h4><p>Using <code>--method tree</code> and <code>--method direct</code> at a fixed <code>--seed</code> and a moderate <code>--n_bodies</code> (100&ndash;300 is enough), compute the tree acceleration and the direct acceleration for the initial configuration at several values of <code>--theta</code> (0, 0.3, 0.5, 0.8, 1.0) and work out the RMS relative force error between them, body by body. Reproduce (or refute, with your own numbers in hand) the illustrative table in <a href="#algorithm">Algorithm</a>. Confirm explicitly that \(\theta=0\) reproduces direct summation to machine precision &mdash; if it does not, something is wrong with your comparison, not the program.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-9 &middot; intermediate</div><h4>Is the Tree Actually Faster?</h4><p>Time <code>python main.py --mode cluster --method tree --n_bodies N</code> against the same run with <code>--method direct</code>, for N = 100, 300, 1000 and 3000 (use your shell's timing facility, or Python's <code>time</code> module around a direct call to <code>driver_nbg.run</code>). Plot wall-clock time per step against N for both methods on log&ndash;log axes. Where, if anywhere, does the tree overtake direct summation on your machine? Compare your crossover (or lack of one) against the claim in <a href="#algorithm">Algorithm</a>, and explain in your own words why an \(O(N\log N)\) algorithm can lose a wall-clock race to an \(O(N^2)\) one at practical sizes.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10 &middot; intermediate</div><h4>Momentum Conservation, Tree Versus Direct</h4><p>Run the same cluster with <code>--method direct</code> and <code>--method tree</code> (fixed <code>--seed</code>), and from the position/velocity arrays (or by adding a print statement) compute total momentum \(\sum_i m_i \vec v_i\) at the start and end of each run, normalized by \(M\langle |\vec v|\rangle\). Confirm direct summation conserves it to machine precision and the tree does not. Does the tree's momentum drift grow if you increase \(\theta\) toward 1.0? Relate what you find to the pairwise-symmetry argument in <a href="#algorithm">Algorithm</a>.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-11 &middot; intermediate</div><h4>Softening Is Hiding Your Escapers</h4><p>Run the default cluster and note <code>n_escaped</code> at the end &mdash; it is very often zero. Now rerun with <code>--softening_pc</code> set well below the Dehnen-optimal default (try roughly a tenth of it), a finer <code>--steps_per_crossing</code> (this is required for stability once softening shrinks), and a longer <code>--n_relax</code>. Do genuine escapers now appear? Explain, physically, why the softening length that best approximates the smooth gravitational field of the cluster is not the softening length that best reproduces the close two-body encounters responsible for real evaporation &mdash; these are different goals, and this program's default optimizes for the first one.</p></div>
+    </div>
+
+    <h3>Core sequence &middot; intermediate to advanced</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-12 &middot; intermediate/advanced</div><h4>Chaos Doesn't Care How Small the Nudge Is</h4><p>Run <code>--mode chaos</code> with <code>--relative_perturbation</code> set to 1e-4, 1e-6, 1e-8, 1e-10 and 1e-12 (fix <code>--seed</code> so the underlying cluster is the same each time; let <code>--perturbation_seed</code> vary or fix it too, your choice, but say which). Record the fitted Lyapunov time for each. The defining feature of exponential (chaotic) sensitivity is that the growth <em>rate</em> should not depend on how small the initial separation was, only how long it takes to grow to a fixed macroscopic size. Is that what you find? What happens to the estimate when the perturbation is so small that numerical roundoff, not the deliberate offset, dominates the initial separation?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-13 &middot; intermediate/advanced</div><h4>Does the Relaxation-Time Formula Actually Predict Anything?</h4><p>Run <code>--mode cluster</code> at two different <code>--n_bodies</code> (say 80 and 400) for the same number of relaxation times (fix <code>--n_relax</code>), and measure the fractional growth of <code>r50</code> over the run in each case. The formula in <a href="#equations">Governing Equations</a> is explicitly an order-of-magnitude estimate (it drops factors of order unity in the Coulomb logarithm). Is the growth per relaxation time roughly comparable between your two runs, as the formula's normalization would suggest, or do you find systematic disagreement? Either answer is useful &mdash; say which, and why an order-of-magnitude formula does or does not deserve to be taken further than that.</p></div>
+    </div>
+
+    <h3>Optional projects &middot; advanced</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-14 &middot; advanced</div><h4>A Fixed Timestep Cannot Follow a Collapse Forever</h4><p>Run <code>--mode galaxy</code> at <code>--steps_per_freefall</code> of 40, 80 (default), 160 and 320, holding everything else fixed. Track the maximum relative energy drift (reported in the energy-panel title) as a function of resolution. Does the drift improve smoothly, the way you would expect for a well-resolved orbit, or does it plateau because the deepest moment of collapse has its own, much shorter, dynamical time that a single global \(\Delta t\) cannot adaptively follow? Read the warning in <a href="#algorithm">Algorithm</a> and say, in your own words, what a production code would do differently.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-15 &middot; advanced</div><h4>Push the Size Limit</h4><p>Run <code>--mode cluster --method tree</code> and <code>--method direct</code> at the largest <code>--n_bodies</code> your machine can finish in a reasonable time (try working up toward <code>MAX_BODIES</code> = 5,000, but watch your runtime as you go). Extend the timing comparison from Experiment 9 to this new upper range. Does the tree ever clearly win at the sizes you can actually test? What does that say about the practical difference between an algorithm's asymptotic complexity and the complexity that matters for a program of this scale and implementation?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-16 &middot; advanced</div><h4>Design Your Own Diagnostic</h4><p>The program tracks Lagrangian radii, virial ratio, energy, momentum-adjacent escaper counts, and phase-space divergence &mdash; but not everything. Using <code>--csvdir</code> to get the raw time series, or by calling <code>physics_nbg</code> functions directly on the arrays returned by <code>run_cluster</code>/<code>run_galaxy</code>, implement one diagnostic of your own choosing: for example, a density-profile power-law slope at fixed radius over time, a measure of departure from spherical symmetry, or total angular momentum conservation (formally zero for these initial conditions, but not exactly zero numerically &mdash; how far from zero, and why?). State clearly what physical question your diagnostic answers that the built-in ones do not.</p></div>
+    </div>
+
+    <h3>Synthesis</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-17 &middot; synthesis</div><h4>Where Does &ldquo;Collisionless&rdquo; Stop Being True?</h4><p>Galaxy-formation theory usually treats a galaxy as a <em>collisionless</em> system: stars feel the smooth mean gravitational field of everyone else, and individual close encounters are negligible over a Hubble time (this is what the relaxation time in <a href="#background">Physical Background</a> quantifies). Yet the <code>cluster</code> mode's whole point is to show two-body relaxation acting within an achievable run length, and Experiment 11 showed you can dial evaporation in or out with the softening length alone. Using what you found in Experiments 1, 7, 11 and 13, write a short (half-page) argument, in your own words and citing your own numbers from this program, for why real star clusters (\(N\sim10^3\)&ndash;\(10^6\), many relaxation times over a Hubble time) are collisional systems while real galaxies (\(N\sim10^{10}\)&ndash;\(10^{11}\) stars, one relaxation time vastly exceeding the age of the Universe) are, to very good approximation, not.</p></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="validity">
+    <h2>Domain of Validity</h2>
+    <p>This program is a teaching instrument for tree-code gravity and collisionless stellar dynamics, not a research-grade N-body code. The following are absent by design, and several of them dominate real star clusters and galaxies in the regimes named.</p>
+
+    <h3>Accepted range is not trustworthy range</h3>
+    <p>The bounds enforced by the input checks are the values the program will <em>accept</em>. Several are wider than the range over which the results carry real physical weight, deliberately, so that pushing a parameter until the physics degrades is itself part of the exercise. The two ranges are:</p>
+    <table class="cred-table"><thead><tr><th>Quantity</th><th>Accepted</th><th>Reasonably represented</th></tr></thead><tbody>
+      <tr><td class="cname">number of bodies</td><td>3 &ndash; 5,000</td><td>roughly 50 &ndash; 2,000. Below about 50, Poisson shot noise makes any single diagnostic (a Lagrangian radius, the virial ratio) jump around enough that one run proves little; above a few thousand the direct method's \(O(N^2)\) cost and the tree method's pure-Python constant factor (see <a href="#algorithm">Algorithm</a>) both make routine experimentation slow.</td></tr>
+      <tr><td class="cname">cluster total mass / scale radius</td><td>any finite positive value</td><td>roughly \(10^2\)&ndash;\(10^5\,M_\odot\) and 0.1&ndash;10 pc, the rough range of real open and globular star clusters. The physics scales correctly outside this band, but the numbers stop corresponding to any actual astrophysical object.</td></tr>
+      <tr><td class="cname">galaxy total mass / radius</td><td>any finite positive value</td><td>roughly \(10^5\)&ndash;\(10^8\,M_\odot\) and 10&ndash;1000 pc &mdash; small-galaxy or massive-cluster scale, chosen so a default run completes in well under a minute. This program does not attempt to represent a full \(\sim10^{11}\,M_\odot\) galaxy; that is a matter of run time, not of any physics that breaks at larger scale.</td></tr>
+      <tr><td class="cname">initial virial ratio (galaxy)</td><td>0 &ndash; 10</td><td>0 &ndash; 2. Above about 2 the sphere is so far from bound that it disperses before undergoing any collapse worth calling &ldquo;galaxy formation.&rdquo;</td></tr>
+      <tr><td class="cname">opening angle \(\theta\)</td><td>0 &ndash; 2</td><td>0 &ndash; 1, the conventional Barnes&ndash;Hut range; the illustrative table in <a href="#algorithm">Algorithm</a> shows accuracy degrading quickly past \(\theta\approx0.8\).</td></tr>
+      <tr><td class="cname">softening length</td><td>any strictly positive value</td><td>within roughly a factor of 3 of the Dehnen (2001) default. Much smaller requires a correspondingly finer timestep to stay accurate (see Experiment 11); much larger smooths away genuine internal structure and can suppress collapse in <code>galaxy</code> mode entirely.</td></tr>
+      <tr><td class="cname">steps per crossing/free-fall time</td><td>any positive integer</td><td>at least 30&ndash;50. Fewer steps will run and produce a plot, but the leapfrog integrator will not conserve energy acceptably, and the plotted trajectory should not be trusted as physics.</td></tr>
+    </tbody></table>
+
+    <h3>What is absent</h3>
+    <ul>
+      <li><strong>Individual or block timesteps.</strong> One global \(\Delta t\) is used for every body at every step. Production N-body codes give close, fast-moving pairs their own short timestep; this program does not, which is why a fixed-\(\Delta t\) run only marginally resolves the deepest moment of a cold collapse (see <a href="#algorithm">Algorithm</a> and Experiment 14).</li>
+      <li><strong>Multipole moments beyond the monopole.</strong> Each tree cell is represented purely by its total mass and center of mass. A quadrupole correction (as in most modern tree codes) would improve the tree's accuracy at fixed \(\theta\), at the cost of a noticeably more involved cell-cell interaction.</li>
+      <li><strong>Mass spectrum and mass segregation.</strong> Every body carries identical mass. Real star clusters have a range of stellar masses, and two-body relaxation preferentially sinks the heaviest stars to the core (mass segregation) &mdash; a major driver of real cluster core evolution that an equal-mass model cannot show.</li>
+      <li><strong>Stellar evolution, collisions, and binary formation.</strong> Bodies are point masses that never merge, lose mass, or form bound pairs through dissipative encounters; real cluster cores can produce hard binaries that measurably alter the cluster's energy budget.</li>
+      <li><strong>Gas, hydrodynamics, and star formation.</strong> This is a pure collisionless gravity code; there is no gas component; the galaxy-formation mode is only a dark-matter-like or already-formed-stars toy problem, not a model of how gas turns into stars.</li>
+      <li><strong>An external tidal field or host potential.</strong> Both cluster and galaxy modes model an isolated system in otherwise empty space; a real cluster orbiting within a galaxy loses stars to the host's tidal field, a process this program does not include.</li>
+      <li><strong>General relativity.</strong> All gravity here is Newtonian; nothing in this program is intended to represent compact-object or strong-field physics.</li>
+    </ul>
+
+    <h3>Known model artefacts and caveats</h3>
+    <ul>
+      <li><strong>The tree method does not conserve momentum exactly.</strong> Documented and quantified in <a href="#algorithm">Algorithm</a>; use <code>--method direct</code> whenever exact conservation matters more than tree-code speed.</li>
+      <li><strong>The default softening is tuned for the smooth field, not for close encounters.</strong> Dehnen (2001) optimal softening minimizes the RMS force error against the true (unsoftened) mean field. It does not attempt to preserve the close two-body encounters that drive real relaxation and evaporation, which is why the default cluster run so often shows zero formal escapers despite genuine relaxation-driven expansion (see Experiment 11 and the note in <a href="#background">Physical Background</a>).</li>
+      <li><strong>The escaper criterion uses the instantaneous potential.</strong> <code>identify_escapers()</code> flags a body as escaping when its specific energy (computed from the current configuration of every other body) is non-negative and it is moving outward. This is the standard practical criterion, but it is evaluated snapshot by snapshot rather than by integrating the body's fate forward to confirm it never returns; in a system undergoing violent relaxation this can occasionally misclassify a body that is transiently, not permanently, unbound. <code>high_velocity_fraction()</code> is provided as a softer, continuously varying companion diagnostic for exactly this reason.</li>
+      <li><strong>One global softening length, not a spatially varying one.</strong> The Dehnen scaling is evaluated once from \(N\) and the initial scale radius and then held fixed for the whole run, even as the system's density profile evolves. A softening length that tracked the local density would be more accurate but would also, again, change what physics the model is capturing.</li>
+    </ul>
+    <p>What this program does capture honestly is the logic of the two big ideas it exists to teach: that approximating distant gravity buys you a genuinely different algorithm with genuinely different error properties (not just &ldquo;the same answer, faster&rdquo;), and that a collisionless-looking system of a few hundred bodies is not actually collisionless &mdash; two-body relaxation and chaotic sensitivity to initial conditions are both real, measurable, and, at this \(N\), fast.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="related">
+    <h2>Related Programs</h2>
+    <ul class="related-list">
+      <li><strong>Multiple</strong> &mdash; exact, direct-summation few-body Newtonian gravity with a leapfrog integrator. This program's explicit prerequisite: it assumes Multiple's two-body motion, energy/momentum bookkeeping, and integration scheme are already familiar, and starts from where Multiple's exact \(O(N^2)\) approach stops being practical for exploring collective, many-body behavior.</li>
+      <li><strong>Orbit</strong> &mdash; the two-body Newtonian orbit integrator whose basic machinery (positions, velocities, a fixed timestep, conserved quantities as a correctness check) this program's leapfrog loop generalizes to many bodies.</li>
+      <li><strong>Binary</strong> &mdash; two-body orbital dynamics and evolution; useful background for the pairwise gravitational interactions that, summed over many bodies (directly or via the tree approximation), drive everything in this program.</li>
+    </ul>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="license">
+    <h2>License</h2>
+    <p>NbodyGalaxySimulator is an original supplemental Python investigation proposed for use with Bernard Schutz's <em>Gravity from the Ground Up</em>. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
+  </section>
+</main>
+<footer>
+  <em>Gravity from the Ground Up</em> &middot; Python Programs &middot;
+  Bernard Schutz © 2003 (Cambridge University Press) &middot;
+  Python programs © 2024&ndash;2026 Thomas Yee &middot;
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> &middot;
+</footer>
+</div>
+<script>
+  (function () {
+    const links = document.querySelectorAll('nav a');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const match = document.querySelector(`nav a[href="#${e.target.id}"]`);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('main section[id]').forEach(s => observer.observe(s));
+  })();
+</script>
+</body>
+</html>
