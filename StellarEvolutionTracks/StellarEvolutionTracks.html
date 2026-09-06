@@ -10,8 +10,10 @@
       tex: {
         inlineMath:  [['\\(','\\)']],
         displayMath: [['\\[','\\]']],
-        tags: 'ams'
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
       },
+      loader: { load: ['[tex]/textmacros'] },
       options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
     };
   </script>
@@ -506,12 +508,12 @@ python main.py --mode nsmr --eos neutron</pre>
     <h3>Zero-Age Main-Sequence Anchor</h3>
     <div class="eq-block"><div class="eq-label">Empirical ZAMS luminosity and radius <span class="tag tag-fit">FIT</span></div>
       \[\frac{L_{\rm ZAMS}}{L_\odot}=\begin{cases}
-        0.72\times0.43^{4}\,(M/0.43\,M_\odot)^{2.3} & M<0.43\,M_\odot\\
-        0.72\,(M/M_\odot)^{4} & 0.43\,M_\odot\le M<2\,M_\odot\\
+        0.72\times0.43^{4}\,(M/0.43\,M_\odot)^{2.3} & M\lt0.43\,M_\odot\\
+        0.72\,(M/M_\odot)^{4} & 0.43\,M_\odot\le M\lt2\,M_\odot\\
         0.72\times2^{4}\,(M/2\,M_\odot)^{3.5} & M\ge2\,M_\odot
       \end{cases}\]
       \[\frac{R_{\rm ZAMS}}{R_\odot}=\begin{cases}
-        0.89\,(M/M_\odot)^{0.80} & M<M_\odot\\
+        0.89\,(M/M_\odot)^{0.80} & M\lt M_\odot\\
         0.89\,(M/M_\odot)^{0.57} & M\ge M_\odot
       \end{cases}\]
     </div>

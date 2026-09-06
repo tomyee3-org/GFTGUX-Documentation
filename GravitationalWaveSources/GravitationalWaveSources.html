@@ -10,8 +10,10 @@
       tex: {
         inlineMath:  [['\\(','\\)']],
         displayMath: [['\\[','\\]']],
-        tags: 'ams'
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
       },
+      loader: { load: ['[tex]/textmacros'] },
       options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
     };
   </script>

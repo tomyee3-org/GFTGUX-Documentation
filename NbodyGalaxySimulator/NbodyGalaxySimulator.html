@@ -10,8 +10,10 @@
       tex: {
         inlineMath:  [['\\(','\\)']],
         displayMath: [['\\[','\\]']],
-        tags: 'ams'
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
       },
+      loader: { load: ['[tex]/textmacros'] },
       options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
     };
   </script>
@@ -504,7 +506,7 @@ python main.py --mode cluster --n_bodies 150 --method direct</pre>
 
     <div class="eq-block">
       <div class="eq-label">Barnes&ndash;Hut opening-angle criterion</div>
-      \[ \frac{s}{d} < \theta \quad\Longrightarrow\quad \text{treat this tree node as one point mass at its center of mass} \]
+      \[ \frac{s}{d} \lt \theta \quad\Longrightarrow\quad \text{treat this tree node as one point mass at its center of mass} \]
       <p style="margin-top:8px; font-size:0.88rem;">\(s\) is the node's (cubical) box size, \(d\) the distance from the body to the node's center of mass, and \(\theta\) the opening angle (<code>--theta</code>). \(\theta=0\) forces a full descent to individual bodies for every force evaluation (exact monopole summation, at direct-summation-like cost); \(\theta\) of order 0.5&ndash;0.8 is the usual working range.</p>
     </div>
 
