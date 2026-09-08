@@ -423,7 +423,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.1.4&nbsp;&nbsp;&nbsp;&nbsp;Build 95b0f67c9adb
+    Version 0.2.0&nbsp;&nbsp;&nbsp;&nbsp;Build 80ea66595fc8
   </p>
 
   <section id="description">
@@ -433,6 +433,14 @@
     <div class="warn"><strong>What this program is not.</strong> It does not integrate null geodesics in the Schwarzschild metric (that is <code>PhotonOrbit</code>). It does not fit a mass model to a Hubble image. The thin-lens deflection is applied in one plane. Galaxy-scale strong lensing is the intended domain; a black-hole silhouette is not.</div>
     <div class="warn"><strong>False colour.</strong> Modes <code>point</code>, <code>blob</code>, <code>critical</code>, <code>arcs</code>, and <code>kappa</code> paint intensity or convergence with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic: a point-mass or SIS lens does not split light into rainbows the way a glass prism or the atmosphere can. A white galaxy stays white; the program has simply chosen a palette so a faint arc is visible on a screen.</div>
     <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax from a public CDN. Without a network connection the raw \(\LaTeX\) remains visible as text. The program itself needs no internet access.</div>
+  </section>
+
+  <section id="setup">
+    <h2>Before the first run</h2>
+    <p>Unpack the program zip so you have a folder named <code>GravitationalLensing</code> that contains <code>main.py</code>. Open a terminal in that folder. You need Python 3 with NumPy and Matplotlib. Then:</p>
+<pre>python main.py --version
+python main.py --mode rays</pre>
+    <p>Every command on this page assumes that working directory. Even values of <code>--n_pix</code> are rounded up to the next odd number so a pixel sits on the optical axis.</p>
   </section>
 
   <section id="modes">
@@ -466,7 +474,7 @@ python main.py --mode critical --outdir ./runs</pre>
     <p>On axis, symmetry makes every azimuth equivalent. There is one radius at which the bend is exactly right. That locus is the Einstein ring. Off axis the symmetry breaks and two rays survive — one outside the ring, one inside, on opposite sides of the lens.</p>
     <div class="eq-block">
       <div class="eq-label">Play</div>
-      <p>Run <code>python main.py --mode rays</code>. Both panels trace rays <em>forward</em> from one source. The height at the lens is the impact angle <code>theta</code>; the kink is the point-mass deflection that makes <code>y</code> at the observer vanish if and only if the lens equation holds. Red rays satisfy that equation and reach the observer. Blue rays miss. Gravity only attracts: every kink is toward the mass. Distances are schematic (<code>D_l = D_ls = 1</code>, <code>D_s = 2</code>), so the vertical axis is the angle in radians and a default <code>10^{12} M_odot</code> lens has <code>theta_E ~ 10^{-5}</code>. There is no artwork inside the observer marker.</p>
+      <p>Run <code>python main.py --mode rays</code>. Both panels trace rays <em>forward</em> from one source. The height at the lens is the impact angle \(\theta\); the kink is the point-mass deflection that makes \(y\) at the observer vanish if and only if the lens equation holds. Red rays satisfy that equation and reach the observer. Blue rays miss. Gravity only attracts: every kink is toward the mass. Distances in this panel are schematic (\(D_l = D_{ls} = 1\), \(D_s = 2\)), so the vertical axis is the angle in radians. A default \(10^{12}\,M_\odot\) lens has \(\theta_E \sim 10^{-5}\). There is no artwork inside the observer marker. The lower panel uses the signed value of <code>--beta_y</code>: positive is above the axis, negative below.</p>
     </div>
   </section>
 
@@ -491,7 +499,7 @@ python main.py --mode point --logM 12.5 --beta_x 0.3 --beta_y 0.3</pre>
 \boldsymbol{\alpha}(\boldsymbol{\theta}) = \theta_E^2\,\frac{\boldsymbol{\theta}}{\lvert\boldsymbol{\theta}\rvert^2}
 \]
     </div>
-    <p>A \(10^{12}\,M_\odot\) lens halfway to a source at 2&nbsp;Gpc gives \(\theta_E \approx 2''\). That is why the default field of view is six arcseconds. \(G\) and \(c\) are SI; mass is entered as \(\log_{10}(M/M_\odot)\).</p>
+    <p>A \(10^{12}\,M_\odot\) lens halfway to a source at 2&nbsp;Gpc gives \(\theta_E \approx 2''\). Those distances are illustrative only; they are chosen so Einstein radii come out in arcseconds. They are not a cosmological model, and angular-diameter distances in the real universe are not in general related by \(D_{ls}=D_s-D_l\). \(G\) and \(c\) are SI; mass is entered as \(\log_{10}(M/M_\odot)\). Compact-source width is held fixed at \(0.08''\). If you raise <code>--logM</code>, the field of view grows with the ring so the circle is not clipped.</p>
   </section>
 
   <section id="beat2">
@@ -504,6 +512,7 @@ python main.py --mode point --logM 12.5 --beta_x 0.3 --beta_y 0.3</pre>
 \]
     </div>
     <p>\(\theta_+\) lies outside the Einstein ring; \(\theta_-\) lies inside, on the opposite side of the lens, and is mirror-reversed. On axis both sit at \(\pm\theta_E\) and the ring is complete. The cyan dashed circle drawn on the <code>point</code> figure is that ring. The white cross is the <em>unlensed</em> source position — the thing <code>--beta_x</code> and <code>--beta_y</code> move.</p>
+    <div class="note"><strong>Parity.</strong> The sign of \(\det A\) is the parity of the image. Positive parity keeps the source's orientation. Negative parity mirrors it. For a point mass the outer image is positive and the inner image is negative.</div>
   </section>
 
   <section id="beat3">
@@ -524,7 +533,8 @@ python main.py --mode blob --beta_y 0.8 --r_eff 0.20</pre>
 \mu = \frac{1}{\det A}.
 \]
     </div>
-    <p>Where \(\det A = 0\), stretch is infinite. That set, drawn on the sky, is the <strong>critical curve</strong>. Push the same set through the lens equation into the source plane and you have the <strong>caustic</strong>.</p>
+    <p>Where \(\det A = 0\), stretch is infinite. That set, drawn on the sky, is the <strong>critical curve</strong>. Push the same set through the lens equation into the source plane and you have the <strong>caustic</strong>. A caustic is not a physical structure in space. It is a curve in the source plane marking where the lens mapping changes its image multiplicity.</p>
+    <div class="note"><strong>Two planes.</strong> The critical curve lives in the image plane (the sky). The caustic lives in the source plane. The lens equation maps one into the other; they are not the same curve.</div>
     <p>For a point mass,</p>
     <div class="eq-block">
       <div class="eq-label">Point-mass Jacobian</div>
@@ -533,7 +543,7 @@ python main.py --mode blob --beta_y 0.8 --r_eff 0.20</pre>
 \]
     </div>
     <p>The zero set is the Einstein circle. Mapped backwards it collapses to <strong>one point</strong> at \(\beta = 0\). On that point: a ring. Off it: two images. That is the whole point-mass zoo.</p>
-    <p>Mode <code>critical</code> shows three panels at once: the photograph with the critical curve overplotted; the source plane with the caustic marked as a star at the origin; and a side-view of the same source. The side view is the thin-lens unwrapping of Beat 0, not a Schwarzschild geodesic. Red rays reach the observer; blue rays miss. The height in that panel is \(\beta_y\). A shift in \(\beta_x\) is perpendicular to the page and does not move the star in the side view — use <code>--beta_y</code>.</p>
+    <p>Mode <code>critical</code> shows three panels at once: the photograph with the critical curve overplotted; the source plane with the caustic marked as a star at the origin; and a side-view of the same source. The side view is the thin-lens unwrapping of Beat 0, not a Schwarzschild geodesic. Red rays reach the observer; blue rays miss. The height in that panel is \(\beta_y\). The diagram is a slice through a three-dimensional geometry. Motion in \(\beta_x\) points into or out of the page and cannot be shown in this projection — use <code>--beta_y</code> to move the star in the drawing.</p>
 <pre>python main.py --mode critical
 python main.py --mode critical --beta_y 0.4</pre>
     <div class="note"><strong>Leave the mass alone for this beat.</strong> Changing <code>--logM</code> only resizes a self-similar circle. The default mass is already in the figure. The coordinate that changes what you see is the source position, and on the side view that coordinate is <code>--beta_y</code>.</div>
@@ -541,35 +551,40 @@ python main.py --mode critical --beta_y 0.4</pre>
 
   <section id="beat5">
     <h2>Beat 5 · Break the symmetry</h2>
-    <p>A real galaxy is not a point. The teaching model is a singular isothermal sphere plus a little external shear \(\gamma\):</p>
+    <p>A real lensing galaxy is not a point mass. The teaching model is a singular isothermal sphere plus a little external shear \(\gamma\):</p>
     <div class="eq-block">
       <div class="eq-label">SIS + shear deflection</div>
 \[
 \boldsymbol{\alpha} = \theta_E\,\hat{\boldsymbol{\theta}} + (\gamma\,\theta_x,\,-\gamma\,\theta_y).
 \]
     </div>
-    <p>The critical curve opens into an oval on the sky. The caustic opens into a <strong>diamond</strong> in the source plane. The four sharp corners of the diamond are <strong>cusps</strong>. The four smooth sides are <strong>folds</strong>.</p>
+    <p>The critical curve opens into an oval on the sky. The caustic opens into a <strong>diamond</strong> in the source plane. The four sharp corners of the diamond are <strong>cusps</strong>. The four smooth sides are <strong>folds</strong>. Image number can change only when the source crosses a caustic. Moving the source without crossing a caustic merely moves existing images.</p>
+    <p>Because the mass model is singular at the origin there is a second boundary, the <strong>pseudo-caustic</strong>: the image of that singularity, drawn as a dashed circle of radius \(\theta_E\) on the source plane. Outside it only one image remains. An image has disappeared into, or will emerge from, the centre.</p>
     <table class="param-table">
       <thead><tr><th>Source</th><th>Images</th><th>What happened</th></tr></thead>
       <tbody>
-        <tr><td>outside the diamond</td><td>2</td><td>missed the caustic</td></tr>
+        <tr><td>outside the pseudo-caustic</td><td>1</td><td>the second image has fallen into the singularity</td></tr>
+        <tr><td>between the two curves</td><td>2</td><td>missed the diamond</td></tr>
         <tr><td>cross a fold inward</td><td>2 \(\to\) 4</td><td>a pair is created on the critical curve</td></tr>
-        <tr><td>deep inside</td><td>4</td><td>a quad</td></tr>
+        <tr><td>deep inside the diamond</td><td>4</td><td>a quad</td></tr>
         <tr><td>just inside a cusp</td><td>4, three huddled</td><td>cusp triplet + one opposite image</td></tr>
+        <tr><td>centred, \(\gamma=0\)</td><td>ring</td><td>a continuum, not a finite list of dots</td></tr>
       </tbody>
     </table>
 <pre>python main.py --mode shear --beta_x 0.55 --beta_y 0.10
 python main.py --mode shear --beta_x 0.05 --beta_y 0.03
-python main.py --mode shear --beta_x 0.00 --beta_y 0.55</pre>
-    <p>Count the numbered dots on the left panel. That one session is the whole vocabulary.</p>
+python main.py --mode shear --beta_x 2.0 --beta_y 0.0
+python main.py --mode shear --gamma 0 --beta_x 0 --beta_y 0</pre>
+    <p>Count the numbered dots on the left panel. The dashed circle is the pseudo-caustic. The last command is the Einstein-ring degeneracy.</p>
   </section>
 
   <section id="beat6">
     <h2>Beat 6 · Arcs as a fat source on the same diamond</h2>
-    <p>Keep the SIS + shear lens. Light up an extended ellipse instead of a star. Drape it on a fold and you get two long arcs. Drape it on a cusp and one arc splits. Cover the centre and you get a ring.</p>
+    <p>Keep the SIS + shear lens. Light up an extended ellipse instead of a star. Drape it on a fold and you get two long arcs. Drape it on a cusp and one arc splits. Park it at the origin with the default shear and you get four arcs around the oval critical curve — broken symmetry again, not a ring. A circular ring needs the shear removed.</p>
 <pre>python main.py --mode arcs
 python main.py --mode arcs --beta_x 0.55 --r_eff 0.14
-python main.py --mode arcs --beta_x 0.00 --beta_y 0.00 --r_eff 0.20</pre>
+python main.py --mode arcs --beta_x 0.00 --beta_y 0.00 --r_eff 0.20
+python main.py --mode arcs --gamma 0 --beta_x 0 --beta_y 0 --r_eff 0.20</pre>
   </section>
 
   <section id="beat7">
@@ -581,7 +596,7 @@ python main.py --mode arcs --beta_x 0.00 --beta_y 0.00 --r_eff 0.20</pre>
 \kappa(\boldsymbol{\theta}) = \frac{\Sigma(\boldsymbol{\theta})}{\Sigma_{\mathrm{crit}}}.
 \]
     </div>
-    <p>For an SIS, \(\kappa = \theta_E/(2\lvert\theta\rvert)\). On the Einstein circle \(\kappa = 1/2\). Mode <code>kappa</code> draws that mass map with the critical curve on top. Changing <code>--sigma_v</code> only rescales the same map — it does not add a new feature. That is why this mode comes last: you already know what the circle is.</p>
+    <p>For an SIS, \(\kappa = \theta_E/(2\lvert\theta\rvert)\). On the Einstein circle \(\kappa = 1/2\), and that is exactly where the critical curve sits. Mode <code>kappa</code> draws the mass map with that \(\kappa=1/2\) circle on top. Changing <code>--sigma_v</code> rescales the map; the relation “critical curve where \(\kappa=1/2\)” does not change. That is why this mode comes last: you already know what the circle is.</p>
 <pre>python main.py --mode kappa
 python main.py --mode kappa --sigma_v 180</pre>
     <p>The SIS Einstein radius itself is</p>
@@ -646,8 +661,8 @@ python main.py --mode kappa --sigma_v 180</pre>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) for point-mass modes</td></tr>
         <tr><td class="pname">--sigma_v</td><td class="pdefault">300</td><td>SIS velocity dispersion [km/s]</td></tr>
         <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>external shear; must satisfy \(|\gamma|&lt;1\)</td></tr>
-        <tr><td class="pname">--r_eff, --q, --phi</td><td class="pdefault">0.25, 0.60, 30</td><td>extended-source size [arcsec], axis ratio, position angle [deg]</td></tr>
-        <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">181, 6</td><td>grid size and field of view [arcsec]</td></tr>
+        <tr><td class="pname">--r_eff, --q, --phi</td><td class="pdefault">0.25, 0.60, 30</td><td>half-light radius [arcsec] of the elliptical Gaussian, axis ratio, position angle [deg]</td></tr>
+        <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">181, 6</td><td>grid size (even values are rounded up to odd) and field of view [arcsec]</td></tr>
         <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>also write a PNG and a provenance sidecar</td></tr>
       </tbody>
     </table>
@@ -662,9 +677,9 @@ python main.py --mode kappa --sigma_v 180</pre>
     <h2>Domain of Validity</h2>
     <ul>
       <li>Thin lens, small angles. Fine for galaxy-scale strong lensing at arcsecond Einstein radii. Not a black-hole ray tracer.</li>
-      <li>Fixed distances 1&nbsp;Gpc and 2&nbsp;Gpc. Changing cosmology is not a supported experiment in this version.</li>
-      <li>SIS + shear is the cheapest diamond, not an elliptical mass that has been fitted to a cluster.</li>
-      <li>The Newton image finder is tested in the two-image and four-image regions used by the Help file. Sitting exactly on a fold, where two images merge, is a singular Jacobian and is not promised to return a clean count of three.</li>
+      <li>Fixed distances 1&nbsp;Gpc and 2&nbsp;Gpc, chosen so \(\theta_E\) is a few arcseconds. They are not a cosmology. Angular-diameter distances are not generally related by \(D_{ls}=D_s-D_l\).</li>
+      <li>SIS + shear is the cheapest diamond, not an elliptical mass that has been fitted to a cluster. The dashed circle on the source plane is the SIS pseudo-caustic.</li>
+      <li>The Newton image finder is tested in the one-, two-, and four-image regions used by the Help file. Sitting exactly on a fold, where two images merge, is a singular Jacobian and is not promised to return a clean count of three.</li>
     </ul>
   </section>
 
@@ -678,7 +693,7 @@ python main.py --mode kappa --sigma_v 180</pre>
 
   <section id="license">
     <h2>License</h2>
-    <p>Proposed teaching supplement for <em>Gravity from the Ground Up</em>, second edition, under discussion with Bernard Schutz and Cambridge University Press. Kickoff source and Help file are provided for the GFTGUX review cycle. They are not a published CUP product.</p>
+    <p>Proposed teaching supplement for <em>Gravity from the Ground Up</em>, second edition, under discussion with Bernard Schutz and Cambridge University Press. Not a published CUP product.</p>
   </section>
 </main>
 <footer>
