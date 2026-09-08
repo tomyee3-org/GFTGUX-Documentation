@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GravitationalLensing – Help File | GFtGU Programs</title>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
+      },
+      loader: { load: ['[tex]/textmacros'] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
+<style>
+    /* ── Reset & custom properties ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.80;
+      color: var(--text);
+      background: var(--bg);
+    }
+    /* ── Page grid ── */
+    .page-wrap {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    /* ── Header ── */
+    header {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      padding: 26px 38px 20px;
+      border-bottom: 4px solid var(--gold);
+    }
+    header .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 3px;
+      padding: 2px 7px;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.95rem;
+      font-weight: normal;
+      letter-spacing: -.02em;
+    }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub {
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: #f0d0b8;
+      line-height: 1.55;
+    }
+    header .sub a {
+      color: #ffd8b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,200,150,.4);
+    }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    /* ── Sidebar ── */
+    nav {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 14px 18px 4px;
+    }
+    nav a {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 18px 5px 22px;
+      border-left: 3px solid transparent;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: #fdf0e0;
+      border-left-color: var(--gold);
+    }
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      background: #fdecd8;
+    }
+    /* ── Main content ── */
+    main {
+      padding: 38px 52px 60px;
+      max-width: 900px;
+    }
+    h2 {
+      font-size: 1.40rem;
+      font-weight: normal;
+      color: var(--accent);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 6px;
+      margin: 2.2rem 0 1.0rem;
+    }
+    h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 1.6rem 0 .5rem;
+    }
+    h4 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 1.2rem 0 .35rem;
+    }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block {
+      background: var(--eq-bg);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 22px 10px;
+      margin: 1.1rem 0 1.3rem;
+      overflow-x: auto;
+    }
+    .eq-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.865em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    pre {
+      font-family: var(--mono);
+      font-size: 0.855em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: .8rem 0 1.1rem;
+      line-height: 1.55;
+    }
+    .note {
+      background: var(--note-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .note strong { color: var(--accent2); }
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin: 1.1rem 0 1.4rem;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .module-card .mc-name {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .module-card .mc-role {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .module-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    .module-card .sig {
+      font-family: var(--mono);
+      font-size: 0.80rem;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 7px 10px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .param-table, .out-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .param-table th, .out-table th {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .out-table th { background: var(--accent2); }
+    .param-table td, .out-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0d8c8;
+      vertical-align: top;
+    }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table tr:hover td, .out-table tr:hover td { background: #f3ecdf; }
+    .param-table .pname, .out-table .oname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      box-shadow: var(--shadow);
+    }
+    .exp-card .ec-num {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin-bottom: 7px;
+    }
+    .exp-card h4 {
+      font-size: 0.94rem;
+      color: var(--accent2);
+      margin: 0 0 5px;
+    }
+    .exp-card p {
+      font-size: 0.855rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .related-list {
+      list-style: none;
+      margin: .6rem 0 1.2rem;
+      padding: 0;
+    }
+    .related-list li {
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 7px;
+      font-size: 0.90rem;
+    }
+    .related-list li strong {
+      font-family: var(--mono);
+      color: var(--accent2);
+    }
+    footer {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      text-align: center;
+      padding: 18px 24px;
+      line-height: 1.7;
+    }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+    .warn {
+      background: #fff6e8;
+      border: 1px solid var(--gold);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .warn strong { color: var(--accent); }
+    .mode-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1rem 0 1.4rem; }
+    .mode-table th { background: var(--gold); color: #fff; font-family: var(--sans); font-size: 11px;
+      letter-spacing: .06em; text-transform: uppercase; padding: 8px 12px; text-align: left; }
+    .mode-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .mode-table tr:nth-child(even) td { background: #faf5ec; }
+    .mode-table .mname { font-family: var(--mono); font-size: 0.85rem; color: var(--accent2); font-weight: 700; }
+    .tag {
+      display: inline-block; font-family: var(--sans); font-size: 9.5px; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase; border-radius: 3px;
+      padding: 1px 6px; margin-right: 5px; vertical-align: 1px;
+    }
+    .tag-ode  { background: #d9ead3; color: #274e13; border: 1px solid #a8c69a; }
+    .tag-fit  { background: #fce5cd; color: #7f3f00; border: 1px solid #e0b183; }
+    .tag-cal  { background: #e6e0f8; color: #3d2c73; border: 1px solid #b7abdd; }
+    .tag-der  { background: #dbe8f5; color: #1c3f63; border: 1px solid #a4c0da; }
+    .cred-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin: 1rem 0 1.4rem; }
+    .cred-table th { background: var(--gold); color: #fff; font-family: var(--sans); font-size: 11px;
+                     letter-spacing: .06em; text-transform: uppercase; padding: 7px 12px; text-align: left; }
+    .cred-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .cred-table tr:nth-child(even) td { background: #faf5ec; }
+    .cred-table .cname { font-family: var(--mono); font-size: 0.85rem; color: var(--accent2); font-weight: 700; }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+  <div class="badge">Proposed supplement · Gravity from the Ground Up</div>
+  <h1><em>GravitationalLensing</em> — Rings, Doubles, Caustics, and Arcs</h1>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+  </div>
+</header>
+<nav id="sidebar">
+  <div class="nav-label">Overview</div>
+  <a href="#description">Description</a>
+  <a href="#modes">The Seven Modes</a>
+  <a href="#beats">How to read this page</a>
+  <div class="nav-label">Beats</div>
+  <a href="#beat0">0 · Rays, no jargon</a>
+  <a href="#beat1">1 · Play with a point mass</a>
+  <a href="#beat2">2 · Why two images</a>
+  <a href="#beat3">3 · An extended blob</a>
+  <a href="#beat4">4 · Critical curve and caustic</a>
+  <a href="#beat5">5 · Break the symmetry</a>
+  <a href="#beat6">6 · Arcs on the diamond</a>
+  <a href="#beat7">7 · What \(\kappa\) is</a>
+  <div class="nav-label">Code</div>
+  <a href="#equations">Governing Equations</a>
+  <a href="#modules">Module Overview</a>
+  <a href="#parameters">Parameters</a>
+  <a href="#output">Output</a>
+  <div class="nav-label">Use</div>
+  <a href="#validity">Domain of Validity</a>
+  <a href="#related">Related Programs</a>
+  <a href="#license">License</a>
+</nav>
+<main>
+  <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
+    Version 0.1.4&nbsp;&nbsp;&nbsp;&nbsp;Build 95b0f67c9adb
+  </p>
+
+  <section id="description">
+    <h2>Description</h2>
+    <p><strong>GravitationalLensing</strong> is a proposed new program for a second edition of <em>Gravity from the Ground Up</em>. It teaches the thin-lens mapping that turns a background galaxy into an Einstein ring, a double image, a quad, or a pair of arcs. Each section below is one beat: a short argument, a figure, the equation that argument earns, and a command that lets you test the argument.</p>
+    <p>The spine of the lesson is one sentence: <em>where the source sits relative to the caustic decides the photograph</em>. A point-mass lens is the chapter in which the caustic has collapsed to a point. An SIS plus a little external shear is the chapter in which the caustic opens into a diamond with folds and cusps.</p>
+    <div class="warn"><strong>What this program is not.</strong> It does not integrate null geodesics in the Schwarzschild metric (that is <code>PhotonOrbit</code>). It does not fit a mass model to a Hubble image. The thin-lens deflection is applied in one plane. Galaxy-scale strong lensing is the intended domain; a black-hole silhouette is not.</div>
+    <div class="warn"><strong>False colour.</strong> Modes <code>point</code>, <code>blob</code>, <code>critical</code>, <code>arcs</code>, and <code>kappa</code> paint intensity or convergence with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic: a point-mass or SIS lens does not split light into rainbows the way a glass prism or the atmosphere can. A white galaxy stays white; the program has simply chosen a palette so a faint arc is visible on a screen.</div>
+    <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax from a public CDN. Without a network connection the raw \(\LaTeX\) remains visible as text. The program itself needs no internet access.</div>
+  </section>
+
+  <section id="modes">
+    <h2>The Seven Modes</h2>
+    <table class="mode-table">
+      <thead><tr><th>Mode</th><th>Beat</th><th>What you see</th></tr></thead>
+      <tbody>
+        <tr><td class="mname">rays</td><td>0</td><td>Side-view cartoon: on-axis Einstein cone versus off-axis double.</td></tr>
+        <tr><td class="mname">point</td><td>1–2</td><td>Compact Gaussian through a point mass. Default source is already off-axis.</td></tr>
+        <tr><td class="mname">blob</td><td>3</td><td>The same lens, now lighting an extended elliptical galaxy.</td></tr>
+        <tr><td class="mname">critical</td><td>4</td><td>Image plane, source plane (caustic = a point), and a side-view of the rays that form it.</td></tr>
+        <tr><td class="mname">shear</td><td>5</td><td>SIS + shear. Count images as you move the source across the diamond.</td></tr>
+        <tr><td class="mname">arcs</td><td>6</td><td>Extended source draped on that diamond.</td></tr>
+        <tr><td class="mname">kappa</td><td>7</td><td>SIS mass map. Taught last, after the curve it produces already means something.</td></tr>
+      </tbody>
+    </table>
+<pre>python main.py --mode point
+python main.py --mode point --beta_x 0.0 --beta_y 0.0
+python main.py --mode shear --beta_x 0.55 --beta_y 0.10
+python main.py --mode critical --outdir ./runs</pre>
+  </section>
+
+  <section id="beats">
+    <h2>How to read this page</h2>
+    <p>Each numbered section below is one beat: a short argument, the equation it earns, and the command that lets you test the argument. Do them in order the first time. After that, any mode can be opened on its own.</p>
+  </section>
+
+  <section id="beat0">
+    <h2>Beat 0 · Rays, no jargon</h2>
+    <p>A glass lens bends more toward the rim. A point-mass gravitational lens does the opposite: a ray that skims the mass is bent hard, a ray that passes far away is barely bent. The observer is not sitting at a camera-lens focus. The observer only sees those rays whose deflection happens to aim at Earth.</p>
+    <p>On axis, symmetry makes every azimuth equivalent. There is one radius at which the bend is exactly right. That locus is the Einstein ring. Off axis the symmetry breaks and two rays survive — one outside the ring, one inside, on opposite sides of the lens.</p>
+    <div class="eq-block">
+      <div class="eq-label">Play</div>
+      <p>Run <code>python main.py --mode rays</code>. Both panels trace rays <em>forward</em> from one source. The height at the lens is the impact angle <code>theta</code>; the kink is the point-mass deflection that makes <code>y</code> at the observer vanish if and only if the lens equation holds. Red rays satisfy that equation and reach the observer. Blue rays miss. Gravity only attracts: every kink is toward the mass. Distances are schematic (<code>D_l = D_ls = 1</code>, <code>D_s = 2</code>), so the vertical axis is the angle in radians and a default <code>10^{12} M_odot</code> lens has <code>theta_E ~ 10^{-5}</code>. There is no artwork inside the observer marker.</p>
+    </div>
+  </section>
+
+  <section id="beat1">
+    <h2>Beat 1 · Play with a point mass</h2>
+    <p>Now the same geometry as a picture on the sky. The default source is already off-axis, so the first frame is two images, not a ring.</p>
+<pre>python main.py --mode point
+python main.py --mode point --beta_x 0.0 --beta_y 0.0
+python main.py --mode point --logM 12.5 --beta_x 0.3 --beta_y 0.3</pre>
+    <p>Three tasks, in order. First rerun with <code>--beta_x 0 --beta_y 0</code> and name what appears. Then move the source in the vertical direction with a new <code>--beta_y</code> (that is the height drawn in every side view) and watch the ring split into two images. Then raise <code>--logM</code> and watch the ring grow. There is nothing to drag; each run is one command.</p>
+    <p><em>Then</em> write the Einstein radius and the lens equation. The commands above were already solving them.</p>
+    <div class="eq-block">
+      <div class="eq-label">Point-mass Einstein radius</div>
+\[
+\theta_E = \sqrt{\frac{4GM}{c^2}\,\frac{D_{ls}}{D_l D_s}}
+\]
+    </div>
+    <div class="eq-block">
+      <div class="eq-label">Lens equation</div>
+\[
+\boldsymbol{\beta} = \boldsymbol{\theta} - \boldsymbol{\alpha}(\boldsymbol{\theta}), \qquad
+\boldsymbol{\alpha}(\boldsymbol{\theta}) = \theta_E^2\,\frac{\boldsymbol{\theta}}{\lvert\boldsymbol{\theta}\rvert^2}
+\]
+    </div>
+    <p>A \(10^{12}\,M_\odot\) lens halfway to a source at 2&nbsp;Gpc gives \(\theta_E \approx 2''\). That is why the default field of view is six arcseconds. \(G\) and \(c\) are SI; mass is entered as \(\log_{10}(M/M_\odot)\).</p>
+  </section>
+
+  <section id="beat2">
+    <h2>Beat 2 · Why two, and where they sit</h2>
+    <p>For a source on the \(x\)-axis at angular distance \(\beta\) from the lens, the two image radii are</p>
+    <div class="eq-block">
+      <div class="eq-label">Analytic double</div>
+\[
+\theta_\pm = \frac{1}{2}\left(\beta \pm \sqrt{\beta^2 + 4\theta_E^2}\right).
+\]
+    </div>
+    <p>\(\theta_+\) lies outside the Einstein ring; \(\theta_-\) lies inside, on the opposite side of the lens, and is mirror-reversed. On axis both sit at \(\pm\theta_E\) and the ring is complete. The cyan dashed circle drawn on the <code>point</code> figure is that ring. The white cross is the <em>unlensed</em> source position — the thing <code>--beta_x</code> and <code>--beta_y</code> move.</p>
+  </section>
+
+  <section id="beat3">
+    <h2>Beat 3 · An extended blob, still a point mass</h2>
+    <p>Replace the star with a small elliptical Gaussian. The lens equation does not change. A centred galaxy becomes a thick ring. Shift it with <code>--beta_y</code> and the ring splits into two arcs — the same geometry as the lower panel of <code>--mode rays</code>, now drawn as a (false-colour) photograph of an extended source.</p>
+<pre>python main.py --mode blob
+python main.py --mode blob --beta_x 0.0 --beta_y 0.0
+python main.py --mode blob --beta_y 0.8 --r_eff 0.20</pre>
+    <p>For a point-mass lens the source plane still has only one distinguished point: the origin. A source there becomes a ring. A source anywhere else becomes two images. The next beat gives that point its name.</p>
+  </section>
+
+  <section id="beat4">
+    <h2>Beat 4 · Name the critical curve — and look at the rays that make the caustic</h2>
+    <p>The lens mapping sends each sky position \(\boldsymbol{\theta}\) to a source position \(\boldsymbol{\beta}(\boldsymbol{\theta})\). The Jacobian of that map is \(A = \partial\boldsymbol{\beta}/\partial\boldsymbol{\theta}\). Magnification is</p>
+    <div class="eq-block">
+      <div class="eq-label">Magnification</div>
+\[
+\mu = \frac{1}{\det A}.
+\]
+    </div>
+    <p>Where \(\det A = 0\), stretch is infinite. That set, drawn on the sky, is the <strong>critical curve</strong>. Push the same set through the lens equation into the source plane and you have the <strong>caustic</strong>.</p>
+    <p>For a point mass,</p>
+    <div class="eq-block">
+      <div class="eq-label">Point-mass Jacobian</div>
+\[
+\det A = 1 - \left(\frac{\theta_E}{\lvert\theta\rvert}\right)^4.
+\]
+    </div>
+    <p>The zero set is the Einstein circle. Mapped backwards it collapses to <strong>one point</strong> at \(\beta = 0\). On that point: a ring. Off it: two images. That is the whole point-mass zoo.</p>
+    <p>Mode <code>critical</code> shows three panels at once: the photograph with the critical curve overplotted; the source plane with the caustic marked as a star at the origin; and a side-view of the same source. The side view is the thin-lens unwrapping of Beat 0, not a Schwarzschild geodesic. Red rays reach the observer; blue rays miss. The height in that panel is \(\beta_y\). A shift in \(\beta_x\) is perpendicular to the page and does not move the star in the side view — use <code>--beta_y</code>.</p>
+<pre>python main.py --mode critical
+python main.py --mode critical --beta_y 0.4</pre>
+    <div class="note"><strong>Leave the mass alone for this beat.</strong> Changing <code>--logM</code> only resizes a self-similar circle. The default mass is already in the figure. The coordinate that changes what you see is the source position, and on the side view that coordinate is <code>--beta_y</code>.</div>
+  </section>
+
+  <section id="beat5">
+    <h2>Beat 5 · Break the symmetry</h2>
+    <p>A real galaxy is not a point. The teaching model is a singular isothermal sphere plus a little external shear \(\gamma\):</p>
+    <div class="eq-block">
+      <div class="eq-label">SIS + shear deflection</div>
+\[
+\boldsymbol{\alpha} = \theta_E\,\hat{\boldsymbol{\theta}} + (\gamma\,\theta_x,\,-\gamma\,\theta_y).
+\]
+    </div>
+    <p>The critical curve opens into an oval on the sky. The caustic opens into a <strong>diamond</strong> in the source plane. The four sharp corners of the diamond are <strong>cusps</strong>. The four smooth sides are <strong>folds</strong>.</p>
+    <table class="param-table">
+      <thead><tr><th>Source</th><th>Images</th><th>What happened</th></tr></thead>
+      <tbody>
+        <tr><td>outside the diamond</td><td>2</td><td>missed the caustic</td></tr>
+        <tr><td>cross a fold inward</td><td>2 \(\to\) 4</td><td>a pair is created on the critical curve</td></tr>
+        <tr><td>deep inside</td><td>4</td><td>a quad</td></tr>
+        <tr><td>just inside a cusp</td><td>4, three huddled</td><td>cusp triplet + one opposite image</td></tr>
+      </tbody>
+    </table>
+<pre>python main.py --mode shear --beta_x 0.55 --beta_y 0.10
+python main.py --mode shear --beta_x 0.05 --beta_y 0.03
+python main.py --mode shear --beta_x 0.00 --beta_y 0.55</pre>
+    <p>Count the numbered dots on the left panel. That one session is the whole vocabulary.</p>
+  </section>
+
+  <section id="beat6">
+    <h2>Beat 6 · Arcs as a fat source on the same diamond</h2>
+    <p>Keep the SIS + shear lens. Light up an extended ellipse instead of a star. Drape it on a fold and you get two long arcs. Drape it on a cusp and one arc splits. Cover the centre and you get a ring.</p>
+<pre>python main.py --mode arcs
+python main.py --mode arcs --beta_x 0.55 --r_eff 0.14
+python main.py --mode arcs --beta_x 0.00 --beta_y 0.00 --r_eff 0.20</pre>
+  </section>
+
+  <section id="beat7">
+    <h2>Beat 7 · Only now: what \(\kappa\) is</h2>
+    <p>Convergence is projected surface density in units of the critical density for lensing,</p>
+    <div class="eq-block">
+      <div class="eq-label">Convergence</div>
+\[
+\kappa(\boldsymbol{\theta}) = \frac{\Sigma(\boldsymbol{\theta})}{\Sigma_{\mathrm{crit}}}.
+\]
+    </div>
+    <p>For an SIS, \(\kappa = \theta_E/(2\lvert\theta\rvert)\). On the Einstein circle \(\kappa = 1/2\). Mode <code>kappa</code> draws that mass map with the critical curve on top. Changing <code>--sigma_v</code> only rescales the same map — it does not add a new feature. That is why this mode comes last: you already know what the circle is.</p>
+<pre>python main.py --mode kappa
+python main.py --mode kappa --sigma_v 180</pre>
+    <p>The SIS Einstein radius itself is</p>
+    <div class="eq-block">
+      <div class="eq-label">SIS Einstein radius</div>
+\[
+\theta_E = 4\pi\left(\frac{\sigma_v}{c}\right)^2\frac{D_{ls}}{D_s}.
+\]
+    </div>
+    <p>\(\sigma_v\) is entered in km/s and converted to m/s before use. A label of “km/s” with a raw value of 200 against \(c = 3\times 10^8\,\mathrm{m\,s^{-1}}\) is a thousandfold error; the program will not make it.</p>
+  </section>
+
+  <section id="equations">
+    <h2>Governing Equations</h2>
+    <p>Everything in the program is the thin-lens equation plus one of two deflection laws. No geodesic is integrated. Tags:</p>
+    <p><span class="tag tag-der">DERIVED</span> algebraic from the thin-lens equation. <span class="tag tag-cal">CLOSURE</span> a teaching mass model, not a fit to a particular lens.</p>
+    <table class="cred-table">
+      <thead><tr><th>Ingredient</th><th>Status</th><th>Read it as</th></tr></thead>
+      <tbody>
+        <tr><td class="cname">Einstein radius</td><td>derived from \(G,c,M\) or \(\sigma_v\) and the distances</td><td>the right scaling; distances are a fixed 1 Gpc / 2 Gpc cartoon</td></tr>
+        <tr><td class="cname">point-mass \(\alpha\)</td><td>exact for a point mass in the thin-lens limit</td><td>the standard textbook deflection</td></tr>
+        <tr><td class="cname">SIS + shear \(\alpha\)</td><td>a closure: isothermal sphere plus a uniform tidal field</td><td>the cheapest lens that has a diamond caustic</td></tr>
+        <tr><td class="cname">side-view rays</td><td>the same thin-lens kink, drawn in a longitudinal plane</td><td>a cartoon of the mapping, not a GR ray trace</td></tr>
+        <tr><td class="cname">image finder</td><td>Newton on \(\boldsymbol{\beta}(\boldsymbol{\theta})-\boldsymbol{\beta}_{\mathrm{src}}=0\)</td><td>reliable for the two- and four-image regions used here</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="modules">
+    <h2>Module Overview</h2>
+    <div class="module-grid">
+      <div class="module-card">
+        <div class="mc-name">physics_gl.py</div>
+        <div class="mc-role">Engine</div>
+        <p>Einstein radii, both deflections, Jacobians, the analytic double, the SIS+shear critical curve and caustic, the Newton image finder, source profiles, and the thin-lens side-view rays.</p>
+      </div>
+      <div class="module-card">
+        <div class="mc-name">plot_gl.py</div>
+        <div class="mc-role">Figures</div>
+        <p>One drawing routine per mode. Writes a timestamped PNG and a <code>.provenance.txt</code> sidecar when <code>--outdir</code> is set. Every figure carries the version and build in the footer.</p>
+      </div>
+      <div class="module-card">
+        <div class="mc-name">driver_gl.py</div>
+        <div class="mc-role">Glue</div>
+        <p>Builds the grid, calls the engine, and hands arrays to the plotter. <code>MPLBACKEND=Agg</code> suppresses the on-screen window so tests can run headless.</p>
+      </div>
+      <div class="module-card">
+        <div class="mc-name">main.py</div>
+        <div class="mc-role">CLI</div>
+        <p>Argparse entry point. <code>--version</code> prints <code>GravitationalLensing VERSION (build BUILD_ID)</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <table class="param-table">
+      <thead><tr><th>Flag</th><th>Default</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="pname">--mode</td><td class="pdefault">point</td><td>rays, point, blob, critical, shear, arcs, kappa</td></tr>
+        <tr><td class="pname">--beta_x, --beta_y</td><td class="pdefault">mode-dependent</td><td>unlensed source position [arcsec]. Mode <code>point</code> defaults to (0.50, 0.00) so the first frame is a double.</td></tr>
+        <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) for point-mass modes</td></tr>
+        <tr><td class="pname">--sigma_v</td><td class="pdefault">300</td><td>SIS velocity dispersion [km/s]</td></tr>
+        <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>external shear; must satisfy \(|\gamma|&lt;1\)</td></tr>
+        <tr><td class="pname">--r_eff, --q, --phi</td><td class="pdefault">0.25, 0.60, 30</td><td>extended-source size [arcsec], axis ratio, position angle [deg]</td></tr>
+        <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">181, 6</td><td>grid size and field of view [arcsec]</td></tr>
+        <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>also write a PNG and a provenance sidecar</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="output">
+    <h2>Output</h2>
+    <p>Each mode opens a Matplotlib window unless <code>MPLBACKEND=Agg</code> is set. With <code>--outdir</code> the program also writes a timestamped PNG and a same-stem <code>.provenance.txt</code> recording the mode, the version, and the build identifier. The figure footer repeats those two numbers so a saved plot can be matched to the Help file.</p>
+  </section>
+
+  <section id="validity">
+    <h2>Domain of Validity</h2>
+    <ul>
+      <li>Thin lens, small angles. Fine for galaxy-scale strong lensing at arcsecond Einstein radii. Not a black-hole ray tracer.</li>
+      <li>Fixed distances 1&nbsp;Gpc and 2&nbsp;Gpc. Changing cosmology is not a supported experiment in this version.</li>
+      <li>SIS + shear is the cheapest diamond, not an elliptical mass that has been fitted to a cluster.</li>
+      <li>The Newton image finder is tested in the two-image and four-image regions used by the Help file. Sitting exactly on a fold, where two images merge, is a singular Jacobian and is not promised to return a clean count of three.</li>
+    </ul>
+  </section>
+
+  <section id="related">
+    <h2>Related Programs</h2>
+    <ul class="related-list">
+      <li><strong>PhotonOrbit</strong> — null geodesics in Schwarzschild spacetime. Use it when the deflection cannot be treated as a single kink in one plane.</li>
+      <li><strong>BlackHoleSpacetimeVisualizer</strong> — spacetime diagrams around a hole, not an Einstein ring on the sky.</li>
+    </ul>
+  </section>
+
+  <section id="license">
+    <h2>License</h2>
+    <p>Proposed teaching supplement for <em>Gravity from the Ground Up</em>, second edition, under discussion with Bernard Schutz and Cambridge University Press. Kickoff source and Help file are provided for the GFTGUX review cycle. They are not a published CUP product.</p>
+  </section>
+</main>
+<footer>
+  GravitationalLensing — proposed GFtGU supplement —
+  <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a>
+</footer>
+</div>
+</body>
+</html>
