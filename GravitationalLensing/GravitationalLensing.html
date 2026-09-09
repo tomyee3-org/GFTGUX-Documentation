@@ -423,12 +423,12 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.2.0&nbsp;&nbsp;&nbsp;&nbsp;Build 80ea66595fc8
+    Version 0.3.0&nbsp;&nbsp;&nbsp;&nbsp;Build f7b3426caff5
   </p>
 
   <section id="description">
     <h2>Description</h2>
-    <p><strong>GravitationalLensing</strong> is a proposed new program for a second edition of <em>Gravity from the Ground Up</em>. It teaches the thin-lens mapping that turns a background galaxy into an Einstein ring, a double image, a quad, or a pair of arcs. Each section below is one beat: a short argument, a figure, the equation that argument earns, and a command that lets you test the argument.</p>
+    <p><strong>GravitationalLensing</strong> is a proposed new program for a second edition of <em>Gravity from the Ground Up</em>. It teaches the thin-lens mapping that turns a background galaxy into an Einstein ring, a double image, a quad, or a pair of arcs. Each section below is one beat: a short argument, the equation that argument earns, and a command whose window is the figure for that beat.</p>
     <p>The spine of the lesson is one sentence: <em>where the source sits relative to the caustic decides the photograph</em>. A point-mass lens is the chapter in which the caustic has collapsed to a point. An SIS plus a little external shear is the chapter in which the caustic opens into a diamond with folds and cusps.</p>
     <div class="warn"><strong>What this program is not.</strong> It does not integrate null geodesics in the Schwarzschild metric (that is <code>PhotonOrbit</code>). It does not fit a mass model to a Hubble image. The thin-lens deflection is applied in one plane. Galaxy-scale strong lensing is the intended domain; a black-hole silhouette is not.</div>
     <div class="warn"><strong>False colour.</strong> Modes <code>point</code>, <code>blob</code>, <code>critical</code>, <code>arcs</code>, and <code>kappa</code> paint intensity or convergence with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic: a point-mass or SIS lens does not split light into rainbows the way a glass prism or the atmosphere can. A white galaxy stays white; the program has simply chosen a palette so a faint arc is visible on a screen.</div>
@@ -437,7 +437,7 @@
 
   <section id="setup">
     <h2>Before the first run</h2>
-    <p>Unpack the program zip so you have a folder named <code>GravitationalLensing</code> that contains <code>main.py</code>. Open a terminal in that folder. You need Python 3 with NumPy and Matplotlib. Then:</p>
+    <p>Unpack the program zip so you have a folder named <code>GravitationalLensing</code> that contains <code>main.py</code>. Open a terminal in that folder. You need <strong>Python 3.10 or newer</strong> with NumPy and Matplotlib. If you do not already have that environment, follow the project-wide <em>GFTGU Python Setup Guide</em> in the documentation repository rather than installing packages into a system Python (PEP&nbsp;668). Then:</p>
 <pre>python main.py --version
 python main.py --mode rays</pre>
     <p>Every command on this page assumes that working directory. Even values of <code>--n_pix</code> are rounded up to the next odd number so a pixel sits on the optical axis.</p>
@@ -526,14 +526,15 @@ python main.py --mode blob --beta_y 0.8 --r_eff 0.20</pre>
 
   <section id="beat4">
     <h2>Beat 4 · Name the critical curve — and look at the rays that make the caustic</h2>
-    <p>The lens mapping sends each sky position \(\boldsymbol{\theta}\) to a source position \(\boldsymbol{\beta}(\boldsymbol{\theta})\). The Jacobian of that map is \(A = \partial\boldsymbol{\beta}/\partial\boldsymbol{\theta}\). Magnification is</p>
+    <p>The lens mapping sends each sky position \(\boldsymbol{\theta}\) to a source position \(\boldsymbol{\beta}(\boldsymbol{\theta})\). The Jacobian of that map is \(A = \partial\boldsymbol{\beta}/\partial\boldsymbol{\theta}\). The signed magnification is</p>
     <div class="eq-block">
-      <div class="eq-label">Magnification</div>
+      <div class="eq-label">Signed magnification</div>
 \[
 \mu = \frac{1}{\det A}.
 \]
     </div>
-    <p>Where \(\det A = 0\), stretch is infinite. That set, drawn on the sky, is the <strong>critical curve</strong>. Push the same set through the lens equation into the source plane and you have the <strong>caustic</strong>. A caustic is not a physical structure in space. It is a curve in the source plane marking where the lens mapping changes its image multiplicity.</p>
+    <p>The sign of \(\mu\) is the image parity. The factor that multiplies observed flux or area is \(\lvert\mu\rvert\). Negative parity is a mirror, not negative brightness. \(\lvert\mu\rvert\to\infty\) is the ideal point-source limit of a smooth model; a finite source such as the blobs in this program has a finite observed magnification.</p>
+    <p>Where \(\det A = 0\), that stretch diverges for a point source. That set, drawn on the sky, is the <strong>critical curve</strong>. Push the same set through the lens equation into the source plane and you have the <strong>caustic</strong>. A caustic is not a physical structure in space. It is a curve in the source plane marking where the lens mapping changes its image multiplicity.</p>
     <div class="note"><strong>Two planes.</strong> The critical curve lives in the image plane (the sky). The caustic lives in the source plane. The lens equation maps one into the other; they are not the same curve.</div>
     <p>For a point mass,</p>
     <div class="eq-block">
@@ -558,8 +559,9 @@ python main.py --mode critical --beta_y 0.4</pre>
 \boldsymbol{\alpha} = \theta_E\,\hat{\boldsymbol{\theta}} + (\gamma\,\theta_x,\,-\gamma\,\theta_y).
 \]
     </div>
-    <p>The critical curve opens into an oval on the sky. The caustic opens into a <strong>diamond</strong> in the source plane. The four sharp corners of the diamond are <strong>cusps</strong>. The four smooth sides are <strong>folds</strong>. Image number can change only when the source crosses a caustic. Moving the source without crossing a caustic merely moves existing images.</p>
-    <p>Because the mass model is singular at the origin there is a second boundary, the <strong>pseudo-caustic</strong>: the image of that singularity, drawn as a dashed circle of radius \(\theta_E\) on the source plane. Outside it only one image remains. An image has disappeared into, or will emerge from, the centre.</p>
+    <p>The critical curve opens into an oval on the sky. The caustic opens into a <strong>diamond</strong> in the source plane. The four sharp corners of the diamond are <strong>cusps</strong>. The four smooth sides are <strong>folds</strong>. Moving the source without crossing a caustic or the pseudo-caustic merely moves existing images.</p>
+    <p>Because the mass model is singular at the origin there is a second boundary, the <strong>pseudo-caustic</strong>: the image of that singularity, drawn as a dashed circle of radius \(\theta_E\) on the source plane. Outside it only one image remains: the missing image has merged with the central singularity. This disappearance is a consequence of the SIS singularity; a galaxy with a finite-density core behaves differently. Image number changes when the source crosses a true caustic <em>or</em> this singular-model pseudo-caustic.</p>
+    <p>The program admits only \(\lvert\gamma\rvert &lt; 1/3\). That bound keeps the diamond inside the pseudo-caustic, so the table below has no three-image “naked cusp” region. The default \(\gamma=0.25\) is a little shear in that sense.</p>
     <table class="param-table">
       <thead><tr><th>Source</th><th>Images</th><th>What happened</th></tr></thead>
       <tbody>
@@ -620,7 +622,7 @@ python main.py --mode kappa --sigma_v 180</pre>
         <tr><td class="cname">point-mass \(\alpha\)</td><td>exact for a point mass in the thin-lens limit</td><td>the standard textbook deflection</td></tr>
         <tr><td class="cname">SIS + shear \(\alpha\)</td><td>a closure: isothermal sphere plus a uniform tidal field</td><td>the cheapest lens that has a diamond caustic</td></tr>
         <tr><td class="cname">side-view rays</td><td>the same thin-lens kink, drawn in a longitudinal plane</td><td>a cartoon of the mapping, not a GR ray trace</td></tr>
-        <tr><td class="cname">image finder</td><td>Newton on \(\boldsymbol{\beta}(\boldsymbol{\theta})-\boldsymbol{\beta}_{\mathrm{src}}=0\)</td><td>reliable for the two- and four-image regions used here</td></tr>
+        <tr><td class="cname">image finder</td><td>Newton on \(\boldsymbol{\beta}(\boldsymbol{\theta})-\boldsymbol{\beta}_{\mathrm{src}}=0\)</td><td>reliable in the one-, two-, and four-image regions used here</td></tr>
       </tbody>
     </table>
   </section>
@@ -660,7 +662,7 @@ python main.py --mode kappa --sigma_v 180</pre>
         <tr><td class="pname">--beta_x, --beta_y</td><td class="pdefault">mode-dependent</td><td>unlensed source position [arcsec]. Mode <code>point</code> defaults to (0.50, 0.00) so the first frame is a double.</td></tr>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) for point-mass modes</td></tr>
         <tr><td class="pname">--sigma_v</td><td class="pdefault">300</td><td>SIS velocity dispersion [km/s]</td></tr>
-        <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>external shear; must satisfy \(|\gamma|&lt;1\)</td></tr>
+        <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>external shear; must satisfy \(\lvert\gamma\rvert&lt;1/3\)</td></tr>
         <tr><td class="pname">--r_eff, --q, --phi</td><td class="pdefault">0.25, 0.60, 30</td><td>half-light radius [arcsec] of the elliptical Gaussian, axis ratio, position angle [deg]</td></tr>
         <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">181, 6</td><td>grid size (even values are rounded up to odd) and field of view [arcsec]</td></tr>
         <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>also write a PNG and a provenance sidecar</td></tr>
