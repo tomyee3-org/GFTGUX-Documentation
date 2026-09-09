@@ -423,7 +423,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.6.0&nbsp;&nbsp;&nbsp;&nbsp;Build cfc21ff3ef14
+    Version 1.0.0&nbsp;&nbsp;&nbsp;&nbsp;Build e1f4ab42a813
   </p>
 
   <section id="description">
@@ -661,7 +661,7 @@ python main.py --mode kappa --sigma_v 180</pre>
         <tr><td class="pname">--mode</td><td class="pdefault">point</td><td>rays, point, blob, critical, shear, arcs, kappa</td></tr>
         <tr><td class="pname">--beta_x, --beta_y</td><td class="pdefault">mode-dependent</td><td>unlensed source position [arcsec]. Mode <code>point</code> defaults to (0.50, 0.00) so the first frame is a double.</td></tr>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) for point-mass modes</td></tr>
-        <tr><td class="pname">--sigma_v</td><td class="pdefault">300</td><td>SIS velocity dispersion [km/s]</td></tr>
+        <tr><td class="pname">--sigma_v</td><td class="pdefault">300</td><td>SIS velocity dispersion [km/s]. In kappa mode a value so small that theta_E spans fewer than four grid intervals is rejected.</td></tr>
         <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>external shear; this program restricts \(\lvert\gamma\rvert&lt;1/3\) so the diamond stays inside the pseudo-caustic</td></tr>
         <tr><td class="pname">--r_eff, --q, --phi</td><td class="pdefault">0.25, 0.60, 30</td><td>half-light radius [arcsec] of the elliptical Gaussian, axis ratio, position angle [deg]</td></tr>
         <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">181, 6</td><td>grid size (even values rounded up to odd) and <em>minimum</em> field of view [arcsec]. The field grows to fit the mapped half-light contour (point-mass blob, or the SIS+shear image-plane bound) and the ring. The grid is built from the unlensed source scale. Each lensed compact image must then span at least 0.8 grid interval or the run is rejected: a visibility floor, not a promise that morphology is well sampled. Automatic grids stop at 401 pixels. A source many Einstein radii off axis is rejected because this program is built to show the double, not only the primary.</td></tr>

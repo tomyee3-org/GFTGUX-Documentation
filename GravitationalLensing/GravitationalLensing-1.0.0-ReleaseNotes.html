@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>GravitationalLensing 1.0.0 Release Notes</title>
+</head>
+<body>
+<h1>GravitationalLensing 1.0.0 Release Notes</h1>
+<p><b>Version:</b> 1.0.0<br><b>Build:</b> e1f4ab42a813<br><b>Date:</b> 2026-09-08</p>
+
+<h2>Release Status</h2>
+<p>Version 1.0.0 concludes a Grok kickoff followed by six rounds of independent review by Codex and Copilot. The reviewers checked the thin-lens equation and its point-mass and SIS+shear specializations; image multiplicity inside the restricted shear domain; forward ray geometry; field-of-view and sampling contracts; provenance; Help accuracy; Version/Build synchronization; and the regression suite from both the canonical <code>tests/</code> directory and a flattened layout. Codex and Copilot both report that no release-blocking defect remains. The program is suitable for student use within the tutorial scope and limitations described below.</p>
+
+<h2>Major Improvements in This Release</h2>
+<ul>
+<li>Standalone Python tutorial (no Jupyter) with seven modes that follow a beat sequence: forward rays, point-mass ring and double, extended source, critical curve versus caustic, SIS+shear diamond, arcs, and SIS convergence.</li>
+<li>Verified point-mass images \(\theta_\pm = \tfrac12\bigl(\beta \pm \sqrt{\beta^2+4\theta_E^2}\bigr)\), \(\det A = 1-(\theta_E/\theta)^4\), and SIS \(\kappa=\theta_E/(2|\theta|)\) with the \(\kappa=1/2\) circle on the Einstein ring.</li>
+<li>Restricted external shear to \(|\gamma|&lt;1/3\) so the diamond stays inside the SIS pseudo-caustic and the lesson only promises the 1-, 2-, and 4-image regions.</li>
+<li>Replaced backward ray shooting with a forward thin-lens bundle: incoming slope, physical deflection toward the mass, outgoing slope, hit test at the observer.</li>
+<li>Adaptive field of view that contains the Einstein ring, mapped half-light contour (point-mass), and the conservative SIS+shear bound \((|\beta|+R_e+\theta_E)/(1-|\gamma|)\).</li>
+<li>Sampling contract: the grid is built from the unlensed source scale; each compact lensed image must then span at least 0.8 grid interval or the run is rejected. Extreme offsets that would erase the demagnified member of a point-mass double are outside the teaching domain.</li>
+<li>Automatic grids stop at 401 pixels. Analytic visibility and domain guards run before the mesh is allocated.</li>
+<li>False-colour maps are labeled as such so students do not read chromatic dispersion into gravitational deflection.</li>
+<li>Provenance sidecars record mode, version, build, effective FOV, \(n_\mathrm{pix}\), and the lens/source parameters needed to reconstruct a figure.</li>
+<li>Reproducible BUILD_ID hashed from the four core modules, with <code>python main.py --sync-help</code> writing the Help <code>#version_build</code> element.</li>
+</ul>
+
+<h2>Test Suite Growth</h2>
+<p>The kickoff suite froze Einstein-radius units, the two-image formula, \(\det A=0\) on the ring, SIS \(\kappa=1/2\), and Help/CLI version agreement. Six audit cycles added image-count topology, signed \(\beta_y\), analytic critical-curve closure, FOV and sampling contracts, off-axis arcs containment, kappa Einstein-circle resolution, BUILD_ID isolation in a temporary directory, and mode-specific provenance. The release suite contains 55 tests. All pass under <code>MPLBACKEND=Agg</code> from <code>GravitationalLensing/</code> and from <code>GravitationalLensing/tests/</code>.</p>
+
+<h2>Known Limitations</h2>
+<ul>
+<li>Intended for education, not research-grade lens modeling, source reconstruction, or cosmological parameter estimation.</li>
+<li>\(|\gamma|\ge 1/3\) (naked cusps and a three-image region) is rejected by design.</li>
+<li>Image counts within \(10^{-4}\,\theta_E\) of a fold or cusp are not a promised teaching output.</li>
+<li>The 0.8-interval image-plane rule is a visibility floor. Morphology of a highly magnified or highly compressed image is under-sampled on purpose.</li>
+<li>A source many Einstein radii off axis cannot show both members of a point-mass double on a uniform teaching grid and is rejected. Raising <code>--n_pix</code> is not offered as a general remedy.</li>
+<li>Gaussian sources have infinite support; the field is guaranteed only through the mapped half-light contour (point-mass) or the SIS+shear norm bound.</li>
+<li>Distances are a fixed 1&nbsp;Gpc / 2&nbsp;Gpc cartoon. Changing cosmology is not an exercise.</li>
+<li>The Help file loads MathJax from a public CDN. Offline, prose and unrendered TeX remain readable.</li>
+</ul>
+
+<h2>Known Minor Maintenance Items</h2>
+<ul>
+<li>Packaging still requires <code>python main.py --sync-help</code> before a Help-bearing zip; tests detect drift after the fact.</li>
+<li>Near-caustic image counts use a documented exclusion buffer rather than a global root enumerator.</li>
+<li>Repository-level checking that related-program Help links resolve is outside this package.</li>
+</ul>
+
+<h2>Audit History (locators)</h2>
+<p>Definitive Audit and Response texts are kept with the GFTGUX audit records. Brief names:</p>
+<ul>
+<li>Kickoff 0.1.0 — <code>GravitationalLensing-Grok-Kickoff-20260908.txt</code></li>
+<li>Audit1 / Response 0.2.0 — finder, analytic critical curve</li>
+<li>Audit2 / Response 0.3.0 — \(|\gamma|&lt;1/3\) teaching domain</li>
+<li>Audit3 / Response 0.4.0 — FOV versus resolution</li>
+<li>Audit4 / Response 0.5.0 — image-plane visibility of the double</li>
+<li>Audit5 / Response 0.6.0 — SIS+shear off-axis field</li>
+<li>Audit6 / Response 1.0.0 — r_eff guidance, kappa interval contract, release</li>
+</ul>
+
+<h2>Version Identification</h2>
+<p>MODEL_VERSION: 1.0.0<br>BUILD_ID: e1f4ab42a813</p>
+</body>
+</html>
