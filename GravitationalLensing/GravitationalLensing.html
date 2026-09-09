@@ -423,13 +423,13 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.3.0&nbsp;&nbsp;&nbsp;&nbsp;Build f7b3426caff5
+    Version 0.4.0&nbsp;&nbsp;&nbsp;&nbsp;Build 7b8cfa3304a6
   </p>
 
   <section id="description">
     <h2>Description</h2>
     <p><strong>GravitationalLensing</strong> is a proposed new program for a second edition of <em>Gravity from the Ground Up</em>. It teaches the thin-lens mapping that turns a background galaxy into an Einstein ring, a double image, a quad, or a pair of arcs. Each section below is one beat: a short argument, the equation that argument earns, and a command whose window is the figure for that beat.</p>
-    <p>The spine of the lesson is one sentence: <em>where the source sits relative to the caustic decides the photograph</em>. A point-mass lens is the chapter in which the caustic has collapsed to a point. An SIS plus a little external shear is the chapter in which the caustic opens into a diamond with folds and cusps.</p>
+    <p>The spine of the lesson is one sentence: <em>where the source sits relative to the caustic and the SIS pseudo-caustic decides the photograph</em>. A point-mass lens is the chapter in which the caustic has collapsed to a point. An SIS plus a little external shear is the chapter in which the caustic opens into a diamond with folds and cusps.</p>
     <div class="warn"><strong>What this program is not.</strong> It does not integrate null geodesics in the Schwarzschild metric (that is <code>PhotonOrbit</code>). It does not fit a mass model to a Hubble image. The thin-lens deflection is applied in one plane. Galaxy-scale strong lensing is the intended domain; a black-hole silhouette is not.</div>
     <div class="warn"><strong>False colour.</strong> Modes <code>point</code>, <code>blob</code>, <code>critical</code>, <code>arcs</code>, and <code>kappa</code> paint intensity or convergence with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic: a point-mass or SIS lens does not split light into rainbows the way a glass prism or the atmosphere can. A white galaxy stays white; the program has simply chosen a palette so a faint arc is visible on a screen.</div>
     <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax from a public CDN. Without a network connection the raw \(\LaTeX\) remains visible as text. The program itself needs no internet access.</div>
@@ -437,7 +437,7 @@
 
   <section id="setup">
     <h2>Before the first run</h2>
-    <p>Unpack the program zip so you have a folder named <code>GravitationalLensing</code> that contains <code>main.py</code>. Open a terminal in that folder. You need <strong>Python 3.10 or newer</strong> with NumPy and Matplotlib. If you do not already have that environment, follow the project-wide <em>GFTGU Python Setup Guide</em> in the documentation repository rather than installing packages into a system Python (PEP&nbsp;668). Then:</p>
+    <p>Unpack the program zip so you have a folder named <code>GravitationalLensing</code> that contains <code>main.py</code>. Open a terminal in that folder. You need <strong>Python 3.10 or newer</strong> with NumPy and Matplotlib. If you do not already have that environment, follow the project-wide <a href="https://github.com/tomyee3-org/GFTGUX-Documentation" target="_blank"><em>GFTGU Python Setup Guide</em></a> rather than installing packages into a system Python (PEP&nbsp;668). Then:</p>
 <pre>python main.py --version
 python main.py --mode rays</pre>
     <p>Every command on this page assumes that working directory. Even values of <code>--n_pix</code> are rounded up to the next odd number so a pixel sits on the optical axis.</p>
@@ -662,9 +662,9 @@ python main.py --mode kappa --sigma_v 180</pre>
         <tr><td class="pname">--beta_x, --beta_y</td><td class="pdefault">mode-dependent</td><td>unlensed source position [arcsec]. Mode <code>point</code> defaults to (0.50, 0.00) so the first frame is a double.</td></tr>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) for point-mass modes</td></tr>
         <tr><td class="pname">--sigma_v</td><td class="pdefault">300</td><td>SIS velocity dispersion [km/s]</td></tr>
-        <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>external shear; must satisfy \(\lvert\gamma\rvert&lt;1/3\)</td></tr>
+        <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>external shear; this program restricts \(\lvert\gamma\rvert&lt;1/3\) so the diamond stays inside the pseudo-caustic</td></tr>
         <tr><td class="pname">--r_eff, --q, --phi</td><td class="pdefault">0.25, 0.60, 30</td><td>half-light radius [arcsec] of the elliptical Gaussian, axis ratio, position angle [deg]</td></tr>
-        <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">181, 6</td><td>grid size (even values are rounded up to odd) and field of view [arcsec]</td></tr>
+        <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">181, 6</td><td>grid size (even values rounded up to odd) and <em>minimum</em> field of view [arcsec]. The field grows to fit the ring and source; <code>n_pix</code> grows with it so a compact source stays resolved. Offsets much larger than \(\theta_E\) need an explicit larger <code>--n_pix</code>.</td></tr>
         <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>also write a PNG and a provenance sidecar</td></tr>
       </tbody>
     </table>
@@ -681,7 +681,7 @@ python main.py --mode kappa --sigma_v 180</pre>
       <li>Thin lens, small angles. Fine for galaxy-scale strong lensing at arcsecond Einstein radii. Not a black-hole ray tracer.</li>
       <li>Fixed distances 1&nbsp;Gpc and 2&nbsp;Gpc, chosen so \(\theta_E\) is a few arcseconds. They are not a cosmology. Angular-diameter distances are not generally related by \(D_{ls}=D_s-D_l\).</li>
       <li>SIS + shear is the cheapest diamond, not an elliptical mass that has been fitted to a cluster. The dashed circle on the source plane is the SIS pseudo-caustic.</li>
-      <li>The Newton image finder is tested in the one-, two-, and four-image regions used by the Help file. Sitting exactly on a fold, where two images merge, is a singular Jacobian and is not promised to return a clean count of three.</li>
+      <li>The Newton image finder is tested in the one-, two-, and four-image regions used by the Help file. Within a fractional distance \(\sim 10^{-4}\) of a fold or cusp the count is not a promised teaching output: two images merge and the Jacobian is nearly singular.</li>
     </ul>
   </section>
 
