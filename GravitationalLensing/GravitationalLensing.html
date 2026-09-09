@@ -423,7 +423,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build c1fdb20f0f92
+    Version 0.6.0&nbsp;&nbsp;&nbsp;&nbsp;Build cfc21ff3ef14
   </p>
 
   <section id="description">
@@ -664,7 +664,7 @@ python main.py --mode kappa --sigma_v 180</pre>
         <tr><td class="pname">--sigma_v</td><td class="pdefault">300</td><td>SIS velocity dispersion [km/s]</td></tr>
         <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>external shear; this program restricts \(\lvert\gamma\rvert&lt;1/3\) so the diamond stays inside the pseudo-caustic</td></tr>
         <tr><td class="pname">--r_eff, --q, --phi</td><td class="pdefault">0.25, 0.60, 30</td><td>half-light radius [arcsec] of the elliptical Gaussian, axis ratio, position angle [deg]</td></tr>
-        <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">181, 6</td><td>grid size (even values rounded up to odd) and <em>minimum</em> field of view [arcsec]. The field grows to fit the mapped half-light contour and the ring. <code>n_pix</code> grows so both point-mass images have at least three samples across their <em>image-plane</em> widths. Automatic grids stop at 401 pixels. A source many Einstein radii off axis compresses the inner image below that budget and is rejected; this program is built to show the double, not only the primary.</td></tr>
+        <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">181, 6</td><td>grid size (even values rounded up to odd) and <em>minimum</em> field of view [arcsec]. The field grows to fit the mapped half-light contour (point-mass blob, or the SIS+shear image-plane bound) and the ring. The grid is built from the unlensed source scale. Each lensed compact image must then span at least 0.8 grid interval or the run is rejected: a visibility floor, not a promise that morphology is well sampled. Automatic grids stop at 401 pixels. A source many Einstein radii off axis is rejected because this program is built to show the double, not only the primary.</td></tr>
         <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>also write a PNG and a provenance sidecar</td></tr>
       </tbody>
     </table>
