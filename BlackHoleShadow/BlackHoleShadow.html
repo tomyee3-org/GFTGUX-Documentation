@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build 77b7ce282ed4
+    Version 0.6.0&nbsp;&nbsp;&nbsp;&nbsp;Build ee67b10b0722
   </p>
 
   <section id="description">
@@ -135,7 +135,7 @@
     <p>The spine of the lesson is one sentence:</p>
     <p><em>The silhouette a camera records is the set of image-plane directions whose Schwarzschild null geodesics are captured — a critical curve at \(b_{\mathrm{crit}}=3\sqrt{3}\,M\), not a thin-lens \(\boldsymbol{\alpha}(\boldsymbol{\theta})\), and not the coordinate circle \(r_s\).</em></p>
     <div class="warn"><strong>What this program is not.</strong> It is not a Kerr movie, not an Event Horizon Telescope pipeline, and not a full fluid or radiative-transfer simulation. It is not <code>PhotonOrbit</code> with a slider: PhotonOrbit’s object is one affine ray and its accumulated \(\Delta\phi\). It is not <code>GravitationalLensing</code> with \(M\) set to a black hole: the thin-lens kink \(\boldsymbol{\alpha}=\theta_E^2\boldsymbol{\theta}/\lvert\boldsymbol{\theta}\rvert^2\) cannot produce the critical null geodesic that rims the shadow. It is not <code>RelativisticOrbit</code> (timelike zoom-whirls stay there) and not <code>GravitationalWaveSources</code> (no strain, no chirp mass).</div>
-    <div class="warn"><strong>False colour.</strong> Mode <code>image</code> paints bolometric intensity \(I_{\mathrm{obs}}=\sum_m g(r_m)^4 I_{\mathrm{em}}(r_m)\) with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic. The calculation is face-on and optically thin. Emitters are static: \(g=\sqrt{1-2M/r}\) includes gravitational redshift only, not orbital Doppler. There is no inclination slider.</div>
+    <div class="warn"><strong>False colour.</strong> Mode <code>image</code> paints bolometric intensity \(I_{\mathrm{obs}}\approx\sum_{m=1}^{4} g(r_m)^4 I_{\mathrm{em}}(r_m)\) with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic. The calculation is face-on and optically thin. Emitters are static: \(g=\sqrt{1-2M/r}\) includes gravitational redshift only, not orbital Doppler. There is no inclination slider.</div>
     <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax from a public CDN. Without a network connection the raw \(\LaTeX\) remains visible as text. The program itself needs no internet access.</div>
   </section>
 
@@ -157,7 +157,7 @@ python main.py --mode rays</pre>
         <tr><td class="mname">capture</td><td>2</td><td>Dense capture map. Dark disk of radius \(b_{\mathrm{crit}}\), not \(r_s\).</td></tr>
         <tr><td class="mname">ring</td><td>3</td><td>High-winding overlay on the critical curve. Not a photon-ring profile.</td></tr>
         <tr><td class="mname">transfer</td><td>4</td><td>Face-on transfer functions \(r_1(b)\), \(r_2(b)\), \(r_3(b)\).</td></tr>
-        <tr><td class="mname">image</td><td>5</td><td>Optically thin face-on image: direct, +lensing, +photon-ring.</td></tr>
+        <tr><td class="mname">image</td><td>5</td><td>Point-sampled face-on image plus a radial I(b) profile: direct, +lensing, +photon-ring/subring.</td></tr>
         <tr><td class="mname">radii</td><td>6</td><td>Coordinate-radius cross-section versus the image-plane critical curve.</td></tr>
         <tr><td class="mname">weak</td><td>7</td><td>Exact scattering deflection versus \(4M/b\).</td></tr>
         <tr><td class="mname">compare</td><td>8</td><td>A \(10^{12}M_\odot\) galaxy Einstein radius versus this hole’s \(b_{\mathrm{crit}}\).</td></tr>
@@ -228,7 +228,7 @@ I_{\mathrm{obs}}(b)=\sum_{m=1}^{4} g(r_m)^4 I_{\mathrm{em}}(r_m),\qquad g(r)=\sq
     <p>Mode <code>image</code> draws three panels: direct (\(m=1\)), plus lensing (\(m\le 2\)), plus photon-ring (\(m\ge 3\)). False colour is a display scale. There is no inclination: a correct inclined image needs three-dimensional camera/disk geometry, which is a later program.</p>
 <pre>python main.py --mode image
 python main.py --mode image --r_hot 8</pre>
-    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third camera panel is a point sample at each pixel centre. Narrow m=3,4 peaks can miss the raster; they are drawn in the radial I(b) profile under the image. m>=5 is omitted.</p>
+    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third camera panel is a point sample at each pixel centre. Narrow \(m=3,4\) peaks can miss the raster; they are drawn in the radial \(I(b)\) profile under the image. \(m\ge 5\) is omitted.</p>
   </section>
 
   <section id="beat6">
@@ -283,7 +283,7 @@ python main.py --mode compare --logM 12.5</pre>
         <tr><td class="pname">--r_cam</td><td class="pdefault">40</td><td>launch radius for ray integrations, in units of \(M\)</td></tr>
         <tr><td class="pname">--b_in, --b_out</td><td class="pdefault">5, 6</td><td>demonstration impact parameters in units of \(M\)</td></tr>
         <tr><td class="pname">--lambda_max, --d_lambda</td><td class="pdefault">200, 0.02</td><td>affine-parameter budget and RK4 step for <code>rays</code>, in units of \(M\)</td></tr>
-        <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">161, 16</td><td>grid size (even values become the next odd) and field of view in units of \(M\). Capture maps need at least eight intervals across \(2b_{\mathrm{crit}}\). Automatic grids stop at 401 pixels. Mode <code>pixels</code> caps <code>--n_pix</code> at 41 and says so on the console.</td></tr>
+        <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">161 (17 in pixels), 16</td><td>grid size (even values become the next odd) and field of view in units of \(M\). Capture maps need at least eight intervals across \(2b_{\mathrm{crit}}\). Automatic grids stop at 401 pixels. Mode <code>pixels</code> caps <code>--n_pix</code> at 41 and says so on the console.</td></tr>
         <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>emitted-annulus radius for <code>transfer</code>/<code>image</code>, in units of \(M\); must exceed 3</td></tr>
         <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>must be 0. Face-on only; any nonzero value is rejected</td></tr>
         <tr><td class="pname">--dpi, --interactive, --sync-help</td><td class="pdefault">140, off, off</td><td>PNG resolution; open a window; write Version/Build into this Help file</td></tr>
