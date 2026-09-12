@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.6.0&nbsp;&nbsp;&nbsp;&nbsp;Build ee67b10b0722
+    Version 0.7.0&nbsp;&nbsp;&nbsp;&nbsp;Build 43b5aea579c5
   </p>
 
   <section id="description">
@@ -286,7 +286,7 @@ python main.py --mode compare --logM 12.5</pre>
         <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">161 (17 in pixels), 16</td><td>grid size (even values become the next odd) and field of view in units of \(M\). Capture maps need at least eight intervals across \(2b_{\mathrm{crit}}\). Automatic grids stop at 401 pixels. Mode <code>pixels</code> caps <code>--n_pix</code> at 41 and says so on the console.</td></tr>
         <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>emitted-annulus radius for <code>transfer</code>/<code>image</code>, in units of \(M\); must exceed 3</td></tr>
         <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>must be 0. Face-on only; any nonzero value is rejected</td></tr>
-        <tr><td class="pname">--dpi, --interactive, --sync-help</td><td class="pdefault">140, off, off</td><td>PNG resolution; open a window; write Version/Build into this Help file</td></tr>
+        <tr><td class="pname">--dpi, --interactive</td><td class="pdefault">140, off</td><td>PNG resolution; open a window even when <code>--outdir</code> is set</td></tr>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) of the comparison galaxy lens</td></tr>
         <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>also write a PNG and a provenance sidecar</td></tr>
       </tbody>
@@ -295,7 +295,7 @@ python main.py --mode compare --logM 12.5</pre>
 
   <section id="output">
     <h2>Output</h2>
-    <p>Each mode opens a Matplotlib window unless <code>MPLBACKEND=Agg</code> is set. With <code>--outdir</code> the program also writes a timestamped PNG and a same-stem <code>.provenance.txt</code> recording the mode, the version, and the build identifier. The figure footer repeats those two numbers so a saved plot can be matched to this Help file. The console summary prints \(b_{\mathrm{crit}}\), statuses, and a one-line reminder of what the beat is for.</p>
+    <p>Without <code>--outdir</code>, each mode opens a Matplotlib window (no-op if <code>MPLBACKEND=Agg</code>). With <code>--outdir</code> the program writes a timestamped PNG and a same-stem <code>.provenance.txt</code> and does not open a window unless <code>--interactive</code> is also given. The figure footer repeats Version and Build so a saved plot can be matched to this Help file. The console summary prints \(b_{\mathrm{crit}}\), statuses, and a one-line reminder of what the beat is for.</p>
   </section>
 
   <section id="validity">
