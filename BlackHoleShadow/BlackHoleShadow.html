@@ -91,7 +91,7 @@
 <div class="page-wrap">
 <header>
   <div class="badge">Proposed supplement · Gravity from the Ground Up</div>
-  <h1><em>BlackHoleShadow</em> — The Photograph a Camera Records</h1>
+  <h1><em>BlackHoleShadow</em> — The Capture Map a Camera Records</h1>
   <div class="sub">
     Source Code:
     <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
@@ -105,16 +105,17 @@
   <div class="nav-label">Start here</div>
   <a href="#description">Description</a>
   <a href="#setup">Before the first run</a>
-  <a href="#modes">The Eight Modes</a>
+  <a href="#modes">The Nine Modes</a>
   <div class="nav-label">Beats</div>
   <a href="#beat0">0 · Two rays</a>
   <a href="#beat1">1 · A ray becomes a pixel</a>
   <a href="#beat2">2 · Capture map</a>
-  <a href="#beat3">3 · Photon ring</a>
-  <a href="#beat4">4 · Three circles</a>
-  <a href="#beat5">5 · Weak-field limit</a>
-  <a href="#beat6">6 · Not an Einstein ring</a>
-  <a href="#beat7">7 · Backlight</a>
+  <a href="#beat3">3 · High-winding overlay</a>
+  <a href="#beat4">4 · Transfer functions</a>
+  <a href="#beat5">5 · Thin-disk image</a>
+  <a href="#beat6">6 · Radii vs critical curve</a>
+  <a href="#beat7">7 · Weak field</a>
+  <a href="#beat8">8 · Not an Einstein ring</a>
   <div class="nav-label">Reference</div>
   <a href="#experiments">Experiments</a>
   <a href="#parameters">Parameters</a>
@@ -125,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.2.0&nbsp;&nbsp;&nbsp;&nbsp;Build 6bc97289363c
+    Version 0.3.0&nbsp;&nbsp;&nbsp;&nbsp;Build af449f9273b7
   </p>
 
   <section id="description">
@@ -134,7 +135,7 @@
     <p>The spine of the lesson is one sentence:</p>
     <p><em>The silhouette a camera records is the set of image-plane directions whose Schwarzschild null geodesics are captured — a critical curve at \(b_{\mathrm{crit}}=3\sqrt{3}\,M\), not a thin-lens \(\boldsymbol{\alpha}(\boldsymbol{\theta})\), and not the coordinate circle \(r_s\).</em></p>
     <div class="warn"><strong>What this program is not.</strong> It is not a Kerr movie, not an Event Horizon Telescope pipeline, and not a radiative-transfer disk code. It is not <code>PhotonOrbit</code> with a slider: PhotonOrbit’s object is one affine ray and its accumulated \(\Delta\phi\). It is not <code>GravitationalLensing</code> with \(M\) set to a black hole: the thin-lens kink \(\boldsymbol{\alpha}=\theta_E^2\boldsymbol{\theta}/\lvert\boldsymbol{\theta}\rvert^2\) cannot produce the critical null geodesic that rims the shadow. It is not <code>RelativisticOrbit</code> (timelike zoom-whirls stay there) and not <code>GravitationalWaveSources</code> (no strain, no chirp mass).</div>
-    <div class="warn"><strong>False colour.</strong> Mode <code>backlight</code> paints intensity with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic: the shadow is not a rainbow. Inclination in that mode is a left/right drawing, not Doppler beaming from a radiating fluid and not frame dragging.</div>
+    <div class="warn"><strong>False colour.</strong> Mode <code>image</code> paints bolometric intensity \(I_{\mathrm{obs}}=\sum_m g(r_m)^4 I_{\mathrm{em}}(r_m)\) with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic. The calculation is face-on and optically thin; there is no inclination slider.</div>
     <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax from a public CDN. Without a network connection the raw \(\LaTeX\) remains visible as text. The program itself needs no internet access.</div>
   </section>
 
@@ -147,23 +148,24 @@ python main.py --mode rays</pre>
   </section>
 
   <section id="modes">
-    <h2>The Eight Modes</h2>
+    <h2>The Nine Modes</h2>
     <table class="mode-table">
       <thead><tr><th>Mode</th><th>Beat</th><th>What you see</th></tr></thead>
       <tbody>
         <tr><td class="mname">rays</td><td>0</td><td>Two equatorial null geodesics. Default \(b=5\) is captured; \(b=6\) escapes.</td></tr>
-        <tr><td class="mname">pixels</td><td>1</td><td>The same two \(b\) values as two cells of a coarse camera grid.</td></tr>
+        <tr><td class="mname">pixels</td><td>1</td><td>Requested \(b\) values snapped to the nearest coarse-grid cell (defaults place \(5M\) and \(6M\) on cell centres).</td></tr>
         <tr><td class="mname">capture</td><td>2</td><td>Dense capture map. Dark disk of radius \(b_{\mathrm{crit}}\), not \(r_s\).</td></tr>
         <tr><td class="mname">ring</td><td>3</td><td>High-winding overlay on the critical curve. Not a photon-ring profile.</td></tr>
-        <tr><td class="mname">radii</td><td>4</td><td>Spacetime radii \(r_s\), \(r_{\mathrm{ph}}\) versus the image-plane critical curve.</td></tr>
-        <tr><td class="mname">weak</td><td>5</td><td>Exact scattering deflection versus \(4M/b\).</td></tr>
-        <tr><td class="mname">compare</td><td>6</td><td>A \(10^{12}M_\odot\) galaxy Einstein radius versus this hole’s \(b_{\mathrm{crit}}\).</td></tr>
-        <tr><td class="mname">backlight</td><td>7</td><td>Schematic periapsis overlay. False colour. Not a disk model.</td></tr>
+        <tr><td class="mname">transfer</td><td>4</td><td>Face-on transfer functions \(r_1(b)\), \(r_2(b)\), \(r_3(b)\).</td></tr>
+        <tr><td class="mname">image</td><td>5</td><td>Optically thin face-on image: direct, +lensing, +photon-ring.</td></tr>
+        <tr><td class="mname">radii</td><td>6</td><td>Coordinate-radius cross-section versus the image-plane critical curve.</td></tr>
+        <tr><td class="mname">weak</td><td>7</td><td>Exact scattering deflection versus \(4M/b\).</td></tr>
+        <tr><td class="mname">compare</td><td>8</td><td>A \(10^{12}M_\odot\) galaxy Einstein radius versus this hole’s \(b_{\mathrm{crit}}\).</td></tr>
       </tbody>
     </table>
 <pre>python main.py --mode capture
 python main.py --mode rays --b_in 5.0 --b_out 6.0
-python main.py --mode backlight --inclination 70 --outdir ./runs</pre>
+python main.py --mode image --outdir ./runs</pre>
   </section>
 
   <section id="beat0">
@@ -196,25 +198,47 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
   </section>
 
   <section id="beat3">
-    <h2>Beat 3 · The photon ring sits on the rim</h2>
+    <h2>Beat 3 · High-winding overlay (not a photon ring)</h2>
     <p>Three names that students mix up, kept apart on purpose:</p>
     <ul>
       <li>the <em>photon sphere</em> is the spacetime locus \(r=3M\);</li>
       <li>the <em>critical curve</em> is the image-plane circle \(b=b_{\mathrm{crit}}\);</li>
       <li>a <em>photon ring</em> is a bright image that appears near that curve only when emitting matter sends high-order rays to the observer.</li>
     </ul>
-    <p>Mode <code>ring</code> does not compute a photon ring. It paints a pedagogical highlighter on escaping rays whose periapsis sits near \(r=3M\) and whose asymptotic azimuth exceeds \(2\pi\). Those rays are PhotonOrbit’s near-critical whirling (PhotonOrbit’s EXP-8, not this program’s EXP-8), shown as a set of directions on the sky rather than as one trajectory. The orange band is that high-winding window, not a measurement of photon-ring brightness.</p>
+    <p>Mode <code>ring</code> does not compute a photon ring. It paints a pedagogical highlighter on escaping rays whose periapsis sits near \(r=3M\) and whose asymptotic azimuth exceeds \(2\pi\). Those rays are PhotonOrbit’s near-critical whirling (PhotonOrbit’s EXP-8, not this program’s EXP-8), shown as a set of directions on the sky rather than as one trajectory. The orange band is that high-winding window, not a measurement of photon-ring brightness. The width of the highlighted band is chosen by educational thresholds and should not be interpreted as a measured width of a physical photon ring.</p>
 <pre>python main.py --mode ring</pre>
   </section>
 
   <section id="beat4">
-    <h2>Beat 4 · Coordinate radii are not image-plane radii</h2>
-    <p>Two panels. The left panel is a spacetime diagram: \(r_s=2M\) and the photon sphere \(r_{\mathrm{ph}}=3M\). The right panel is the image plane: only the critical curve \(b_{\mathrm{crit}}\) is drawn on the capture map. Coordinate radii and impact-parameter radii are different objects. Drawing \(r_s\) as a circle of radius 2 on a \(b\)-plane would mix those categories; Beat 4 refuses to do that.</p>
-<pre>python main.py --mode radii</pre>
+    <h2>Beat 4 · Transfer functions \(r_m(b)\)</h2>
+    <p>A face-on observer at infinity looks down on a thin equatorial emitting plane. Each impact parameter \(b\) labels a null geodesic in a meridian plane. That geodesic crosses the disk at orbital angles \(\pi/2\), \(3\pi/2\), \(5\pi/2\), \ldots The radii of those crossings are the transfer functions \(r_m(b)\).</p>
+    <p>\(r_1\) is the direct image. \(r_2\) is the lensing-ring crossing. \(r_3\) and later are photon-ring / subring crossings. Captured rays (\(b\le b_{\mathrm{crit}}\)) only travel inbound, but they can still cross the disk before the horizon.</p>
+<pre>python main.py --mode transfer</pre>
   </section>
 
   <section id="beat5">
-    <h2>Beat 5 · The weak-field formula is the same ray, far away</h2>
+    <h2>Beat 5 · A face-on optically thin image</h2>
+    <p>Give the disk an emitted profile \(I_{\mathrm{em}}(r)\), a Gaussian annulus at \(r_{\mathrm{hot}}=6M\) by default. The observed bolometric intensity is the Gralla–Holz–Wald toy sum</p>
+    <div class="eq-block">
+      <div class="eq-label">Optically thin face-on image</div>
+\[
+I_{\mathrm{obs}}(b)=\sum_m g(r_m)^4 I_{\mathrm{em}}(r_m),\qquad g(r)=\sqrt{1-2M/r}.
+\]
+    </div>
+    <p>Mode <code>image</code> draws three panels: direct (\(m=1\)), plus lensing (\(m\le 2\)), plus photon-ring (\(m\ge 3\)). False colour is a display scale. There is no inclination: a correct inclined image needs three-dimensional camera/disk geometry, which is a later program.</p>
+<pre>python main.py --mode image
+python main.py --mode image --r_hot 8</pre>
+    <p>For an annulus at \(6M\), most of the light is in the direct ring near \(b\sim 7M\). The lensing contribution sits just outside \(b_{\mathrm{crit}}\). The photon-ring panel is faint because those crossings hug \(r\sim 3M\), where this particular \(I_{\mathrm{em}}\) is small. That is a property of the source, not a bug.</p>
+  </section>
+
+  <section id="beat6">
+    <h2>Beat 6 · Coordinate radii are not image-plane radii</h2>
+    <p>Two panels. The left panel is a Schwarzschild coordinate-radius cross-section: \(r_s=2M\) and the photon sphere \(r_{\mathrm{ph}}=3M\). It is not a spacetime diagram. The right panel is the image plane: only the critical curve \(b_{\mathrm{crit}}\) is drawn on the capture map. A finite camera records an angular critical curve related to \(b_{\mathrm{crit}}\), not a ruler measurement of \(b\).</p>
+<pre>python main.py --mode radii</pre>
+  </section>
+
+  <section id="beat7">
+    <h2>Beat 7 · The weak-field formula is the same ray, far away</h2>
     <p>For an escaping photon the asymptotic deflection is \(\hat\alpha=\Delta\phi_\infty-\pi\), computed from the standard \(u=1/r\) integral of the same first integral. At large \(b\)</p>
     <div class="eq-block">
       <div class="eq-label">Weak-field light deflection</div>
@@ -222,24 +246,15 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
 \hat\alpha = \frac{4GM}{c^2 b} = \frac{4M}{b}.
 \]
     </div>
-    <p>Run <code>python main.py --mode weak</code>. The two curves agree at large \(b/M\) and come apart as \(b\to b_{\mathrm{crit}}^+\), where the exact deflection grows without bound. That divergence is strong deflection: it is what <em>permits</em> a sequence of higher-order images to pile up near the critical curve when a source supplies photons. It is not itself a photon ring. The thin-lens map used by GravitationalLensing is this large-\(b\) limit applied once, in one plane; it has nothing left to say when \(b\sim b_{\mathrm{crit}}\).</p>
+    <p>Run <code>python main.py --mode weak</code>. The two curves agree at large \(b/M\) and come apart as \(b\to b_{\mathrm{crit}}^+\). That divergence is strong deflection: it permits higher-order images when a source supplies photons. It is not itself a photon ring.</p>
   </section>
 
-  <section id="beat6">
-    <h2>Beat 6 · Do not call these the same ring</h2>
+  <section id="beat8">
+    <h2>Beat 8 · Do not call these the same ring</h2>
     <p>GravitationalLensing’s Einstein ring and this hole’s critical curve are different objects. One is the thin-lens critical curve of a transparent mass. The other is the capture boundary of the vacuum Schwarzschild metric.</p>
 <pre>python main.py --mode compare
 python main.py --mode compare --logM 12.5</pre>
-    <p>The default comparison is a \(10^{12}M_\odot\) point-mass galaxy at the GravitationalLensing cartoon distances \(D_l=1\,\mathrm{Gpc}\), \(D_s=2\,\mathrm{Gpc}\). Its \(\theta_E\) is a couple of arcseconds. The physical Einstein radius at that lens, in units of the galaxy’s own \(GM/c^2\), is of order \(10^5\). The photon sphere of a Schwarzschild hole is \(3M\); the image-plane critical curve is \(b_{\mathrm{crit}}\approx 5.196\,M\). Putting those numbers on one page is the beat. Refusing to use the word “ring” for both without a qualifier is the payoff.</p>
-  </section>
-
-  <section id="beat7">
-    <h2>Beat 7 · Why an EHT-style picture can look like a ring without Kerr</h2>
-    <p>This mode illustrates where escaping rays associated with a chosen turning-point radius appear on the camera sky. It is <strong>not</strong> a model of disk emission, transport, beaming, or observation, and it is not a ray-traced intersection with an equatorial ring. Brightness is a pair of Gaussians in impact parameter, keyed to the periapsis \(r_{\mathrm{hot}}\) and to \(b_{\mathrm{crit}}\). Inclination, if you set it, is a left/right display factor on that drawing.</p>
-<pre>python main.py --mode backlight
-python main.py --mode backlight --inclination 0
-python main.py --mode backlight --inclination 70 --r_hot 8</pre>
-    <p>False colour is a display scale. Achromaticity still holds, as GravitationalLensing already insisted. A geodesic–equator intersection engine would be a later program, not a silent upgrade of this overlay.</p>
+    <p>The default comparison is a \(10^{12}M_\odot\) point-mass galaxy at the GravitationalLensing cartoon distances \(D_l=1\,\mathrm{Gpc}\), \(D_s=2\,\mathrm{Gpc}\). Its \(\theta_E\) is a couple of arcseconds. The physical Einstein radius at that lens, in units of the galaxy’s own \(GM/c^2\), is of order \(10^5\). The photon sphere is \(3M\); the image-plane critical curve is \(b_{\mathrm{crit}}\approx 5.196\,M\).</p>
   </section>
 
   <section id="experiments">
@@ -247,14 +262,14 @@ python main.py --mode backlight --inclination 70 --r_hot 8</pre>
     <div class="exp-grid">
       <div class="exp-card"><div class="ec-num">EXP-1 · First run</div><h4>Capture versus escape</h4><p>Run <code>--mode rays</code> at the defaults, then again with <code>--b_in 5.19 --b_out 5.21</code>. Name the status of each ray from the console before you look at the figure.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-2 · Beginner</div><h4>A pixel is a direction</h4><p>Run <code>--mode pixels</code>. Point to the dark cell and the light cell and say which PhotonOrbit experiment each one is.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-3 · Beginner</div><h4>The rim is not the horizon</h4><p>Run <code>--mode radii</code>. The left panel is a spacetime diagram; the right panel is the image plane. Which circle on the right matches the dark disk, and why are \(r_s\) and \(r_{\mathrm{ph}}\) not drawn there?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-3 · Beginner</div><h4>The rim is not the horizon</h4><p>Run <code>--mode radii</code>. The left panel is a coordinate-radius cross-section; the right panel is the image plane. Which circle on the right matches the dark disk, and why are \(r_s\) and \(r_{\mathrm{ph}}\) not drawn there?</p></div>
       <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>PhotonOrbit EXP-4 / EXP-7 on the sky</h4><p>The shadow rim is the critical ray of PhotonOrbit EXP-4 / EXP-7. The highlighter of <code>--mode ring</code> is PhotonOrbit’s EXP-8 painted as pixels. Write that sentence in your own words, then run both programs side by side.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div><h4>Recover \(4M/b\)</h4><p>From the <code>weak</code> console line, compute the relative error of \(4M/b\) at the largest sampled \(b\). Then argue why the error must grow as you walk the curve toward \(b_{\mathrm{crit}}\).</p></div>
       <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate</div><h4>Two rings, two meanings</h4><p>Run <code>--mode compare</code>. Quote \(R_E/M\) for the galaxy and \(b_{\mathrm{crit}}/M\) for the hole. Invent a sentence that uses the word “ring” once only.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div><h4>Achromatic silhouette</h4><p>Run <code>--mode backlight</code>. The palette is inferno. Write down what would change if the hot ring emitted blue light instead of red. (The geometric shadow would not.)</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div><h4>Achromatic silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change if the annulus emitted blue light instead of red. (The capture map would not.) Then compare the three panels and say which crossing lights each ring.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Finite camera</h4><p>Rerun <code>--mode rays</code> with <code>--r_cam 10</code> and then <code>--r_cam 80</code>. The capture threshold in conserved \(b\) does not move. What does move is the local angle on the camera sky. Explain using \(\sin\alpha = (b/r)\sqrt{1-2M/r}\).</p></div>
       <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Resolution contract</h4><p>Try <code>--mode capture --fov 80 --n_pix 11</code>. Read the error. Then satisfy the contract without raising <code>--n_pix</code> above 81.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>What inclination is allowed to mean</h4><p>Compare <code>--mode backlight --inclination 0</code> with <code>--inclination 80</code>. The shadow stays circular. If a student calls the crescent “Kerr”, send them back to this paragraph.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>What inclination is allowed to mean</h4><p>Run <code>--mode transfer</code>. At the \(b\) of the direct-image peak, read \(r_1\). Does it sit near \(r_{\mathrm{hot}}\)? At a \(b\) just above \(b_{\mathrm{crit}}\), how many crossings exist?</p></div>
     </div>
   </section>
 
@@ -263,14 +278,14 @@ python main.py --mode backlight --inclination 70 --r_hot 8</pre>
     <table class="param-table">
       <thead><tr><th>Flag</th><th>Default</th><th>Meaning</th></tr></thead>
       <tbody>
-        <tr><td class="pname">--mode</td><td class="pdefault">capture</td><td>rays, pixels, capture, ring, radii, weak, compare, backlight</td></tr>
+        <tr><td class="pname">--mode</td><td class="pdefault">capture</td><td>rays, pixels, capture, ring, transfer, image, radii, weak, compare</td></tr>
         <tr><td class="pname">--M</td><td class="pdefault">1</td><td>gravitational length \(GM/c^2\)</td></tr>
         <tr><td class="pname">--r_cam</td><td class="pdefault">40</td><td>launch radius for ray integrations, in units of \(M\)</td></tr>
         <tr><td class="pname">--b_in, --b_out</td><td class="pdefault">5, 6</td><td>demonstration impact parameters in units of \(M\)</td></tr>
-        <tr><td class="pname">--lambda_max, --d_lambda</td><td class="pdefault">200, 0.02</td><td>affine-parameter budget and RK4 step for <code>rays</code></td></tr>
+        <tr><td class="pname">--lambda_max, --d_lambda</td><td class="pdefault">200, 0.02</td><td>affine-parameter budget and RK4 step for <code>rays</code>, in units of \(M\)</td></tr>
         <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">161, 16</td><td>grid size (even values become the next odd) and field of view in units of \(M\). Capture maps need at least eight intervals across \(2b_{\mathrm{crit}}\). Automatic grids stop at 401 pixels. Mode <code>pixels</code> caps <code>--n_pix</code> at 41 and says so on the console.</td></tr>
         <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>turning-point radius used by the schematic overlay, in units of \(M\); must exceed 3</td></tr>
-        <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>display inclination [deg] in \([0,90]\) for backlight shading only</td></tr>
+        <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>unused in 0.3.0; face-on image only. Kept so old scripts fail loudly rather than shade a fake crescent</td></tr>
         <tr><td class="pname">--dpi, --interactive, --sync-help</td><td class="pdefault">140, off, off</td><td>PNG resolution; open a window; write Version/Build into this Help file</td></tr>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) of the comparison galaxy lens</td></tr>
         <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>also write a PNG and a provenance sidecar</td></tr>
@@ -287,8 +302,8 @@ python main.py --mode backlight --inclination 70 --r_hot 8</pre>
     <h2>Domain of Validity</h2>
     <ul>
       <li>Schwarzschild only. Geometric optics. Vacuum. No plasma, no accretion-flow transfer, no spin.</li>
-      <li>Inclination is a projection of a spherically symmetric capture cone. The shadow is circular at every inclination.</li>
-      <li>The bright ring in <code>backlight</code> is an existence proof for light that nearly died on the photon sphere, not a fitted EHT image.</li>
+      <li>Mode <code>capture</code> is a geometric capture map. Calling it a shadow assumes a distant, nearly uniform spherical screen. A thin equatorial source produces a different central depression (mode <code>image</code>).</li>
+      <li>Mode <code>image</code> is a face-on, optically thin toy model (Gralla, Holz &amp; Wald 2019). It is not an EHT reconstruction, not Kerr, and not a fluid disk. Higher-order subrings narrower than the grid are unresolved on purpose.</li>
       <li>PhotonOrbit’s \(\Delta\phi\) remains accumulated azimuth to a finite stopping surface. The curve in <code>weak</code> is the asymptotic \(\hat\alpha\), computed from a quadrature of the same first integral, not from that finite-camera \(\Delta\phi\).</li>
       <li>Compare-mode distances are the GravitationalLensing cartoon \(1\,\mathrm{Gpc}/2\,\mathrm{Gpc}\). They are not a cosmology.</li>
     </ul>
