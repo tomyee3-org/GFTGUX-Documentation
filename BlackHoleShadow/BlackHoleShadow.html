@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.3.0&nbsp;&nbsp;&nbsp;&nbsp;Build af449f9273b7
+    Version 0.4.0&nbsp;&nbsp;&nbsp;&nbsp;Build 5b4deb49236a
   </p>
 
   <section id="description">
@@ -134,8 +134,8 @@
     <p><strong>BlackHoleShadow</strong> is a proposed new program for a second edition of <em>Gravity from the Ground Up</em>. It teaches the one fact that <code>PhotonOrbit</code> and <code>GravitationalLensing</code> together still leave on the table: the black-hole “silhouette” is an <em>image-plane</em> set of captured null geodesics. A student who can already classify one Schwarzschild photon from its impact parameter \(b\), and who has already mapped a thin-lens source plane onto an image plane, has never launched a bundle of those photons into a camera and asked which directions on the sky go dark.</p>
     <p>The spine of the lesson is one sentence:</p>
     <p><em>The silhouette a camera records is the set of image-plane directions whose Schwarzschild null geodesics are captured — a critical curve at \(b_{\mathrm{crit}}=3\sqrt{3}\,M\), not a thin-lens \(\boldsymbol{\alpha}(\boldsymbol{\theta})\), and not the coordinate circle \(r_s\).</em></p>
-    <div class="warn"><strong>What this program is not.</strong> It is not a Kerr movie, not an Event Horizon Telescope pipeline, and not a radiative-transfer disk code. It is not <code>PhotonOrbit</code> with a slider: PhotonOrbit’s object is one affine ray and its accumulated \(\Delta\phi\). It is not <code>GravitationalLensing</code> with \(M\) set to a black hole: the thin-lens kink \(\boldsymbol{\alpha}=\theta_E^2\boldsymbol{\theta}/\lvert\boldsymbol{\theta}\rvert^2\) cannot produce the critical null geodesic that rims the shadow. It is not <code>RelativisticOrbit</code> (timelike zoom-whirls stay there) and not <code>GravitationalWaveSources</code> (no strain, no chirp mass).</div>
-    <div class="warn"><strong>False colour.</strong> Mode <code>image</code> paints bolometric intensity \(I_{\mathrm{obs}}=\sum_m g(r_m)^4 I_{\mathrm{em}}(r_m)\) with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic. The calculation is face-on and optically thin; there is no inclination slider.</div>
+    <div class="warn"><strong>What this program is not.</strong> It is not a Kerr movie, not an Event Horizon Telescope pipeline, and not a full fluid or radiative-transfer simulation. It is not <code>PhotonOrbit</code> with a slider: PhotonOrbit’s object is one affine ray and its accumulated \(\Delta\phi\). It is not <code>GravitationalLensing</code> with \(M\) set to a black hole: the thin-lens kink \(\boldsymbol{\alpha}=\theta_E^2\boldsymbol{\theta}/\lvert\boldsymbol{\theta}\rvert^2\) cannot produce the critical null geodesic that rims the shadow. It is not <code>RelativisticOrbit</code> (timelike zoom-whirls stay there) and not <code>GravitationalWaveSources</code> (no strain, no chirp mass).</div>
+    <div class="warn"><strong>False colour.</strong> Mode <code>image</code> paints bolometric intensity \(I_{\mathrm{obs}}=\sum_m g(r_m)^4 I_{\mathrm{em}}(r_m)\) with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic. The calculation is face-on and optically thin. Emitters are static: \(g=\sqrt{1-2M/r}\) includes gravitational redshift only, not orbital Doppler. There is no inclination slider.</div>
     <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax from a public CDN. Without a network connection the raw \(\LaTeX\) remains visible as text. The program itself needs no internet access.</div>
   </section>
 
@@ -180,7 +180,7 @@ python main.py --mode image --outdir ./runs</pre>
 b_{\mathrm{crit}} = 3\sqrt{3}\,M.
 \]
     </div>
-    <p>Run <code>python main.py --mode rays</code>. The red curve at the default \(b=5\) hits \(r_s=2M\) and is reported <code>captured</code>. The blue curve at \(b=6\) turns at a periapsis outside the photon sphere and is reported <code>escaped</code>. The console \(\Delta\phi\) is accumulated azimuth to a finite stopping surface (the horizon, or twice the camera radius), exactly as in PhotonOrbit. It is <em>not</em> the asymptotic deflection angle \(\hat\alpha\). That distinction is Beat 5.</p>
+    <p>Run <code>python main.py --mode rays</code>. The red curve at the default \(b=5\) hits \(r_s=2M\) and is reported <code>captured</code>. The blue curve at \(b=6\) turns at a periapsis outside the photon sphere and is reported <code>escaped</code>. The console \(\Delta\phi\) is accumulated azimuth to a finite stopping surface (the horizon, or twice the camera radius), exactly as in PhotonOrbit. It is <em>not</em> the asymptotic deflection angle \(\hat\alpha\). That distinction is Beat 7.</p>
   </section>
 
   <section id="beat1">
@@ -212,7 +212,7 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
   <section id="beat4">
     <h2>Beat 4 · Transfer functions \(r_m(b)\)</h2>
     <p>A face-on observer at infinity looks down on a thin equatorial emitting plane. Each impact parameter \(b\) labels a null geodesic in a meridian plane. That geodesic crosses the disk at orbital angles \(\pi/2\), \(3\pi/2\), \(5\pi/2\), \ldots The radii of those crossings are the transfer functions \(r_m(b)\).</p>
-    <p>\(r_1\) is the direct image. \(r_2\) is the lensing-ring crossing. \(r_3\) and later are photon-ring / subring crossings. Captured rays (\(b\le b_{\mathrm{crit}}\)) only travel inbound, but they can still cross the disk before the horizon.</p>
+    <p>\(r_1\) is the direct image. \(r_2\) is the lensing-ring crossing. \(r_3\) and later are photon-ring / subring crossings. Captured rays (\(b\le b_{\mathrm{crit}}\)) only travel inbound, but they can still cross the disk before the horizon. Captured does not mean the ray immediately disappears; it means its future endpoint lies on the horizon.</p>
 <pre>python main.py --mode transfer</pre>
   </section>
 
@@ -228,7 +228,7 @@ I_{\mathrm{obs}}(b)=\sum_m g(r_m)^4 I_{\mathrm{em}}(r_m),\qquad g(r)=\sqrt{1-2M/
     <p>Mode <code>image</code> draws three panels: direct (\(m=1\)), plus lensing (\(m\le 2\)), plus photon-ring (\(m\ge 3\)). False colour is a display scale. There is no inclination: a correct inclined image needs three-dimensional camera/disk geometry, which is a later program.</p>
 <pre>python main.py --mode image
 python main.py --mode image --r_hot 8</pre>
-    <p>For an annulus at \(6M\), most of the light is in the direct ring near \(b\sim 7M\). The lensing contribution sits just outside \(b_{\mathrm{crit}}\). The photon-ring panel is faint because those crossings hug \(r\sim 3M\), where this particular \(I_{\mathrm{em}}\) is small. That is a property of the source, not a bug.</p>
+    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third panel shows crossings \(m=3\) and \(m=4\) (commonly called photon-ring and subring contributions); \(m\ge 5\) is omitted. The \(b\)-grid is clustered around \(b_{\mathrm{crit}}\) so that narrow branch is not an accident of \texttt{--fov}.</p>
   </section>
 
   <section id="beat6">
@@ -284,8 +284,8 @@ python main.py --mode compare --logM 12.5</pre>
         <tr><td class="pname">--b_in, --b_out</td><td class="pdefault">5, 6</td><td>demonstration impact parameters in units of \(M\)</td></tr>
         <tr><td class="pname">--lambda_max, --d_lambda</td><td class="pdefault">200, 0.02</td><td>affine-parameter budget and RK4 step for <code>rays</code>, in units of \(M\)</td></tr>
         <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">161, 16</td><td>grid size (even values become the next odd) and field of view in units of \(M\). Capture maps need at least eight intervals across \(2b_{\mathrm{crit}}\). Automatic grids stop at 401 pixels. Mode <code>pixels</code> caps <code>--n_pix</code> at 41 and says so on the console.</td></tr>
-        <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>turning-point radius used by the schematic overlay, in units of \(M\); must exceed 3</td></tr>
-        <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>unused in 0.3.0; face-on image only. Kept so old scripts fail loudly rather than shade a fake crescent</td></tr>
+        <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>emitted-annulus radius for <code>transfer</code>/<code>image</code>, in units of \(M\); must exceed 3</td></tr>
+        <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>must be 0. Face-on only; any nonzero value is rejected</td></tr>
         <tr><td class="pname">--dpi, --interactive, --sync-help</td><td class="pdefault">140, off, off</td><td>PNG resolution; open a window; write Version/Build into this Help file</td></tr>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) of the comparison galaxy lens</td></tr>
         <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>also write a PNG and a provenance sidecar</td></tr>
