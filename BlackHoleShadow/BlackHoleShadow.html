@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.4.0&nbsp;&nbsp;&nbsp;&nbsp;Build 5b4deb49236a
+    Version 0.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build 77b7ce282ed4
   </p>
 
   <section id="description">
@@ -211,8 +211,8 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
 
   <section id="beat4">
     <h2>Beat 4 · Transfer functions \(r_m(b)\)</h2>
-    <p>A face-on observer at infinity looks down on a thin equatorial emitting plane. Each impact parameter \(b\) labels a null geodesic in a meridian plane. That geodesic crosses the disk at orbital angles \(\pi/2\), \(3\pi/2\), \(5\pi/2\), \ldots The radii of those crossings are the transfer functions \(r_m(b)\).</p>
-    <p>\(r_1\) is the direct image. \(r_2\) is the lensing-ring crossing. \(r_3\) and later are photon-ring / subring crossings. Captured rays (\(b\le b_{\mathrm{crit}}\)) only travel inbound, but they can still cross the disk before the horizon. Captured does not mean the ray immediately disappears; it means its future endpoint lies on the horizon.</p>
+    <p>A face-on observer at infinity looks down on a thin equatorial emitting plane. Each impact parameter \(b\) labels a null geodesic in a meridian plane. That geodesic crosses the disk at orbital angles \(\pi/2\), \(3\pi/2\), \(5\pi/2\), \(\ldots\). The radii of those crossings are the transfer functions \(r_m(b)\).</p>
+    <p>\(r_1\) is the direct image. \(r_2\) is the lensing-ring crossing. \(r_3\) and later are photon-ring / subring crossings. Captured rays (\(b\le b_{\mathrm{crit}}\)) only travel inbound, but they can still cross the disk before the horizon. A backward-traced captured ray crosses the event horizon (the exterior integrator stops there) and may intersect the disk first.</p>
 <pre>python main.py --mode transfer</pre>
   </section>
 
@@ -222,13 +222,13 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
     <div class="eq-block">
       <div class="eq-label">Optically thin face-on image</div>
 \[
-I_{\mathrm{obs}}(b)=\sum_m g(r_m)^4 I_{\mathrm{em}}(r_m),\qquad g(r)=\sqrt{1-2M/r}.
+I_{\mathrm{obs}}(b)=\sum_{m=1}^{4} g(r_m)^4 I_{\mathrm{em}}(r_m),\qquad g(r)=\sqrt{1-2M/r}.
 \]
     </div>
     <p>Mode <code>image</code> draws three panels: direct (\(m=1\)), plus lensing (\(m\le 2\)), plus photon-ring (\(m\ge 3\)). False colour is a display scale. There is no inclination: a correct inclined image needs three-dimensional camera/disk geometry, which is a later program.</p>
 <pre>python main.py --mode image
 python main.py --mode image --r_hot 8</pre>
-    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third panel shows crossings \(m=3\) and \(m=4\) (commonly called photon-ring and subring contributions); \(m\ge 5\) is omitted. The \(b\)-grid is clustered around \(b_{\mathrm{crit}}\) so that narrow branch is not an accident of \texttt{--fov}.</p>
+    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third camera panel is a point sample at each pixel centre. Narrow m=3,4 peaks can miss the raster; they are drawn in the radial I(b) profile under the image. m>=5 is omitted.</p>
   </section>
 
   <section id="beat6">
@@ -269,7 +269,7 @@ python main.py --mode compare --logM 12.5</pre>
       <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div><h4>Achromatic silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change if the annulus emitted blue light instead of red. (The capture map would not.) Then compare the three panels and say which crossing lights each ring.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Finite camera</h4><p>Rerun <code>--mode rays</code> with <code>--r_cam 10</code> and then <code>--r_cam 80</code>. The capture threshold in conserved \(b\) does not move. What does move is the local angle on the camera sky. Explain using \(\sin\alpha = (b/r)\sqrt{1-2M/r}\).</p></div>
       <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Resolution contract</h4><p>Try <code>--mode capture --fov 80 --n_pix 11</code>. Read the error. Then satisfy the contract without raising <code>--n_pix</code> above 81.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>What inclination is allowed to mean</h4><p>Run <code>--mode transfer</code>. At the \(b\) of the direct-image peak, read \(r_1\). Does it sit near \(r_{\mathrm{hot}}\)? At a \(b\) just above \(b_{\mathrm{crit}}\), how many crossings exist?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>Where the source images sit</h4><p>Run <code>--mode transfer</code>. At the \(b\) of the direct-image peak, read \(r_1\). Does it sit near \(r_{\mathrm{hot}}\)? At a \(b\) just above \(b_{\mathrm{crit}}\), how many crossings exist?</p></div>
     </div>
   </section>
 
@@ -303,7 +303,7 @@ python main.py --mode compare --logM 12.5</pre>
     <ul>
       <li>Schwarzschild only. Geometric optics. Vacuum. No plasma, no accretion-flow transfer, no spin.</li>
       <li>Mode <code>capture</code> is a geometric capture map. Calling it a shadow assumes a distant, nearly uniform spherical screen. A thin equatorial source produces a different central depression (mode <code>image</code>).</li>
-      <li>Mode <code>image</code> is a face-on, optically thin toy model (Gralla, Holz &amp; Wald 2019). It is not an EHT reconstruction, not Kerr, and not a fluid disk. Higher-order subrings narrower than the grid are unresolved on purpose.</li>
+      <li>Mode <code>image</code> is a face-on, optically thin toy model (Gralla, Holz &amp; Wald 2019). It is not an EHT reconstruction, not Kerr, and not a fluid disk. Higher-order subrings narrower than a pixel may miss every pixel centre on the 2-D raster; the radial I(b) panel is the honest record of those peaks.</li>
       <li>PhotonOrbit’s \(\Delta\phi\) remains accumulated azimuth to a finite stopping surface. The curve in <code>weak</code> is the asymptotic \(\hat\alpha\), computed from a quadrature of the same first integral, not from that finite-camera \(\Delta\phi\).</li>
       <li>Compare-mode distances are the GravitationalLensing cartoon \(1\,\mathrm{Gpc}/2\,\mathrm{Gpc}\). They are not a cosmology.</li>
     </ul>
@@ -313,7 +313,7 @@ python main.py --mode compare --logM 12.5</pre>
     <h2>Related Programs</h2>
     <ul class="related-list">
       <li><strong>PhotonOrbit</strong> — one equatorial null geodesic. Prerequisite. This program reuses its first integral and does not replace it.</li>
-      <li><strong>GravitationalLensing</strong> — thin-lens rings, doubles, diamond caustic, arcs. Prerequisite for Beat 6. It explicitly refuses black-hole silhouettes.</li>
+      <li><strong>GravitationalLensing</strong> — thin-lens rings, doubles, diamond caustic, arcs. Prerequisite for Beat 8. It explicitly refuses black-hole silhouettes.</li>
       <li><strong>BlackHoleSpacetimeVisualizer</strong> — embeddings, tides, radial infall, Vaidya horizons. Neighbour, not a prerequisite. Its \(r_s\) circle is not a camera image.</li>
       <li><strong>RelativisticOrbit</strong> — timelike Schwarzschild geodesics. Neighbour.</li>
       <li><strong>GravitationalWaveSources</strong> — quadrupole chirp to Schwarzschild ISCO. Neighbour. No radiating EMRI is bundled into this module.</li>
