@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.9.0&nbsp;&nbsp;&nbsp;&nbsp;Build 66acf8ae6596
+    Version 0.10.0&nbsp;&nbsp;&nbsp;&nbsp;Build 2c5eba01a7d4
   </p>
 
   <section id="description">
@@ -284,7 +284,7 @@ python main.py --mode compare --logM 12.5</pre>
         <tr><td class="pname">--b_in, --b_out</td><td class="pdefault">5, 6</td><td>demonstration impact parameters in units of \(M\)</td></tr>
         <tr><td class="pname">--lambda_max, --d_lambda</td><td class="pdefault">200, 0.02</td><td>affine-parameter budget and RK4 step for <code>rays</code>, in units of \(M\)</td></tr>
         <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">161 (17 in pixels), 16</td><td>grid size (even values become the next odd) and field of view in units of \(M\). Capture maps need at least eight intervals across \(2b_{\mathrm{crit}}\). Automatic grids stop at 401 pixels. Mode <code>pixels</code> caps <code>--n_pix</code> at 41 and says so on the console.</td></tr>
-        <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>emitted-annulus radius for <code>transfer</code>/<code>image</code>, in units of \(M\); must exceed 3. Image mode also caps r_hot so the 1.4 r_hot frame and the 8-interval shadow rule can both hold (~74 M at 161 pixels, ~186 M at 401).</td></tr>
+        <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>emitted-annulus radius for <code>transfer</code>/<code>image</code>, in units of \(M\); must exceed 3. Image mode also caps r_hot so the 1.4 r_hot frame and the 8-interval shadow rule can both hold (~74 M at 161 pixels, ~186 M at 401). The image table needs width at least 0.01 M; the analytic I_em profile does not.</td></tr>
         <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>must be 0. Face-on only; any nonzero value is rejected</td></tr>
         <tr><td class="pname">--dpi, --interactive</td><td class="pdefault">140, off</td><td>PNG resolution; open a window even when <code>--outdir</code> is set</td></tr>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) of the comparison galaxy lens</td></tr>
