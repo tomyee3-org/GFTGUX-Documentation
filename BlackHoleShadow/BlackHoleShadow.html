@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.10.0&nbsp;&nbsp;&nbsp;&nbsp;Build 2c5eba01a7d4
+    Version 0.11.0&nbsp;&nbsp;&nbsp;&nbsp;Build a55cb327e1f0
   </p>
 
   <section id="description">
@@ -205,7 +205,7 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
       <li>the <em>critical curve</em> is the image-plane circle \(b=b_{\mathrm{crit}}\);</li>
       <li>a <em>photon ring</em> is a bright image that appears near that curve only when emitting matter sends high-order rays to the observer.</li>
     </ul>
-    <p>Mode <code>ring</code> does not compute a photon ring. It paints a pedagogical highlighter on escaping rays whose periapsis sits near \(r=3M\) and whose asymptotic azimuth exceeds \(2\pi\). Those rays are PhotonOrbit’s near-critical whirling (PhotonOrbit’s EXP-8, not this program’s EXP-8), shown as a set of directions on the sky rather than as one trajectory. The orange band is that high-winding window, not a measurement of photon-ring brightness. The width of the highlighted band is chosen by educational thresholds and should not be interpreted as a measured width of a physical photon ring.</p>
+    <p>Mode <code>ring</code> does not compute a photon ring. It paints a pedagogical highlighter on escaping rays whose periapsis sits near \(r=3M\) and whose asymptotic azimuth exceeds \(2\pi\). Those rays are the near-critical whirling demonstration in PhotonOrbit, shown here as a set of directions on the sky rather than as one trajectory. This Help file does not pin a PhotonOrbit experiment number; that numbering can move. The orange band is that high-winding window, not a measurement of photon-ring brightness. The width of the highlighted band is chosen by educational thresholds and should not be interpreted as a measured width of a physical photon ring.</p>
 <pre>python main.py --mode ring</pre>
   </section>
 
@@ -263,7 +263,7 @@ python main.py --mode compare --logM 12.5</pre>
       <div class="exp-card"><div class="ec-num">EXP-1 · First run</div><h4>Capture versus escape</h4><p>Run <code>--mode rays</code> at the defaults, then again with <code>--b_in 5.19 --b_out 5.21</code>. Name the status of each ray from the console before you look at the figure.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-2 · Beginner</div><h4>A pixel is a direction</h4><p>Run <code>--mode pixels</code>. Point to the dark cell and the light cell and say which PhotonOrbit experiment each one is.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-3 · Beginner</div><h4>The rim is not the horizon</h4><p>Run <code>--mode radii</code>. The left panel is a coordinate-radius cross-section; the right panel is the image plane. Which circle on the right matches the dark disk, and why are \(r_s\) and \(r_{\mathrm{ph}}\) not drawn there?</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>PhotonOrbit EXP-4 / EXP-7 on the sky</h4><p>The shadow rim is the critical ray of PhotonOrbit EXP-4 / EXP-7. The highlighter of <code>--mode ring</code> is PhotonOrbit’s EXP-8 painted as pixels. Write that sentence in your own words, then run both programs side by side.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>PhotonOrbit on the sky</h4><p>The shadow rim is PhotonOrbit’s critical capture/escape ray. The highlighter of <code>--mode ring</code> is PhotonOrbit’s near-critical whirling painted as pixels. Write that sentence in your own words, then run both programs side by side. If PhotonOrbit later renumbers its experiments, trust the titles rather than any old EXP-N cited in a notebook.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div><h4>Recover \(4M/b\)</h4><p>From the <code>weak</code> console line, compute the relative error of \(4M/b\) at the largest sampled \(b\). Then argue why the error must grow as you walk the curve toward \(b_{\mathrm{crit}}\).</p></div>
       <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate</div><h4>Two rings, two meanings</h4><p>Run <code>--mode compare</code>. Quote \(R_E/M\) for the galaxy and \(b_{\mathrm{crit}}/M\) for the hole. Invent a sentence that uses the word “ring” once only.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div><h4>Achromatic silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change if the annulus emitted blue light instead of red. (The capture map would not.) Then compare the three panels and say which crossing lights each ring.</p></div>
