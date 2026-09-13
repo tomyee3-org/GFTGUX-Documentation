@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 0.12.0&nbsp;&nbsp;&nbsp;&nbsp;Build 8cf7bd023211
+    Version 0.13.0&nbsp;&nbsp;&nbsp;&nbsp;Build f71268a10f7c
   </p>
 
   <section id="description">
@@ -141,7 +141,7 @@
 
   <section id="setup">
     <h2>Before the first run</h2>
-    <p>Unpack the program zip so you have a folder named <code>BlackHoleShadow</code> that contains <code>main.py</code>. Open a terminal in that folder. You need <strong>Python 3.10 or newer</strong> with NumPy and Matplotlib. SciPy is optional: when present it is used for near-critical adaptive quadrature; without it the same modes still run on the NumPy trapezoid. If you do not already have that environment, follow the project-wide <a href="https://github.com/tomyee3-org/GFTGU-Documentation" target="_blank"><em>GFTGU Python Setup Guide</em></a>. Do not install packages into a system Python (PEP&nbsp;668). Then:</p>
+    <p>Unpack the program zip so you have a folder named <code>BlackHoleShadow</code> that contains <code>main.py</code>. Open a terminal in that folder. You need <strong>Python 3.10 or newer</strong> with NumPy, Matplotlib, and SciPy. This GFTGUX module uses SciPy adaptive quadrature for near-critical null geodesics; it is not an optional extra. See <code>requirements.txt</code>. If you do not already have that environment, follow the project-wide <a href="https://github.com/tomyee3-org/GFTGU-Documentation" target="_blank"><em>GFTGU Python Setup Guide</em></a>. Do not install packages into a system Python (PEP&nbsp;668). Then:</p>
 <pre>python main.py --version
 python main.py --mode rays</pre>
     <p>Every command on this page assumes that working directory. Even values of <code>--n_pix</code> are rounded up to the next odd number so a pixel sits on the optical axis. Lengths are in units of \(M=GM/c^2\); the teaching default is \(M=1\).</p>
