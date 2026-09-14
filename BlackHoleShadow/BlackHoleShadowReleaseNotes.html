@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>BlackHoleShadow 1.0.0 Release Notes</title>
+</head>
+<body>
+<h1>BlackHoleShadow 1.0.0 Release Notes</h1>
+<p><b>Version:</b> 1.0.0<br>
+<b>Build:</b> eaf36a217f39<br>
+<b>Date:</b> 2026-09-14</p>
+
+<h2>Release Status</h2>
+<p>Version 1.0.0 is the first numbered release offered for consideration
+by Prof. Bernard Schutz and Vince Higgs as a possible addition to the
+second-edition program suite of <em>Gravity from the Ground Up</em>.
+It follows a kickoff implementation modeled on PhotonOrbit and
+GravitationalLensing, then twenty rounds of independent review by
+Claude, Codex, and Copilot, with Grok applying the accepted repairs.
+The reviewers checked the Schwarzschild capture map, the critical
+curve, face-on transfer functions, the optically thin image, near-critical
+quadrature, Help synchronization, BUILD_ID provenance, and scale
+invariance. Priority-1 numerical defects found during that cycle have
+been closed. Remaining Priority-2 items are software-polish and
+maintainability issues, not defects in the silhouette physics or in the
+student-facing teaching beats. The program author has judged the
+build good enough to present, and has approved release of 1.0.0 with
+those items tracked below as Known Minor Maintenance Items.</p>
+
+<h2>What the program is</h2>
+<p>BlackHoleShadow is an image-plane teaching program for a
+nonrotating hole. Nine <code>--mode</code> drawings share one entry
+point. Length flags are in units of <code>M</code>. The default
+spacetime scale is <code>M = 1</code>. The geometric shadow is the
+disk <code>b &le; 3&radic;3 M</code> on a distant spherical screen.
+A static, face-on, optically thin Gaussian annulus then shows why
+that disk is not a thin-lens Einstein ring: the same source appears
+at several image-plane radii, and the higher-order images hug the
+critical curve.</p>
+
+<h2>Major Improvements in This Release</h2>
+<ul>
+<li>Nine CLI modes (<code>rays</code>, <code>pixels</code>,
+<code>capture</code>, <code>ring</code>, <code>transfer</code>,
+<code>image</code>, <code>radii</code>, <code>weak</code>,
+<code>compare</code>) follow the Help-file teaching beats from two
+demonstration geodesics through the capture map, photon-ring overlay,
+transfer functions, and a point-sampled face-on image.</li>
+<li>Impact-parameter classification uses the exact Schwarzschild
+critical value <code>b_crit = 3&radic;3 M</code>. Equality is the
+unstable circular photon orbit and is treated as captured for the
+silhouette (a set of measure zero on the grid). Public inbound
+azimuth at that exact value uses the analytic critical geodesic
+<code>critical_phi_of_x</code>; the endpoint angle is infinite.</li>
+<li>Face-on equatorial crossings <code>r_m(b)</code> are inverted
+from the inbound null azimuth. The student image sums static
+<code>g<sup>4</sup> I_em</code> through <code>m = 1..MAX_IMAGE_M</code>
+(currently 4). Orders <code>m &ge; 5</code> are omitted from the
+raster and disclosed on the figure and in the console summary.</li>
+<li>SciPy adaptive quadrature is the primary engine for ordinary
+rays. Near the critical impact parameter, periapsis and azimuth live
+in <code>utilities_bhs.py</code> at <code>MP_DPS</code> (30 digits)
+and stay in mpmath until a designated float64 exit. Ordinary rays
+keep a float64 / Dekker fast path for <code>&beta;</code> and
+<code>&epsilon; = &beta;<sup>2</sup> &minus; 27</code>.</li>
+<li>Awkward-mass first-representable rays
+(<code>math.nextafter(b_crit, &plusmn;&infin;)</code> at
+<code>M = 0.023</code>, <code>0.139</code>, <code>0.278</code>, and
+<code>1</code>) keep the correct capture sign, a high-order
+<code>m = 12</code> crossing when requested, and
+<code>M</code>-invariant <code>r/M</code> and <code>b/M</code>.</li>
+<li>A deterministic <code>BUILD_ID</code> hashes five executable
+modules (<code>physics_bhs.py</code>, <code>utilities_bhs.py</code>,
+<code>driver_bhs.py</code>, <code>main.py</code>,
+<code>plot_bhs.py</code>). <code>--sync-help</code> writes Version
+and Build into the Help file. Documentation and tests are
+intentionally excluded from that hash.</li>
+<li>Length flags on the command line are dimensionless ratios of
+<code>M</code>. Even <code>--n_pix</code> values become the next odd
+integer so a pixel centre sits on the optical axis.</li>
+<li>Help-file language no longer depends on a PhotonOrbit experiment
+number. Near-critical whirling is described as a set of directions
+on the sky rather than as one trajectory.</li>
+</ul>
+
+<h2>Test Suite Growth</h2>
+<p>A regression suite was built at kickoff and grew through twenty
+audit rounds to 93 automated tests in
+<code>tests/test_physics_bhs.py</code>. The suite locates the nearest
+directory that contains all five core module filenames, so the same
+file runs from the canonical <code>tests/</code> layout or a flattened
+upload layout. It checks capture classification, periapsis,
+deflection versus the weak-field <code>4M/b</code> formula, camera
+grids, photon-ring masks, transfer and image tables, Help
+synchronization and MathJax delimiter balance, BUILD_ID coverage
+including a missing-file failure path, ambient mpmath-dps isolation,
+and scale invariance at non-unit <code>M</code>.</p>
+<p>A representative command is
+<code>MPLBACKEND=Agg python -W error::ResourceWarning -m unittest tests.test_physics_bhs</code>
+from the program folder. SciPy, NumPy, Matplotlib, and mpmath are
+required; see <code>requirements.txt</code>.</p>
+
+<h2>Known Limitations</h2>
+<ul>
+<li>Intended for education. It is not an EHT pipeline, a Kerr
+ray-tracer, or a research-grade image-reconstruction code.</li>
+<li>This version is face-on and static. There is no orbital Doppler
+boost, no inclination other than zero, and no optically thick disk.</li>
+<li>The published image truncates at <code>MAX_IMAGE_M = 4</code>.
+Higher-order crossings exist and are used as robustness targets;
+they are omitted from the student raster and labeled as such.</li>
+<li>Pixels are point samples at cell centres. Narrow
+<code>m = 3,4</code> peaks may miss a centre. The radial
+<code>I(b)</code> panel is the place to read those peaks.</li>
+<li>A captured backward ray is stopped at the horizon. It may
+intersect the toy disk first; that is a property of the source
+model, not a second shadow.</li>
+<li>The Help file loads MathJax from a public CDN. Offline, the
+prose and unrendered TeX remain readable, but equations are not
+typeset.</li>
+<li>Atomic publication of PNG plus a provenance sidecar is ordinary
+single-user file I/O, not the hardened CSV/PNG protocol used in
+GravitationalWaveSources.</li>
+</ul>
+
+<h2>Known Minor Maintenance Items</h2>
+<ul>
+<li>Several float64 near-critical helpers
+(<code>_signed_eps</code>, <code>_beta_offset</code>,
+<code>_beta_sq_minus_27</code>, <code>_two_square</code>) remain in
+<code>physics_bhs.py</code> for the ordinary-ray fast path rather
+than being folded into <code>utilities_bhs.py</code>. That split is
+deliberate after Audit 20; further DRY is optional cleanup.</li>
+<li><code>utilities_bhs.py</code> still carries a long module
+preamble written during the audit cycle. Shortening it to
+present-tense student rationale is tracked for a maintenance round.</li>
+<li>The forced SciPy-fallback unit test exercises the large-absolute-error
+branch. A separate warning-plus-relative-error trigger remains
+untested in isolation.</li>
+<li>The full suite can take on the order of one to two minutes,
+depending on host, because high-order near-critical inversions are
+part of the contract.</li>
+<li>Priority-2 items that survived late audits (plot-label
+synchronization for unused <code>max_m</code> values, repository-path
+wording, missing-file BUILD_ID behavior) were addressed in 0.21.0;
+any leftovers are documentation tone rather than incorrect physics.</li>
+</ul>
+
+<h2>Version Identification</h2>
+<p>MODEL_VERSION: 1.0.0<br>
+BUILD_ID: eaf36a217f39</p>
+</body>
+</html>
