@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GravitationalWaveSources – Help File | GFtGU Programs</title>
+  <title>GravitationalWaveSources – Help File | GFTGUX Programs</title>
   <!-- MathJax 3 -->
   <script>
     MathJax = {
@@ -470,7 +470,7 @@
       <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_gw.py</div><p>Produces the waveform, amplitude-scale, and frequency panels; marks the ISCO cutoff; shows the optional QNM separately; always displays the figure on screen; and, when <code>--outdir</code> is given, additionally saves a timestamped PNG.</p></div>
       <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>Defines the student-facing command-line options and converts validation or runtime failures into concise command-line error messages.</p></div>
     </div>
-    <div class="note"><strong>Requires Python 3.10 or later.</strong> See the <em>GFTGU Python Setup Guide</em> if you need to install or update Python.</div>
+    <div class="note"><strong>Requires Python 3.10 or later.</strong> See the <em>GFTGUX Python Setup Guide</em> if you need to install or update Python.</div>
     <div class="note"><strong>Build identifier provenance:</strong> <code>BUILD_ID</code> is computed at import time from the UTF-8 source text of the four core modules listed above (<code>physics_gw.py</code>, <code>driver_gw.py</code>, <code>main.py</code>, <code>plot_gw.py</code>), after normalizing CRLF/CR line endings to LF and framing each file by name and normalized length -- so two otherwise-identical source trees that differ only in line-ending convention intentionally produce the same <code>BUILD_ID</code>. Editing the Help file or the test suite never changes it. If the program is run from a frozen, zipped, or otherwise relocated distribution where those four files cannot be read from beside <code>physics_gw.py</code> on disk, <code>BUILD_ID</code> reports the literal string <code>unknown</code> instead of failing to run. <code>MODEL_VERSION</code> is unaffected and remains reliable in that situation.</div>
   </section>
 
@@ -505,7 +505,7 @@
       <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>, additionally saves a timestamped figure in the requested folder; the figure is still shown on screen in the same run.</td></tr>
       <tr><td class="oname">CSV file</td><td>With <code>--csvdir PATH</code>, additionally saves a timestamped, self-documenting <code>t_s,f_hz,A,h,phase_rad</code> table (with a commented header recording the model version, build, and every waveform-affecting run parameter) in the requested folder -- a no-programming-required route to the numbers behind the plot, used by <a href="#experiments">EXP-7</a> and EXP-8. The write is atomic with respect to the published filename: on any ordinary failure partway through, no file bearing the public <code>gw_inspiral_*.csv</code> name is ever left partial or empty. This does not guarantee the folder is left completely free of debris in every case -- an abrupt kill of the program (rather than an ordinary error) can strand the private, dot-prefixed random-named temporary file it was building into (named <code>.gw_tmp_*</code>); that file never carries the public name and is safe to remove once no GravitationalWaveSources process is still writing to the folder. A second, unrelated debris pattern, <code>.gw_modeprobe_*</code>, can very occasionally appear too: it exists only for an instant, to let the program discover the ordinary file-creation permissions your umask implies, and normally deletes itself immediately, but the same abrupt-kill scenario (or, rarely, a filesystem error on its own deletion) can leave an empty copy behind -- it is always empty, never contains any of your data, and is likewise safe to delete.</td></tr>
     </tbody></table>
-    <p>Requires Python 3.10 or later; see the <em>GFTGU Python Setup Guide</em>.</p>
+    <p>Requires Python 3.10 or later; see the <em>GFTGUX Python Setup Guide</em>.</p>
     <pre># Default BNS inspiral from 20 Hz
 python main.py
 
@@ -613,7 +613,7 @@ print(f"{Mc_kg / gw.M_sun:.4f}")   # gw.M_sun is this program's own M_sun --
 
       <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">
         For additional ways to restore program files, see the corresponding
-        recovery instructions in the <em>GFTGU Python Setup Guide</em>.
+        recovery instructions in the <em>GFTGUX Python Setup Guide</em>.
       </p>
     </div>
   </div>

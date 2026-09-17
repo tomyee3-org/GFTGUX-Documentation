@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BlackHoleSpacetimeVisualizer – Help File | GFtGU Programs</title>
+  <title>BlackHoleSpacetimeVisualizer – Help File | GFTGUX Programs</title>
   <!-- MathJax 3 -->
   <script>
     MathJax = {
@@ -514,7 +514,7 @@ python main.py --mode horizons --M0 5 --M1 10</pre>
     <div class="eq-block"><div class="eq-label">Radial geodesic equations <span class="tag tag-exact">EXACT</span>, integrated <span class="tag tag-ode">ODE</span></div>
       \[\left(\frac{dr}{d\tau}\right)^2 = c^2\left(\frac{r_s}{r}-\frac{r_s}{r_0}\right), \qquad \frac{dt}{d\tau} = \frac{E}{1-r_s/r}.\]
     </div>
-    <p>\(dr/d\tau\) is finite and smooth all the way through \(r=r_s\): nothing pathological happens to the particle there. \(dt/d\tau\) diverges as \(r\to r_s\): this is what makes the distant observer's coordinate-time coordinate run away. Both are integrated numerically with RK4 in the particle's own proper time \(\tau\), with the step size capped at a fraction of the remaining distance to the stopping radius <em>and</em> at a fraction of the distance already fallen from \(r_0\) — exactly as the structure integrators of the other GFtGU programs cap their step by a fraction of the current integration variable. The second cap matters here specifically: as a function of \(r\), \(dr/d\tau\) behaves like \(-\text{const}\times\sqrt{r_0-r}\) close to release (the particle starts from rest, so its speed grows like the square root of the distance fallen), an infinite-slope branch point that would otherwise quietly knock RK4's accuracy down from fourth order to first order for the whole run, no matter how small <code>--step_frac</code> is set.</p>
+    <p>\(dr/d\tau\) is finite and smooth all the way through \(r=r_s\): nothing pathological happens to the particle there. \(dt/d\tau\) diverges as \(r\to r_s\): this is what makes the distant observer's coordinate-time coordinate run away. Both are integrated numerically with RK4 in the particle's own proper time \(\tau\), with the step size capped at a fraction of the remaining distance to the stopping radius <em>and</em> at a fraction of the distance already fallen from \(r_0\) — exactly as the structure integrators of the other GFTGUX programs cap their step by a fraction of the current integration variable. The second cap matters here specifically: as a function of \(r\), \(dr/d\tau\) behaves like \(-\text{const}\times\sqrt{r_0-r}\) close to release (the particle starts from rest, so its speed grows like the square root of the distance fallen), an infinite-slope branch point that would otherwise quietly knock RK4's accuracy down from fourth order to first order for the whole run, no matter how small <code>--step_frac</code> is set.</p>
     <div class="eq-block"><div class="eq-label">Local speed and redshift <span class="tag tag-der">DERIVED</span></div>
       \[v_{\rm local}(r) = \frac{1}{E}\sqrt{\frac{r_s}{r}-\frac{r_s}{r_0}}\ \longrightarrow\ 1 \text{ as } r\to r_s, \]
       \[\frac{\nu_{\rm obs}}{\nu_{\rm emit}} = \sqrt{1-\frac{r_s}{r}}\ \sqrt{\frac{1-v_{\rm local}}{1+v_{\rm local}}}\ \longrightarrow\ 0 \text{ as } r\to r_s.\]
@@ -822,7 +822,7 @@ Run <code>--mode infall --M 10 --r0_rs 6</code> (default <code>--r_stop_rs 1.000
 
       <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">
         For additional ways to restore program files, see the corresponding
-        recovery instructions in the <em>GFTGU Python Setup Guide</em>.
+        recovery instructions in the <em>GFTGUX Python Setup Guide</em>.
       </p>
     </div>
   </div>
