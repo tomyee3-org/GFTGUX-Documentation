@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.0.0&nbsp;&nbsp;&nbsp;&nbsp;Build eaf36a217f39
+    Version 1.0.1&nbsp;&nbsp;&nbsp;&nbsp;Build 33580543b0cb
   </p>
 
   <section id="description">
@@ -225,7 +225,7 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
 I_{\mathrm{obs}}(b)=\sum_{m=1}^{4} g(r_m)^4 I_{\mathrm{em}}(r_m),\qquad g(r)=\sqrt{1-2M/r}.
 \]
     </div>
-    <p>Mode <code>image</code> draws three panels: direct (\(m=1\)), plus lensing (\(m\le 2\)), plus photon-ring (\(m\ge 3\)). False colour is a display scale. There is no inclination: a correct inclined image needs three-dimensional camera/disk geometry, which is a later program.</p>
+    <p>Mode <code>image</code> draws three panels: direct (\(m=1\)), plus lensing (\(m\le 2\)), plus photon-ring (\(m\ge 3\)). The figure itself labels the inferno display as false color: these colors indicate displayed intensity, not observed wavelength. There is no inclination: a correct inclined image needs three-dimensional camera/disk geometry, which is a later program.</p>
 <pre>python main.py --mode image
 python main.py --mode image --r_hot 8</pre>
     <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third camera panel is a point sample at each pixel centre. Narrow \(m=3,4\) peaks can miss the raster; they are drawn in the radial \(I(b)\) profile under the image. \(m\ge 5\) is omitted.</p>
