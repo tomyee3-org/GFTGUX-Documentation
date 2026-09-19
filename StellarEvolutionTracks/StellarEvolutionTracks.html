@@ -402,12 +402,22 @@
   <div class="nav-label">Overview</div>
   <a href="#description">Description</a>
   <a href="#modes">The Four Modes</a>
-  <a href="#background">Physical Background</a>
-  <div class="nav-label">Mathematics</div>
-  <a href="#equations">Governing Equations</a>
-  <a href="#closures">Closures and Calibration</a>
-  <a href="#algorithm">Algorithm</a>
+  <a href="#beats">How to read this page</a>
+  <div class="nav-label">Beats</div>
+  <a href="#beat0">0 · The Sun is not a constant</a>
+  <a href="#beat1">1 · Mass sets the lifetime</a>
+  <a href="#beat2">2 · Three closures</a>
+  <a href="#beat3">3 · Leaving the main sequence</a>
+  <a href="#beat4">4 · A cluster on one diagram</a>
+  <a href="#beat5">5 · Where the track stops</a>
+  <a href="#beat6">6 · A star the size of the Earth</a>
+  <a href="#beat7">7 · A white dwarf fades</a>
+  <a href="#beat8">8 · An ideal neutron gas</a>
+  <a href="#beat9">9 · How stiff must matter be?</a>
+  <a href="#beat10">10 · Newton versus Einstein</a>
   <div class="nav-label">Code</div>
+  <a href="#equations">Governing Equations</a>
+  <a href="#algorithm">Algorithm</a>
   <a href="#modules">Module Overview</a>
   <a href="#parameters">Parameters</a>
   <a href="#output">Output and Plot Panels</a>
@@ -419,20 +429,21 @@
   <a href="#license">License</a>
 </nav>
 <main>
-  <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
+<p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
     Version 1.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build 4ab0d0a5d73c
   </p>
- 
+
   <!-- ================================================================ -->
   <section id="description">
     <h2>Description</h2>
     <p><strong>StellarEvolutionTracks</strong> replaces the single snapshots of the <em>Star</em> and <em>Neutron</em> programs with time-dependent calculations. It links simplified models of the successive stages of a star's life — main-sequence evolution, the giant branch, and the compact remnants — and it is explicit about where one model stops and the next begins.</p>
     <p>One program covers four calculations, selected with <code>--mode</code>: a single evolutionary track, a Hertzsprung–Russell diagram assembled from a grid of masses with isochrones, a white-dwarf cooling curve built on the zero-temperature Chandrasekhar electron equation of state, and a neutron-star mass–radius relation obtained from the Tolman–Oppenheimer–Volkoff equations. Together they connect the stellar-structure material of Chapter 8 with the compact-object material of Chapter 20.</p>
     <p>The default run follows a one-solar-mass star. It spends about 9.7 Gyr on the main sequence, brightening from 0.72 to 2.2 solar luminosities, then climbs the red-giant branch in a further 2.0 Gyr to a helium flash at 2500 solar luminosities. Its eventual remnant is <em>classified</em> as a 0.50 solar-mass carbon–oxygen white dwarf, which you can then hand to mode <code>wdcool</code> yourself.</p>
+    <p>The spine of the lesson is one sentence: <em>the program captures the logic of a star's life — which equation controls which timescale, which quantity is set by mass and which by composition, why an equation of state that softens imposes a maximum mass, and why one of those maxima needs general relativity and the other does not.</em> Each section below is one beat: a short argument, a command whose figure is the evidence for that argument, and only then the equation the figure has earned.</p>
     <div class="warn"><strong>What this program is, and what it does not integrate.</strong> This is not MESA or any other stellar-evolution code, and it should not be read as one. Two genuine evolution equations are integrated — central hydrogen depletion, and helium-core growth by shell burning — and everything else is an explicit empirical fit or a calibrated closure. Three limits are worth knowing before your first run: a <strong>track stops at helium ignition, or earlier for a low-mass star</strong>, so core helium burning, the asymptotic giant branch, mass loss and envelope ejection are all absent; the <strong>remnant is usually a classification from the initial mass alone</strong>, not a computed endpoint — the exception is a star below about 0.67 solar masses, whose own post-main-sequence integration reaches this model's core-mass cap before helium ignition and whose remnant is then read directly from that track instead (the summary's <code>remnant_basis</code> field always says which of the two applies to a given run) — and the compact-object modes remain separate calculations you invoke yourself; and <strong>absolute ages and luminosities are approximate</strong>. Use the program for scalings, turning points and limiting masses, which it captures far better than absolute values.</div>
     <div class="note"><strong>What is integrated and what is prescribed:</strong> the help file distinguishes these throughout. A green <span class="tag tag-ode">ODE</span> tag marks a quantity obtained by integrating a stated differential equation, a blue <span class="tag tag-der">DERIVED</span> tag marks an algebraic result derived from stated assumptions, an orange <span class="tag tag-fit">FIT</span> tag marks an empirical formula fitted to detailed stellar models, and a violet <span class="tag tag-cal">CLOSURE</span> tag marks a calibrated parameter that stands in for physics a one-zone model cannot capture. Distinguishing the four is itself part of the pedagogy, and several of the exercises turn on it.</div>
     <div class="note"><strong>Reading this page.</strong> The equations on this page are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; with no connection, the raw \(\LaTeX\) source (e.g. <code>\(a(t)\)</code>) will show as plain text instead of a formula. This has no effect on the program itself, which needs no internet access to run.</div>
-    
+
     <h3>How seriously to take each number</h3>
     <table class="cred-table"><thead><tr><th>Calculation</th><th>Status</th><th>Read it as</th></tr></thead><tbody>
       <tr><td class="cname">tracks — main sequence</td><td>one integrated ODE (central hydrogen depletion) on top of empirical anchors and three calibrated closures</td><td>quantitative near the solar calibration, qualitative away from it</td></tr>
@@ -449,11 +460,11 @@
   <!-- ================================================================ -->
   <section id="modes">
     <h2>The Four Modes</h2>
-    <table class="mode-table"><thead><tr><th>Mode</th><th>What it computes</th><th>Core numerical content</th></tr></thead><tbody>
-      <tr><td class="mname">tracks</td><td>Evolution of one star from the ZAMS through the main sequence, the subgiant branch or Hertzsprung gap, and the red-giant branch to helium ignition, where the integration stops. Reports a schematic remnant classification.</td><td>RK4 on the nuclear-burning equation \(dX_c/dt\), then RK4 on the shell-burning equation \(dM_c/dt\).</td></tr>
-      <tr><td class="mname">hr</td><td>The same track computed for a grid of masses, drawn as an HR diagram, with optional isochrones interpolated across the tracks.</td><td>As above, repeated; isochrones by linear interpolation in age along each track.</td></tr>
-      <tr><td class="mname">wdcool</td><td>White-dwarf structure from the zero-temperature degenerate-electron equation of state in Newtonian hydrostatic equilibrium, then a classical Mestel cooling history in luminosity and effective temperature.</td><td>RK4 on the hydrostatic structure equations in radius; bisection on central density to hit the requested mass; RK4 on the cooling equation \(dT_c/dt\).</td></tr>
-      <tr><td class="mname">nsmr</td><td>A sequence of neutron-star models spanning a range of central densities, giving the mass–radius relation, the maximum mass, compactness and surface redshift. With <code>--newtonian</code> the general-relativistic quantities are withheld, because they are not results of that calculation.</td><td>RK4 on the TOV equations (or, optionally, on the Newtonian equations) for each central density.</td></tr>
+    <table class="mode-table"><thead><tr><th>Mode</th><th>Beats</th><th>What it computes</th><th>Core numerical content</th></tr></thead><tbody>
+      <tr><td class="mname">tracks</td><td>0–3, 5</td><td>Evolution of one star from the ZAMS through the main sequence, the subgiant branch or Hertzsprung gap, and the red-giant branch to helium ignition, where the integration stops. Reports a schematic remnant classification.</td><td>RK4 on the nuclear-burning equation \(dX_c/dt\), then RK4 on the shell-burning equation \(dM_c/dt\).</td></tr>
+      <tr><td class="mname">hr</td><td>1, 4</td><td>The same track computed for a grid of masses, drawn as an HR diagram, with optional isochrones interpolated across the tracks.</td><td>As above, repeated; isochrones by linear interpolation in age along each track.</td></tr>
+      <tr><td class="mname">wdcool</td><td>6, 7</td><td>White-dwarf structure from the zero-temperature degenerate-electron equation of state in Newtonian hydrostatic equilibrium, then a classical Mestel cooling history in luminosity and effective temperature.</td><td>RK4 on the hydrostatic structure equations in radius; bisection on central density to hit the requested mass; RK4 on the cooling equation \(dT_c/dt\).</td></tr>
+      <tr><td class="mname">nsmr</td><td>8–10</td><td>A sequence of neutron-star models spanning a range of central densities, giving the mass–radius relation, the maximum mass, compactness and surface redshift. With <code>--newtonian</code> the general-relativistic quantities are withheld, because they are not results of that calculation.</td><td>RK4 on the TOV equations (or, optionally, on the Newtonian equations) for each central density.</td></tr>
     </tbody></table>
     <pre># The Sun
 python main.py --mode tracks --mass 1.0
@@ -469,43 +480,48 @@ python main.py --mode nsmr --eos neutron</pre>
   </section>
 
   <!-- ================================================================ -->
-  <section id="background">
-    <h2>Physical Background</h2>
-
-    <h3>Why a Star Evolves At All</h3>
-    <p>A main-sequence star is in hydrostatic and thermal equilibrium, so nothing about it would change if its composition were fixed. What changes is the composition of the core: four hydrogen nuclei become one helium nucleus, so the number of free particles per unit mass falls and the mean molecular weight \(\mu\) rises. Since the central pressure needed to hold the star up is fixed by its mass and radius, and since the ideal-gas pressure is \(P=\rho k T/(\mu m_u)\), a rising \(\mu\) forces a rising central temperature, and therefore a rising luminosity. Main-sequence evolution is, at bottom, the slow consequence of that one substitution.</p>
-
-    <h3>Homology</h3>
-    <p>Homology theory asks what happens to a star's global properties when its mass or composition changes, assuming the internal structure keeps the same shape. It gives power laws rather than profiles, and it needs only four ingredients: hydrostatic equilibrium, the ideal gas law, radiative diffusion, and nuclear energy balance. Its great virtue for teaching is that every exponent can be derived on one page, and the program prints those exponents for whichever opacity and burning law you select.</p>
-
-    <h3>The Core-Mass–Luminosity Relation</h3>
-    <p>Once the core hydrogen runs out, a low-mass star develops an electron-degenerate helium core surrounded by a hydrogen-burning shell. Degeneracy decouples the core's structure from its thermal state, with a remarkable consequence: the luminosity depends on the helium-core mass alone and barely at all on the mass of the star around it. That is why the tip of the red-giant branch is a standard candle, and why the tracks of 1, 1.5 and 2 solar-mass stars in this program all end at essentially the same luminosity.</p>
-
-    <h3>Degeneracy Pressure and the Two Limiting Masses</h3>
-    <p>A white dwarf really is held up by degeneracy pressure, and that is enough to explain it. As the star is compressed the electrons become relativistic, the pressure softens from \(P\propto\rho^{5/3}\) to \(P\propto\rho^{4/3}\), and no equilibrium exists above the Chandrasekhar mass.</p>
-    <p>A neutron star is a different matter, and it is worth being careful here, because the module's own <code>--eos neutron</code> option is precisely the model that gets it wrong. Degeneracy pressure alone — the ideal free neutron gas of Oppenheimer and Volkoff — supports at most about 0.7 solar masses, well under half the roughly 1.4–2 solar masses of a typical precisely measured neutron star. What actually supports a real neutron star is the pressure of <em>strongly interacting</em> nuclear matter, of which Fermi degeneracy is only one contribution; the repulsive part of the nucleon–nucleon interaction at supranuclear density is what stiffens the equation of state enough to hold up two solar masses. That is exactly what the <code>polytrope</code> option stands in for, crudely, with one adjustable stiffness.</p>
-    <p>Both objects nevertheless have a maximum mass, and for related but distinct reasons. In the white dwarf the softening of the equation of state is enough on its own. In the neutron star general relativity intervenes as well: pressure itself gravitates in the TOV equations, so adding pressure to a very compact star can make it <em>less</em> stable. The Newtonian and relativistic calculations can be compared directly with <code>--newtonian</code>.</p>
+  <section id="beats">
+    <h2>How to read this page</h2>
+    <p>Each numbered section below is one beat: a short argument in words, a command whose figure is the evidence, and then the equation that the figure has earned. Do them in order the first time. After that, any beat can be opened on its own.</p>
+    <p>The four modes are not the four parts of the lesson. Beats 0–3 and 5 use <code>tracks</code>, Beats 1 and 4 use <code>hr</code>, Beats 6 and 7 use <code>wdcool</code>, and Beats 8–10 use <code>nsmr</code>. Beats 0–2 add <code>--no_postms</code>, which stops the track at the terminal-age main sequence so the figure holds only the hydrogen-burning story; Beat 3 removes it.</p>
+    <p>Every run prints a summary and most figures have several panels. Each beat names the lines and the panel to look at; the rest belongs to a later beat and can be ignored the first time through.</p>
   </section>
 
   <!-- ================================================================ -->
-  <section id="equations">
-    <h2>Governing Equations</h2>
-
-    <h3>Composition</h3>
+  <section id="beat0">
+    <h2>Beat 0 · The Sun is not a constant</h2>
+    <p>A star in equilibrium would never change if its composition never changed. The Sun's does. Before asking why, ask the program only to show what happens: one solar mass, followed from the zero-age main sequence to the end of core hydrogen burning.</p>
+<pre>python main.py --mode tracks --mass 1.0 --no_postms</pre>
+    <p>Look at the upper-right panel (luminosity history) and the lower-left panel (radius history). In the lower-right panel the central hydrogen fraction falls as the helium core grows. Ignore the header block of the printed summary for now and read only the lines beginning <code>ZAMS</code>, <code>TAMS</code> and <code>MS lifetime</code>.</p>
+    <p>Three tasks, in order. First, read the luminosity at the start and at the end of the main sequence: 0.72 and 2.2 solar luminosities, so the Sun brightens by a factor of about three in 9.73 Gyr. Then find the yellow dot marked <em>Sun today</em> on the upper-left panel and see how close the track passes to it. Then write down, before reading on, why a star that is using up its fuel should get brighter rather than dimmer.</p>
+    <p><em>Then</em> the answer, which is one substitution.</p>
+    <p>A main-sequence star is in hydrostatic and thermal equilibrium, so nothing about it would change if its composition were fixed. What changes is the composition of the core: four hydrogen nuclei become one helium nucleus, so the number of free particles per unit mass falls and the mean molecular weight \(\mu\) rises. Since the central pressure needed to hold the star up is fixed by its mass and radius, and since the ideal-gas pressure is \(P=\rho k T/(\mu m_u)\), a rising \(\mu\) forces a rising central temperature, and therefore a rising luminosity. Main-sequence evolution is, at bottom, the slow consequence of that one substitution.</p>
     <div class="eq-block"><div class="eq-label">Mean molecular weights, fully ionised</div>
       \[\frac{1}{\mu}=2X+\tfrac34 Y+\tfrac12 Z,\qquad \mu_e=\frac{2}{1+X},\qquad Y=1-X-Z.\]
     </div>
     <p>Solar composition \(X=0.70,\ Z=0.02\) gives \(\mu=0.6173\) and \(\mu_e=1.176\). A helium core with \(X=0\) has \(\mu=1.342\), more than twice as large: this factor is the engine of main-sequence evolution.</p>
+    <p>Beats 1 and 2 turn that one sentence into numbers.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-1 and EXP-6 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
 
-    <h3>Homology Exponents</h3>
+  <!-- ================================================================ -->
+  <section id="beat1">
+    <h2>Beat 1 · Mass sets the main-sequence lifetime</h2>
+    <p>The Sun takes 9.7 Gyr to burn the hydrogen in its core. A heavier star has more fuel, but it does not last longer. Put four masses on one diagram and read their lifetimes off the printed table.</p>
+<pre>python main.py --mode hr --masses 1,2,5,10 --no_postms</pre>
+    <p>The figure is a single panel: four short main-sequence tracks, each starting on the dashed zero-age main sequence and drifting upward as the star brightens, with its mass in solar masses printed beside the starting point. The table in the summary gives the main-sequence lifetime <code>t_MS</code> of each: 9.73, 1.361, 0.1685 and 0.03469 Gyr for 1, 2, 5 and 10 solar masses.</p>
+    <p>Three tasks, in order. First, divide the Sun's lifetime by the ten-solar-mass lifetime: about 280. Then run <code>--mode tracks --mass 10 --no_postms</code> and compare its zero-age luminosity, 3220 solar luminosities, with the Sun's 0.72: a factor of about 4500 for a factor of ten in mass. Then explain, using only the words <em>fuel supply</em> and <em>burn rate</em>, why the heavier star lives so much shorter a life; EXP-5 turns the explanation into an exponent.</p>
+    <p><em>Then</em> ask why the luminosity climbs so steeply with mass. Homology answers it without solving for the interior.</p>
+    <p>Homology theory asks what happens to a star's global properties when its mass or composition changes, assuming the internal structure keeps the same shape. It gives power laws rather than profiles, and it needs only four ingredients: hydrostatic equilibrium, the ideal gas law, radiative diffusion, and nuclear energy balance. Its great virtue for teaching is that every exponent can be derived on one page, and the program prints those exponents for whichever opacity and burning law you select.</p>
     <p>Write the opacity as \(\kappa=\kappa_0\rho^a T^b\) and the energy generation rate as \(\varepsilon=\varepsilon_0\rho T^\nu\). Hydrostatic equilibrium gives \(P\sim M^2/R^4\), the ideal gas law gives \(T\sim\mu M/R\), radiative diffusion gives \(L\sim RT^4/(\kappa\rho)\), and nuclear balance gives \(L\sim M\varepsilon\). Eliminating \(L\) between the last two:</p>
     <div class="eq-block"><div class="eq-label">Homology solution <span class="tag tag-der">DERIVED</span></div>
       \[R\propto \mu^{\,p}M^{\,q},\qquad p=\frac{\nu-4+b}{D},\qquad q=\frac{\nu-1+a+b}{D},\qquad D=\nu+3+b+3a,\]
       \[L\propto \mu^{\,4-b}M^{\,3-a-b}R^{\,b+3a}.\]
     </div>
     <p>For electron scattering (\(a=b=0\)) this collapses to the famous \(L\propto\mu^4M^3\), independent of the burning law. For Kramers opacity (\(a=1,\ b=-3.5\)) with the pp chain (\(\nu=4\)) it gives \(L\propto\mu^{7.77}M^{5.46}\). The program prints whichever set applies.</p>
-
-    <h3>Zero-Age Main-Sequence Anchor</h3>
+    <p>For the default run that printed line reads <code>L ~ mu^4.000 M^3.000</code>. Switch to Kramers opacity and it reads <code>L ~ mu^7.769 M^5.462</code>, the numbers in the equation above, and the star brightens faster: it reaches 6.3 solar luminosities at the end of the main sequence instead of 2.2, and the lifetime falls from 9.73 to 6.98 Gyr.</p>
+<pre>python main.py --mode tracks --mass 1.0 --no_postms --opacity kramers</pre>
+    <p>Homology gives exponents, not a star. To place a star of a given mass on the zero-age main sequence the program uses fits to detailed stellar models:</p>
     <div class="eq-block"><div class="eq-label">Empirical ZAMS luminosity and radius <span class="tag tag-fit">FIT</span></div>
       \[\frac{L_{\rm ZAMS}}{L_\odot}=\begin{cases}
         0.72\times0.43^{4}\,(M/0.43\,M_\odot)^{2.3} & M\lt0.43\,M_\odot\\
@@ -518,15 +534,56 @@ python main.py --mode nsmr --eos neutron</pre>
       \end{cases}\]
     </div>
     <p>Both piecewise fits are continuous at their breakpoints by construction (each branch is anchored to the same coefficient evaluated at the switch mass) and are normalised so that the ZAMS Sun sits at \(L=0.72\,L_\odot\), \(R=0.89\,R_\odot\) — not at the present-day \(1\,L_\odot,\ 1\,R_\odot\), since the Sun has brightened since arriving on the main sequence. These are fits to detailed ZAMS models, not a homology result; running with <code>--homology</code> replaces both branches with the pure homology power laws of the previous section, normalised on the same ZAMS Sun, so the two can be compared directly (see EXP-9).</p>
+    <p><em>Experiments that go with this beat:</em> EXP-5, EXP-9 and EXP-10 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
 
-    <h3>Main-Sequence Evolution</h3>
+  <!-- ================================================================ -->
+  <section id="beat2">
+    <h2>Beat 2 · Three closures a one-zone model cannot derive</h2>
+    <p>The Sun in Beat 0 came with three numbers that you did not choose. Turn each one and watch what it controls. The first command is your reference.</p>
+<pre>python main.py --mode tracks --mass 1.0 --no_postms
+python main.py --mode tracks --mass 1.0 --no_postms --core_weight 0
+python main.py --mode tracks --mass 1.0 --no_postms --core_weight 1
+python main.py --mode tracks --mass 1.0 --no_postms --qc 0.10
+python main.py --mode tracks --mass 1.0 --no_postms --expansion 1.0
+python main.py --mode tracks --mass 1.0 --no_postms --homology</pre>
+    <p>Each time, read the <code>TAMS</code> and <code>MS lifetime</code> lines and look at the upper-right and lower-left panels.</p>
+    <p>Three tasks, in order. <code>--core_weight</code> decides how much the rising molecular weight of the core counts toward the luminosity. At 0 the luminosity never rises from its zero-age value of 0.72 and the track is still on the main sequence when it reaches the 15 Gyr stop; at 1 the Sun ends its main sequence at 16 solar luminosities after 5.5 Gyr; the default 0.36 gives 2.2 solar luminosities after 9.73 Gyr. <code>--qc</code> is the fraction of the star that ever burns. It changes the lifetime, 6.49 Gyr at 0.10 and 12.97 Gyr at 0.20 against 9.73 Gyr at the default 0.15, without touching the luminosity at the end of the main sequence. <code>--expansion</code> is how much the radius grows. At 1.0, and equally with <code>--homology</code>, the radius stays at 0.89 solar radii and the effective temperature at the end of the main sequence is 7450 K instead of 5716 K.</p>
+    <p><em>Then</em> the equation those runs were integrating, and where each dial sits in it.</p>
     <div class="eq-block"><div class="eq-label">Nuclear-burning equation <span class="tag tag-ode">ODE</span></div>
       \[\frac{dX_c}{dt}=-\frac{L(t)}{0.007\,c^2\,q_c M},\qquad
         L(t)=L_{\rm ZAMS}\left(\frac{\mu_{\rm eff}(t)}{\mu_{\rm eff}(0)}\right)^{4-b+(b+3a)p}.\]
     </div>
     <p>Converting hydrogen to helium releases \(0.007c^2=6.29\times10^{14}\,\mathrm{J\,kg^{-1}}\), so the fuel supply is \(0.007c^2X_0q_cM\) and the burn rate is \(L/0.007c^2\). Because \(L\) itself depends on \(X_c\), the equation is nonlinear and is integrated with fourth-order Runge–Kutta. The final step is interpolated so that the track ends exactly at the requested terminal abundance <code>--x_end</code>.</p>
+    <p>A one-zone model cannot represent a star that has a helium-rich core inside an unchanged envelope. Three parameters close that gap. Each has a clear physical meaning, each is adjustable, and each is calibrated against standard solar models rather than tuned to make a plot look nice. Understanding what they stand in for is more instructive than any single number they produce.</p>
+    <h4>Core weighting index \(w\) <span class="tag tag-cal">CLOSURE</span></h4>
+    <div class="eq-block">\[\mu_{\rm eff}=\mu_{\rm env}^{\,1-w}\,\mu_{\rm core}^{\,w}.\]</div>
+    <p>The homology relation \(L\propto\mu^4\) was derived for a chemically homogeneous star. Using the core value alone grossly overpredicts the brightening; using a mass-weighted mean underpredicts it, because the luminosity is generated where \(\mu\) is highest. The index \(w\) interpolates. The default \(w=0.36\) is calibrated jointly with \(q_c\) so that the Sun's track passes close to \(L=L_\odot\) at an age of 4.57 Gyr — the model gives 0.97 — and reaches \(L=2.2\,L_\odot\) at the end of the main sequence.</p>
+    <h4>Hydrogen reservoir fraction \(q_c\) <span class="tag tag-cal">CLOSURE</span></h4>
+    <p>Only the innermost part of a star ever burns. The default is \(q_c=0.15\) below 1.2 solar masses, rising as \(0.15(M/1.2M_\odot)^{0.22}\) above it because convective cores grow with mass, capped at 0.32. This choice puts the solar main-sequence lifetime at 9.73 Gyr. Be careful with it below about 0.35 solar masses: such stars are fully convective and can burn a much larger fraction of their hydrogen than a fixed \(q_c\) allows, so the model understates their lifetimes badly. The program prints a warning there.</p>
+    <h4>Main-sequence expansion factor \(f_{\rm exp}\) <span class="tag tag-cal">CLOSURE</span></h4>
+    <div class="eq-block">\[R(t)=R_{\rm ZAMS}\left[1+(f_{\rm exp}-1)\,s^{3/2}\right],\qquad s=1-\frac{X_c}{X_0}.\]</div>
+    <p>Here homology fails outright. For the pp chain with electron scattering the homology exponent is \(p=(\nu-4+b)/D=0\) exactly: homology predicts that a solar-type star does not expand at all on the main sequence. Detailed models show it grows by about 70 per cent, because the developing molecular-weight gradient is not homologous. The default \(f_{\rm exp}=1.7\) reproduces that growth. Setting <code>--homology</code> discards this law and uses the homology exponent instead, so the failure can be seen directly.</p>
+    <div class="warn"><strong>How accurate is this?</strong> Calibrated on the Sun, the model returns \(L=0.97\,L_\odot\) and \(R=1.02\,R_\odot\) at an age of 4.57 Gyr, against the true 1.00 and 1.00 — errors of a few per cent. Away from the calibration point the errors grow. The post-main-sequence duration for the Sun comes out near 2.0 Gyr against about 1.3 Gyr in detailed models, and the zero-age main-sequence luminosity at 10 solar masses is roughly 40 per cent low. Treat the numbers as good to a factor of order unity in timescales and to tens of per cent in luminosities, and use the program to understand <em>trends and scalings</em>, which it captures much better than it captures absolute values.</div>
+    <p><em>Experiments that go with this beat:</em> EXP-9, EXP-10, EXP-14 and EXP-15 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
 
-    <h3>Shell Burning on the Giant Branch</h3>
+  <!-- ================================================================ -->
+  <section id="beat3">
+    <h2>Beat 3 · Leaving the main sequence</h2>
+    <p>When the hydrogen at the centre is gone the star does not stop. Hydrogen burns in a shell around a growing helium core, and the star swells and climbs. Remove <code>--no_postms</code> and let the Sun finish, then repeat for three other masses.</p>
+<pre>python main.py --mode tracks --mass 1.0
+python main.py --mode tracks --mass 1.5
+python main.py --mode tracks --mass 2.0
+python main.py --mode tracks --mass 5.0</pre>
+    <p>On the upper-left panel the phases are coloured separately (main sequence, subgiant or Hertzsprung gap, red-giant branch) and the track ends at a star symbol, helium ignition. The summary now has a post-main-sequence block.</p>
+    <p>Three tasks, in order. For the Sun, look at the upper-right panel: after the terminal-age point the luminosity rises by about three orders of magnitude in about a fifth of the time (1.99 Gyr, against 9.73 Gyr on the main sequence). Then compare the last lines of the summary for 1, 1.5 and 2 solar masses: <code>Luminosity at end</code> is 2479.2 solar luminosities and <code>Core mass at end</code> is 0.4700 solar masses in all three, though the stars differ by a factor of two in mass. Then run 5 solar masses. The regime is now <code>Hertzsprung-gap crossing</code>, the luminosity at the end equals the luminosity at the terminal-age point (868.9), and the whole crossing takes 0.24 Myr. Ask what the three lighter stars have in common that the fifth does not.</p>
+    <p><em>Then</em> the ideas behind those runs. The first is why the tips coincide.</p>
+    <p>Once the core hydrogen runs out, a low-mass star develops an electron-degenerate helium core surrounded by a hydrogen-burning shell. Degeneracy decouples the core's structure from its thermal state, with a remarkable consequence: the luminosity depends on the helium-core mass alone and barely at all on the mass of the star around it. That is why the tip of the red-giant branch is a standard candle, and why the tracks of 1, 1.5 and 2 solar-mass stars in this program all end at essentially the same luminosity.</p>
+    <p>A giant branch starts where the main sequence ends, with the helium core that the hydrogen-burning phase has left. One more closure sets its size:</p>
+    <h4>Core efficiency \(f_{\rm core}\) <span class="tag tag-cal">CLOSURE</span></h4>
+    <p>The helium core left at the terminal-age main sequence is smaller than the hydrogen reservoir that fed it, because mixing brings in fuel from outside the eventual core. The default \(f_{\rm core}=0.75\) puts the Sun's helium core at 0.112 solar masses at the terminal-age main sequence, in line with standard solar models.</p>
+    <p>Now the equation for the growth of that core, and the luminosity that drives it:</p>
     <div class="eq-block"><div class="eq-label">Core-growth equation <span class="tag tag-ode">ODE</span></div>
       \[\frac{dM_c}{dt}=\frac{L(t)}{0.007\,c^2\,X_{\rm env}},\qquad
         L=\Big(L_{\rm TAMS}^4+L_{\rm CMLR}^4\Big)^{1/4},\qquad
@@ -537,14 +594,50 @@ python main.py --mode nsmr --eos neutron</pre>
     <div class="eq-block"><div class="eq-label">Kelvin–Helmholtz crossing time</div>
       \[t_{\rm KH}=\frac{GM^2}{R_{\rm TAMS}L_{\rm TAMS}}.\]
     </div>
-
-    <h3>The Hayashi Line</h3>
+    <p>The temperature at which the star sits while it climbs is a separate ingredient:</p>
     <div class="eq-block"><div class="eq-label">Empirical Hayashi-line fit <span class="tag tag-fit">FIT</span></div>
       \[T_{\rm eff}=6560\,\mathrm{K}\;\left(\frac{L}{L_\odot}\right)^{-0.092}\left(\frac{M}{M_\odot}\right)^{0.10},\qquad 3000\,\mathrm{K}\le T_{\rm eff}\le 6000\,\mathrm{K}.\]
     </div>
     <p>A fully convective star cannot be cooler than the Hayashi line, which is why giant branches in the HR diagram are nearly vertical. The fit above reproduces roughly 4300 K at 100 solar luminosities and 3200 K at the tip of the red-giant branch. It is not a solution of the structure equations; obtaining one would require integrating a convective envelope.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-1 and EXP-2 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
 
-    <h3>White-Dwarf Structure</h3>
+  <!-- ================================================================ -->
+  <section id="beat4">
+    <h2>Beat 4 · A cluster on one diagram</h2>
+    <p>The stars of a cluster are born together. Look at a cluster today and the heavy stars have already left the main sequence while the light ones have not; where the main sequence ends tells you the age. This beat draws many tracks at once and cuts across them at fixed ages.</p>
+<pre>python main.py --mode hr --isochrones 0.1,1,5,10
+python main.py --mode hr --masses 0.6,0.8,1.0,1.2,1.5,2.0,3.0,5.0,8.0 --isochrones 0.1,1,5,10 --t_max 60</pre>
+    <p>The figure is a single panel. Each track carries its mass, in solar masses, at its zero-age point. Each isochrone has its own colour and line style, with diamond markers, and joins the points at which stars of different masses have reached the same age. On each isochrone find the place where it bends away from the zero-age main sequence: that is the turn-off, and it moves down and to the right, toward lower masses, as the age grows.</p>
+    <p>Three tasks, in order. Read the turn-off masses printed by the first run: 6.285, 2.289 and 1.260 solar masses at 0.1, 1 and 5 Gyr and, for 10 Gyr, <em>age outside t_MS(M) range</em>. The summary explains why: the 0.5 and 0.8 solar-mass tracks are still on the main sequence at the default <code>--t_max</code> of 15 Gyr, so the mass grid does not reach that age. Then run the second command, which lets every track finish: the 10 Gyr turn-off is now 0.991 solar masses. Then compare the 5 Gyr turn-off in the two runs, 1.260 and 1.252, and say what that small change tells you about how a turn-off mass is found.</p>
+    <p><em>Then</em> the idea. An isochrone is built by interpolating linearly in age along each track. The turn-off mass at a given age is the mass whose main-sequence lifetime equals that age, read from the table of \(t_{\rm MS}(M)\) that Beat 1 began. To date a real cluster, find where its stars leave the main sequence and read the age off the isochrone that passes through that point.</p>
+    <div class="note"><strong>Schematic, by design.</strong> The nearly horizontal branches of the high-mass tracks are the constant-luminosity Hertzsprung-gap prescription of Beat 3, not a discovery, and the abrupt change of morphology at 2 solar masses is a switch between two prescriptions rather than a physical discontinuity. The isochrones are interpolants through a handful of tracks, not a modern isochrone library.</div>
+    <p><em>Experiments that go with this beat:</em> EXP-2 and EXP-12 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat5">
+    <h2>Beat 5 · Where the track stops</h2>
+    <p>Every track in this program ends at helium ignition, or earlier for a low-mass star, whatever the star does next. The last lines of the summary say what the program will claim about the remnant. Read them before you believe the picture.</p>
+<pre>python main.py --mode tracks --mass 1.0
+python main.py --mode tracks --mass 12
+python main.py --mode tracks --mass 0.6 --t_max 200</pre>
+    <p>Read the <code>Schematic remnant</code> lines. The Sun is classified as a carbon–oxygen white dwarf of about 0.503 solar masses and the 12-solar-mass star as a neutron star of 1.400 solar masses; in both runs the summary adds that the remnant is a classification from the initial mass, not an integrated result. The third command is the exception. A 0.6-solar-mass star spends 45 Gyr on the main sequence, so it needs a large <code>--t_max</code> to get anywhere; its own post-main-sequence integration then reaches the core-mass cap of this schematic model before helium ignition, and the summary says that the remnant, a helium white dwarf of 0.420 solar masses, comes from the track itself and not from the mass-only classification.</p>
+    <p><em>Then</em> hand the remnant on yourself. The program links stages; it does not evolve through them. <code>python main.py --mode wdcool --wd_mass 0.5</code> is roughly the Sun's white dwarf, and the next two beats are that run. For the 12-solar-mass star, hand 1.4 solar masses to <code>--mode nsmr</code>, which is Beats 8–10. Nothing between helium ignition and the remnant is computed; EXP-19 asks you to list exactly what is skipped.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-19 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat6">
+    <h2>Beat 6 · A star the size of the Earth</h2>
+    <p>A white dwarf has no fuel. What holds it up is the pressure of electrons that cannot all occupy the same state, and the consequence is counter-intuitive: the heavier the white dwarf, the smaller it is.</p>
+<pre>python main.py --mode wdcool --wd_mass 0.6
+python main.py --mode wdcool --wd_mass 1.2
+python main.py --mode wdcool --wd_mass 1.4</pre>
+    <p>Look at the upper-left panel: the mass–radius curve, with a star marking this white dwarf, a dotted line at the radius of the Earth and a dashed vertical line at the Chandrasekhar limit, 1.459 solar masses. Read the <code>Radius</code> line of each summary: 8841 km (1.388 Earth radii) at 0.6 solar masses, 4165 km (0.654) at 1.2 and 1986 km (0.312) at 1.4. Ignore the other three panels until Beat 7.</p>
+    <p>Three tasks, in order. Find on the curve the mass at which a white dwarf is exactly as large as the Earth. Then describe what happens to the radius as the mass approaches the dashed line. Then change the composition, <code>--mu_e 1.0</code>, and see what happens to the radius of the 0.6-solar-mass model (32,637 km, 5.12 Earth radii) and to the limiting mass in the <code>mu_e (core)</code> line (5.836 solar masses).</p>
+    <p><em>Then</em> the reason.</p>
+    <p>A white dwarf really is held up by degeneracy pressure, and that is enough to explain it. As the star is compressed the electrons become relativistic, the pressure softens from \(P\propto\rho^{5/3}\) to \(P\propto\rho^{4/3}\), and no equilibrium exists above the Chandrasekhar mass.</p>
     <p>With \(x=p_F/(m_ec)\) the electron relativity parameter and \(A_e=\pi m_e^4c^5/3h^3\):</p>
     <div class="eq-block"><div class="eq-label">Exact degenerate electron gas</div>
       \[P=A_e\!\left[x(2x^2-3)\sqrt{1+x^2}+3\,\mathrm{asinh}\,x\right],\qquad
@@ -556,8 +649,20 @@ python main.py --mode nsmr --eos neutron</pre>
     </div>
     <p>Integrating outward from a chosen central density until \(x\to0\) gives one \((M,R)\) pair; scanning the central density gives the whole mass–radius relation, which asymptotes to the Chandrasekhar mass \(M_{\rm Ch}=5.836\,\mu_e^{-2}M_\odot=1.459\,M_\odot\) for \(\mu_e=2\). The program reproduces that limit to about 0.3 per cent with the default step size.</p>
     <p>The electron equation of state is exact for an ideal zero-temperature gas. The RK4 integration of it is fourth-order accurate and converges to that exact solution as the step size shrinks; at the default step size it reproduces the Chandrasekhar limit to about 0.3 per cent. But the <em>star</em> is still idealised: Coulomb corrections between ions and electrons, finite temperature, composition stratification, rotation, magnetic fields and general-relativistic corrections are all absent. Call it the zero-temperature Chandrasekhar model rather than an exact white dwarf.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-3, EXP-7 and EXP-14 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
 
-    <h3>Mestel Cooling</h3>
+  <!-- ================================================================ -->
+  <section id="beat7">
+    <h2>Beat 7 · A white dwarf fades</h2>
+    <p>With no nuclear fuel a white dwarf can only cool. Its light comes from the stored heat of its ions. Cool one, then change what it is made of and what it is wrapped in, and see which changes matter.</p>
+<pre>python main.py --mode wdcool --wd_mass 0.6
+python main.py --mode wdcool --wd_mass 1.0
+python main.py --mode wdcool --wd_mass 0.6 --Z_env 0.02
+python main.py --mode wdcool --wd_mass 0.6 --A_ion 4</pre>
+    <p>Look at the upper-right panel: the luminosity is flat at early times and then falls along a straight line on the log–log axes, which the dashed line identifies as a slope of −7/5. The lower-right panel puts the same cooling on the HR diagram, far below the main sequence. Read the <code>Cooling age</code> lines of the summary. These are model ages, not modern cooling ages.</p>
+    <p>Three tasks, in order. For 0.6 solar masses the star cools from 25,254 K to 3,368 K at its surface in 5.6235 Gyr. Then change the mass to 1.0: the starting luminosity rises from 0.0592 to 0.0986 solar luminosities, but the cooling age is still 5.6235 Gyr, so the temperature history does not know the mass. Then change what the star is made of or wrapped in. With <code>--A_ion 4</code>, helium ions instead of a carbon–oxygen mixture, the radius is unchanged and the age becomes 19.68 Gyr. With <code>--Z_env 0.02</code>, a more opaque envelope, the age becomes 136.46 Gyr, because the Mestel coefficient falls from \(1.284\times10^{-31}\) to \(5.29\times10^{-33}\). Say which change moved the age most, and which two left the radius alone.</p>
+    <p><em>Then</em> the law behind the straight line, and what is really setting the clock.</p>
     <p>A white dwarf has no nuclear energy source. Its electrons are strongly degenerate, so their heat capacity is smaller than that of the ions by roughly \(kT/E_F\) — small, but not zero. The classical Mestel approximation neglects it, and then the entire luminosity is paid for by the thermal energy of the ions:</p>
     <div class="eq-block"><div class="eq-label">Heat content and cooling law <span class="tag tag-ode">ODE</span></div>
       \[U=\frac{3}{2}\frac{k}{A m_u}MT_c,\qquad
@@ -576,8 +681,17 @@ python main.py --mode nsmr --eos neutron</pre>
     </div>
     <p>The difference formula on the left is what the program reports as the analytic age; the familiar power law on the right, and with it the classic Mestel result \(L\propto t^{-7/5}\), holds only once the star has forgotten its initial temperature. That is why the plotted cooling curve is flat at early times and only later joins the \(-7/5\) slope. The program integrates the differential equation with RK4 as well, and prints both ages so that the two can be compared.</p>
     <p>Two further points are worth noticing. Both \(L\) and \(U\) are proportional to \(M\), so in this model the <em>core-temperature history is independent of the white-dwarf mass</em> even though the luminosity is not. And the composition enters in three separate places: the core \(\mu_e\) sets the structure, \(A_{\rm ion}\) sets the ionic heat capacity, and the <em>envelope</em> \(X\) and \(Z\) set the opacity and therefore the coefficient \(C\). It is the envelope, not the core, that controls the clock.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-3, EXP-8, EXP-11 and EXP-16 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
 
-    <h3>Neutron Stars: the TOV Equations</h3>
+  <!-- ================================================================ -->
+  <section id="beat8">
+    <h2>Beat 8 · An ideal neutron gas</h2>
+    <p>Now do to neutrons what Beat 6 did to electrons: take an ideal degenerate gas as the equation of state, but integrate the equations of general relativistic structure rather than Newton's. This is the historical calculation of Oppenheimer and Volkoff, a benchmark that is known to fail.</p>
+<pre>python main.py --mode nsmr --eos neutron</pre>
+    <p>The figure has three panels. On the left, mass against radius: the stable branch, a dashed unstable branch, a star at the maximum mass and a dashed red line at the roughly 2 solar-mass benchmark set by the heaviest precisely measured pulsars. Ignore the two steep lines on that panel until Beat 10. In the middle, mass against central density, with the turning point starred. On the right, compactness and surface redshift. Read the summary: a maximum mass of 0.7100 solar masses at a radius of 9.313 km.</p>
+    <p>Three tasks, in order. Compare the maximum mass with the benchmark line. Then find on the middle panel the central density at which the mass stops rising, and say what the dashed part of the curve beyond it represents. Then say what is wrong, the arithmetic or the assumption.</p>
+    <p><em>Then</em> the equations, and the reply to that last question.</p>
     <div class="eq-block"><div class="eq-label">Tolman–Oppenheimer–Volkoff <span class="tag tag-ode">ODE</span></div>
       \[\frac{dm}{dr}=\frac{4\pi r^2\epsilon}{c^2},\qquad
         \frac{dP}{dr}=-\frac{G\left(\dfrac{\epsilon}{c^2}+\dfrac{P}{c^2}\right)\left(m+\dfrac{4\pi r^3P}{c^2}\right)}{r^2\left(1-\dfrac{2Gm}{rc^2}\right)}.\]
@@ -587,38 +701,64 @@ python main.py --mode nsmr --eos neutron</pre>
       \[\epsilon=A_n\!\left[3x(2x^2+1)\sqrt{1+x^2}-3\,\mathrm{asinh}\,x\right],\qquad
         \left(\frac{c_s}{c}\right)^{2}=\frac{dP}{d\epsilon}=\frac{x^2}{3(1+x^2)}.\]
     </div>
-    <p>This reproduces the Oppenheimer–Volkoff result of 0.71 solar masses at a radius of 9.3 km. The calculation is correct; the <em>assumption</em> is inadequate. A cold ideal neutron gas is not what neutron stars are made of, and the factor-of-three discrepancy with the measured masses is the cleanest possible demonstration that the nuclear interaction, not degeneracy alone, is what holds a neutron star up. The second option is a stiff polytrope \(P=K\rho^\Gamma\) with \(\epsilon/c^2=\rho+P/[(\Gamma-1)c^2]\), whose stiffness is specified through the dimensionless pressure at nuclear saturation density,</p>
+    <p>This reproduces the Oppenheimer–Volkoff result of 0.71 solar masses at a radius of 9.3 km. The calculation is correct; the <em>assumption</em> is inadequate. A cold ideal neutron gas is not what neutron stars are made of, and the factor-of-three discrepancy with the measured masses is the cleanest possible demonstration that the nuclear interaction, not degeneracy alone, is what holds a neutron star up.</p>
+    <p>A neutron star is a different matter, and it is worth being careful here, because the module's own <code>--eos neutron</code> option is precisely the model that gets it wrong. Degeneracy pressure alone — the ideal free neutron gas of Oppenheimer and Volkoff — supports at most about 0.7 solar masses, well under half the roughly 1.4–2 solar masses of a typical precisely measured neutron star. What actually supports a real neutron star is the pressure of <em>strongly interacting</em> nuclear matter, of which Fermi degeneracy is only one contribution; the repulsive part of the nucleon–nucleon interaction at supranuclear density is what stiffens the equation of state enough to hold up two solar masses. That is exactly what the <code>polytrope</code> option stands in for, crudely, with one adjustable stiffness.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-4 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat9">
+    <h2>Beat 9 · How stiff must nuclear matter be?</h2>
+    <p>Beat 8 ended with an equation of state that is too soft. The <code>polytrope</code> option stands in, crudely, for the stiffer pressure of strongly interacting nuclear matter, with one adjustable stiffness <code>--p_nuc</code> and one adjustable index <code>--gamma</code>. Change them and see how much stiffness the roughly 2 solar-mass benchmark demands, and where the model stops making sense.</p>
+<pre>python main.py --mode nsmr
+python main.py --mode nsmr --p_nuc 0.02
+python main.py --mode nsmr --p_nuc 0.08
+python main.py --mode nsmr --gamma 3.0 --p_nuc 0.04</pre>
+    <p>Read the summary each time, and look at the left panel. The defaults give a maximum mass of 2.1754 solar masses at 11.692 km, above the benchmark line. With <code>--p_nuc 0.02</code> the maximum falls to 1.7276 solar masses at 9.239 km, below it; with <code>--p_nuc 0.08</code> it rises to 2.7390 solar masses at 14.797 km, and the notes block reports that one model at the highest central density was dropped, so read it. The last command ends its sound-speed line with <code>*** ACAUSAL ***</code>: at <code>--gamma 3.0</code> the sound speed in the star reaches 1.07 of the speed of light.</p>
+    <p>Three tasks, in order. Find, by trial, the smallest <code>--p_nuc</code> that clears the benchmark at the default index. Then note what the radius does as you stiffen the equation. Then say why a maximum mass obtained with an acausal equation of state cannot be trusted, however large it is.</p>
+    <p><em>Then</em> what the option does.</p>
+    <p>The second option is a stiff polytrope \(P=K\rho^\Gamma\) with \(\epsilon/c^2=\rho+P/[(\Gamma-1)c^2]\), whose stiffness is specified through the dimensionless pressure at nuclear saturation density,</p>
     <div class="eq-block"><div class="eq-label">Stiffness parameter</div>
       \[p_{\rm nuc}=\frac{P(\rho_{\rm nuc})}{\rho_{\rm nuc}c^2},\qquad \rho_{\rm nuc}=2.7\times10^{17}\,\mathrm{kg\,m^{-3}}.\]
     </div>
     <p>The defaults \(\Gamma=2.5,\ p_{\rm nuc}=0.04\) give a maximum mass of 2.18 solar masses at a radius of 11.7 km. The program evaluates \(c_s/c\) at every model on the stable branch, reports both its value at the maximum-mass density and its peak over the branch, and flags an acausal choice explicitly; with the defaults the peak is 0.84, so the sequence is causal throughout. Note that a single \(\Gamma\)-law normalised at one density is a toy: it is a way of asking what stiffness implies, not a nuclear equation of state.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-4 and EXP-17 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat10">
+    <h2>Beat 10 · Newton versus Einstein</h2>
+    <p>Both compact remnants have a maximum mass, and for related but distinct reasons. Run the same equation of state under Newtonian gravity and under general relativity, and see which of them produces a maximum.</p>
+<pre>python main.py --mode nsmr --eos neutron
+python main.py --mode nsmr --eos neutron --newtonian
+python main.py --mode nsmr --eos neutron --newtonian --rho_hi 1e21</pre>
+    <p>The first run is Beat 8 again. The Newtonian run has no turning point: the summary says that the mass is still rising at the highest central density sampled, reports a <em>largest sampled mass</em> rather than a maximum mass, and withholds the redshift, the Buchdahl bound and the stability criterion, because they are results of general relativity. The third panel now shows where \(GM/Rc^2\) leaves the regime in which Newtonian gravity is even approximately valid. Raise the density by a factor of twenty, as in the last command, and the sequence still does not turn over: the largest sampled model has 5.09 solar masses in a radius of 3.55 km, well inside the roughly 15 km Schwarzschild radius \(2GM/c^2\) of its own mass.</p>
+    <p>Three tasks, in order. Compare the mass–radius panels of the first two runs at low density, where the stars are dilute, and at high density. Then, on the general-relativistic run, find the two steep lines on the left panel and say what each one bounds. Then say why pressure that gravitates produces a maximum where Newtonian gravity produces only nonsense.</p>
+    <p><em>Then</em> the two limiting masses side by side.</p>
+    <p>Both objects nevertheless have a maximum mass, and for related but distinct reasons. In the white dwarf the softening of the equation of state is enough on its own. In the neutron star general relativity intervenes as well: pressure itself gravitates in the TOV equations, so adding pressure to a very compact star can make it <em>less</em> stable. The Newtonian and relativistic calculations can be compared directly with <code>--newtonian</code>.</p>
     <p>Two reference curves are drawn on the mass–radius panel of a relativistic run. The horizon \(R=2GM/c^2\) needs no assumptions. The Buchdahl bound \(R\ge9GM/4c^2\), equivalently \(GM/Rc^2\le4/9\), does: it is a theorem about static, spherical, isotropic fluid spheres whose density does not increase outward. It is an excellent orientation for how little room is left between a neutron star and a horizon, but it is a statement about that class of configurations, not an unconditional law. Neither curve is drawn for a Newtonian run, where neither belongs.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-13 and EXP-18 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <!-- ================================================================ -->
-  <section id="closures">
-    <h2>Closures and Calibration</h2>
-    <p>A one-zone model cannot represent a star that has a helium-rich core inside an unchanged envelope. Three parameters close that gap. Each has a clear physical meaning, each is adjustable, and each is calibrated against standard solar models rather than tuned to make a plot look nice. Understanding what they stand in for is more instructive than any single number they produce.</p>
-
-    <h4>Core weighting index \(w\) <span class="tag tag-cal">CLOSURE</span></h4>
-    <div class="eq-block">\[\mu_{\rm eff}=\mu_{\rm env}^{\,1-w}\,\mu_{\rm core}^{\,w}.\]</div>
-    <p>The homology relation \(L\propto\mu^4\) was derived for a chemically homogeneous star. Using the core value alone grossly overpredicts the brightening; using a mass-weighted mean underpredicts it, because the luminosity is generated where \(\mu\) is highest. The index \(w\) interpolates. The default \(w=0.36\) is calibrated jointly with \(q_c\) so that the Sun's track passes close to \(L=L_\odot\) at an age of 4.57 Gyr — the model gives 0.97 — and reaches \(L=2.2\,L_\odot\) at the end of the main sequence.</p>
-
-    <h4>Hydrogen reservoir fraction \(q_c\) <span class="tag tag-cal">CLOSURE</span></h4>
-    <p>Only the innermost part of a star ever burns. The default is \(q_c=0.15\) below 1.2 solar masses, rising as \(0.15(M/1.2M_\odot)^{0.22}\) above it because convective cores grow with mass, capped at 0.32. This choice puts the solar main-sequence lifetime at 9.73 Gyr. Be careful with it below about 0.35 solar masses: such stars are fully convective and can burn a much larger fraction of their hydrogen than a fixed \(q_c\) allows, so the model understates their lifetimes badly. The program prints a warning there.</p>
-
-    <h4>Main-sequence expansion factor \(f_{\rm exp}\) <span class="tag tag-cal">CLOSURE</span></h4>
-    <div class="eq-block">\[R(t)=R_{\rm ZAMS}\left[1+(f_{\rm exp}-1)\,s^{3/2}\right],\qquad s=1-\frac{X_c}{X_0}.\]</div>
-    <p>Here homology fails outright. For the pp chain with electron scattering the homology exponent is \(p=(\nu-4+b)/D=0\) exactly: homology predicts that a solar-type star does not expand at all on the main sequence. Detailed models show it grows by about 70 per cent, because the developing molecular-weight gradient is not homologous. The default \(f_{\rm exp}=1.7\) reproduces that growth. Setting <code>--homology</code> discards this law and uses the homology exponent instead, so the failure can be seen directly.</p>
-
-    <h4>Core efficiency \(f_{\rm core}\) <span class="tag tag-cal">CLOSURE</span></h4>
-    <p>The helium core left at the terminal-age main sequence is smaller than the hydrogen reservoir that fed it, because mixing brings in fuel from outside the eventual core. The default \(f_{\rm core}=0.75\) puts the Sun's helium core at 0.113 solar masses at the terminal-age main sequence, in line with standard solar models.</p>
-
-    <div class="warn"><strong>How accurate is this?</strong> Calibrated on the Sun, the model returns \(L=0.97\,L_\odot\) and \(R=1.02\,R_\odot\) at an age of 4.57 Gyr, against the true 1.00 and 1.00 — errors of a few per cent. Away from the calibration point the errors grow. The post-main-sequence duration for the Sun comes out near 2.0 Gyr against about 1.3 Gyr in detailed models, and the zero-age main-sequence luminosity at 10 solar masses is roughly 40 per cent low. Treat the numbers as good to a factor of order unity in timescales and to tens of per cent in luminosities, and use the program to understand <em>trends and scalings</em>, which it captures much better than it captures absolute values.</div>
+  <section id="equations">
+    <h2>Governing Equations</h2>
+    <p>Every equation in this program is earned in a beat, together with its <span class="tag tag-ode">ODE</span>, <span class="tag tag-der">DERIVED</span>, <span class="tag tag-fit">FIT</span> or <span class="tag tag-cal">CLOSURE</span> tag. This table is only an index, in the order of the beats. EXP-20 asks you to make the classification yourself, so it is not repeated here.</p>
+    <table class="cred-table"><thead><tr><th>Equation or ingredient</th><th>Where it is earned</th></tr></thead><tbody>
+      <tr><td class="cname">Mean molecular weights \(\mu\), \(\mu_e\)</td><td><a href="#beat0">Beat 0</a></td></tr>
+      <tr><td class="cname">Homology exponents; the zero-age main-sequence fits</td><td><a href="#beat1">Beat 1</a></td></tr>
+      <tr><td class="cname">The nuclear-burning equation and three of the four closures (core weighting, hydrogen reservoir, radius expansion)</td><td><a href="#beat2">Beat 2</a></td></tr>
+      <tr><td class="cname">The fourth closure (core efficiency); the shell-burning core-growth equation and the core-mass–luminosity relation (a schematic red-giant-branch law, not the Paczyński relation); the Kelvin–Helmholtz crossing; the Hayashi line</td><td><a href="#beat3">Beat 3</a></td></tr>
+      <tr><td class="cname">The degenerate electron gas, the Newtonian white-dwarf structure equations and the Chandrasekhar mass</td><td><a href="#beat6">Beat 6</a></td></tr>
+      <tr><td class="cname">The Mestel cooling law, its coefficient and its exact age</td><td><a href="#beat7">Beat 7</a></td></tr>
+      <tr><td class="cname">The Tolman–Oppenheimer–Volkoff equations and the ideal Fermi-gas neutron equation of state</td><td><a href="#beat8">Beat 8</a></td></tr>
+      <tr><td class="cname">The polytropic equation of state and the stiffness parameter \(p_{\rm nuc}\)</td><td><a href="#beat9">Beat 9</a></td></tr>
+      <tr><td class="cname">The horizon and Buchdahl bound; the Newtonian comparison</td><td><a href="#beat10">Beat 10</a></td></tr>
+    </tbody></table>
   </section>
 
   <!-- ================================================================ -->
-  <section id="algorithm">
+<section id="algorithm">
     <h2>Algorithm</h2>
     <h3>Modes <code>tracks</code> and <code>hr</code></h3>
     <ol>
@@ -654,7 +794,7 @@ python main.py --mode nsmr --eos neutron</pre>
   </section>
 
   <!-- ================================================================ -->
-  <section id="modules">
+<section id="modules">
     <h2>Module Overview</h2>
     <div class="module-grid">
       <div class="module-card"><div class="mc-role">Physics Layer</div><div class="mc-name">physics_sev.py</div><p>Constants, composition formulae, homology exponents, ZAMS fits, the two evolution ODEs, the exact Fermi-gas and polytropic equations of state, the Newtonian and TOV structure integrators, the Chandrasekhar mass–radius relation, the Mestel coefficient and cooling ODE, and the neutron-star model sequence. All validation of physical inputs lives here.</p></div>
@@ -665,7 +805,7 @@ python main.py --mode nsmr --eos neutron</pre>
   </section>
 
   <!-- ================================================================ -->
-  <section id="parameters">
+<section id="parameters">
     <h2>Parameters</h2>
     <p>Run <code>python main.py --help</code> for the current command summary, and <code>python main.py --version</code> for the model version, which is also written into every CSV header. Options that do not apply to the selected mode are ignored silently — <code>--mode wdcool --mass 2.0</code> will not change anything — so check the printed summary, or the parameter block at the top of the CSV file, to confirm which values the run actually used.</p>
 
@@ -728,7 +868,7 @@ python main.py --mode nsmr --eos neutron</pre>
   </section>
 
   <!-- ================================================================ -->
-  <section id="output">
+<section id="output">
     <h2>Output and Plot Panels</h2>
     <table class="out-table"><thead><tr><th>Output</th><th>What to Look For</th></tr></thead><tbody>
       <tr><td class="oname">tracks — HR panel</td><td>The track leaves the ZAMS line, brightens and slowly reddens along the main sequence, hooks at the terminal-age point, crosses to the Hayashi line, then climbs almost vertically. Phases are coloured separately. The track ends at helium ignition, and the remnant quoted in the corner box is a classification, not a place the plotted curve reaches. If the star was still burning hydrogen at <code>--t_max</code>, the last point is marked as an integration stop, never as a TAMS.</td></tr>
@@ -748,7 +888,7 @@ python main.py --mode nsmr --eos neutron</pre>
   </section>
 
   <!-- ================================================================ -->
-  <section id="experiments">
+<section id="experiments">
     <h2>Suggested Experiments</h2>
     <p>The exercises are divided into a <strong>core sequence</strong>, arranged from reading the output through controlled comparisons to numerical work, and a set of <strong>optional projects</strong> that need curve fitting, calibration or a judgement about where the model stops being trustworthy. Two <strong>synthesis</strong> exercises close the set. Nothing here needs anything beyond the program, a spreadsheet or short script, and the printed summary.</p>
 
@@ -823,7 +963,7 @@ python main.py --mode nsmr --eos neutron</pre>
     </div>
   </section>
   <!-- ================================================================ -->
-  <section id="validity">
+<section id="validity">
     <h2>Domain of Validity</h2>
     <p>This program is a teaching instrument, not a stellar evolution code. The following are absent by design, and several of them dominate real stellar evolution in the regimes named.</p>
 
@@ -859,7 +999,7 @@ python main.py --mode nsmr --eos neutron</pre>
     <p>One last reminder, because it is the single easiest thing to forget while looking at a convincing-looking curve: a track stops at helium ignition, the remnant beside it is a label rather than an endpoint, and <code>wdcool</code> and <code>nsmr</code> are separate calculations that you choose to run. The module links stages; it does not evolve through them.</p>
   </section>
 
-  <!-- ============================================================
+<!-- ============================================================
        RESTORE TO DEFAULTS CALLOUT
        ============================================================ -->
 
@@ -927,7 +1067,7 @@ python main.py --mode nsmr --eos neutron</pre>
      END RESTORE TO DEFAULTS CALLOUT
      ============================================================ -->
 
-  <section id="related">
+<section id="related">
     <h2>Related Programs</h2>
     <ul class="related-list">
       <li><strong>Star</strong> — the single-snapshot stellar structure model of Chapter 8; this program supplies the time dimension it lacks.</li>
@@ -938,11 +1078,12 @@ python main.py --mode nsmr --eos neutron</pre>
     </ul>
   </section>
 
-  <section id="license">
+<section id="license">
     <h2>License</h2>
     <p>StellarEvolutionTracks is an original supplemental Python investigation proposed for use with Bernard Schutz's <em>Gravity from the Ground Up</em>. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
   </section>
 </main>
+
 <footer>
   <em>Gravity from the Ground Up</em> — Python Programs ·
   Bernard Schutz © 2003 (Cambridge University Press) ·
@@ -965,5 +1106,6 @@ python main.py --mode nsmr --eos neutron</pre>
     document.querySelectorAll('main section[id]').forEach(s => observer.observe(s));
   })();
 </script>
+
 </body>
 </html>
