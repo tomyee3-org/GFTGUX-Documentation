@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlackHoleShadow – Help File | GFTGUX Programs</title>
+  <!-- MathJax 3 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
+      },
+      loader: { load: ['[tex]/textmacros'] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--serif); font-size: 16px; line-height: 1.80; color: var(--text); background: var(--bg); }
+    .page-wrap { display: grid; grid-template-columns: 230px 1fr; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+    header { grid-column: 1 / -1; background: var(--accent); color: #fff; padding: 26px 38px 20px; border-bottom: 4px solid var(--gold); }
+    header .badge { display: inline-block; font-family: var(--mono); font-size: 10.5px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.35); border-radius: 3px; padding: 2px 7px; letter-spacing: .06em; margin-bottom: 10px; }
+    header h1 { font-size: 1.95rem; font-weight: normal; letter-spacing: -.02em; }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub { margin-top: 6px; font-family: var(--sans); font-size: 0.88rem; color: #f0d0b8; line-height: 1.55; }
+    header .sub a { color: #ffd8b8; text-decoration: none; border-bottom: 1px solid rgba(255,200,150,.4); }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    nav { background: var(--surface); border-right: 1px solid var(--border); padding: 24px 0 40px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .nav-label { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--gold); padding: 14px 18px 4px; }
+    nav a { display: block; font-family: var(--sans); font-size: 13px; color: var(--muted); text-decoration: none; padding: 5px 18px 5px 22px; border-left: 3px solid transparent; transition: border-color .15s, color .15s, background .15s; }
+    nav a:hover { color: var(--accent); background: #fdf0e0; border-left-color: var(--gold); }
+    nav a.active { color: var(--accent); font-weight: 600; border-left-color: var(--accent); background: #fdecd8; }
+    main { padding: 38px 52px 60px; max-width: 900px; }
+    h2 { font-size: 1.40rem; font-weight: normal; color: var(--accent); border-bottom: 2px solid var(--gold); padding-bottom: 6px; margin: 2.2rem 0 1.0rem; }
+    h3 { font-size: 1.08rem; font-weight: 700; color: var(--accent2); margin: 1.6rem 0 .5rem; }
+    h4 { font-size: 0.97rem; font-weight: 700; color: var(--muted); margin: 1.2rem 0 .35rem; }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block { background: var(--eq-bg); border-left: 4px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 22px 10px; margin: 1.1rem 0 1.3rem; overflow-x: auto; }
+    .eq-label { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    code { font-family: var(--mono); font-size: 0.865em; background: var(--code-bg); border: 1px solid #ddd8cc; border-radius: 3px; padding: 1px 5px; }
+    pre { font-family: var(--mono); font-size: 0.855em; background: var(--code-bg); border: 1px solid #ddd8cc; border-radius: var(--radius); padding: 14px 18px; overflow-x: auto; margin: .8rem 0 1.1rem; line-height: 1.55; }
+    .note { background: var(--note-bg); border: 1px solid var(--border); border-left: 4px solid var(--accent2); border-radius: 0 var(--radius) var(--radius) 0; padding: 11px 16px; margin: 1.0rem 0 1.2rem; font-size: 0.93rem; color: var(--muted); }
+    .note strong { color: var(--accent2); }
+    .warn { background: #fff6e8; border: 1px solid var(--gold); border-left: 4px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 11px 16px; margin: 1.0rem 0 1.2rem; font-size: 0.93rem; color: var(--muted); }
+    .warn strong { color: var(--accent); }
+    .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin: 1.1rem 0 1.4rem; }
+    .module-card { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+    .module-card .mc-name { font-family: var(--mono); font-size: 0.88rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+    .module-card .mc-role { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .module-card p { font-size: 0.875rem; color: var(--muted); margin-bottom: .5rem; }
+    .param-table, .out-table, .mode-table, .cred-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 1.0rem 0 1.4rem; }
+    .param-table th, .out-table th, .cred-table th { background: var(--accent); color: #fff; font-family: var(--sans); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 8px 12px; text-align: left; }
+    .out-table th { background: var(--accent2); }
+    .mode-table th, .cred-table th { background: var(--gold); }
+    .param-table td, .out-table td, .mode-table td, .cred-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td, .mode-table tr:nth-child(even) td, .cred-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table .pname, .out-table .oname, .mode-table .mname, .cred-table .cname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); font-weight: 700; }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .exp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin: 1.0rem 0 1.4rem; }
+    .exp-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 17px; box-shadow: var(--shadow); }
+    .exp-card .ec-num { display: inline-block; background: var(--accent); color: #fff; font-family: var(--mono); font-size: 11px; border-radius: 3px; padding: 1px 6px; margin-bottom: 7px; }
+    .exp-card h4 { font-size: 0.94rem; color: var(--accent2); margin: 0 0 5px; }
+    .exp-card p { font-size: 0.855rem; color: var(--muted); margin: 0; }
+    .related-list { list-style: none; margin: .6rem 0 1.2rem; padding: 0; }
+    .related-list li { padding: 8px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 7px; font-size: 0.90rem; }
+    .related-list li strong { font-family: var(--mono); color: var(--accent2); }
+    footer { grid-column: 1 / -1; background: var(--accent); color: #fff; font-family: var(--sans); font-size: 12.5px; text-align: center; padding: 18px 24px; line-height: 1.7; }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+    .tag { display: inline-block; font-family: var(--sans); font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border-radius: 3px; padding: 1px 6px; margin-right: 5px; vertical-align: 1px; }
+    .tag-der  { background: #dbe8f5; color: #1c3f63; border: 1px solid #a4c0da; }
+    .tag-rule { background: #e4e9ea; color: #33454a; border: 1px solid #b2c0c4; }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+  <div class="badge">Proposed supplement · Gravity from the Ground Up</div>
+  <h1><em>BlackHoleShadow</em> — A Camera, Not a Coordinate</h1>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+  </div>
+</header>
+<nav id="sidebar">
+  <div class="nav-label">Overview</div>
+  <a href="#description">Description</a>
+  <a href="#setup">Before the first run</a>
+  <a href="#modes">The Nine Modes</a>
+  <a href="#beats">How to read this page</a>
+  <div class="nav-label">Beats</div>
+  <a href="#beat0">0 · Two rays, one first integral</a>
+  <a href="#beat1">1 · A ray becomes a pixel</a>
+  <a href="#beat2">2 · The geometric shadow</a>
+  <a href="#beat3">3 · A highlighter, not a photon ring</a>
+  <a href="#beat4">4 · Transfer functions</a>
+  <a href="#beat5">5 · A face-on image</a>
+  <a href="#beat6">6 · Coordinate radii, image-plane radii</a>
+  <a href="#beat7">7 · The same ray, far away</a>
+  <a href="#beat8">8 · Two rings, two meanings</a>
+  <div class="nav-label">Code</div>
+  <a href="#equations">Governing Equations</a>
+  <a href="#algorithm">Algorithm</a>
+  <a href="#modules">Module Overview</a>
+  <a href="#parameters">Parameters</a>
+  <a href="#output">Output and Plot Panels</a>
+  <div class="nav-label">Experiments</div>
+  <a href="#experiments">Suggested Experiments</a>
+  <a href="#validity">Domain of Validity</a>
+  <a href="#related">Related Programs</a>
+  <div class="nav-label">Legal</div>
+  <a href="#license">License</a>
+</nav>
+<main>
+<p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
+    Version 1.0.1&nbsp;&nbsp;&nbsp;&nbsp;Build 33580543b0cb
+  </p>
+
+  <!-- ================================================================ -->
+  <section id="description">
+    <h2>Description</h2>
+    <p><strong>BlackHoleShadow</strong> answers one question that <code>PhotonOrbit</code> and <code>GravitationalLensing</code> each leave for the other to answer: what does a camera actually record when it points a whole grid of directions at a black hole? PhotonOrbit already classifies a single Schwarzschild photon by its impact parameter \(b\); GravitationalLensing already maps a whole source plane onto an image plane for a transparent lens. Neither program launches a bundle of photons into a camera and asks which directions on the sky come back dark. This one does.</p>
+    <p>The spine of the lesson is one sentence: <em>the silhouette a camera records is an image-plane set of captured directions, bounded by the critical curve \(b_{\rm crit}=3\sqrt3\,M\) — not the coordinate circle \(r=2M\), and not a thin-lens Einstein ring.</em> Nine modes, selected with <code>--mode</code>, build that sentence up one piece at a time: two rays, a coarse pixel grid, a dense capture map, a highlighter for the near-critical rays that wind around before escaping, the radii at which a face-on emitting ring crosses each ray, a false-colour image built from those crossings, a reminder that a coordinate radius and an image-plane radius are not the same axis, the large-\(b\) limit of the deflection, and a direct comparison against a transparent galaxy's Einstein ring.</p>
+    <div class="warn"><strong>What this program is, and what it is not.</strong> Every ray in every mode is an exact null geodesic of the vacuum Schwarzschild metric, integrated or quadrated to the precision <code>utilities_bhs.py</code> asks for near the critical impact parameter. It is not a Kerr movie: there is no spin. It is not an Event Horizon Telescope pipeline: there is no interferometry, no scattering screen, no plasma. It is not a fluid or radiative-transfer simulation: mode <code>image</code> is a face-on, optically thin toy (Gralla, Holz &amp; Wald 2019), and there is no inclination — <code>--inclination</code> accepts only \(0\) and refuses anything else, because a correctly inclined image needs a three-dimensional camera/disk geometry this program does not build. It is not <code>PhotonOrbit</code> with a slider: PhotonOrbit's object is one ray's accumulated azimuth; this program's object is a whole grid of rays and the boundary between the ones that come back and the ones that do not. And it is not <code>GravitationalLensing</code> with \(M\) turned up: a thin-lens kink \(\boldsymbol\alpha=\theta_E^2\boldsymbol\theta/|\boldsymbol\theta|^2\) has no critical null geodesic in it and cannot produce a shadow, which is the whole content of Beat&nbsp;8.</div>
+    <div class="warn"><strong>False colour, always.</strong> Mode <code>image</code> paints a scalar intensity with the inferno colormap. That colour is a display scale for a single bolometric number, not the spectrum of the source. Gravitational deflection here is achromatic: nothing in this program bends blue light differently from red. A palette was chosen only so a faint ring is visible on a screen.</div>
+    <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; offline, the raw \(\LaTeX\) source shows as plain text. The program itself needs no internet access to run. A blue <span class="tag tag-der">DERIVED</span> tag marks an equation obtained by exact reasoning from the Schwarzschild metric and geometric optics — almost everything on this page. A grey <span class="tag tag-rule">PRESCRIPTION</span> tag marks a rule the program adopts rather than derives: there is exactly one, the high-winding threshold of Beat&nbsp;3. Unlike StellarEvolutionTracks, there are no fits, no calibrated closures and no integrated evolution equations here — the physics is a single exact metric, and the tagging system has correspondingly little work to do. That is itself worth noticing: not every program in this suite needs the same scaffolding, and forcing a five-way taxonomy onto a program with only one kind of ingredient would be decoration, not honesty.</div>
+
+    <h3>How seriously to take each number</h3>
+    <table class="cred-table"><thead><tr><th>Calculation</th><th>Status</th><th>Read it as</th></tr></thead><tbody>
+      <tr><td class="cname">capture / escape classification</td><td>exact: \(b\le b_{\rm crit}\) captured, \(b>b_{\rm crit}\) escapes, for any static camera outside the photon sphere</td><td>a theorem, not an approximation</td></tr>
+      <tr><td class="cname">ray trajectories (<code>rays</code>)</td><td>RK4 integration of the exact null geodesic equation, with a fixed affine step</td><td>quantitative; convergence is EXP-9's subject</td></tr>
+      <tr><td class="cname">periapsis and asymptotic deflection</td><td>root-finding and quadrature of the exact first integral, switching to arbitrary-precision arithmetic within a narrow band of \(b_{\rm crit}\)</td><td>quantitative everywhere the program will run at all; it refuses to guess where ordinary floating point would silently lose digits</td></tr>
+      <tr><td class="cname">transfer functions \(r_m(b)\)</td><td>exact face-on crossing radii of a thin equatorial plane, found by inverting the same quadrature</td><td>quantitative, for \(m\le4\); \(m\ge5\) is not computed at all, not merely omitted from the plot</td></tr>
+      <tr><td class="cname"><code>image</code> intensity</td><td>an explicitly toy source profile (a Gaussian emissivity annulus) pushed through the exact \(g^4\) redshift factor</td><td>the shape and ordering of the direct, lensed and photon-ring contributions are right; the emissivity profile itself is invented for teaching, not measured</td></tr>
+      <tr><td class="cname"><code>compare</code> galaxy Einstein radius</td><td>the same point-mass thin-lens formula as GravitationalLensing, at GravitationalLensing's cartoon distances</td><td>a scaling comparison only; not a statement about any real galaxy or lensing survey</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="setup">
+    <h2>Before the first run</h2>
+    <p>Unpack the program zip so you have a folder named <code>BlackHoleShadow</code> containing <code>main.py</code>, and open a terminal there. You need Python 3.10 or newer with NumPy, Matplotlib, SciPy and mpmath (see <code>requirements.txt</code>); SciPy handles ordinary ray quadrature and mpmath takes over at the working precision set in <code>utilities_bhs.MP_DPS</code> whenever \(b\) sits close enough to \(b_{\rm crit}\) that ordinary floating point can no longer be trusted. If you do not already have that environment, follow the project-wide <em>GFTGUX Python Setup Guide</em>, and do not install packages into a system Python (PEP&nbsp;668). Then:</p>
+<pre>python main.py --version
+python main.py --mode rays</pre>
+    <p>Every command on this page assumes that working directory. Lengths are in units of \(M=GM/c^2\); the teaching default is \(M=1\), so a length written as <code>5</code> on the command line means \(5M\). Even values of <code>--n_pix</code> are rounded up to the next odd number, so a pixel always sits exactly on the optical axis; there is no <code>--csvdir</code> option in this program — unlike StellarEvolutionTracks, no mode produces a table of rows meant for a spreadsheet, only a figure and, optionally, a saved PNG.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modes">
+    <h2>The Nine Modes</h2>
+    <table class="mode-table"><thead><tr><th>Mode</th><th>Beat</th><th>What it computes</th><th>Core numerical content</th></tr></thead><tbody>
+      <tr><td class="mname">rays</td><td>0</td><td>Two named Schwarzschild null geodesics, one captured and one escaping, traced from a finite camera radius.</td><td>RK4 on the affine-parameter geodesic equation.</td></tr>
+      <tr><td class="mname">pixels</td><td>1</td><td>The same two impact parameters, now snapped to the nearest cell of a coarse camera grid.</td><td>The exact capture/escape classifier, on a \(17\times17\) grid by default.</td></tr>
+      <tr><td class="mname">capture</td><td>2</td><td>A dense capture map: every pixel on the grid classified captured or escaped.</td><td>The same classifier, vectorised over a \(161\times161\) grid by default.</td></tr>
+      <tr><td class="mname">ring</td><td>3</td><td>The capture map with a highlighter painted on escaping rays that wind tightly around the photon sphere before escaping.</td><td>Root-finding for the periapsis of every near-critical ray, switching to mpmath.</td></tr>
+      <tr><td class="mname">transfer</td><td>4</td><td>The face-on transfer functions \(r_1(b),r_2(b),r_3(b)\): the radii at which a null geodesic of impact parameter \(b\) crosses an equatorial plane.</td><td>Quadrature of the same first integral, inverted for the crossing radius at each disk-plane passage.</td></tr>
+      <tr><td class="mname">image</td><td>5</td><td>A point-sampled face-on image of a thin emitting annulus, split into direct, +lensing, and +photon-ring contributions, plus a radial intensity profile.</td><td>The transfer functions above, folded through an invented emissivity profile and the exact redshift factor \(g\).</td></tr>
+      <tr><td class="mname">radii</td><td>6</td><td>Two panels side by side: a coordinate-radius cross-section of the metric, and the image-plane critical curve, to keep the two axes from being read as the same thing.</td><td>No new physics; a deliberate juxtaposition of two already-computed quantities.</td></tr>
+      <tr><td class="mname">weak</td><td>7</td><td>The exact asymptotic scattering deflection \(\hat\alpha(b)\) against the weak-field formula \(4M/b\), over a range of \(b\).</td><td>Quadrature of the standard \(u=1/r\) deflection integral at 48 values of \(b\).</td></tr>
+      <tr><td class="mname">compare</td><td>8</td><td>This hole's \(b_{\rm crit}\) beside the Einstein radius of a transparent point-mass galaxy at GravitationalLensing's cartoon distances.</td><td>The same closed-form Einstein-radius formula GravitationalLensing uses.</td></tr>
+    </tbody></table>
+<pre># Two named rays, one captured and one not
+python main.py --mode rays
+
+# A dense capture map -- the shadow itself
+python main.py --mode capture
+
+# A face-on toy image of an emitting ring
+python main.py --mode image --outdir ./runs</pre>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beats">
+    <h2>How to read this page</h2>
+    <p>Each numbered section below is one beat: a short argument, a command whose figure is the evidence, and then the equation the figure has earned. Do them in order the first time; the modes build on each other in exactly the order the nav bar lists them, and the program's own figure titles carry the same beat numbers you will see here. After the first pass, any beat can be opened on its own.</p>
+    <p>This program has far less internal machinery than StellarEvolutionTracks: one metric, one first integral, nine ways of asking a question about it. The beats are correspondingly about <em>where a familiar quantity lives</em> — on the sky, in a coordinate, in a source plane — more often than they are about a new equation.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat0">
+    <h2>Beat 0 · Two rays, one first integral</h2>
+    <p>PhotonOrbit has already classified a single Schwarzschild photon by its impact parameter \(b\). This beat repeats exactly that classification, with exactly the same first integral, so that the camera grid built in the rest of this program is visibly the same physics and not a new metric in disguise.</p>
+<pre>python main.py --mode rays</pre>
+    <div class="eq-block"><div class="eq-label">Null first integral (\(E=1\), \(L=b\)) <span class="tag tag-der">DERIVED</span></div>
+      \[\left(\frac{dr}{d\lambda}\right)^{2}=1-\left(1-\frac{2M}{r}\right)\frac{b^2}{r^2},\qquad b_{\rm crit}=3\sqrt3\,M.\]
+    </div>
+    <p>Three tasks, in order. First read the console: at the default \(b=5M\) the ray is reported <code>captured</code>, and at \(b=6M\) it is reported <code>escaped</code>, with \(b_{\rm crit}/M=5.19615\) printed on the line above. Then read the two \(\Delta\phi\) values, 4.50174 and 4.63537 radians for the captured and escaping ray respectively, and notice that neither number is obviously special — 4.502 is not \(\pi\), and 4.635 is not the deflection angle of anything. Then look at the figure: the red curve at \(b=5M\) runs to the horizon \(r_s=2M\) and stops; the blue curve at \(b=6M\) turns around outside the photon sphere and heads back out.</p>
+    <p><em>Then</em> the distinction that the rest of this program depends on. \(\Delta\phi\) is the azimuth accumulated to a finite stopping surface — the horizon for a captured ray, or twice the camera radius for an escaping one — exactly as PhotonOrbit reports it. It is <em>not</em> the asymptotic deflection angle \(\hat\alpha\) that a distant observer would measure; that quantity needs the ray followed all the way to infinity, which is Beat&nbsp;7's subject, and it is a different number from either \(\Delta\phi\) printed here. Keeping the two apart is not pedantry: \(\hat\alpha\) diverges as \(b\to b_{\rm crit}^+\), while \(\Delta\phi\) to a finite camera does not, and mistaking one for the other is the most common way a student misreads the console output of this program.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-1 and EXP-8 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat1">
+    <h2>Beat 1 · A ray becomes a pixel</h2>
+    <p>The only new object between Beat 0 and here is the camera itself: a map from a two-dimensional grid of impact-parameter pairs \((b_x,b_y)\) to one of two labels, captured or escaped. Nothing about the differential equation has changed; what has changed is that you are now looking at a picture of a classification rather than a single trajectory.</p>
+<pre>python main.py --mode pixels</pre>
+    <p>The figure is a coarse \(17\times17\) grid, deliberately too coarse to look like a shadow yet. Find the cell nearest \(b=5M\) and the cell nearest \(b=6M\): one is dark, one is light, and they are the same two rays from Beat 0, now expressed as directions on a sky rather than as trajectories in a side view. <code>--n_pix</code> in this mode is capped at 41, and the program says so on the console if you ask for more, because the point of <code>pixels</code> is to make individual cells visible, not to anticipate <code>capture</code>.</p>
+    <p><em>Then</em> the idea the rest of the program builds on: a camera does not record trajectories, it records a function of direction. Every later mode is a denser, cleverer, or more physically dressed version of exactly this map.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-2 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat2">
+    <h2>Beat 2 · The geometric shadow</h2>
+    <p>Make the same grid dense and the picture becomes recognisable: a dark disk on a light background. The question this beat exists to settle is where its rim actually sits.</p>
+<pre>python main.py --mode capture
+python main.py --mode capture --fov 24 --n_pix 201</pre>
+    <p>Read the console. At the defaults, 8469 of 25921 pixels are captured, on a \(161\times161\) grid spanning a field of view of \(16M\); the summary also prints \(b_{\rm crit}/M=5.19615\), the horizon \(r_s/M=2\) and the photon sphere \(r_{\rm photon}/M=3\) on the same block, so the three numbers sit next to each other on purpose. The second command, at \(24M\) field of view and a finer \(201\times201\) grid, captures 5901 of 40401 pixels — a smaller fraction, because the field of view grew while the shadow did not.</p>
+    <p>Three tasks, in order. First confirm the shadow's angular size does not depend on the field of view you chose: divide captured pixels by total pixels in each run and multiply by (field of view)\(^2\), and compare the two results — they should agree to within the grid's own resolution, since both are estimating the same disk of radius \(b_{\rm crit}\). Then find <code>BlackHoleSpacetimeVisualizer</code>'s own diagrams, which draw the horizon \(r_s=2M\) as a circle in an embedding or a coordinate plot; that circle is not drawn anywhere on this page, on purpose. Then explain, in one sentence, why not: what coordinate is the horizontal axis of <em>this</em> figure, and is it the same coordinate as the horizontal axis of one of BlackHoleSpacetimeVisualizer's diagrams?</p>
+    <p><em>Then</em> the answer, precisely. Every pixel on this grid is a value of the impact parameter \(b\), a constant of motion measured at infinity (or, for a finite camera, an angle converted to that same constant — Beat 7 makes that conversion explicit). The rim of the dark disk sits at \(b=b_{\rm crit}=3\sqrt3\,M\approx5.196\,M\), not at \(r=2M\) and not at \(r=3M\). Those two coordinate radii belong to a different axis entirely — Beat 6 puts both axes on the same page so the difference cannot be missed twice.</p>
+    <div class="note"><strong>A resolution floor, not a resolution claim.</strong> The program refuses a grid on which the shadow diameter \(2b_{\rm crit}\) spans fewer than eight pixel intervals; asking for <code>--fov 80 --n_pix 11</code> is refused with <em>the shadow diameter 2 b_crit = 10.39 M spans only 1.30 grid intervals</em>. That floor exists so a run cannot silently draw a shadow no wider than a handful of pixels and call it resolved. It is not a claim about what angular resolution a real telescope needs to see a real shadow.</div>
+    <p><em>Experiments that go with this beat:</em> EXP-3 and EXP-9 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat3">
+    <h2>Beat 3 · A highlighter, not a photon ring</h2>
+    <p>Three names get run together constantly in popular accounts of black-hole imaging, and this beat exists to keep them apart before doing anything else with them.</p>
+    <ul>
+      <li>The <strong>photon sphere</strong> is a place in spacetime: the coordinate locus \(r=3M\), where a circular photon orbit is (unstably) possible.</li>
+      <li>The <strong>critical curve</strong> is a place on the sky: the image-plane circle \(b=b_{\rm crit}\), the rim of the dark disk from Beat 2.</li>
+      <li>A <strong>photon ring</strong> is a feature of a <em>picture</em>: a bright, narrow image that appears near the critical curve only when there is emitting matter to send high-order rays to the observer. No matter, no photon ring — the vacuum alone produces only the first two.</li>
+    </ul>
+<pre>python main.py --mode ring</pre>
+    <p>Read the console: the high-winding window is \((5.19615,\,5.27716]\,M\), a band only about 1.6% wide in \(b/M\), and 256 pixels of the \(161\times161\) grid fall inside it. Look at the figure: an orange band sits just outside the dark disk's rim, hugging the critical curve. That band is <em>not</em> a photon ring — this program has no emitting matter in mode <code>ring</code> at all — it is a highlighter on escaping rays whose periapsis lands within \(0.35M\) of the photon sphere <em>and</em> whose accumulated azimuth exceeds \(2\pi\): rays that wind more than once around the hole before finally escaping. Those are exactly the near-critical whirling rays PhotonOrbit already demonstrates for a single trajectory; this mode paints the same phenomenon as a set of directions on the sky instead of as one curve in a side view.</p>
+    <div class="eq-block"><div class="eq-label">High-winding overlay window <span class="tag tag-rule">PRESCRIPTION</span></div>
+      \[b_{\rm lo}=b_{\rm crit},\qquad b_{\rm hi}=\text{largest }b\text{ with periapsis within }0.35M\text{ of }3M\text{ and }\Delta\phi_\infty>2\pi.\]
+    </div>
+    <p>Both thresholds — the \(0.35M\) window around the photon sphere and the \(2\pi\) winding requirement — are educational choices, tuned to make a visible band on a typical grid, not measurements of any physical width. Nothing about a real photon ring's brightness or thickness follows from where this program draws its highlighter.</p>
+    <p><em>Then</em> the sentence worth keeping: the shadow rim in Beat 2 is PhotonOrbit's critical capture/escape boundary painted onto a sky; the highlighter in this beat is PhotonOrbit's near-critical whirling demonstration painted the same way. Nothing here is new physics — it is the same one first integral, looked at from a camera's point of view three times in a row.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-4 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat4">
+    <h2>Beat 4 · Transfer functions \(r_m(b)\)</h2>
+    <p>Give the hole a face-on observer at infinity and a thin, flat, equatorial emitting plane, and every impact parameter \(b\) becomes a label for a null geodesic that crosses that plane one or more times as it orbits and either escapes or falls to the horizon. The radii of those crossings, as functions of \(b\), are the transfer functions this beat exists to compute.</p>
+<pre>python main.py --mode transfer</pre>
+    <p>Read the console: for the default hot-ring radius \(r_{\rm hot}=6M\), the three transfer functions equal \(r_{\rm hot}\) at \(b/M=6.9321\), \(5.4789\) and \(5.208\) respectively — three different impact parameters, converging toward \(b_{\rm crit}=5.19615\) as the crossing order rises. That convergence is the whole geometric content of a photon ring: higher-order crossings are squeezed into an ever-narrower band of \(b\) just outside \(b_{\rm crit}\).</p>
+    <p>Three tasks, in order. First identify \(m=1\): the direct image, one crossing per ray, the ordinary case. Then identify \(m=2\): the "lensing ring" crossing, a second pass through the disk plane on the far side of the hole. Then note that a <em>captured</em> ray (\(b\le b_{\rm crit}\)) only ever travels inbound — it cannot loop back out — but it can still cross the disk plane once on its way to the horizon; the program's own integrator stops such a ray exactly at \(r=2M\), so a captured ray's crossing, if any, is always found before that stop.</p>
+    <p><em>Then</em> the count: this program computes \(m\) up to 4 and no further. Read the console line again — <em>finite \(r_3\) samples: 110</em> out of 192 adaptively placed \(b\) values — and notice that not every sampled \(b\) has a well-defined third crossing at all; some rays simply do not pass the disk plane a third time within the domain the program searches. \(m\ge5\) is not a rounding choice: the program does not compute it, at any \(b\), because the higher orders contribute a vanishingly small share of any realistic image's flux and because each additional order needs the arbitrary-precision machinery of <code>utilities_bhs.py</code> over an ever-narrower range of \(b\).</p>
+    <p><em>Experiments that go with this beat:</em> EXP-10 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat5">
+    <h2>Beat 5 · A face-on optically thin image</h2>
+    <p>Give the transfer functions of Beat 4 an emitted intensity profile and a redshift factor, and a genuine picture appears: not just where a ray crosses the disk, but how bright that crossing looks to the distant observer.</p>
+    <div class="eq-block"><div class="eq-label">Optically thin face-on image <span class="tag tag-der">DERIVED</span></div>
+      \[I_{\rm obs}(b)=\sum_{m=1}^{4}g(r_m)^4\,I_{\rm em}(r_m),\qquad g(r)=\sqrt{1-\frac{2M}{r}}.\]
+    </div>
+<pre>python main.py --mode image
+python main.py --mode image --r_hot 8</pre>
+    <p>The emitted profile \(I_{\rm em}\) is a Gaussian annulus centred on \(r_{\rm hot}=6M\) with width \(0.45M\); it is an invented teaching source, not a measured one, and the program says so on the console. Read the redshift factor at the annulus: \(g(6M)^4=0.444444\) exactly, since \(g(6M)^2=1-2/6=2/3\) and \((2/3)^2=4/9\). Three panels are drawn: direct only (\(m=1\)), plus the lensing-ring crossing (\(m\le2\)), and plus the photon-ring/subring crossings (\(m\ge3\)).</p>
+    <p>Three tasks, in order. First read the console's <code>max table I_2 / I_m=3,4</code> line — 0.4457 for the lensing-ring peak and, separately, 0.4457 for the combined \(m=3,4\) peak in the adaptively sampled table — and notice the two peak <em>heights</em> are comparable even though the higher-order image occupies a vastly narrower range of \(b\); a peak's height alone does not tell you its share of the total flux. Then read <code>max raster m&gt;=3 increment: 0.07043</code>, the largest \(m\ge3\) contribution the fixed pixel raster itself actually samples, and compare it with the table's 0.4457 — the raster undershoots badly, because a grid of pixel centres has no reason to land inside a band only a few thousandths of \(M\) wide in \(b\). Then look at the radial \(I(b)\) panel beneath the images, which is drawn from the adaptively placed table rather than the raster, and find the narrow spike the 2-D image itself is too coarse to show.</p>
+    <p><em>Then</em> the two disclaimers that keep this mode from being mistaken for something it is not. There is no orbital Doppler: \(g\) here is gravitational redshift only, for a <em>static</em> emitter, not an emitter orbiting the hole, which is why the console calls these "static emitters" explicitly. And a captured ray traced backward from the camera crosses the event horizon and stops there — the integrator halts at \(r=2M\) — so if that inbound ray would have crossed the disk plane only after passing through the horizon, this program cannot and does not report that crossing; it may still find an earlier one before the horizon, which is exactly what the console's closing note describes.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-7 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat6">
+    <h2>Beat 6 · Coordinate radii are not image-plane radii</h2>
+    <p>This beat introduces no new physics at all. It exists because Beats 2 and 4 have now both used the symbol "radius" for two different things, and conflating them is the single easiest mistake to make with this program's output.</p>
+<pre>python main.py --mode radii</pre>
+    <p>Two panels, side by side. The left panel is a Schwarzschild <em>coordinate</em>-radius cross-section: a number line marked at the horizon \(r_s=2M\) and the photon sphere \(r_{\rm ph}=3M\). It is not a spacetime diagram and it draws no light rays. The right panel is the <em>image</em> plane: the same critical curve \(b_{\rm crit}\approx5.196\,M\) from Beat 2, and nothing else — deliberately, \(r_s\) and \(r_{\rm ph}\) are not drawn there, because they are coordinate radii and this is not a coordinate-radius axis.</p>
+    <p>The task: point to the circle on the right panel and say which quantity from the left panel it does <em>not</em> equal. It is close in value to \(r_{\rm ph}=3M\) times \(3\sqrt3/3=\sqrt3\approx1.73\), which is not a coincidence — \(b_{\rm crit}\) is derived from the condition that a photon orbit exists at \(r=3M\) — but "derived from" is not "equal to," and a finite real camera at radius \(r_{\rm cam}\) would measure a local angle related to \(b\) by a factor that depends on \(r_{\rm cam}\) itself, which Beat 7's experiments make explicit.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-3 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat7">
+    <h2>Beat 7 · The same ray, far away</h2>
+    <p>Beat 0 drew a firm line between \(\Delta\phi\), the azimuth accumulated to a finite camera, and \(\hat\alpha\), the deflection a distant observer would actually measure. This beat computes \(\hat\alpha\) properly and shows that it is nothing more than the same first integral, evaluated all the way to infinity.</p>
+    <div class="eq-block"><div class="eq-label">Weak-field light deflection <span class="tag tag-der">DERIVED</span></div>
+      \[\hat\alpha=\frac{4GM}{c^2b}=\frac{4M}{b}\qquad(b\gg M).\]
+    </div>
+<pre>python main.py --mode weak</pre>
+    <p>Read the console at the two sampled points nearest each end of the curve. At \(b=41.6M\), far from the hole, the exact and weak-field deflections agree closely: 0.1037 rad exact against 0.096225 rad from \(4M/b\), a difference of about 7%. At \(b=5.3M\), just outside \(b_{\rm crit}=5.196M\), they have come completely apart: 3.5572 rad exact against 0.75471 rad weak-field, the exact value now almost five times larger. Three tasks, in order. First compute \(4M/b\) by hand at both points and confirm the console's weak-field column. Then compute the relative error of the weak-field formula at each point and confirm it grows sharply as \(b\to b_{\rm crit}^+\). Then say, using only the phrase "strong deflection," what is physically happening to a ray whose exact \(\hat\alpha\) exceeds \(\pi\) — such a ray has wound more than halfway around the hole before escaping to infinity.</p>
+    <p><em>Then</em> the connection back to Beat 3: this divergence as \(b\to b_{\rm crit}^+\) is exactly what makes higher-order images possible when a source supplies photons to bend. It is the mechanism behind a photon ring, not a photon ring by itself — there is still no emitting matter anywhere in this mode.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-5 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat8">
+    <h2>Beat 8 · Two rings, two meanings</h2>
+    <p>GravitationalLensing's Einstein ring and this program's critical curve are both circles with a formula and a name, and the two names get used interchangeably in casual conversation about "gravitational rings." They are not the same object, and this beat exists to put the two numbers on one page so the difference cannot be waved away.</p>
+<pre>python main.py --mode compare
+python main.py --mode compare --logM 12.5</pre>
+    <p>Read the console: for the default \(10^{12}\,M_\odot\) transparent point-mass galaxy, at GravitationalLensing's cartoon distances \(D_l=1\,{\rm Gpc}\), \(D_s=2\,{\rm Gpc}\), the Einstein radius is \(\theta_E=2.018''\), and that same radius measured in units of the galaxy's own gravitational length \(GM/c^2\) is \(R_E/M\approx2.044\times10^5\) — about two hundred thousand gravitational radii. Raise the mass to \(10^{12.5}\,M_\odot\) and \(\theta_E\) grows to \(3.588''\) while \(R_E/M\) actually <em>shrinks</em>, to about \(1.150\times10^5\): a bigger mass at fixed distances subtends a larger angle on the sky but, because \(R_E\) scales as \(\sqrt M\) while the gravitational length scales as \(M\), the ring sits at fewer and fewer gravitational radii as the lens gets heavier.</p>
+    <p>Set that against this hole's own numbers, unchanged by any of the above: the photon sphere is at \(r_{\rm ph}=3M\) and the image-plane critical curve is at \(b_{\rm crit}\approx5.196\,M\) — five and a bit gravitational radii, full stop, for a black hole of <em>any</em> mass, because the Schwarzschild metric is scale-invariant in units of \(M\). A weak-field galaxy lens sits at a hundred thousand or more gravitational radii from its own centre; a black hole's critical curve sits at about five. That factor of \(10^4\)–\(10^5\) is the entire content of "one is a weak-field ring, the other is a strong-field one," made numerically explicit rather than asserted.</p>
+    <p><em>Then</em> the reason no thin lens can do what this program does. GravitationalLensing's deflection law \(\boldsymbol\alpha=\theta_E^2\boldsymbol\theta/|\boldsymbol\theta|^2\) is a first-order, small-angle approximation: it bends a ray once, at one plane, by an amount that stays finite everywhere except the lens's own singular point. It has no mechanism for a ray to wind around a centre indefinitely, because it was built by throwing away exactly the higher-order terms that would let it. The critical null geodesic that rims a black-hole shadow is intrinsically a strong-field object, and producing it requires integrating the full metric, which is the whole reason this program and GravitationalLensing had to be two separate programs rather than one with a bigger mass.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-6 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="equations">
+    <h2>Governing Equations</h2>
+    <p>Every displayed equation on this page carries a <span class="tag tag-der">DERIVED</span> or <span class="tag tag-rule">PRESCRIPTION</span> tag; this table is only an index, in beat order.</p>
+    <table class="cred-table"><thead><tr><th>Equation or ingredient</th><th>Where it is earned</th></tr></thead><tbody>
+      <tr><td class="cname">Null first integral; \(b_{\rm crit}=3\sqrt3\,M\)</td><td><a href="#beat0">Beat 0</a></td></tr>
+      <tr><td class="cname">High-winding overlay window</td><td><a href="#beat3">Beat 3</a></td></tr>
+      <tr><td class="cname">Face-on transfer functions \(r_m(b)\)</td><td><a href="#beat4">Beat 4</a></td></tr>
+      <tr><td class="cname">Optically thin face-on image; redshift factor \(g\)</td><td><a href="#beat5">Beat 5</a></td></tr>
+      <tr><td class="cname">Weak-field deflection \(\hat\alpha=4M/b\); the exact asymptotic deflection it approximates</td><td><a href="#beat7">Beat 7</a></td></tr>
+      <tr><td class="cname">Point-mass Einstein radius (galaxy comparison)</td><td><a href="#beat8">Beat 8</a></td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="algorithm">
+    <h2>Algorithm</h2>
+    <h3>Modes <code>rays</code> and <code>pixels</code></h3>
+    <ol>
+      <li>Validate \(M\), the camera radius (must exceed \(3M\)), and the two demonstration impact parameters.</li>
+      <li>Classify each \(b\) against \(b_{\rm crit}=3\sqrt3\,M\): captured if \(b\le b_{\rm crit}\), escaped otherwise. Equality is treated as captured, a set of measure zero on any grid.</li>
+      <li>For <code>rays</code>, integrate \(\left(\frac{dr}{d\lambda}\right)^2=1-(1-2M/r)(b/r)^2\) outward or inward from the camera with fixed-step RK4, stopping at the horizon, at the affine budget <code>--lambda_max</code>, or when the ray has travelled twice the camera radius outward.</li>
+      <li>For <code>pixels</code>, snap the two demonstration impact parameters to the nearest cell centre of a coarse grid (default \(17\times17\), capped at \(41\times41\)) and classify every cell.</li>
+    </ol>
+    <h3>Mode <code>capture</code></h3>
+    <ol>
+      <li>Build a square grid of \((b_x,b_y)\) pairs spanning <code>--fov</code> on a side, at the requested (odd-rounded) <code>--n_pix</code>.</li>
+      <li>Refuse the grid outright if the shadow diameter \(2b_{\rm crit}\) would span fewer than eight grid intervals — a visibility floor, described in Beat 2.</li>
+      <li>Classify every pixel by \(b=\sqrt{b_x^2+b_y^2}\) against \(b_{\rm crit}\), vectorised over the whole grid at once.</li>
+    </ol>
+    <h3>Mode <code>ring</code></h3>
+    <ol>
+      <li>Compute the same dense capture map as <code>capture</code>.</li>
+      <li>Find the high-winding window \((b_{\rm crit},\,b_{\rm hi}]\) by a bisection search in \(\log(b/b_{\rm crit}-1)\): a candidate \(b\) qualifies if its periapsis lies within \(0.35M\) of the photon sphere <em>and</em> its accumulated escaping azimuth exceeds \(2\pi\).</li>
+      <li>Root-find the periapsis of every escaping ray needed by that search; ordinary Newton iteration is used away from \(b_{\rm crit}\), and the program switches to a perturbative expansion, then to mpmath at the working precision in <code>utilities_bhs.MP_DPS</code>, as \(b\) approaches \(b_{\rm crit}\) closely enough that double precision can no longer resolve the difference \(b-b_{\rm crit}\).</li>
+      <li>Refuse a grid too coarse to resolve the resulting window by at least half a pixel interval.</li>
+    </ol>
+    <h3>Modes <code>transfer</code> and <code>image</code></h3>
+    <ol>
+      <li>Build an adaptively spaced table of \(b\) values, clustered logarithmically on both sides of \(b_{\rm crit}\) (near) and spread more coarsely elsewhere (far), so the near-critical crossings are actually resolved rather than skipped by a uniform grid.</li>
+      <li>For each sampled \(b\), find every crossing of the equatorial plane up to \(m=4\) by inverting the accumulated-azimuth integral at the disk-plane angles \(\pi/2,\,3\pi/2,\,5\pi/2,\dots\), using the same near-critical switch to mpmath described above.</li>
+      <li>For <code>image</code>, evaluate the emitted Gaussian-annulus profile and the redshift factor \(g\) at each found crossing radius, sum \(g^4I_{\rm em}\) over the available crossings, and separately build a source-aware table (used for the radial \(I(b)\) panel) and a fixed pixel raster (used for the 2-D image), so that narrow high-order peaks the raster would miss are still visible in the radial panel.</li>
+    </ol>
+    <h3>Mode <code>weak</code></h3>
+    <ol>
+      <li>Sample 48 values of \(b\) geometrically between \(1.02\,b_{\rm crit}\) and \(8\,b_{\rm crit}\).</li>
+      <li>At each, quadrate the exact asymptotic deflection integral (the standard \(u=1/r\) substitution) and separately evaluate \(4M/b\).</li>
+    </ol>
+    <h3>Mode <code>compare</code></h3>
+    <ol>
+      <li>Evaluate the point-mass Einstein-radius formula for the requested galaxy mass at GravitationalLensing's fixed cartoon distances \(D_l=1\,{\rm Gpc}\), \(D_s=2\,{\rm Gpc}\).</li>
+      <li>Convert to arcseconds and to units of the galaxy's own gravitational length \(GM/c^2\); report both beside this hole's fixed \(b_{\rm crit}/M\) and \(r_{\rm ph}/M\).</li>
+    </ol>
+    <div class="note"><strong>Precision safeguard, stated plainly:</strong> every calculation in this program that depends on \(b-b_{\rm crit}\) — periapsis, asymptotic deflection, the high-winding window, the transfer functions near \(m\ge2\) — is vulnerable to catastrophic cancellation in ordinary double precision as \(b\) approaches \(b_{\rm crit}\), because the two quantities being subtracted agree to more digits than a 64-bit float can hold. <code>utilities_bhs.py</code> exists specifically to detect when a calculation has entered that regime and switch to arbitrary-precision arithmetic (mpmath, at a working precision of <code>MP_DPS</code> decimal digits) rather than silently return a number that looks plausible but is not. This is why the ring and transfer/image modes are noticeably slower than capture: they are doing real extra-precision work exactly where the ordinary floating-point calculation would quietly fail.</div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modules">
+    <h2>Module Overview</h2>
+    <div class="module-grid">
+      <div class="module-card"><div class="mc-role">Physics Layer</div><div class="mc-name">physics_bhs.py</div><p>Constants, the null first integral, capture classification, periapsis and asymptotic-deflection root-finding and quadrature, the high-winding window, the transfer-function and disk-image machinery, and the galaxy-comparison formulae. All validation of physical inputs lives here.</p></div>
+      <div class="module-card"><div class="mc-role">Precision Layer</div><div class="mc-name">utilities_bhs.py</div><p>Arbitrary-precision (mpmath) evaluation of the near-critical quantities that ordinary double precision cannot resolve, at a fixed working precision <code>MP_DPS</code>; also the Dekker-split double-double helpers used to detect when a value is close enough to \(b_{\rm crit}\) to need that switch.</p></div>
+      <div class="module-card"><div class="mc-role">Driver Layer</div><div class="mc-name">driver_bhs.py</div><p>Dispatches on <code>--mode</code>, builds each mode's grid or sample table, prints the run summary, and calls the plotter. No CSV output; a run produces a figure and, optionally, a saved PNG.</p></div>
+      <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_bhs.py</div><p>Nine figure layouts, one per mode, each titled with its own beat number so a saved plot and this Help file always agree on which beat it illustrates. With <code>--outdir</code>, also saves a timestamped PNG and a same-stem <code>.provenance.txt</code> sidecar recording the version, build, and the run's parameters.</p></div>
+      <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>Defines the student-facing command-line options, grouped by purpose, and converts validation or runtime failures into concise command-line error messages.</p></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <p>Run <code>python main.py --help</code> for the current command summary, and <code>python main.py --version</code> for the model version, which every saved figure's footer also repeats. Options that do not apply to the selected mode do not change its results, but several are validated regardless of mode, so an out-of-range value is refused even where it would not otherwise have been used.</p>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--mode</td><td class="pdefault">capture</td><td>—</td><td>One of <code>rays</code>, <code>pixels</code>, <code>capture</code>, <code>ring</code>, <code>transfer</code>, <code>image</code>, <code>radii</code>, <code>weak</code>, <code>compare</code>.</td></tr>
+      <tr><td class="pname">--M</td><td class="pdefault">1.0</td><td>length</td><td>Gravitational length \(GM/c^2\). All other lengths on this page are quoted in units of \(M\); the program itself works in whatever unit <code>--M</code> is given in.</td></tr>
+      <tr><td class="pname">--r_cam</td><td class="pdefault">40</td><td>\(M\)</td><td>Camera / launch radius for ray integrations in <code>rays</code>. Must exceed \(3M\) (outside the photon sphere).</td></tr>
+      <tr><td class="pname">--b_in, --b_out</td><td class="pdefault">5, 6</td><td>\(M\)</td><td>The two demonstration impact parameters used by <code>rays</code> and <code>pixels</code>.</td></tr>
+      <tr><td class="pname">--lambda_max</td><td class="pdefault">200</td><td>\(M\)</td><td>Affine-parameter budget for <code>rays</code>.</td></tr>
+      <tr><td class="pname">--d_lambda</td><td class="pdefault">0.02</td><td>\(M\)</td><td>RK4 step for <code>rays</code>.</td></tr>
+      <tr><td class="pname">--n_pix</td><td class="pdefault">161 (17 in <code>pixels</code>)</td><td>—</td><td>Pixels along one side of the camera grid; even values are rounded up to the next odd value so a pixel sits on the optical axis. Automatic grids stop at 401. Mode <code>pixels</code> caps this at 41 and says so on the console. Ignored by <code>transfer</code>, which uses its own adaptive \(b\) table instead of a 2-D grid.</td></tr>
+      <tr><td class="pname">--fov</td><td class="pdefault">16</td><td>\(M\)</td><td>Field of view on a side. Capture-type maps need at least eight grid intervals across \(2b_{\rm crit}\), and the program refuses a run that fails that floor rather than draw an under-resolved shadow.</td></tr>
+      <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>\(M\)</td><td>Emitted-annulus radius for <code>transfer</code> and <code>image</code>; must exceed \(3M\) (outside the photon sphere). <code>image</code> mode also caps it so the framing and the eight-interval shadow rule can both hold at once — about \(74M\) at the default \(161\) pixels, about \(186M\) at \(401\).</td></tr>
+      <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>deg</td><td>Must be exactly 0; this version is face-on only, and any nonzero value is rejected outright rather than silently ignored.</td></tr>
+      <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\)</td><td>Mass of the comparison galaxy lens in <code>compare</code>, restricted to \([6,15]\).</td></tr>
+      <tr><td class="pname">--dpi</td><td class="pdefault">140</td><td>dpi</td><td>PNG resolution when <code>--outdir</code> is given.</td></tr>
+      <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>Save a timestamped PNG and a same-stem <code>.provenance.txt</code> sidecar; suppresses the on-screen window unless <code>--interactive</code> is also given.</td></tr>
+      <tr><td class="pname">--interactive</td><td class="pdefault">off</td><td>—</td><td>Open the figure on screen even when <code>--outdir</code> is set (a no-op under <code>MPLBACKEND=Agg</code>).</td></tr>
+      <tr><td class="pname">--version</td><td class="pdefault">—</td><td>—</td><td>Print the model version and build and exit.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="output">
+    <h2>Output and Plot Panels</h2>
+    <table class="out-table"><thead><tr><th>Output</th><th>What to look for</th></tr></thead><tbody>
+      <tr><td class="oname">rays</td><td>One panel, titled with the program's own "Beat 0" label. A red trajectory runs to the horizon and stops; a blue trajectory turns at a periapsis outside the photon sphere and heads back out. Markers show the camera radius and each ray's fate.</td></tr>
+      <tr><td class="oname">pixels</td><td>A coarse \(17\times17\) grid with the two demonstration cells picked out by colour and marker; titled "A ray becomes a direction on the sky."</td></tr>
+      <tr><td class="oname">capture</td><td>A dense dark disk on a light background, titled "Beat 2 · Geometric capture map." The rim sits at \(b_{\rm crit}\); no horizon or photon-sphere circle is drawn here.</td></tr>
+      <tr><td class="oname">ring</td><td>The capture map with a thin orange band just outside the rim, titled "Beat 3 · High-winding overlay on the critical curve." The band's width is the educational threshold of Beat 3, not a measured photon-ring width.</td></tr>
+      <tr><td class="oname">transfer</td><td>Two panels under one "Beat 4" title: the transfer functions \(r_1,r_2,r_3\) against \(b\) on an adaptive grid, and the assumed Gaussian source profile beside them.</td></tr>
+      <tr><td class="oname">image</td><td>Three face-on panels (direct, +lensing, +photon-ring) under a "Beat 5" title that repeats the \(I_{\rm obs}\) sum in the heading itself, plus a radial \(I(b)\) profile drawn from the source-aware table rather than the pixel raster, so narrow high-order peaks remain visible even though the 2-D image may miss them. Inferno colormap; the figure's own caption states plainly that colour is not wavelength.</td></tr>
+      <tr><td class="oname">radii</td><td>Two panels under "Beat 6": a plain coordinate-radius number line on the left, the image-plane critical curve on the right. No quantity is drawn on both panels.</td></tr>
+      <tr><td class="oname">weak</td><td>One panel, titled "Beat 7 · Large-\(b\) deflection recovers \(4M/b\)": the exact and weak-field deflection curves agreeing at large \(b\) and diverging from each other as \(b\to b_{\rm crit}^+\).</td></tr>
+      <tr><td class="oname">compare</td><td>Two panels under "Beat 8": this hole's critical curve on the left, and a text summary of the galaxy comparison numbers on the right — no galaxy image is drawn, since GravitationalLensing already draws one and this program's point is the comparison of scales, not a second rendering of a ring.</td></tr>
+      <tr><td class="oname">Run summary</td><td>Printed to the terminal for every mode: the inputs, \(b_{\rm crit}\), the mode-specific results, and a one-line reminder of what the beat is for. Read it before looking at the figure; several beats depend on a console number the figure alone does not show (the exact \(\Delta\phi\) values in Beat 0, for instance).</td></tr>
+      <tr><td class="oname">PNG and provenance</td><td>With <code>--outdir PATH</code>: a timestamped PNG and a same-stem <code>.provenance.txt</code> sidecar recording the version, build, and the run's own parameters, so a saved figure can always be traced back to the command that made it. There is no CSV output in this program.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="experiments">
+    <h2>Suggested Experiments</h2>
+    <p>Nothing here needs anything beyond the program itself and the printed console summary. The exercises run from reading the output through controlled comparisons to a little numerical judgement; nothing in this program needs curve fitting or calibration, because — unlike StellarEvolutionTracks — there is nothing here that was calibrated in the first place.</p>
+
+    <h3>Introductory</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-1</div><h4>Capture versus Escape</h4><p>Run <code>--mode rays</code> at the defaults, then again with <code>--b_in 5.19 --b_out 5.21</code>. Name the status of each ray from the console <em>before</em> you look at the figure, then check yourself against \(b_{\rm crit}/M=5.19615\). Notice how much larger \(\Delta\phi\) has become for both rays compared with the default run, and connect that to Beat 3's "winding" language.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2</div><h4>A Pixel Is a Direction</h4><p>Run <code>--mode pixels</code>. Point to the dark cell and the light cell and state, in one sentence each, which trajectory from <code>--mode rays</code> each one represents.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-3</div><h4>The Rim Is Not the Horizon</h4><p>Run <code>--mode radii</code>. The left panel is a coordinate-radius cross-section; the right panel is the image plane. Which circle on the right matches the dark disk of <code>--mode capture</code>, and why are \(r_s\) and \(r_{\rm ph}\) not drawn there at all?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4</div><h4>PhotonOrbit on the Sky</h4><p>The shadow rim of Beat 2 is PhotonOrbit's critical capture/escape ray. The highlighter of <code>--mode ring</code> is PhotonOrbit's near-critical whirling ray, painted as a set of directions instead of one trajectory. Run both programs side by side and write, in your own words, what has changed and what has not between the two ways of showing the same physics.</p></div>
+    </div>
+
+    <h3>Intermediate</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-5</div><h4>Recover \(4M/b\)</h4><p>From the <code>--mode weak</code> console line, compute the relative error of \(4M/b\) at the largest sampled \(b\) (41.6\(M\)) and at the smallest (5.3\(M\)). By roughly what factor does the error grow between the two? Then argue, from the form of the exact first integral in Beat 0, why the error has to grow as \(b\to b_{\rm crit}^+\) rather than staying small.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-6</div><h4>Two Rings, Two Meanings</h4><p>Run <code>--mode compare</code> at <code>--logM 10</code>, <code>12</code> and <code>14</code>, and tabulate \(\theta_E\) and \(R_E/M\) for each. Confirm that \(\theta_E\) grows with mass while \(R_E/M\) shrinks, and explain the two different scalings (\(\sqrt M\) against distances that do not change, versus a length compared with a gravitational scale that itself grows as \(M\)) that together produce that split behaviour. Then write one sentence, using the word "ring" only once, that keeps the galaxy's Einstein ring and this hole's critical curve from being confused.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-7</div><h4>Achromatic Silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change in the figure if the emitting annulus radiated at a different wavelength. (Nothing in the capture map would.) Then compare the three image panels and, for each, say which transfer-function crossing is responsible for the light in it.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-8</div><h4>Finite Camera</h4><p>Rerun <code>--mode rays</code> with <code>--r_cam 10</code> and then <code>--r_cam 80</code>, and read \(\Delta\phi\) for both rays each time. The capture/escape classification does not change with \(r_{\rm cam}\) — it cannot, since it depends only on \(b\) versus \(b_{\rm crit}\) — but \(\Delta\phi\) does. A static observer at finite \(r\) measures a local emission angle \(\alpha\) related to \(b\) by \(\sin\alpha=(b/r)\sqrt{1-2M/r}\); use it to explain why the same ray looks different to cameras at different radii even though its classification never changes.</p></div>
+    </div>
+
+    <h3>Advanced</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-9</div><h4>The Resolution Contract</h4><p>Try <code>--mode capture --fov 80 --n_pix 11</code> and read the refusal message carefully: it states the shadow's angular span in grid intervals and the reason for the floor. Then find the smallest <code>--n_pix</code> (not exceeding 81) that satisfies the eight-interval rule at <code>--fov 80</code>, and confirm your answer by running it.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10</div><h4>Where the Source Images Sit</h4><p>Run <code>--mode transfer</code> and read the three crossing impact parameters for \(r_{\rm hot}=6M\). At the \(b\) where the direct-image peak in <code>--mode image</code>'s radial panel sits, confirm \(r_1\approx r_{\rm hot}\) from the transfer-function table. Then, at a \(b\) only slightly larger than \(b_{\rm crit}\), count how many of the four transfer functions this program actually computes are defined there, and explain from Beat 4 why the count does not keep rising as \(b\to b_{\rm crit}^+\) even though, physically, a ray infinitesimally outside \(b_{\rm crit}\) can cross the disk plane arbitrarily many times.</p></div>
+    </div>
+
+    <h3>Synthesis</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-11 · synthesis</div><h4>One Metric, Nine Questions</h4><p>Make a table with one row per mode and three columns: the quantity that mode computes, the beat that earns it, and the one sentence that mode exists to prove wrong if a student conflated it with something else (a horizon, a photon ring, a thin-lens ring, an inclined disk, a chromatic image). Then write, in no more than three sentences, what this program adds that PhotonOrbit and GravitationalLensing together do not already provide — and be honest about how much of that addition is a new calculation versus a new way of displaying an old one.</p></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="validity">
+    <h2>Domain of Validity</h2>
+    <ul>
+      <li><strong>Schwarzschild only, vacuum, geometric optics.</strong> No spin, no charge, no plasma, no accretion-flow radiative transfer. Every ray is an exact null geodesic; nothing here is fitted, calibrated, or approximated except where a beat says so explicitly (the weak-field formula of Beat 7, by construction).</li>
+      <li><strong>The capture map is a geometric idealisation.</strong> Calling the dark disk of Beat 2 a "shadow" assumes a distant, nearly uniform bright screen behind the hole. A real thin emitting disk produces a different central depression, with its own transfer functions — that is exactly what mode <code>image</code> computes instead, and the two should not be read as the same calculation.</li>
+      <li><strong>Mode <code>image</code> is a face-on, optically thin toy</strong> (Gralla, Holz &amp; Wald 2019), with an invented emissivity profile. It is not an Event Horizon Telescope reconstruction, not a Kerr calculation, and not a fluid simulation. Subrings narrower than a pixel can miss every raster cell; the radial \(I(b)\) panel, built from the adaptive table rather than the raster, is the honest record of those peaks.</li>
+      <li><strong>No inclination.</strong> <code>--inclination</code> accepts only 0. A correctly inclined image needs a genuinely three-dimensional camera/disk geometry this program does not build; adding it is future work, not a parameter this version silently mishandles.</li>
+      <li><strong>PhotonOrbit's \(\Delta\phi\) remains accumulated azimuth to a finite stopping surface,</strong> never the asymptotic deflection \(\hat\alpha\). The curve in <code>--mode weak</code> is \(\hat\alpha\), computed by quadrature of the same first integral, not read off any finite-camera \(\Delta\phi\).</li>
+      <li><strong>Compare-mode distances are GravitationalLensing's cartoon \(1\,{\rm Gpc}/2\,{\rm Gpc}\),</strong> chosen so Einstein radii come out in arcseconds for a teaching example. They are not a cosmological model and should not be read as one.</li>
+      <li><strong>Near-critical precision is real work, not free.</strong> Ring, transfer and image modes are slower than capture because they are switching to arbitrary-precision arithmetic exactly where an ordinary float would silently lose accuracy; there is no shortcut around that cost if the near-\(b_{\rm crit}\) numbers are to be trusted at all.</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================
+       RESTORE TO DEFAULTS CALLOUT
+       ============================================================ -->
+  <section style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
+    <div style="border: 1.5px solid #b5811a; border-left: 5px solid #b5811a; border-radius: 6px; background: #fffbeb; padding: 1.1em 1.4em; display: flex; gap: 1em; align-items: flex-start;">
+      <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
+      <div>
+        <div style="font-weight: 700; font-size: 0.95em; color: #7b2d00; margin-bottom: 0.35em; text-transform: uppercase; letter-spacing: 0.04em;">Restoring Default Parameter Values</div>
+        <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">
+          If you edit <code style="background:#f0ede4; padding:1px 5px; border-radius:3px; font-size:0.9em;">main.py</code> or another program file while experimenting,
+          you can restore the original program files using any of the following methods:
+        </p>
+        <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
+          <li><strong>Same session:</strong> Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd> (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd> (macOS) repeatedly in your editor to undo your edits.</li>
+          <li><strong>If you are using PyCharm:</strong> Right-click the edited file in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.</li>
+          <li><strong>Full reset:</strong> Re-download the ZIP from
+            <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank" style="color:#7b2d00; text-decoration:underline;">github.com/tomyee3-org/GFTGUX-Programs</a>
+            and replace this program's folder with the fresh copy.</li>
+        </ul>
+        <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">
+          For additional ways to restore program files, see the corresponding recovery instructions in the <em>GFTGUX Python Setup Guide</em>.
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- ============================================================
+       END RESTORE TO DEFAULTS CALLOUT
+       ============================================================ -->
+
+  <section id="related">
+    <h2>Related Programs</h2>
+    <ul class="related-list">
+      <li><strong>PhotonOrbit</strong> — one equatorial null geodesic, classified by \(b\). Prerequisite. This program reuses its first integral without changing it, and turns its single trajectory into a camera's worth of them.</li>
+      <li><strong>GravitationalLensing</strong> — thin-lens rings, doubles, diamond caustics, arcs. Prerequisite for Beat 8, and the source of the cartoon distances that mode <code>compare</code> borrows. It explicitly refuses black-hole silhouettes, for the reason Beat 8 makes numerically explicit.</li>
+      <li><strong>BlackHoleSpacetimeVisualizer</strong> — embeddings, tides, radial infall, Vaidya horizons. A neighbour, not a prerequisite. Its \(r_s\) circle belongs to the coordinate-radius axis of Beat 6's left panel, not to the image-plane axis of its right panel.</li>
+      <li><strong>RelativisticOrbit</strong> — timelike Schwarzschild geodesics. A neighbour; this program's rays are null, not timelike, and nothing here integrates a massive particle's orbit.</li>
+      <li><strong>GravitationalWaveSources</strong> — quadrupole chirp to Schwarzschild ISCO. A neighbour; no radiating extreme-mass-ratio inspiral is bundled into this module, and nothing here computes a waveform.</li>
+    </ul>
+  </section>
+
+  <section id="license">
+    <h2>License</h2>
+    <p>BlackHoleShadow is a proposed supplemental Python investigation for possible inclusion in a second edition of Bernard Schutz's <em>Gravity from the Ground Up</em>, currently under discussion with Professor Schutz and Cambridge University Press. It is not a published CUP product. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
+  </section>
+</main>
+
+<footer>
+  <em>Gravity from the Ground Up</em> — Python Programs ·
+  Bernard Schutz © 2003 (Cambridge University Press) ·
+  Python programs © 2024–2026 Thomas Yee ·
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> ·
+</footer>
+</div>
+<script>
+  (function () {
+    const links = document.querySelectorAll('nav a');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const match = document.querySelector(`nav a[href="#${e.target.id}"]`);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('main section[id]').forEach(s => observer.observe(s));
+  })();
+</script>
+</body>
+</html>

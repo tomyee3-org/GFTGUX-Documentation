@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GravitationalLensing – Help File | GFTGUX Programs</title>
+  <!-- MathJax 3 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
+      },
+      loader: { load: ['[tex]/textmacros'] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--serif); font-size: 16px; line-height: 1.80; color: var(--text); background: var(--bg); }
+    .page-wrap { display: grid; grid-template-columns: 230px 1fr; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+    header { grid-column: 1 / -1; background: var(--accent); color: #fff; padding: 26px 38px 20px; border-bottom: 4px solid var(--gold); }
+    header .badge { display: inline-block; font-family: var(--mono); font-size: 10.5px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.35); border-radius: 3px; padding: 2px 7px; letter-spacing: .06em; margin-bottom: 10px; }
+    header h1 { font-size: 1.95rem; font-weight: normal; letter-spacing: -.02em; }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub { margin-top: 6px; font-family: var(--sans); font-size: 0.88rem; color: #f0d0b8; line-height: 1.55; }
+    header .sub a { color: #ffd8b8; text-decoration: none; border-bottom: 1px solid rgba(255,200,150,.4); }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    nav { background: var(--surface); border-right: 1px solid var(--border); padding: 24px 0 40px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .nav-label { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--gold); padding: 14px 18px 4px; }
+    nav a { display: block; font-family: var(--sans); font-size: 13px; color: var(--muted); text-decoration: none; padding: 5px 18px 5px 22px; border-left: 3px solid transparent; transition: border-color .15s, color .15s, background .15s; }
+    nav a:hover { color: var(--accent); background: #fdf0e0; border-left-color: var(--gold); }
+    nav a.active { color: var(--accent); font-weight: 600; border-left-color: var(--accent); background: #fdecd8; }
+    main { padding: 38px 52px 60px; max-width: 900px; }
+    h2 { font-size: 1.40rem; font-weight: normal; color: var(--accent); border-bottom: 2px solid var(--gold); padding-bottom: 6px; margin: 2.2rem 0 1.0rem; }
+    h3 { font-size: 1.08rem; font-weight: 700; color: var(--accent2); margin: 1.6rem 0 .5rem; }
+    h4 { font-size: 0.97rem; font-weight: 700; color: var(--muted); margin: 1.2rem 0 .35rem; }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block { background: var(--eq-bg); border-left: 4px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 22px 10px; margin: 1.1rem 0 1.3rem; overflow-x: auto; }
+    .eq-label { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    code { font-family: var(--mono); font-size: 0.865em; background: var(--code-bg); border: 1px solid #ddd8cc; border-radius: 3px; padding: 1px 5px; }
+    pre { font-family: var(--mono); font-size: 0.855em; background: var(--code-bg); border: 1px solid #ddd8cc; border-radius: var(--radius); padding: 14px 18px; overflow-x: auto; margin: .8rem 0 1.1rem; line-height: 1.55; }
+    .note { background: var(--note-bg); border: 1px solid var(--border); border-left: 4px solid var(--accent2); border-radius: 0 var(--radius) var(--radius) 0; padding: 11px 16px; margin: 1.0rem 0 1.2rem; font-size: 0.93rem; color: var(--muted); }
+    .note strong { color: var(--accent2); }
+    .warn { background: #fff6e8; border: 1px solid var(--gold); border-left: 4px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 11px 16px; margin: 1.0rem 0 1.2rem; font-size: 0.93rem; color: var(--muted); }
+    .warn strong { color: var(--accent); }
+    .module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin: 1.1rem 0 1.4rem; }
+    .module-card { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--gold); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+    .module-card .mc-name { font-family: var(--mono); font-size: 0.88rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+    .module-card .mc-role { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .module-card p { font-size: 0.875rem; color: var(--muted); margin-bottom: .5rem; }
+    .param-table, .out-table, .mode-table, .cred-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 1.0rem 0 1.4rem; }
+    .param-table th, .out-table th, .cred-table th { background: var(--accent); color: #fff; font-family: var(--sans); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 8px 12px; text-align: left; }
+    .out-table th { background: var(--accent2); }
+    .mode-table th, .cred-table th { background: var(--gold); }
+    .param-table td, .out-table td, .mode-table td, .cred-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td, .mode-table tr:nth-child(even) td, .cred-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table .pname, .out-table .oname, .mode-table .mname, .cred-table .cname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); font-weight: 700; }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .exp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin: 1.0rem 0 1.4rem; }
+    .exp-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 17px; box-shadow: var(--shadow); }
+    .exp-card .ec-num { display: inline-block; background: var(--accent); color: #fff; font-family: var(--mono); font-size: 11px; border-radius: 3px; padding: 1px 6px; margin-bottom: 7px; }
+    .exp-card h4 { font-size: 0.94rem; color: var(--accent2); margin: 0 0 5px; }
+    .exp-card p { font-size: 0.855rem; color: var(--muted); margin: 0; }
+    .related-list { list-style: none; margin: .6rem 0 1.2rem; padding: 0; }
+    .related-list li { padding: 8px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 7px; font-size: 0.90rem; }
+    .related-list li strong { font-family: var(--mono); color: var(--accent2); }
+    footer { grid-column: 1 / -1; background: var(--accent); color: #fff; font-family: var(--sans); font-size: 12.5px; text-align: center; padding: 18px 24px; line-height: 1.7; }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+    .tag { display: inline-block; font-family: var(--sans); font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border-radius: 3px; padding: 1px 6px; margin-right: 5px; vertical-align: 1px; }
+    .tag-der  { background: #dbe8f5; color: #1c3f63; border: 1px solid #a4c0da; }
+    .tag-cal  { background: #e6e0f8; color: #3d2c73; border: 1px solid #b7abdd; }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+  <div class="badge">Proposed supplement · Gravity from the Ground Up</div>
+  <h1><em>GravitationalLensing</em> — One Kink, Read Four Ways</h1>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+  </div>
+</header>
+<nav id="sidebar">
+  <div class="nav-label">Overview</div>
+  <a href="#description">Description</a>
+  <a href="#setup">Before the first run</a>
+  <a href="#modes">The Seven Modes</a>
+  <a href="#beats">How to read this page</a>
+  <div class="nav-label">Beats</div>
+  <a href="#beat0">0 · Rays, no jargon</a>
+  <a href="#beat1">1 · A point mass on the sky</a>
+  <a href="#beat2">2 · Why two images</a>
+  <a href="#beat3">3 · An extended blob</a>
+  <a href="#beat4">4 · Critical curve and caustic</a>
+  <a href="#beat5">5 · Break the symmetry</a>
+  <a href="#beat6">6 · Arcs on the diamond</a>
+  <a href="#beat7">7 · What \(\kappa\) is</a>
+  <div class="nav-label">Code</div>
+  <a href="#equations">Governing Equations</a>
+  <a href="#algorithm">Algorithm</a>
+  <a href="#modules">Module Overview</a>
+  <a href="#parameters">Parameters</a>
+  <a href="#output">Output and Plot Panels</a>
+  <div class="nav-label">Experiments</div>
+  <a href="#experiments">Suggested Experiments</a>
+  <a href="#validity">Domain of Validity</a>
+  <a href="#related">Related Programs</a>
+  <div class="nav-label">Legal</div>
+  <a href="#license">License</a>
+</nav>
+<main>
+<p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
+    Version 1.0.1&nbsp;&nbsp;&nbsp;&nbsp;Build ba265665c298
+  </p>
+
+  <!-- ================================================================ -->
+  <section id="description">
+    <h2>Description</h2>
+    <p><strong>GravitationalLensing</strong> teaches one equation — the thin-lens mapping \(\boldsymbol\beta=\boldsymbol\theta-\boldsymbol\alpha(\boldsymbol\theta)\) — and then asks it four increasingly interesting questions: what does a point mass do to a compact source, what does the same point mass do to an extended one, where does the mapping stop being invertible at all, and what happens once the lens is no longer perfectly round. Seven modes, one deflection law at a time, build that progression up.</p>
+    <p>The spine of the lesson is one sentence: <em>where the source sits relative to the caustic — and, for a singular model, relative to the pseudo-caustic — decides the photograph.</em> A point-mass lens is the chapter in which the caustic has collapsed to a single point at the origin: on it, a ring; off it, two images, always. A singular isothermal sphere with a little external shear is the chapter in which that point opens into a diamond with four folds and four cusps, and the number of images becomes a genuine function of where the source is.</p>
+    <div class="warn"><strong>What this program is not.</strong> It does not integrate a single null geodesic anywhere — that is <code>PhotonOrbit</code>'s job, and <code>BlackHoleShadow</code>'s. The thin-lens deflection here is applied at one plane, once, as a small-angle kink; it has no critical null geodesic in it and therefore no black-hole silhouette, which is the entire content of Beat&nbsp;4's warning and of BlackHoleShadow's own Beat&nbsp;8. It does not fit a mass model to any real image. Galaxy-scale strong lensing, at Einstein radii of order an arcsecond, is the intended domain.</div>
+    <div class="warn"><strong>False colour, always.</strong> Modes <code>point</code>, <code>blob</code>, <code>critical</code>, <code>arcs</code> and <code>kappa</code> paint intensity or convergence with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic: neither a point mass nor a singular isothermal sphere splits light into a rainbow the way a glass prism does. A white galaxy stays white; the palette exists only so a faint arc is visible on a screen.</div>
+    <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; offline, the raw \(\LaTeX\) source shows as plain text instead. The program itself needs no internet access to run. A blue <span class="tag tag-der">DERIVED</span> tag marks an equation obtained algebraically from the thin-lens equation once a deflection law is fixed. A violet <span class="tag tag-cal">CLOSURE</span> tag marks a mass model chosen for teaching convenience rather than fitted to any particular galaxy: this program uses exactly one, the singular isothermal sphere plus external shear of Beats 5–7. There are no integrated differential equations, no empirical fits and no adopted rules distinct from the deflection laws themselves anywhere in this program — the whole calculation is algebra once a mass model and a source position are chosen, which is a real difference from BlackHoleShadow's integrated null geodesics and from StellarEvolutionTracks's evolution equations, and worth noticing precisely because it is not the same kind of program.</div>
+
+    <h3>How seriously to take each number</h3>
+    <table class="cred-table"><thead><tr><th>Calculation</th><th>Status</th><th>Read it as</th></tr></thead><tbody>
+      <tr><td class="cname">Einstein radius, point mass or SIS</td><td>exact, given \(G\), \(c\), a mass or velocity dispersion, and the assumed distances</td><td>the right scaling for a real lens; the distances themselves are a fixed teaching cartoon, not a cosmology</td></tr>
+      <tr><td class="cname">point-mass deflection and image radii</td><td>exact, in the thin-lens (small-angle) limit</td><td>the standard textbook double-image formula, to the precision of that limit</td></tr>
+      <tr><td class="cname">SIS + shear deflection, critical curve, caustic</td><td>exact algebra for a chosen mass model <span class="tag tag-cal">CLOSURE</span>, not a fit to any galaxy</td><td>the cheapest lens model that has a genuine diamond caustic; the qualitative behaviour (folds, cusps, image-count jumps) is what should be trusted, not the specific galaxy this or that \(\sigma_v\) is meant to represent</td></tr>
+      <tr><td class="cname">image counting (Newton solver)</td><td>numerically exact where it is exercised by this Help file (the one-, two- and four-image regions)</td><td>reliable inside those regions; not guaranteed within \(10^{-4}\theta_E\) of a fold or cusp, where images merge</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="setup">
+    <h2>Before the first run</h2>
+    <p>Unpack the program zip so you have a folder named <code>GravitationalLensing</code> containing <code>main.py</code>, and open a terminal there. You need Python 3.10 or newer with NumPy and Matplotlib only — no SciPy, no mpmath, unlike BlackHoleShadow, because nothing in this program requires arbitrary-precision arithmetic or quadrature. If you do not already have that environment, follow the project-wide <em>GFTGUX Python Setup Guide</em>, and do not install packages into a system Python (PEP&nbsp;668). Then:</p>
+<pre>python main.py --version
+python main.py --mode rays</pre>
+    <p>Every command on this page assumes that working directory. Source positions and the field of view are in arcseconds; masses are entered as \(\log_{10}(M/M_\odot)\), never as a raw solar-mass number, specifically so a run cannot silently be off by many orders of magnitude. Even values of <code>--n_pix</code> are rounded up to the next odd number, so a pixel always sits on the optical axis. There is no <code>--csvdir</code> option in this program; a run produces a figure and, optionally, a saved PNG.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modes">
+    <h2>The Seven Modes</h2>
+    <table class="mode-table"><thead><tr><th>Mode</th><th>Beat</th><th>What it computes</th><th>Core content</th></tr></thead><tbody>
+      <tr><td class="mname">rays</td><td>0</td><td>A schematic side view: rays traced forward from one source, on axis and off, showing which ones reach the observer.</td><td>The point-mass thin-lens kink, drawn in a longitudinal plane rather than on the sky.</td></tr>
+      <tr><td class="mname">point</td><td>1–2</td><td>A compact Gaussian source through a point-mass lens: the Einstein ring on axis, a double off it.</td><td>The exact point-mass deflection and the closed-form double-image radii.</td></tr>
+      <tr><td class="mname">blob</td><td>3</td><td>The same point-mass lens, now illuminated by an extended elliptical Gaussian galaxy instead of a compact source.</td><td>The same deflection, applied pixel by pixel to render an extended image.</td></tr>
+      <tr><td class="mname">critical</td><td>4</td><td>Three panels at once: the image plane with the critical curve overplotted, the source plane with the caustic (one point, for a point mass), and a side view of the rays that form the picture.</td><td>The Jacobian of the lens mapping and its zero set.</td></tr>
+      <tr><td class="mname">shear</td><td>5</td><td>A singular isothermal sphere plus external shear: the critical curve opens into an oval, the caustic into a diamond, and the number of images becomes a function of source position.</td><td>The SIS+shear deflection, its Jacobian, and a Newton solver that counts and locates every image.</td></tr>
+      <tr><td class="mname">arcs</td><td>6</td><td>An extended source draped across that same diamond, producing long thin arcs rather than point images.</td><td>The SIS+shear deflection applied pixel by pixel.</td></tr>
+      <tr><td class="mname">kappa</td><td>7</td><td>The SIS convergence map itself — the mass distribution — taught last, once the curve it produces already has a meaning attached to it.</td><td>The closed-form SIS convergence \(\kappa(\theta)=\theta_E/(2|\theta|)\).</td></tr>
+    </tbody></table>
+<pre># A double image, off axis by default
+python main.py --mode point
+
+# Count images as the source crosses the diamond caustic
+python main.py --mode shear --beta_x 0.55 --beta_y 0.10
+
+# Three panels: image plane, source plane, side view
+python main.py --mode critical --outdir ./runs</pre>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beats">
+    <h2>How to read this page</h2>
+    <p>Each numbered section below is one beat: a short argument, a command whose figure is the evidence, and then the equation the figure has earned. Do them in order the first time — the progression matters here more than usual, since Beat 4 (the caustic of a point mass) is deliberately the trivial case that Beats 5–7 then complicate. After that, any mode can be opened on its own.</p>
+    <p>This is a smaller program than StellarEvolutionTracks or even BlackHoleShadow: one deflection law at a time, no integration, no arbitrary-precision arithmetic. The beats are correspondingly about <em>what a fixed piece of algebra implies</em> as the mass model is made less symmetric, rather than about new machinery.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat0">
+    <h2>Beat 0 · Rays, no jargon</h2>
+    <p>Start before any of the vocabulary — Einstein radius, caustic, convergence — is introduced. A glass lens bends a ray more the further it passes from the centre. A point-mass gravitational lens does the opposite: a ray that skims close to the mass is bent hard, a ray that passes far away is barely bent at all. The observer does not sit at any kind of focus; the observer simply happens to be wherever the bent rays land.</p>
+<pre>python main.py --mode rays</pre>
+    <p>Two panels, both tracing rays <em>forward</em> from a single source toward a fixed observer. On axis, the symmetry of a point mass makes every azimuth around the line of sight equivalent, so there is exactly one deflection angle that lands a ray on the observer regardless of which way around the mass it passes — a whole cone of rays qualifies, and the side view shows one slice of that cone as two red rays that happen to look like a simple double. Move the source off axis and the symmetry breaks: now only two specific rays, one passing above the mass and one below, survive to reach the observer, one on each side.</p>
+    <p>Three tasks, in order. First find the kink in each red ray at the lens plane, and confirm every kink bends <em>toward</em> the mass — gravity only attracts, so there is no ray in this figure bent away from the lens. Then compare the on-axis and off-axis panels and say, in one sentence, what has changed about the observer's rays (not about the lens). Then note the vertical scale: for the default \(10^{12}\,M_\odot\) lens, \(\theta_E\) is only a few times \(10^{-5}\) radians, so the whole figure is drawn at a schematic vertical exaggeration; nothing about the horizontal geometry is to scale either, since \(D_l=D_{ls}=1\), \(D_s=2\) in these units are chosen for a clean picture, not a real distance ratio.</p>
+    <p><em>Then</em> the one idea the rest of this program exists to make quantitative: an observer does not see a lens in the way a camera sees a subject through a glass lens. An observer sees whichever directions happen to satisfy one equation — the lens equation, earned properly in Beat 1 — and everything from the Einstein ring to a four-image quad is a different way that equation can be satisfied.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-1 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat1">
+    <h2>Beat 1 · A point mass on the sky</h2>
+    <p>Now draw the same geometry the way an observer actually sees it: as a picture on the sky, not a side view. The default source is already off-axis, so the very first frame is a double, not a ring.</p>
+<pre>python main.py --mode point
+python main.py --mode point --beta_x 0.0 --beta_y 0.0
+python main.py --mode point --logM 12.5 --beta_x 0.3 --beta_y 0.3</pre>
+    <div class="eq-block"><div class="eq-label">Point-mass Einstein radius <span class="tag tag-der">DERIVED</span></div>
+      \[\theta_E=\sqrt{\frac{4GM}{c^2}\,\frac{D_{ls}}{D_lD_s}}.\]
+    </div>
+    <div class="eq-block"><div class="eq-label">Lens equation <span class="tag tag-der">DERIVED</span></div>
+      \[\boldsymbol\beta=\boldsymbol\theta-\boldsymbol\alpha(\boldsymbol\theta),\qquad
+        \boldsymbol\alpha(\boldsymbol\theta)=\theta_E^2\,\frac{\boldsymbol\theta}{|\boldsymbol\theta|^2}.\]
+    </div>
+    <p>Three tasks, in order. First rerun with <code>--beta_x 0 --beta_y 0</code> and read off the figure: the source sits exactly on the lens, and the false-colour image is now a complete ring at radius \(\theta_E\). Then read the default run's Einstein radius from the dashed cyan circle: for a \(10^{12}\,M_\odot\) lens at the cartoon distances, \(\theta_E=2.018''\), and check that the white cross marking the unlensed source — at the default \((0.50'',0.00'')\) — sits well outside that circle. Then raise the mass with <code>--logM 12.5</code> and watch the ring grow to \(\theta_E=3.588''\); the field of view grows with it automatically so the ring is never clipped.</p>
+    <p><em>Then</em> the arithmetic behind the two commands above. For a source at angular offset \(\beta\) along one axis, the lens equation has a closed-form solution:</p>
+    <div class="eq-block"><div class="eq-label">Analytic double for a source on-axis <span class="tag tag-der">DERIVED</span></div>
+      \[\theta_\pm=\frac12\left(\beta\pm\sqrt{\beta^2+4\theta_E^2}\right).\]
+    </div>
+    <p>At the default \(\beta=0.50''\) and \(\theta_E=2.018''\), this gives \(\theta_+=2.283''\) and \(\theta_-=-1.783''\): an outer image outside the ring and an inner image on the opposite side of the lens, exactly as the figure shows. The magnification of each image, \(\mu=1/\det A\), works out to \(\mu_+\approx+2.56\) and \(\mu_-\approx-1.56\): the outer image is brighter than the source and keeps its orientation (positive parity), the inner image is fainter and mirror-reversed (negative parity) — and, notice, \(|\mu_+|-|\mu_-|=1\) exactly, a general identity for any transparent axially symmetric lens with no matter between the two images, not a coincidence of these particular numbers.</p>
+    <div class="note"><strong>Units, stated plainly.</strong> \(G\) and \(c\) are SI; mass is entered as \(\log_{10}(M/M_\odot)\) specifically so a slip of several orders of magnitude cannot pass silently — a mass entered as a raw number of kilograms or solar masses would be exactly that kind of slip. The compact source's own width is held fixed at \(0.08''\) throughout <code>point</code>, far smaller than any Einstein radius used on this page, so the images it forms are close to the point-source ideal of the formulae above.</div>
+    <p><em>Experiments that go with this beat:</em> EXP-2 and EXP-8 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat2">
+    <h2>Beat 2 · Why two, always</h2>
+    <p>A transparent point mass never produces one image of an off-axis source, and never produces three. It is worth knowing why before moving to a lens that can.</p>
+    <p>Look again at \(\theta_\pm=\tfrac12(\beta\pm\sqrt{\beta^2+4\theta_E^2})\) from Beat 1. The quantity under the square root, \(\beta^2+4\theta_E^2\), is strictly positive for any finite \(\beta\) and any \(\theta_E>0\): there is no source position at which it vanishes, and no source position at which it has only one real root instead of two. A point mass's lens equation is quadratic in \(\theta\) along any line through the origin, and a quadratic with a positive discriminant always has exactly two roots. That is the whole reason a point-mass lens is "two, always" while the shear-broken lens of Beat 5 can be one, two, or four depending on where the source sits.</p>
+    <div class="note"><strong>Parity, precisely.</strong> The sign of \(\det A\) is the image's parity. Positive parity preserves the source's orientation; negative parity mirrors it, the way a plane mirror does, not the way negative brightness would (there is no such thing as a negative flux). For a point mass the outer image (\(\theta_+\)) is always positive parity and the inner image (\(\theta_-\)) always negative, independent of \(\beta\) and \(\theta_E\) — only the two <em>magnitudes</em> \(|\mu_\pm|\) change with the source position.</div>
+    <p><em>Experiments that go with this beat:</em> EXP-2 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat3">
+    <h2>Beat 3 · An extended blob, still a point mass</h2>
+    <p>Replace the compact source with a small elliptical Gaussian galaxy and change nothing about the lens. The lens equation does not know or care whether the light it is bending comes from a point or an extended object; only the picture does.</p>
+<pre>python main.py --mode blob
+python main.py --mode blob --beta_x 0.0 --beta_y 0.0
+python main.py --mode blob --beta_y 0.8 --r_eff 0.20</pre>
+    <p>A centred extended source becomes a thick ring rather than two dots, because every azimuth of the source's light satisfies the on-axis lens equation at once, at slightly different radii for the near and far edges of the galaxy. Shift the source off-axis and that ring splits into two arcs — literally the same forward-ray geometry as the lower panel of <code>--mode rays</code>, now rendered as a photograph of an extended object rather than sketched as two rays.</p>
+    <p><em>Then</em> the sentence this beat exists to set up. For a point-mass lens, the source plane has exactly one distinguished point: the origin, \(\beta=0\). A source there becomes a ring; a source anywhere else, however close, becomes exactly two images (Beat 2), never more, never fewer. Naming that one point properly — the <em>caustic</em> — is Beat 4's job, and having watched an extended source pass through it here first makes the definition land as something you have already seen rather than a new piece of jargon.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-3 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat4">
+    <h2>Beat 4 · Name the critical curve, and look at the rays that make the caustic</h2>
+    <p>The lens mapping sends every sky position \(\boldsymbol\theta\) to a source position \(\boldsymbol\beta(\boldsymbol\theta)\). Its Jacobian \(A=\partial\boldsymbol\beta/\partial\boldsymbol\theta\) is a \(2\times2\) matrix at every point on the sky, and the signed magnification is simply its inverse determinant.</p>
+    <div class="eq-block"><div class="eq-label">Signed magnification <span class="tag tag-der">DERIVED</span></div>
+      \[\mu=\frac{1}{\det A}.\]
+    </div>
+    <p>The sign of \(\mu\) is the image's parity, exactly as in Beat 2; the factor that multiplies observed flux or area is \(|\mu|\), never \(\mu\) itself — negative parity is a mirror, not negative brightness. For an idealised point source, \(|\mu|\to\infty\) is achievable in principle; a finite source, such as every blob in this program, always has a finite observed magnification because it averages \(\mu\) over its own finite area.</p>
+    <p>Where \(\det A=0\), that stretch factor formally diverges for a point source. That locus, drawn on the sky, is the <strong>critical curve</strong>. Push the same locus through the lens equation into the source plane and the image is the <strong>caustic</strong>. A caustic is not a physical object sitting anywhere in space; it is a curve in the source plane marking where the lens mapping's image multiplicity is about to change.</p>
+    <div class="note"><strong>Two planes, never confused.</strong> The critical curve lives in the image plane — the sky an observer actually looks at. The caustic lives in the source plane — a plane no observer can look at directly, since it is defined by the unlensed position of a source whose only light we ever receive has already been bent. The lens equation is the map from one to the other; they are not two views of the same curve.</div>
+    <div class="eq-block"><div class="eq-label">Point-mass Jacobian determinant <span class="tag tag-der">DERIVED</span></div>
+      \[\det A=1-\left(\frac{\theta_E}{|\theta|}\right)^{4}.\]
+    </div>
+    <p>The zero set of this expression is exactly the Einstein circle \(|\theta|=\theta_E\) — the critical curve is the dashed ring from Beat 1, now given a reason to exist rather than just a formula. Push it through the lens equation and it collapses to the single point \(\beta=0\): the caustic of a point mass really is one point, confirming what Beat 3 already showed by demonstration.</p>
+<pre>python main.py --mode critical
+python main.py --mode critical --beta_y 0.4</pre>
+    <p>Mode <code>critical</code> draws three panels at once: the photograph with the critical curve overplotted, the source plane with the caustic marked as a star at the origin, and a side view of the same source using Beat 0's forward-ray convention (red rays reach the observer, blue rays miss) rather than a Schwarzschild geodesic. The side view is a slice through a genuinely three-dimensional geometry; motion in \(\beta_x\) points into or out of the page and is invisible in this projection, so the coordinate that actually changes the side-view picture is <code>--beta_y</code>. Changing <code>--logM</code> only resizes a self-similar circle and teaches nothing new about this beat; the coordinate worth varying here is the source position.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-4 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat5">
+    <h2>Beat 5 · Break the symmetry</h2>
+    <p>A real lensing galaxy is not a point mass, and Beat 2's "two, always" is a consequence specifically of the point mass's perfect circular symmetry, not of lensing in general. Break that symmetry with the cheapest model that still has a closed-form deflection: a singular isothermal sphere plus a uniform external tidal field.</p>
+    <div class="eq-block"><div class="eq-label">SIS + shear deflection <span class="tag tag-cal">CLOSURE</span></div>
+      \[\boldsymbol\alpha=\theta_E\,\hat{\boldsymbol\theta}+(\gamma\,\theta_x,\,-\gamma\,\theta_y).\]
+    </div>
+    <p>The critical curve opens from a circle into an oval on the sky. The caustic opens from a single point into a <strong>diamond</strong> in the source plane, with four sharp <strong>cusps</strong> and four smooth <strong>folds</strong> joining them. At the default \(\gamma=0.25\), the diamond is not round: two cusps sit on the \(\beta_y\)-axis at \(|\beta|=\tfrac23\theta_E\), while the nearest points on the connecting folds pull in to about \(0.275\,\theta_E\) along the diagonals and the curve crosses the \(\beta_x\)-axis at \(0.40\,\theta_E\). Moving the source without crossing either the caustic or a second boundary described next merely moves the existing images continuously; crossing either boundary changes how many images there are.</p>
+    <p>Because the SIS mass model is mathematically singular at its own centre, there is a second boundary in addition to the caustic itself: the <strong>pseudo-caustic</strong>, the image in the source plane of that central singularity, a circle of radius exactly \(\theta_E\) (independent of \(\gamma\)). Outside it, only one image survives — the missing image has effectively merged into the central singularity and vanished, a consequence specifically of the SIS's singular density profile; a galaxy with a finite-density core would behave differently there. The image count therefore changes at <em>two</em> different curves, not one, and the table below is the whole of it for \(|\gamma|<1/3\), the range this program allows so that the diamond always stays safely inside the pseudo-caustic and no "naked cusp" three-image region appears.</p>
+    <table class="param-table"><thead><tr><th>Source</th><th>Images</th><th>What happened</th></tr></thead><tbody>
+      <tr><td>outside the pseudo-caustic</td><td>1</td><td>the second image has fallen into the central singularity</td></tr>
+      <tr><td>between the pseudo-caustic and the diamond</td><td>2</td><td>the source missed the diamond entirely</td></tr>
+      <tr><td>crossing a fold inward</td><td>2 \(\to\) 4</td><td>a new pair of images is created together, right on the critical curve</td></tr>
+      <tr><td>deep inside the diamond</td><td>4</td><td>a full quad</td></tr>
+      <tr><td>just inside a cusp</td><td>4, three crowded together</td><td>a cusp triplet plus one image opposite it</td></tr>
+      <tr><td>centred, \(\gamma=0\)</td><td>a ring, not a list of points</td><td>the degenerate Einstein-ring case; no shear, no diamond, back to Beat 1</td></tr>
+    </tbody></table>
+<pre>python main.py --mode shear --beta_x 0.55 --beta_y 0.10
+python main.py --mode shear --beta_x 0.05 --beta_y 0.03
+python main.py --mode shear --beta_x 2.0 --beta_y 0.0
+python main.py --mode shear --gamma 0 --beta_x 0 --beta_y 0</pre>
+    <p>Three tasks, in order. First run the four commands and count the numbered dots on the left panel of each: 2, 4, 1, and a ring, in that order — the second command is the program's own default source position, deliberately placed deep inside the diamond so the very first <code>shear</code> run a student makes is already a quad. Then find the dashed pseudo-caustic circle on the right panel of each run and confirm the first source sits outside the diamond but still inside that circle (2 images), the third sits well outside even the pseudo-caustic (1 image). Then explain, from the deflection law above, why setting <code>--gamma 0</code> at the origin recovers exactly Beat 1's Einstein ring: with no shear, the SIS deflection alone is axially symmetric, and an axially symmetric lens with the source on the caustic always rings.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-5 and EXP-9 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat6">
+    <h2>Beat 6 · Arcs, as a fat source on the same diamond</h2>
+    <p>Keep the SIS-plus-shear lens exactly as it was in Beat 5, and light it with an extended elliptical source instead of a point. The image-count table of Beat 5 still governs everything; it simply now applies to every point of an extended galaxy at once, and adjacent points near a fold or cusp are stretched into a continuous arc rather than remaining separate dots.</p>
+<pre>python main.py --mode arcs
+python main.py --mode arcs --beta_x 0.55 --r_eff 0.14
+python main.py --mode arcs --beta_x 0.00 --beta_y 0.00 --r_eff 0.20
+python main.py --mode arcs --gamma 0 --beta_x 0 --beta_y 0 --r_eff 0.20</pre>
+    <p>Drape the source on a fold and two long arcs appear, roughly parallel to the critical curve at that point. Drape it near a cusp and one of the two arcs splits into the crowded three-image group Beat 5's table names. Park it at the origin with the default shear and the result is four shorter arcs strung around the oval critical curve — broken symmetry again, not a ring, because the shear is still there. Only the fourth command, with the shear removed, recovers a genuinely circular ring: a reminder that a real extended arc's exact shape is telling you about the local shear and convergence at the point where it forms, which is exactly the diagnostic real strong-lensing observers use to reconstruct a cluster's mass distribution.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-6 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="beat7">
+    <h2>Beat 7 · Only now: what \(\kappa\) is</h2>
+    <p>Every earlier beat has used the SIS deflection without ever drawing the mass distribution that produces it. That is deliberate: by the time the mass map itself appears, its consequences — the critical curve, the diamond, the image-count table — already mean something, and the map is no longer an abstract density profile but the explanation for pictures already seen.</p>
+    <div class="eq-block"><div class="eq-label">Convergence <span class="tag tag-der">DERIVED</span></div>
+      \[\kappa(\boldsymbol\theta)=\frac{\Sigma(\boldsymbol\theta)}{\Sigma_{\rm crit}}.\]
+    </div>
+    <p>\(\kappa\) is projected surface mass density in units of the critical surface density for lensing at the assumed distances — a dimensionless convenience, not a real areal density in \(\rm kg\,m^{-2}\). For the singular isothermal sphere used throughout this program, \(\kappa=\theta_E/(2|\theta|)\), and on the Einstein circle itself \(\kappa=1/2\) exactly — which is exactly where the (unsheared) critical curve sits.</p>
+<pre>python main.py --mode kappa
+python main.py --mode kappa --sigma_v 180</pre>
+    <p>Mode <code>kappa</code> draws the SIS mass map with that \(\kappa=1/2\) circle traced on top, so the coincidence is visible rather than merely asserted. Raising or lowering <code>--sigma_v</code> rescales the whole map, since \(\theta_E\) itself depends on \(\sigma_v\), but the relation "critical curve where \(\kappa=1/2\)" never changes — which is exactly why this mode was saved for last: nothing about it is new physics, only a new picture of a quantity every earlier beat had already used.</p>
+    <div class="eq-block"><div class="eq-label">SIS Einstein radius <span class="tag tag-der">DERIVED</span></div>
+      \[\theta_E=4\pi\left(\frac{\sigma_v}{c}\right)^{2}\frac{D_{ls}}{D_s}.\]
+    </div>
+    <p>At the default \(\sigma_v=300\,{\rm km\,s^{-1}}\) this gives \(\theta_E=1.298''\); at \(\sigma_v=180\,{\rm km\,s^{-1}}\) it falls to \(\theta_E=0.467''\), scaling as \(\sigma_v^2\) exactly as the formula says (\((180/300)^2=0.36\), and \(0.467/1.298=0.360\)). \(\sigma_v\) is entered in \(\rm km\,s^{-1}\) and converted to \(\rm m\,s^{-1}\) before use for the same reason mass is entered as \(\log_{10}(M/M_\odot)\) in the point-mass modes: a label of "km/s" attached to a raw value of 200 compared against \(c=3\times10^8\,{\rm m\,s^{-1}}\) is a thousandfold error waiting to happen, and the program does the conversion so the student never has to remember to.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-7 in <a href="#experiments">Suggested Experiments</a>.</p>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="equations">
+    <h2>Governing Equations</h2>
+    <p>Every displayed equation on this page carries a <span class="tag tag-der">DERIVED</span> or <span class="tag tag-cal">CLOSURE</span> tag; this table is only an index, in beat order.</p>
+    <table class="cred-table"><thead><tr><th>Equation or ingredient</th><th>Where it is earned</th></tr></thead><tbody>
+      <tr><td class="cname">Point-mass Einstein radius; the lens equation</td><td><a href="#beat1">Beat 1</a></td></tr>
+      <tr><td class="cname">Analytic double-image radii \(\theta_\pm\); parity</td><td><a href="#beat1">Beat 1</a>, <a href="#beat2">Beat 2</a></td></tr>
+      <tr><td class="cname">Signed magnification; the point-mass Jacobian and its zero set</td><td><a href="#beat4">Beat 4</a></td></tr>
+      <tr><td class="cname">SIS + shear deflection; the diamond caustic and pseudo-caustic; the image-count table</td><td><a href="#beat5">Beat 5</a></td></tr>
+      <tr><td class="cname">Convergence \(\kappa\); the SIS Einstein radius</td><td><a href="#beat7">Beat 7</a></td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="algorithm">
+    <h2>Algorithm</h2>
+    <h3>Modes <code>rays</code>, <code>point</code>, <code>blob</code></h3>
+    <ol>
+      <li>Validate the mass or shear parameters, the source position, and the grid.</li>
+      <li>Compute the Einstein radius for the requested mass at the fixed cartoon distances.</li>
+      <li>For <code>rays</code>: build a small bundle of rays at fixed launch heights, apply the point-mass kink at the lens plane, and classify each as a hit (reaches the observer within a small tolerance) or a miss; draw both bundles, on-axis and off, in one figure.</li>
+      <li>For <code>point</code> or <code>blob</code>: evaluate the point-mass deflection at every pixel of the image-plane grid, subtract it from the pixel's own sky position to get the corresponding source-plane position, and sample the source's brightness profile (compact Gaussian, or the elliptical Gaussian for <code>blob</code>) there. This is image-plane ray shooting, the standard and numerically robust way to render an extended lensed image; it needs no root-finding because the point-mass deflection can be evaluated in closed form at every pixel directly.</li>
+      <li>Refuse a grid that cannot resolve both members of the point-mass double to at least a fraction of a pixel interval, naming which image (inner or outer) is compressed and by how much.</li>
+    </ol>
+    <h3>Mode <code>critical</code></h3>
+    <ol>
+      <li>Evaluate the point-mass Jacobian determinant on the image-plane grid and extract its zero contour as the critical curve.</li>
+      <li>Push that curve through the lens equation to obtain the caustic (a single point, to within numerical tolerance, for a point mass).</li>
+      <li>Separately build the Beat-0-style forward-ray side view for the requested source position.</li>
+    </ol>
+    <h3>Modes <code>shear</code>, <code>arcs</code></h3>
+    <ol>
+      <li>Evaluate the closed-form tangential critical radius \(r(\phi)=\theta_E(1-\gamma\cos2\phi)/(1-\gamma^2)\) at a dense grid of azimuths \(\phi\) to trace the (oval) critical curve directly, without a numerical root search.</li>
+      <li>Push that curve through the SIS+shear lens equation to obtain the diamond caustic, and evaluate the fixed-radius pseudo-caustic circle at \(\theta_E\).</li>
+      <li>For <code>shear</code>: locate every image of the requested source by Newton's method, started from a ring of initial guesses around the expected image radii, converging each candidate to the lens equation \(\boldsymbol\beta(\boldsymbol\theta)=\boldsymbol\beta_{\rm src}\) to a tight tolerance, then de-duplicating solutions that converged to the same point.</li>
+      <li>For a source close enough to the origin and with \(\gamma=0\) that it is, to within a small tolerance, exactly the Einstein-ring case, skip the discrete image search and draw the ring directly instead — a genuine ring cannot be represented as a finite list of point images, so the program does not try to force one.</li>
+      <li>For <code>arcs</code>: shoot every pixel of an extended elliptical source through the same SIS+shear deflection, exactly as <code>blob</code> does for a point mass.</li>
+    </ol>
+    <h3>Mode <code>kappa</code></h3>
+    <ol>
+      <li>Evaluate the closed-form SIS convergence \(\kappa=\theta_E/(2|\theta|)\) on the image-plane grid.</li>
+      <li>Refuse a field of view / pixel combination in which the Einstein circle would span fewer than four grid intervals, naming the shortfall and suggesting a larger <code>--sigma_v</code>.</li>
+    </ol>
+    <div class="note"><strong>Why there is no quadrature or high-precision arithmetic anywhere in this program.</strong> Every deflection law used here — point mass, and SIS plus a uniform shear — has a closed-form inverse or a closed-form critical curve. Nothing needs to be integrated along a ray, and nothing needs arbitrary precision the way BlackHoleShadow's near-critical rays do, because no quantity in this program is the difference of two nearly equal large numbers. The one place this program does real numerical work is the Newton solver in <code>shear</code> mode, and even that is solving a low-dimensional algebraic system, not tracing a trajectory.</div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="modules">
+    <h2>Module Overview</h2>
+    <div class="module-grid">
+      <div class="module-card"><div class="mc-role">Engine</div><div class="mc-name">physics_gl.py</div><p>Einstein radii for both mass models, both deflection laws and their Jacobians, the analytic point-mass double, the SIS+shear critical curve and caustic in closed form, the Newton image finder, the source brightness profiles, and the thin-lens forward-ray bundles used by <code>rays</code> and <code>critical</code>. All input validation lives here.</p></div>
+      <div class="module-card"><div class="mc-role">Figures</div><div class="mc-name">plot_gl.py</div><p>One drawing routine per mode. With <code>--outdir</code>, writes a timestamped PNG and a same-stem <code>.provenance.txt</code> sidecar recording the version, build, and the run's own parameters.</p></div>
+      <div class="module-card"><div class="mc-role">Driver</div><div class="mc-name">driver_gl.py</div><p>Builds the image-plane grid, calls the engine for the selected mode, and hands the results to the plotter. Setting <code>MPLBACKEND=Agg</code> suppresses the on-screen window, which is how this program's own test suite runs headless.</p></div>
+      <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>The argparse command line, including the mode-dependent default source positions (Beat 1's ring-breaking \(0.50''\) offset, Beat 5's deep-quad default, and so on), and conversion of validation or runtime failures into concise command-line error messages.</p></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <p>Run <code>python main.py --help</code> for the current command summary, and <code>python main.py --version</code> for the model version, which every saved figure's own footer also repeats. Options that do not apply to the selected mode do not change its results.</p>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--mode</td><td class="pdefault">point</td><td>—</td><td>One of <code>rays</code>, <code>point</code>, <code>blob</code>, <code>critical</code>, <code>shear</code>, <code>arcs</code>, <code>kappa</code>.</td></tr>
+      <tr><td class="pname">--beta_x, --beta_y</td><td class="pdefault">mode-dependent</td><td>arcsec</td><td>Unlensed source position. <code>point</code> defaults to \((0.50,0.00)\) so the very first frame is a double, not a ring; <code>shear</code> defaults to \((0.05,0.03)\), deep inside the diamond, so the first <code>shear</code> run is already a quad; <code>rays</code> defaults its off-axis panel to \(\beta_y=0.35\); other modes default to the origin.</td></tr>
+      <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\)</td><td>Mass for the point-mass modes (<code>rays</code>, <code>point</code>, <code>blob</code>, <code>critical</code>).</td></tr>
+      <tr><td class="pname">--sigma_v</td><td class="pdefault">300</td><td>km/s</td><td>SIS velocity dispersion for <code>shear</code>, <code>arcs</code>, <code>kappa</code>. In <code>kappa</code> mode, a value so small that \(\theta_E\) would span fewer than four grid intervals is refused.</td></tr>
+      <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>—</td><td>External shear for the SIS modes. Restricted to \(|\gamma|<1/3\) so the diamond caustic always stays inside the circular pseudo-caustic, keeping the three-boundary "naked cusp" case out of this Help file's scope.</td></tr>
+      <tr><td class="pname">--r_eff</td><td class="pdefault">0.25</td><td>arcsec</td><td>Half-light radius of the elliptical Gaussian source used by <code>blob</code> and <code>arcs</code>.</td></tr>
+      <tr><td class="pname">--q</td><td class="pdefault">0.60</td><td>ratio</td><td>Axis ratio of the elliptical source, in \((0,1]\); 1 is circular.</td></tr>
+      <tr><td class="pname">--phi</td><td class="pdefault">30</td><td>deg</td><td>Position angle of the elliptical source.</td></tr>
+      <tr><td class="pname">--n_pix</td><td class="pdefault">181</td><td>—</td><td>Pixels along one side of the image-plane grid; even values are rounded up to the next odd value.</td></tr>
+      <tr><td class="pname">--fov</td><td class="pdefault">6</td><td>arcsec</td><td><em>Minimum</em> field of view on a side; the actual field grows automatically to fit whichever is larger, the mapped source contour or the ring/critical curve, so a run cannot silently clip the very feature it was asked to draw. Each lensed compact image must span at least 0.8 grid interval or the run is refused — a visibility floor, not a promise that fine morphology is well sampled. Automatic grids stop growing at 401 pixels; a source placed many Einstein radii off axis is refused outright, because this program is built to show the double image, not only the dominant one.</td></tr>
+      <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>Save a timestamped PNG and a same-stem <code>.provenance.txt</code> sidecar.</td></tr>
+      <tr><td class="pname">--dpi</td><td class="pdefault">140</td><td>dpi</td><td>PNG resolution.</td></tr>
+      <tr><td class="pname">--interactive</td><td class="pdefault">off</td><td>—</td><td>Open the figure on screen even when <code>--outdir</code> is set.</td></tr>
+      <tr><td class="pname">--version</td><td class="pdefault">—</td><td>—</td><td>Print the model version and build and exit.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="output">
+    <h2>Output and Plot Panels</h2>
+    <table class="out-table"><thead><tr><th>Output</th><th>What to look for</th></tr></thead><tbody>
+      <tr><td class="oname">rays</td><td>Two stacked panels, on-axis then off-axis, each a forward-ray side view. Red rays reach the observer; blue rays miss. Titles state directly what changed between the two panels.</td></tr>
+      <tr><td class="oname">point</td><td>A false-colour image with the dashed Einstein circle and the white source cross both overlaid, so the ring or double and the geometry that produced it are on the same picture.</td></tr>
+      <tr><td class="oname">blob</td><td>The same overlay style as <code>point</code>, now with an extended galaxy in place of a compact source — a thick ring on axis, two arcs off it.</td></tr>
+      <tr><td class="oname">critical</td><td>Three panels: the image plane (false colour, critical curve overplotted, titled to note the critical curve equals the Einstein ring for a point mass), the source plane (caustic marked as an enlarged point symbol at the origin), and a forward-ray side view using \(\beta_y\).</td></tr>
+      <tr><td class="oname">shear</td><td>Two panels: the image plane, with every located image numbered and colour-coded (or the Einstein ring drawn directly, in the degenerate case), and the source plane, with the diamond caustic, the dashed pseudo-caustic circle, and the source itself marked. The image-plane title states the image count directly.</td></tr>
+      <tr><td class="oname">arcs</td><td>A false-colour extended image with the oval critical curve overplotted, so an arc's proximity to that curve is visible directly rather than left to be inferred.</td></tr>
+      <tr><td class="oname">kappa</td><td>The SIS convergence map in false colour, with the \(\kappa=1/2\) circle traced on top, coinciding exactly with the (unsheared) critical curve.</td></tr>
+      <tr><td class="oname">PNG and provenance</td><td>With <code>--outdir PATH</code>: a timestamped PNG and a same-stem <code>.provenance.txt</code> sidecar recording the mode, the version, the build, and the run's own parameters (image count for <code>shear</code>, Einstein radius, source position, and so on), so a saved figure can always be traced back to the command that produced it. There is no CSV output in this program and no console summary either — unlike BlackHoleShadow and StellarEvolutionTracks, every number this program reports is read directly off the figure itself, which is why the figures are annotated as heavily as they are.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="experiments">
+    <h2>Suggested Experiments</h2>
+    <p>Nothing here needs anything beyond the program itself, a ruler held up to the screen, and occasionally a pocket calculator. There is no fitting, no calibration and no convergence study to run, because nothing in this program is integrated or fitted in the first place; the numerical judgement these exercises ask for is entirely about reading a picture correctly.</p>
+
+    <h3>Introductory</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-1</div><h4>Two Panels, One Kink</h4><p>Run <code>--mode rays</code>. In one sentence for each panel, say what changed about the <em>observer's</em> rays between the on-axis and off-axis cases, being careful not to describe it as something that changed about the lens.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2</div><h4>Two, Always</h4><p>Run <code>--mode point</code> at three different \(\beta_y\) values, including \(\beta_y=0\). Using the analytic formula \(\theta_\pm=\tfrac12(\beta\pm\sqrt{\beta^2+4\theta_E^2})\), compute \(\theta_+\) and \(\theta_-\) by hand for each and check them against the figure. Explain, from the discriminant of that formula, why a point-mass lens can never produce one image or three for a source at finite \(\beta\).</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-3</div><h4>A Ring Has No Preferred Direction</h4><p>Run <code>--mode blob --beta_x 0 --beta_y 0</code>, then <code>--mode blob --beta_y 0.8 --r_eff 0.20</code>. Describe in words what "the caustic is a single point" implies about the first image, and what it implies about how abruptly the ring breaks into two arcs as the source moves off that point by even a small amount.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4</div><h4>Two Planes, Never Confused</h4><p>Run <code>--mode critical</code>. Point to the critical curve and say which plane it lives in; point to the caustic and say which plane <em>it</em> lives in. Then explain why an observer can point a telescope at the first but never directly at the second.</p></div>
+    </div>
+
+    <h3>Intermediate</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-5</div><h4>Crossing the Diamond</h4><p>Reproduce Beat 5's four <code>shear</code> commands and record the image count each time. Then find, by trial, a fifth source position that crosses from 2 images to 4 by moving only <code>--beta_y</code> at fixed <code>--beta_x 0.4</code>, and identify which boundary (fold or pseudo-caustic) you crossed.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-6</div><h4>An Arc Is a Local Measurement</h4><p>Run <code>--mode arcs --beta_x 0.55 --r_eff 0.14</code> (near a fold) and <code>--mode arcs --beta_x 0.00 --beta_y 0.00 --r_eff 0.20</code> (near the cusp cluster). Compare the two sets of arcs and describe, in your own words, what is different about the local critical curve near a fold versus near a cusp that produces the difference you see.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-7</div><h4>Convergence at the Ring</h4><p>Run <code>--mode kappa</code> at two different <code>--sigma_v</code> values and confirm the Einstein radius scales as \(\sigma_v^2\), using the closed-form SIS formula. Then explain, from \(\kappa=\theta_E/(2|\theta|)\), why \(\kappa=1/2\) at \(|\theta|=\theta_E\) for <em>any</em> value of \(\sigma_v\) — the coincidence that <code>kappa</code> mode exists to make visible.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-8</div><h4>Magnification Adds Up</h4><p>At the default <code>point</code> source position, compute \(\mu_+\) and \(\mu_-\) from \(\mu=1/\det A\) and confirm \(|\mu_+|-|\mu_-|=1\). Then repeat at a second \(\beta\) of your choosing and confirm the identity still holds. This is a general property of any transparent, circularly symmetric lens; look up (or derive, if you know the trick) why it must be exactly 1 and not merely close to it.</p></div>
+    </div>
+
+    <h3>Advanced</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-9</div><h4>The Pseudo-Caustic Is Not the Caustic</h4><p>Using <code>--mode shear</code>, place the source just inside the pseudo-caustic circle but well outside the diamond (2 images), then just inside the diamond near a fold (4 images), and read the image-plane panel each time for where the extra pair of images appeared. Explain why the image count changes at <em>two</em> different boundaries for this singular mass model, and what physically distinguishes "falling into the singularity" from "crossing a fold" as ways for an image to appear or disappear.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10</div><h4>Where the Formula in Beat 5 Comes From</h4><p>Beat 5 states the cusp locations at \(|\beta|=\tfrac23\theta_E\) on the \(\beta_y\)-axis and the fold's closest approach near \(0.275\,\theta_E\) on the diagonals, for the default \(\gamma=0.25\). Using the closed-form critical radius \(r(\phi)=\theta_E(1-\gamma\cos2\phi)/(1-\gamma^2)\) and the SIS+shear lens equation, reproduce those two numbers by evaluating the critical curve at \(\phi=90^\circ\) and \(\phi=45^\circ\) and pushing each point through the lens equation by hand. Then predict, before running it, whether the cusps move closer to or farther from the origin as \(\gamma\to1/3^-\), and check your prediction against <code>--gamma 0.30</code>.</p></div>
+    </div>
+
+    <h3>Synthesis</h3>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-11 · synthesis</div><h4>One Equation, Seven Pictures</h4><p>Make a table with one row per mode, giving the deflection law it uses, the beat that earns that law, and the one sentence that mode exists to demonstrate (a symmetry, a boundary, a count, a coincidence). Then write, in no more than four sentences, what changed about the <em>physics</em> between Beat 4 (a point mass) and Beat 5 (SIS plus shear) — not what changed about the picture, but what property of the mass distribution is responsible for the image count becoming a genuine function of source position instead of a constant.</p></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="validity">
+    <h2>Domain of Validity</h2>
+    <ul>
+      <li><strong>Thin lens, small angles.</strong> Fine for galaxy-scale strong lensing at arcsecond Einstein radii; not a strong-field ray tracer. It shares no machinery with, and cannot reproduce, BlackHoleShadow's critical null geodesics — Beat 4 states this directly, and BlackHoleShadow's own Beat 8 makes the scale gap numerically explicit.</li>
+      <li><strong>Fixed cartoon distances,</strong> \(D_l=1\,{\rm Gpc}\), \(D_s=2\,{\rm Gpc}\), chosen only so Einstein radii come out at a few arcseconds for a teaching example. They are not a cosmological model, and real angular-diameter distances are not in general related by \(D_{ls}=D_s-D_l\) the way this program's flat cartoon assumes.</li>
+      <li><strong>SIS plus external shear is the cheapest lens with a diamond caustic,</strong> not an elliptical mass profile fitted to any real cluster or galaxy. The particular \(\sigma_v\) and \(\gamma\) used on this page describe no specific observed system.</li>
+      <li><strong>The Newton image finder is exercised, in this Help file, only in the one-, two- and four-image regions</strong> that Beat 5's table covers. Within about \(10^{-4}\,\theta_E\) of a fold or cusp, images are merging and the count itself is not a promised teaching output at that precision.</li>
+      <li><strong>No console summary.</strong> Every number this program reports is annotated on the figure itself (an Einstein radius, an image count, a magnification read from the plotted markers); there is nothing printed to the terminal beyond <code>--version</code> and error messages, which is different from both BlackHoleShadow and StellarEvolutionTracks and is worth knowing before searching a terminal window for a number that is actually on the plot.</li>
+    </ul>
+  </section>
+
+  <!-- ============================================================
+       RESTORE TO DEFAULTS CALLOUT
+       ============================================================ -->
+  <section style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
+    <div style="border: 1.5px solid #b5811a; border-left: 5px solid #b5811a; border-radius: 6px; background: #fffbeb; padding: 1.1em 1.4em; display: flex; gap: 1em; align-items: flex-start;">
+      <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
+      <div>
+        <div style="font-weight: 700; font-size: 0.95em; color: #7b2d00; margin-bottom: 0.35em; text-transform: uppercase; letter-spacing: 0.04em;">Restoring Default Parameter Values</div>
+        <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">
+          If you edit <code style="background:#f0ede4; padding:1px 5px; border-radius:3px; font-size:0.9em;">main.py</code> or another program file while experimenting,
+          you can restore the original program files using any of the following methods:
+        </p>
+        <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
+          <li><strong>Same session:</strong> Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd> (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd> (macOS) repeatedly in your editor to undo your edits.</li>
+          <li><strong>If you are using PyCharm:</strong> Right-click the edited file in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.</li>
+          <li><strong>Full reset:</strong> Re-download the ZIP from
+            <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank" style="color:#7b2d00; text-decoration:underline;">github.com/tomyee3-org/GFTGUX-Programs</a>
+            and replace this program's folder with the fresh copy.</li>
+        </ul>
+        <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">
+          For additional ways to restore program files, see the corresponding recovery instructions in the <em>GFTGUX Python Setup Guide</em>.
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- ============================================================
+       END RESTORE TO DEFAULTS CALLOUT
+       ============================================================ -->
+
+  <section id="related">
+    <h2>Related Programs</h2>
+    <ul class="related-list">
+      <li><strong>PhotonOrbit</strong> — null geodesics integrated in the Schwarzschild metric. Use it when a deflection can no longer be treated as one small kink in a single plane, which is exactly the regime this program refuses to enter.</li>
+      <li><strong>BlackHoleShadow</strong> — the critical null geodesic and the capture map this program's thin-lens kink cannot produce, at scales of a handful of gravitational radii rather than the hundred-thousand-plus this program's Beat 8-scale comparisons live at. Read its own Beat 8 alongside this program's Beat 4 for both halves of the same argument.</li>
+      <li><strong>BlackHoleSpacetimeVisualizer</strong> — spacetime diagrams around a hole, not an Einstein ring or an arc on the sky.</li>
+    </ul>
+  </section>
+
+  <section id="license">
+    <h2>License</h2>
+    <p>GravitationalLensing is a proposed supplemental Python investigation for possible inclusion in a second edition of Bernard Schutz's <em>Gravity from the Ground Up</em>, currently under discussion with Professor Schutz and Cambridge University Press. It is not a published CUP product. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
+  </section>
+</main>
+
+<footer>
+  <em>Gravity from the Ground Up</em> — Python Programs ·
+  Bernard Schutz © 2003 (Cambridge University Press) ·
+  Python programs © 2024–2026 Thomas Yee ·
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> ·
+</footer>
+</div>
+<script>
+  (function () {
+    const links = document.querySelectorAll('nav a');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const match = document.querySelector(`nav a[href="#${e.target.id}"]`);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('main section[id]').forEach(s => observer.observe(s));
+  })();
+</script>
+</body>
+</html>
