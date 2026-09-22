@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StellarEvolutionTracks – Help File | GFTGUX Programs</title>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
+      },
+      loader: { load: ['[tex]/textmacros'] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--serif); font-size: 16px; line-height: 1.80; color: var(--text); background: var(--bg); }
+    .page-wrap { display: grid; grid-template-columns: 230px 1fr; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+    header { grid-column: 1 / -1; background: var(--accent); color: #fff; padding: 26px 38px 20px; border-bottom: 4px solid var(--gold); }
+    header .badge { display: inline-block; font-family: var(--mono); font-size: 10.5px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.35); border-radius: 3px; padding: 2px 7px; letter-spacing: .06em; margin-bottom: 10px; }
+    header h1 { font-size: 1.95rem; font-weight: normal; letter-spacing: -.02em; }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub { margin-top: 6px; font-family: var(--sans); font-size: 0.88rem; color: #f0d0b8; line-height: 1.55; }
+    header .sub a { color: #ffd8b8; text-decoration: none; border-bottom: 1px solid rgba(255,200,150,.4); }
+    nav { background: var(--surface); border-right: 1px solid var(--border); padding: 24px 0 40px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .nav-label { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--gold); padding: 14px 18px 4px; }
+    nav a { display: block; font-family: var(--sans); font-size: 13px; color: var(--muted); text-decoration: none; padding: 5px 18px 5px 22px; border-left: 3px solid transparent; }
+    nav a:hover { color: var(--accent); background: #fdf0e0; border-left-color: var(--gold); }
+    main { padding: 38px 52px 60px; max-width: 900px; }
+    h2 { font-size: 1.40rem; font-weight: normal; color: var(--accent); border-bottom: 2px solid var(--gold); padding-bottom: 6px; margin: 2.2rem 0 1.0rem; }
+    h3 { font-size: 1.08rem; font-weight: 700; color: var(--accent2); margin: 1.6rem 0 .5rem; }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block { background: var(--eq-bg); border-left: 4px solid var(--gold); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 22px 10px; margin: 1.1rem 0 1.3rem; overflow-x: auto; }
+    .eq-label { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    code { font-family: var(--mono); font-size: 0.865em; background: var(--code-bg); border: 1px solid #ddd8cc; border-radius: 3px; padding: 1px 5px; }
+    pre { font-family: var(--mono); font-size: 0.855em; background: var(--code-bg); border: 1px solid #ddd8cc; border-radius: var(--radius); padding: 14px 18px; overflow-x: auto; margin: .8rem 0 1.1rem; line-height: 1.55; }
+    .note, .warn { border-radius: 0 var(--radius) var(--radius) 0; padding: 11px 16px; margin: 1.0rem 0 1.2rem; font-size: 0.93rem; color: var(--muted); }
+    .note { background: var(--note-bg); border: 1px solid var(--border); border-left: 4px solid var(--accent2); }
+    .warn { background: #fff6e8; border: 1px solid var(--gold); border-left: 4px solid var(--gold); }
+    .note strong { color: var(--accent2); }
+    .warn strong { color: var(--accent); }
+    .param-table, .mode-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1rem 0 1.4rem; }
+    .param-table th, .mode-table th { color: #fff; font-family: var(--sans); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 8px 12px; text-align: left; }
+    .param-table th { background: var(--accent); }
+    .mode-table th { background: var(--gold); }
+    .param-table td, .mode-table td { padding: 7px 12px; border-bottom: 1px solid #e0d8c8; vertical-align: top; }
+    .param-table tr:nth-child(even) td, .mode-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table .pname, .mode-table .mname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); font-weight: 700; }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .related-list { list-style: none; margin: .6rem 0 1.2rem; padding: 0; }
+    .related-list li { padding: 8px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 7px; font-size: 0.90rem; }
+    .related-list li strong { font-family: var(--mono); color: var(--accent2); }
+    .exp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; margin: 1.0rem 0 1.4rem; }
+    .exp-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 17px; box-shadow: var(--shadow); }
+    .exp-card .ec-num { display: inline-block; background: var(--accent); color: #fff; font-family: var(--mono); font-size: 11px; border-radius: 3px; padding: 1px 6px; margin-bottom: 7px; }
+    .exp-card h4 { font-size: 0.94rem; color: var(--accent2); margin: 0 0 5px; }
+    .exp-card p { font-size: 0.855rem; color: var(--muted); margin: 0; }
+    .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1.0rem 0 1.4rem; }
+    .module-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+    .module-card .mc-role { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
+    .module-card .mc-name { font-family: var(--mono); font-size: 0.92rem; color: var(--accent2); font-weight: 700; margin: 4px 0 6px; }
+    .module-card p { font-size: 0.84rem; color: var(--muted); margin: 0; }
+    footer { grid-column: 1 / -1; background: var(--accent); color: #fff; font-family: var(--sans); font-size: 12.5px; text-align: center; padding: 18px 24px; line-height: 1.7; }
+    footer a { color: #e0c090; text-decoration: none; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      .module-grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+  <div class="badge">Supplement · Gravity from the Ground Up</div>
+  <h1><em>StellarEvolutionTracks</em> — Time, Turn-off, Cooling, and a Maximum Mass</h1>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+  </div>
+</header>
+<nav id="sidebar">
+  <div class="nav-label">Start here</div>
+  <a href="#description">Description</a>
+  <a href="#setup">Before the first run</a>
+  <a href="#modes">The Four Modes</a>
+  <div class="nav-label">Beats</div>
+  <a href="#beat0">0 · The Sun is not a constant</a>
+  <a href="#beat1">1 · Mass sets the lifetime</a>
+  <a href="#beat2">2 · Three closures</a>
+  <a href="#beat3">3 · Leaving the main sequence</a>
+  <a href="#beat4">4 · A cluster on one diagram</a>
+  <a href="#beat5">5 · Where the track stops</a>
+  <a href="#beat6">6 · A star the size of the Earth</a>
+  <a href="#beat7">7 · A white dwarf fades</a>
+  <a href="#beat8">8 · An ideal neutron gas</a>
+  <a href="#beat9">9 · How stiff must matter be?</a>
+  <a href="#beat10">10 · Newton versus Einstein</a>
+  <div class="nav-label">Reference</div>
+  <a href="#modules">Modules</a>
+  <a href="#parameters">Parameters</a>
+  <a href="#output">Output</a>
+  <a href="#experiments">Experiments</a>
+  <a href="#validity">Domain of Validity</a>
+  <a href="#related">Related Programs</a>
+  <a href="#license">License</a>
+</nav>
+<main>
+  <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
+    Version 1.7.0&nbsp;&nbsp;&nbsp;&nbsp;Build a28c8d1a30e0
+  </p>
+
+  <section id="description">
+    <h2>Description</h2>
+    <p><strong>StellarEvolutionTracks</strong> is a proposed supplement to <em>Gravity from the Ground Up</em>. The Chapter&nbsp;8 program <code>Star</code> and the Chapter&nbsp;20 program <code>Neutron</code> each compute one snapshot. This program puts time on the first of those snapshots, and a family of models on the second. Four modes share one command line: a single track, a Hertzsprung–Russell diagram with isochrones, a white-dwarf cooling curve, and a neutron-star mass–radius sequence.</p>
+    <p>The spine of the lesson is one sentence:</p>
+    <p><em>Mass sets the clock; composition sets the brightening; an equation of state that softens sets a maximum mass — and only one of those two maxima needs general relativity.</em></p>
+    <div class="warn"><strong>What this program is not.</strong> It is not MESA. In <code>tracks</code> two ODEs are integrated — central hydrogen depletion, then helium-core growth — and everything else on the track is a fit, a calibrated closure, or a rule. The remnant printed in the corner is a classification from the initial mass, except for a few low-mass stars whose own core hits this model’s cap. Modes <code>wdcool</code> and <code>nsmr</code> are separate calculations you start yourself; the program does not evolve a giant into a white dwarf or a core into a neutron star. Tracks stop at helium ignition. There is no mass loss, no AGB, no binary.</div>
+    <div class="note"><strong>Integrated, fitted, or prescribed.</strong> When a beat writes an equation, the caption says which of those three it is. A one-zone star cannot derive its own core weighting, fuel reservoir, or radius growth; those three numbers are closures, not discoveries. Do not read a smooth curve as a solved interior.</div>
+    <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax from a public CDN. Without a network connection the raw \(\LaTeX\) remains visible as text. The program itself needs no internet access.</div>
+  </section>
+
+  <section id="setup">
+    <h2>Before the first run</h2>
+    <p>Unpack the program zip so you have a folder named <code>StellarEvolutionTracks</code> that contains <code>main.py</code>. Open a terminal in that folder. You need <strong>Python 3.10 or newer</strong> with NumPy and Matplotlib. If you do not already have that environment, follow the project-wide <a href="https://github.com/tomyee3-org/GFTGUX-Documentation" target="_blank"><em>GFTGUX Python Setup Guide</em></a>. Do not install packages into a system Python (PEP&nbsp;668). Then:</p>
+<pre>python main.py --version
+python main.py --mode tracks --mass 1.0 --no_postms</pre>
+    <p>Every command on this page assumes that working directory. A run always opens a figure unless you pass <code>--no_plot</code>, which also requires <code>--csvdir</code>.</p>
+  </section>
+
+  <section id="modes">
+    <h2>The Four Modes</h2>
+    <table class="mode-table">
+      <thead><tr><th>Mode</th><th>Beats</th><th>What you see</th></tr></thead>
+      <tbody>
+        <tr><td class="mname">tracks</td><td>0–3, 5</td><td>One star, ZAMS to helium ignition. Add <code>--no_postms</code> to stop at the terminal-age main sequence.</td></tr>
+        <tr><td class="mname">hr</td><td>1, 4</td><td>A grid of those tracks, with optional isochrones cut across them.</td></tr>
+        <tr><td class="mname">wdcool</td><td>6, 7</td><td>Chandrasekhar mass–radius curve plus a Mestel cooling history.</td></tr>
+        <tr><td class="mname">nsmr</td><td>8–10</td><td>A mass–radius sequence from the TOV equations (or Newton, with <code>--newtonian</code>).</td></tr>
+      </tbody>
+    </table>
+<pre>python main.py --mode tracks --mass 1.0
+python main.py --mode hr --isochrones 0.1,1,5,10
+python main.py --mode wdcool --wd_mass 0.6
+python main.py --mode nsmr --eos neutron</pre>
+  </section>
+
+  <section id="beat0">
+    <h2>Beat 0 · The Sun is not a constant</h2>
+    <p>A star in hydrostatic and thermal equilibrium would not change if its composition were fixed. The Sun’s is not. Four hydrogen nuclei become one helium nucleus, the mean molecular weight \(\mu\) in the core rises, and the luminosity follows.</p>
+<pre>python main.py --mode tracks --mass 1.0 --no_postms</pre>
+    <p>Look at the luminosity history and the central-hydrogen panel. Read only the <code>ZAMS</code>, <code>TAMS</code>, and <code>MS lifetime</code> lines of the summary. You should see a star that starts near \(0.72\,L_\odot\) and ends near \(2.2\,L_\odot\) after about 9.7&nbsp;Gyr. The yellow marker on the HR panel is the Sun today. Before reading on, write one sentence that explains why burning fuel makes the star brighter rather than fainter.</p>
+    <div class="eq-block">
+      <div class="eq-label">Mean molecular weights, fully ionised — derived</div>
+\[
+\frac{1}{\mu}=2X+\tfrac34 Y+\tfrac12 Z,\qquad
+\mu_e=\frac{2}{1+X},\qquad
+Y=1-X-Z.
+\]
+    </div>
+    <p>Solar \(X=0.70\), \(Z=0.02\) gives \(\mu\approx0.62\). A helium core with \(X=0\) has \(\mu\approx1.34\). That factor is the engine. Beats 1 and 2 turn it into a clock and three knobs.</p>
+  </section>
+
+  <section id="beat1">
+    <h2>Beat 1 · Mass sets the main-sequence lifetime</h2>
+    <p>A heavier star has more fuel and a much higher burn rate. The burn rate wins. Put four masses on one diagram and read \(t_{\rm MS}\) from the printed table.</p>
+<pre>python main.py --mode hr --masses 1,2,5,10 --no_postms
+python main.py --mode tracks --mass 10 --no_postms</pre>
+    <p>The first figure is four short tracks leaving the dashed ZAMS. Use the second command only for its <code>ZAMS</code> line. Compare the Sun’s lifetime to the ten-solar-mass lifetime, and the two ZAMS luminosities. Homology says why \(L\) climbs so steeply, without solving the interior.</p>
+    <div class="eq-block">
+      <div class="eq-label">Homology, opacity \(\kappa=\kappa_0\rho^a T^b\), burning \(\varepsilon=\varepsilon_0\rho T^\nu\) — derived</div>
+\[
+R\propto \mu^{\,p}M^{\,q},\qquad
+p=\frac{\nu-4+b}{D},\quad
+q=\frac{\nu-1+a+b}{D},\quad
+D=\nu+3+b+3a,
+\]
+\[
+L\propto \mu^{\,4-b}M^{\,3-a-b}R^{\,b+3a}.
+\]
+    </div>
+    <p>Electron scattering (\(a=b=0\)) collapses to \(L\propto\mu^4 M^3\), independent of the burning law. The summary prints the exponents for the opacity you chose. Homology places a power law, not a star. The program’s default ZAMS is an empirical piecewise fit, normalised so the zero-age Sun sits at \(0.72\,L_\odot\), \(0.89\,R_\odot\) — not at the present-day Sun, which has already brightened. Switch the anchor off with <code>--homology</code> when you want the pure power law on the same solar normalisation.</p>
+  </section>
+
+  <section id="beat2">
+    <h2>Beat 2 · Three closures a one-zone model cannot derive</h2>
+    <p>The Sun in Beat 0 arrived with three numbers you did not choose. Turn each one. The first command is the reference.</p>
+<pre>python main.py --mode tracks --mass 1.0 --no_postms
+python main.py --mode tracks --mass 1.0 --no_postms --core_weight 0
+python main.py --mode tracks --mass 1.0 --no_postms --qc 0.10
+python main.py --mode tracks --mass 1.0 --no_postms --expansion 1.0</pre>
+    <p>Read <code>TAMS</code> and <code>MS lifetime</code> each time. One of those runs never reaches the terminal-age main sequence before the 15&nbsp;Gyr stop; the summary will say so instead of printing a TAMS line. <code>--core_weight</code> decides how much the rising core \(\mu\) counts toward \(L\). <code>--qc</code> is the fraction of the star that ever burns; it moves the lifetime and not the terminal luminosity. <code>--expansion</code> is how much the radius is allowed to grow. Homology with electron scattering predicts no growth at all for a solar-type star; detailed models grow by about 70&nbsp;per cent, which is why the default factor is 1.7.</p>
+    <div class="eq-block">
+      <div class="eq-label">Nuclear-burning equation — integrated</div>
+\[
+\frac{dX_c}{dt}=-\frac{L(t)}{0.007\,c^2\,q_c M},\qquad
+L(t)=L_{\rm ZAMS}\left(\frac{\mu_{\rm eff}(t)}{\mu_{\rm eff}(0)}\right)^{4-b+(b+3a)p}.
+\]
+    </div>
+    <div class="eq-block">
+      <div class="eq-label">The three closures</div>
+\[
+\mu_{\rm eff}=\mu_{\rm env}^{\,1-w}\,\mu_{\rm core}^{\,w},
+\qquad
+R(t)=R_{\rm ZAMS}\bigl[1+(f_{\rm exp}-1)\,s^{3/2}\bigr],
+\qquad
+s=1-X_c/X_0.
+\]
+    </div>
+    <p>Defaults \(w=0.36\), \(q_c=0.15\) (rising slowly above \(1.2\,M_\odot\)), \(f_{\rm exp}=1.7\) are a joint solar calibration, not a fit to the figure. Below about \(0.35\,M_\odot\) the star is fully convective and a fixed \(q_c\) understates the fuel; the program warns there.</p>
+  </section>
+
+  <section id="beat3">
+    <h2>Beat 3 · Leaving the main sequence</h2>
+    <p>When the centre is out of hydrogen the star does not stop. Hydrogen burns in a shell around a growing helium core. Drop <code>--no_postms</code> and let four masses finish.</p>
+<pre>python main.py --mode tracks --mass 1.0
+python main.py --mode tracks --mass 1.5
+python main.py --mode tracks --mass 2.0
+python main.py --mode tracks --mass 5.0</pre>
+    <p>On the HR panel the phases are coloured separately and the track ends at a star: helium ignition. For the Sun the post-main-sequence climb takes a fraction of the main-sequence time and several orders of magnitude in \(L\). Compare the <code>Luminosity at end</code> and <code>Core mass at end</code> lines of the three lighter stars. Then look at 5 solar masses: the regime is a Hertzsprung-gap crossing, the luminosity does not climb, and the crossing is a Kelvin–Helmholtz time, not a core-growth integration.</p>
+    <p>Below about 2 solar masses the helium core is degenerate. Degeneracy decouples the core from the envelope, so the luminosity is a function of core mass almost alone. That is why those three tips coincide, and why the tip of the red-giant branch is a standard candle in nature. The particular sixth-power law used here is a teaching closure, tuned to put the solar tip near \(2500\,L_\odot\). It is not the Paczyński AGB relation.</p>
+    <div class="eq-block">
+      <div class="eq-label">Core growth — integrated; giant luminosity — prescribed + closure</div>
+\[
+\frac{dM_c}{dt}=\frac{L(t)}{0.007\,c^2\,X_{\rm env}},
+\qquad
+L=\bigl(L_{\rm TAMS}^4+L_{\rm CMLR}^4\bigr)^{1/4},
+\qquad
+\frac{L_{\rm CMLR}}{L_\odot}=2.3\times10^{5}\left(\frac{M_c}{M_\odot}\right)^{6}.
+\]
+    </div>
+    <div class="eq-block">
+      <div class="eq-label">Hertzsprung-gap rule — prescribed; Hayashi line — fit</div>
+\[
+L=L_{\rm TAMS},\quad \Delta t_{\rm gap}=t_{\rm KH}=\frac{GM^2}{R_{\rm TAMS}L_{\rm TAMS}},
+\]
+\[
+T_{\rm eff}=6560\,\mathrm{K}\;\bigl(L/L_\odot\bigr)^{-0.092}\bigl(M/M_\odot\bigr)^{0.10}.
+\]
+    </div>
+    <p>A fourth closure, <code>--core_efficiency</code> (default 0.75), sets how large the helium core is at TAMS relative to the hydrogen reservoir that fed it. Away from the solar calibration, treat timescales as good to a factor of order unity and luminosities to tens of per cent. The shapes and the ordering of the timescales are the result.</p>
+  </section>
+
+  <section id="beat4">
+    <h2>Beat 4 · A cluster on one diagram</h2>
+    <p>The stars of a cluster are born together. Today the heavy ones have left the main sequence and the light ones have not. Where the main sequence ends is the age.</p>
+<pre>python main.py --mode hr --isochrones 0.1,1,5,10
+python main.py --mode hr --masses 0.6,0.8,1.0,1.2,1.5,2.0,3.0,5.0,8.0 --isochrones 0.1,1,5,10 --t_max 60</pre>
+    <p>Each isochrone joins the points at which different masses have reached the same age. Find where it bends off the ZAMS: that is the turn-off. The first run cannot date a 10&nbsp;Gyr cluster because the default 0.5 and 0.8 solar-mass tracks are still on the main sequence at the default <code>--t_max</code> of 15&nbsp;Gyr. The second command lets those tracks finish. An isochrone here is linear interpolation in age along the tracks you asked for, not a modern library. The horizontal high-mass branches are Beat 3’s constant-luminosity rule, and the change of morphology at \(2\,M_\odot\) is a switch between two prescriptions.</p>
+  </section>
+
+  <section id="beat5">
+    <h2>Beat 5 · Where the track stops</h2>
+    <p>Every track ends at helium ignition, or earlier for a low-mass star. The last lines of the summary say what the program will <em>claim</em> about the remnant. Read them before you believe the picture.</p>
+<pre>python main.py --mode tracks --mass 1.0
+python main.py --mode tracks --mass 12
+python main.py --mode tracks --mass 0.6 --t_max 200</pre>
+    <p>The Sun is classified as a carbon–oxygen white dwarf near \(0.50\,M_\odot\); the 12-solar-mass star as a \(1.4\,M_\odot\) neutron star. In both cases the summary tells you the remnant is a classification from the initial mass. The third command is the exception: a \(0.6\,M_\odot\) star can grow a core to this model’s cap before helium ignition, and the summary then says the remnant came from the track. Hand the remnant on yourself — <code>--mode wdcool --wd_mass 0.5</code> is roughly the Sun’s white dwarf; Beats 8–10 take a \(1.4\,M_\odot\) neutron star. Nothing between helium ignition and the remnant is computed.</p>
+  </section>
+
+  <section id="beat6">
+    <h2>Beat 6 · A star the size of the Earth</h2>
+    <p>A white dwarf has no fuel. Electron degeneracy holds it up, and the heavier one is the smaller one.</p>
+<pre>python main.py --mode wdcool --wd_mass 0.6
+python main.py --mode wdcool --wd_mass 1.2
+python main.py --mode wdcool --wd_mass 1.4</pre>
+    <p>The upper-left panel is the mass–radius curve. A dotted line marks the radius of the Earth; a dashed line marks the Chandrasekhar mass, \(1.456\,M_\odot\) at the default \(\mu_e=2\). Read the <code>Radius</code> line of each summary and ignore the other panels until Beat 7. Find the mass at which the star is the size of the Earth. Watch the radius as you approach the dashed line. Then change composition with <code>--mu_e 1.0</code> and watch both the radius and the limiting mass move.</p>
+    <div class="eq-block">
+      <div class="eq-label">Degenerate electrons + Newtonian structure — derived / integrated</div>
+\[
+P=A_e\bigl[x(2x^2-3)\sqrt{1+x^2}+3\,\mathrm{asinh}\,x\bigr],
+\qquad
+\rho=\mu_e m_u\,\frac{8\pi}{3}\Bigl(\frac{m_ec}{h}\Bigr)^{3}x^{3},
+\]
+\[
+\frac{dm}{dr}=4\pi r^{2}\rho,
+\qquad
+\frac{dx}{dr}=-\frac{Gm\rho}{r^{2}}\Big/\frac{dP}{dx}.
+\]
+    </div>
+    <p>As the electrons become relativistic the pressure softens from \(P\propto\rho^{5/3}\) to \(P\propto\rho^{4/3}\), and no equilibrium exists above \(M_{\rm Ch}=5.825\,\mu_e^{-2}\,M_\odot\). That constant is the \(n=3\) Lane–Emden mass, not a fit. The curve on the figure approaches it from below as central density goes to infinity. Coulomb corrections, finite temperature, and GR are all absent: this is the zero-temperature Chandrasekhar model.</p>
+  </section>
+
+  <section id="beat7">
+    <h2>Beat 7 · A white dwarf fades</h2>
+    <p>With no nuclear fuel a white dwarf can only cool. The light is the stored heat of the ions. Cool one, then change what it is made of and what it is wrapped in.</p>
+<pre>python main.py --mode wdcool --wd_mass 0.6
+python main.py --mode wdcool --wd_mass 1.0
+python main.py --mode wdcool --wd_mass 0.6 --A_ion 4
+python main.py --mode wdcool --wd_mass 0.6 --Z_env 0.02</pre>
+    <p>The luminosity panel is flat at early times and then falls along a slope of \(-7/5\) on log–log axes. Read the <code>Cooling age</code> lines. Changing the mass moves the luminosity and does not move the core-temperature history. Changing \(A_{\rm ion}\) moves the heat capacity. Changing the envelope metals moves the Mestel coefficient, and moves it a lot. The clock is the envelope together with the ions; the core \(\mu_e\) that set the radius in Beat 6 does not enter the cooling law.</p>
+    <div class="eq-block">
+      <div class="eq-label">Mestel cooling — derived / integrated</div>
+\[
+U=\frac{3}{2}\frac{k}{A m_u}M T_c,
+\qquad
+L=C\,M\,T_c^{7/2},
+\qquad
+\frac{dT_c}{dt}=-\frac{2}{3}\frac{A m_u}{k}\,C\,T_c^{7/2}.
+\]
+    </div>
+    <p>The late-time limit of that ODE is \(L\propto t^{-7/5}\). The early flattening is the memory of a finite starting temperature, not a numerical artefact. These are Mestel-model ages, not modern cooling ages: neutrinos, crystallisation, and convective coupling are all missing. The coefficient \(C\) is matched at the layer where the electrons become degenerate, and that layer is taken to be envelope material. That is why envelope \(X\) and \(Z\) set the clock and core \(\mu_e\) does not.</p>
+  </section>
+
+  <section id="beat8">
+    <h2>Beat 8 · An ideal neutron gas</h2>
+    <p>Do to neutrons what Beat 6 did to electrons, but integrate the Tolman–Oppenheimer–Volkoff equations instead of Newton. This is the historical Oppenheimer–Volkoff calculation. It is a benchmark that is known to fail.</p>
+<pre>python main.py --mode nsmr --eos neutron</pre>
+    <p>Three panels: mass against radius, mass against central density, compactness and surface redshift. The summary reports a maximum mass of \(0.71\,M_\odot\) at about 9.3&nbsp;km. Compare that with the dashed observational line near \(2\,M_\odot\). The arithmetic is not the problem. A cold ideal neutron gas is not what neutron stars are made of. The factor-of-three shortfall is the cleanest demonstration in the program that nuclear repulsion, not degeneracy alone, holds a neutron star up.</p>
+    <div class="eq-block">
+      <div class="eq-label">Tolman–Oppenheimer–Volkoff — integrated</div>
+\[
+\frac{dm}{dr}=\frac{4\pi r^{2}\epsilon}{c^{2}},
+\qquad
+\frac{dP}{dr}=-\frac{G\bigl(\epsilon/c^{2}+P/c^{2}\bigr)\bigl(m+4\pi r^{3}P/c^{2}\bigr)}{r^{2}\bigl(1-2Gm/rc^{2}\bigr)}.
+\]
+    </div>
+  </section>
+
+  <section id="beat9">
+    <h2>Beat 9 · How stiff must nuclear matter be?</h2>
+    <p>Beat 8 ended with an equation of state that is too soft. The default <code>polytrope</code> option stands in, crudely, with one stiffness <code>--p_nuc</code> and one index <code>--gamma</code>.</p>
+<pre>python main.py --mode nsmr
+python main.py --mode nsmr --p_nuc 0.02
+python main.py --mode nsmr --p_nuc 0.08
+python main.py --mode nsmr --gamma 3.0 --p_nuc 0.04</pre>
+    <p>Defaults \(\Gamma=2.5\), \(p_{\rm nuc}=0.04\) clear the \(2\,M_\odot\) line. Softening drops below it; stiffening rises above it and the notes may drop a model at the highest density. The last command flags <code>*** ACAUSAL ***</code>: the sound speed on the branch exceeds \(c\). A maximum mass obtained with an acausal equation of state cannot be trusted, however large it is. The index is refused outside \(4/3&lt;\Gamma\le 5\): below \(4/3\) there is no stable polytrope, and at or below \(6/5\) there is no finite radius.</p>
+    <div class="eq-block">
+      <div class="eq-label">Stiffness at nuclear saturation — closure, not a nuclear EOS</div>
+\[
+p_{\rm nuc}=\frac{P(\rho_{\rm nuc})}{\rho_{\rm nuc}c^{2}},
+\qquad
+\rho_{\rm nuc}=2.7\times10^{17}\,\mathrm{kg\,m^{-3}}.
+\]
+    </div>
+  </section>
+
+  <section id="beat10">
+    <h2>Beat 10 · Newton versus Einstein</h2>
+    <p>The white dwarf’s maximum mass and the neutron star’s are not the same kind of limit. Run the ideal neutron gas both ways.</p>
+<pre>python main.py --mode nsmr --eos neutron
+python main.py --mode nsmr --eos neutron --newtonian
+python main.py --mode nsmr --eos neutron --newtonian --rho_hi 1e21</pre>
+    <p>The Newtonian run reports no turning point. It prints a largest sampled mass, not a maximum mass, and it withholds redshift and the Buchdahl bound, which are general-relativistic results. Raise the density and the sequence still does not turn over; the models walk inside their own Schwarzschild radii, a configuration Newtonian gravity has no way to refuse. The TOV sequence turns over at a modest compactness \(GM/Rc^{2}\approx0.11\), because pressure itself gravitates.</p>
+    <p>Newtonian gravity still has a Chandrasekhar-like limit for this gas, approached only as central density goes to infinity, and every model near it is already inside its horizon. The program does not apply a turning-point test to Newtonian sequences. A Newtonian polytrope is unstable for \(\Gamma\le 4/3\); the ideal neutron gas stays above that at every density, so Newton’s sequence climbs without turning over. General relativity raises the critical index. That is the difference the two figures are for.</p>
+    <p>On a relativistic mass–radius panel two reference curves are drawn: the horizon \(R=2GM/c^{2}\), and the Buchdahl bound \(R\ge 9GM/4c^{2}\) for static spherical isotropic fluid with density not increasing outward. Neither curve is drawn on a Newtonian run, where neither belongs.</p>
+  </section>
+
+  <section id="modules">
+    <h2>Modules</h2>
+    <div class="module-grid">
+      <div class="module-card"><div class="mc-role">Physics</div><div class="mc-name">physics_sev.py</div><p>Composition, homology, ZAMS fits, the two evolution ODEs, Fermi-gas and polytropic equations of state, Newtonian and TOV integrators, Mestel cooling. Input validation lives here.</p></div>
+      <div class="module-card"><div class="mc-role">Driver</div><div class="mc-name">driver_sev.py</div><p>Parses lists, dispatches on <code>--mode</code>, prints the summary, writes timestamped CSV files, calls the plotter.</p></div>
+      <div class="module-card"><div class="mc-role">Plot</div><div class="mc-name">plot_sev.py</div><p>One figure layout per mode. HR diagrams keep hot and bright at upper left. <code>--outdir</code> writes a PNG and a same-stem <code>.provenance.txt</code>.</p></div>
+      <div class="module-card"><div class="mc-role">Entry</div><div class="mc-name">main.py</div><p>Student-facing flags, grouped by mode. Validation failures become short command-line errors.</p></div>
+    </div>
+  </section>
+
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <p>Run <code>python main.py --help</code> for the live list. Flags that do not apply to the selected mode do not change its physics; common flags (<code>--step_frac</code>, <code>--outdir</code>, <code>--csvdir</code>, <code>--no_plot</code>, <code>--dpi</code>, <code>--lw</code>, <code>--m_observed</code>) are still validated.</p>
+    <table class="param-table">
+      <thead><tr><th>Flag</th><th>Default</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="pname">--mode</td><td class="pdefault">tracks</td><td>tracks, hr, wdcool, nsmr</td></tr>
+        <tr><td class="pname">--mass</td><td class="pdefault">1.0</td><td>Single-track mass in \(M_\odot\). Accepted 0.08–120; trustworthy about 0.35–15.</td></tr>
+        <tr><td class="pname">--masses</td><td class="pdefault">0.5,0.8,1.0,1.5,2.0,3.0,5.0,10.0</td><td>HR mass grid, at most 40 values.</td></tr>
+        <tr><td class="pname">--isochrones</td><td class="pdefault">none</td><td>Comma-separated ages in Gyr, at most 10.</td></tr>
+        <tr><td class="pname">--X, --Z</td><td class="pdefault">0.70, 0.02</td><td>Hydrogen and metal mass fractions; \(Y=1-X-Z\ge 0\).</td></tr>
+        <tr><td class="pname">--qc, --core_weight, --expansion, --core_efficiency</td><td class="pdefault">mass-dep., 0.36, 1.70, 0.75</td><td>The four closures of Beats 2–3.</td></tr>
+        <tr><td class="pname">--burning, --opacity</td><td class="pdefault">mass-dep., thomson</td><td>pp or cno; thomson or kramers. The automatic burning switch is a step at \(1.2\,M_\odot\), not a blend.</td></tr>
+        <tr><td class="pname">--homology, --no_postms</td><td class="pdefault">off, off</td><td>Pure homology ZAMS and radius; stop at TAMS.</td></tr>
+        <tr><td class="pname">--t_max, --x_end</td><td class="pdefault">15 Gyr, 1e-3</td><td>Main-sequence stop if still burning; terminal central hydrogen. <code>--t_max</code> never trims the giant branch.</td></tr>
+        <tr><td class="pname">--n_ms, --n_post</td><td class="pdefault">3000, 3000</td><td>Track timesteps.</td></tr>
+        <tr><td class="pname">--wd_mass</td><td class="pdefault">0.6</td><td>White-dwarf mass. Refused at or above \(0.999\,M_{\rm Ch}(\mu_e)\).</td></tr>
+        <tr><td class="pname">--mu_e, --A_ion</td><td class="pdefault">2.0, 14</td><td>Core nucleons per electron (structure only); mean ion mass number (heat capacity only).</td></tr>
+        <tr><td class="pname">--X_env, --Z_env</td><td class="pdefault">0.70, 0.0</td><td>Envelope composition. These, not the core, set the Mestel coefficient.</td></tr>
+        <tr><td class="pname">--Tc0, --Tc_end, --n_cool</td><td class="pdefault">3e7 K, 3e6 K, 4000</td><td>Cooling window. Starts after neutrino losses; ends where real white dwarfs crystallise.</td></tr>
+        <tr><td class="pname">--eos</td><td class="pdefault">polytrope</td><td>polytrope or neutron. Neither is a realistic nuclear EOS.</td></tr>
+        <tr><td class="pname">--gamma, --p_nuc</td><td class="pdefault">2.5, 0.04</td><td>Polytropic index in \((4/3,5]\); pressure at nuclear density over \(\rho c^{2}\).</td></tr>
+        <tr><td class="pname">--newtonian</td><td class="pdefault">off</td><td>Newtonian structure. Withholds redshift, Buchdahl, and any maximum-mass label.</td></tr>
+        <tr><td class="pname">--n_mr, --rho_lo, --rho_hi</td><td class="pdefault">40, 1e17, 5e19</td><td>Central-density grid in kg&nbsp;m\(^{-3}\). Raise <code>--rho_hi</code> on a TOV run that has not turned over.</td></tr>
+        <tr><td class="pname">--m_observed</td><td class="pdefault">2.01</td><td>Reference mass drawn on the first nsmr panel; 0 removes it.</td></tr>
+        <tr><td class="pname">--step_frac</td><td class="pdefault">0.01</td><td>Structure-step fraction for wdcool and nsmr.</td></tr>
+        <tr><td class="pname">--outdir, --csvdir, --no_plot</td><td class="pdefault">none, none, off</td><td>PNG + provenance sidecar; CSV tables; skip the figure (requires <code>--csvdir</code>).</td></tr>
+        <tr><td class="pname">--dpi, --lw</td><td class="pdefault">150, 1.6</td><td>PNG resolution and curve width.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="output">
+    <h2>Output</h2>
+    <p>Every mode prints a summary and opens a Matplotlib window. A <em>notes on this run</em> block appears when the model has been pushed outside the range it can be trusted — an unfinished track, a mass outside the reliable band, a sequence with no turning point, an acausal equation of state. Read it.</p>
+    <p>With <code>--outdir</code> the same figure is saved as a timestamped PNG plus a same-stem <code>.provenance.txt</code>. With <code>--csvdir</code> the numerical table is written; the commented header records the version and the parameters the selected mode actually used. CSV output does not turn the figure off. <code>--no_plot --csvdir PATH</code> is the data-only combination.</p>
+    <p>On a track figure, phases are coloured separately and the remnant in the corner box is a label, not a point the curve reaches. If the star was still burning hydrogen at <code>--t_max</code>, the last symbol is an integration stop, never a TAMS. On an nsmr figure the horizon and Buchdahl lines, and any maximum-mass star, are drawn only for a TOV sequence that earned them.</p>
+  </section>
+
+  <section id="experiments">
+    <h2>Experiments</h2>
+    <div class="exp-grid">
+      <div class="exp-card"><div class="ec-num">EXP-1 · First run</div>
+        <h4>Read the Sun</h4>
+        <p>Run <code>--mode tracks --mass 1.0</code>. Record \(L_{\rm ZAMS}\), \(t_{\rm MS}\), \(L_{\rm TAMS}\), and \(L\) at the tip. What fraction of the main-sequence life is over at 4.57&nbsp;Gyr? What exactly do the last two summary lines claim about the remnant?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2 · Beginner</div>
+        <h4>Four clocks</h4>
+        <p>Run <code>--mode hr --masses 1,2,5,10 --no_postms</code>. From the printed \(t_{\rm MS}\) values, estimate the exponent in \(t_{\rm MS}\propto M^{-n}\). Why is it not exactly \(n=2\) even for electron-scattering homology?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-3 · Beginner</div>
+        <h4>The rim is a turn-off</h4>
+        <p>Run <code>--mode hr --isochrones 0.1,1,5,10 --t_max 60</code>. Point to the 5&nbsp;Gyr turn-off. Which two default tracks would have been missing that turn-off at <code>--t_max 15</code>?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4 · Beginner</div>
+        <h4>Earth-sized, then smaller</h4>
+        <p>Run <code>--mode wdcool</code> at 0.6, 1.0 and 1.3 solar masses. Tabulate radius in Earth radii. What happens as you approach the dashed line, and what does <code>--mu_e 1.0</code> do to that line?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div>
+        <h4>Why the ideal neutron gas fails</h4>
+        <p>Run <code>--mode nsmr --eos neutron</code>, then <code>--mode nsmr</code>. Record both maximum masses. Oppenheimer and Volkoff made no arithmetical error. What assumption is wrong, and in what sense is the polytrope still not a neutron star?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate</div>
+        <h4>Three closures, three effects</h4>
+        <p>From Beat 2’s four commands, assign each knob to the quantity it moves: terminal luminosity, lifetime, or terminal effective temperature. Then set <code>--homology</code> and say which closure homology refuses to provide.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div>
+        <h4>The Mestel slope</h4>
+        <p>Write a default cooling run to CSV. On log–log axes, fit \(\log L\) against \(\log t\) over the last decade in time, then over the whole curve. Which fit is close to \(-7/5\), and what is the star doing in the flat early part?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-8 · Intermediate</div>
+        <h4>Support is not heat</h4>
+        <p>Hold <code>--wd_mass 0.6 --mu_e 2</code> and change <code>--A_ion</code> among 4, 12, 14 and 16. Which number moves, radius or cooling age? Then change only <code>--mu_e</code> and say which number moves now.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div>
+        <h4>Handoff, not evolution</h4>
+        <p>For \(1\,M_\odot\), list the phases skipped between helium ignition and the white dwarf, then hand \(0.50\,M_\odot\) to <code>wdcool</code>. For \(12\,M_\odot\), ask whether each nsmr equation of state contains a stable \(1.4\,M_\odot\) model. Mark every number you use as integrated, prescribed, or skipped.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div>
+        <h4>Where Newton walks through a horizon</h4>
+        <p>Compare <code>--eos neutron</code> with and without <code>--newtonian</code>. At what compactness does the TOV sequence turn over? What does the Newtonian sequence do instead when you raise <code>--rho_hi</code>? Why does pressure that gravitates produce a turning point at modest compactness?</p></div>
+    </div>
+  </section>
+
+  <section id="validity">
+    <h2>Domain of Validity</h2>
+    <ul>
+      <li>Accepted stellar masses are 0.08–120 \(M_\odot\). The closures are a teaching model from about 0.35–15 \(M_\odot\). Below 0.35 the star is fully convective; above 15, mass loss and radiation pressure dominate. The program warns outside the band and will still run.</li>
+      <li>Tracks stop at helium ignition. Core helium burning, the AGB, dredge-up, mass loss and envelope ejection are absent. The remnant is a label except on the low-mass branch described in Beat 5.</li>
+      <li>Absolute ages and luminosities are approximate. Use the program for scalings, turn-offs, and limiting masses.</li>
+      <li>White dwarfs are the zero-temperature Chandrasekhar model plus classical Mestel cooling. Coulomb corrections, GR, neutrinos, crystallisation and convective coupling are absent. Cooling starts at \(3\times10^{7}\,\mathrm{K}\) because that is where neutrinos would have already dropped out.</li>
+      <li>Neither neutron-star equation of state is nuclear physics. The Fermi gas is the historical OV benchmark. The polytrope is a tunable stiffness. Rotation, crusts, hyperons and quark matter are absent.</li>
+      <li>Isochrones are interpolants through the tracks you asked for. The morphology change at \(2\,M_\odot\) is a switch of prescription.</li>
+      <li>Binarity is omitted on purpose. Most helium white dwarfs of the mass Beat 5 can produce are understood, in nature, as stripped by a companion.</li>
+    </ul>
+  </section>
+
+  <section id="related">
+    <h2>Related Programs</h2>
+    <ul class="related-list">
+      <li><strong>Star</strong> — one snapshot of stellar structure. Prerequisite for the language of Beats 0–3. This program supplies the time that snapshot does not have.</li>
+      <li><strong>Neutron</strong> — one central density. Mode <code>nsmr</code> is the family of those models and the turning point.</li>
+      <li><strong>GravitationalWaveSources</strong> — takes a compact remnant as an inspiral source. Neighbour, after Beat 9.</li>
+      <li><strong>Binary</strong> — two-body orbits. Background for the binary evolution this program refuses to pretend to compute.</li>
+      <li><strong>Orbit</strong> — the Newtonian RK4 the structure integrators resemble, in a different setting.</li>
+    </ul>
+  </section>
+
+  <section id="license">
+    <h2>License</h2>
+    <p>StellarEvolutionTracks is an original supplemental Python investigation proposed for use with Bernard Schutz’s <em>Gravity from the Ground Up</em>. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
+  </section>
+</main>
+<footer>
+  StellarEvolutionTracks — proposed GFTGUX supplement —
+  <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a>
+  · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>
+</footer>
+</div>
+</body>
+</html>
