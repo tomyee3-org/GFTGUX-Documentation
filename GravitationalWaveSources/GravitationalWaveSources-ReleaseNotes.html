@@ -1,12 +1,14 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><title>GravitationalWaveSources 1.8.0 Release Notes</title></head><body>
 <h1>GravitationalWaveSources 1.8.0 Release Notes</h1>
-<p><b>Version:</b> 1.8.0<br><b>Build:</b> f886fd0157ce<br><b>Date:</b> 2026-09-27</p>
-<h2>Release Status</h2><p>Kickoff4 candidate prepared for independent
-review. The previously approved 1.7.0 release and its contrary Codex
-review are preserved below; no external reviewer has yet recommended
-release of the current 1.8.0 candidate.</p>
-<h2>Open Bugs</h2><p>No unresolved P1–P3 defect is established by
-this Kickoff4 self-review; independent review is pending.</p>
+<p><b>Version:</b> 1.8.0<br><b>Build:</b> 4ee73261d610<br><b>Date:</b> 2026-09-27</p>
+<h2>Release Status</h2><p>Version 1.8.0 is approved in Claude's
+independent Audit41 review. The sole P3 finding, an obsolete
+Reference Guide filename in a source comment, was corrected here.
+The previously approved 1.7.0 release and its contemporary contrary
+Codex review are preserved as historical material below.</p>
+<h2>Open Bugs</h2><p>No unresolved P1–P3 defect is known following
+Audit41 and this response. Claude's four optional P4 observations
+have also been addressed. The program retains the known limits below.</p>
 <h2>Major Improvements in This Release</h2><ul>
 <li>Archived the Reference Guide byte-for-byte as
 <code>GravitationalWaveSources-original.html</code>. Added Claude-style worked laboratory
@@ -21,8 +23,14 @@ Tests simulating close failure close the underlying descriptors.</li>
 <li>Both new tutorial styles explain permission-probe debris for PNG
 and CSV users. The diagnostic-channel behavior change bumps the minor
 version from 1.7.0 to 1.8.0.</li></ul>
+<p>Audit41 response: corrected the stale physical-constants source
+cross-reference, documented <code>--lw</code> in the Grok tutorial,
+added regression checks against internal review jargon and outdated
+four-column CSV descriptions, and refreshed all three sample figures.
+The comment-only core-source edit changes BUILD_ID while MODEL_VERSION
+stays 1.8.0 because the program's behavior does not change.</p>
 <h2>Test Suite Growth</h2><p>Previous approved release: 173 tests.
-Kickoff4: 174 tests, including paired Help, guide, sample-image,
+Kickoff4: 174 tests. Audit41 response: 176 tests, including paired Help, guide, sample-image,
 command and output checks; the obsolete Reference Guide layout tests were
 replaced with scientific and tutorial contracts for both current Helps.
 Run from the program folder with
@@ -50,9 +58,11 @@ their actual descriptors.</li>
 publication helpers between driver and plotting modules remain
 deferred maintainability choices.</li></ul>
 <h2>Version Identification</h2><p>MODEL_VERSION 1.8.0; BUILD_ID
-<code>f886fd0157ce</code>. The build covers only <code>physics_gw.py</code>,
+<code>4ee73261d610</code>. The build covers only <code>physics_gw.py</code>,
 <code>driver_gw.py</code>, <code>main.py</code> and
 <code>plot_gw.py</code>, after newline normalization.</p>
+<p>The updated build identifier reflects the corrected source comment;
+the physics formulas, API and runtime behavior remain those of 1.8.0.</p>
 <h2>Earlier 1.7.0 release-note record</h2><p>The approved earlier
 release and its audit history are retained because this project resumed
 before a new release decision. Dates and build identifiers in the
