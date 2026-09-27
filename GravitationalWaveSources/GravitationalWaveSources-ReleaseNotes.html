@@ -1,17 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>GravitationalWaveSources 1.7.0 Release Notes</title>
-</head>
-<body>
-<h1>GravitationalWaveSources 1.7.0 Release Notes</h1>
-<p><b>Version:</b> 1.7.0<br><b>Build:</b> 54e086464f39<br><b>Date:</b> 2026-09-01</p>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>GravitationalWaveSources 1.8.0 Release Notes</title></head><body>
+<h1>GravitationalWaveSources 1.8.0 Release Notes</h1>
+<p><b>Version:</b> 1.8.0<br><b>Build:</b> f886fd0157ce<br><b>Date:</b> 2026-09-27</p>
+<h2>Release Status</h2><p>Kickoff4 candidate prepared for independent
+review. The previously approved 1.7.0 release and its contrary Codex
+review are preserved below; no external reviewer has yet recommended
+release of the current 1.8.0 candidate.</p>
+<h2>Open Bugs</h2><p>No unresolved P1–P3 defect is established by
+this Kickoff4 self-review; independent review is pending.</p>
+<h2>Major Improvements in This Release</h2><ul>
+<li>Archived the Reference Guide byte-for-byte as
+<code>GravitationalWaveSources-original.html</code>. Added Claude-style worked laboratory
+and Grok-style terminal script tutorials sharing one core build, test
+suite and SampleOutputs Guide.</li>
+<li>Regenerated three beat-aligned sample figures from the current
+build, with exact commands, current terminal values and self-contained
+indexed PNGs.</li>
+<li>Permission-probe close failures now produce a diagnostic instead of
+being silent; cleanup warnings use standard error for both PNG and CSV.
+Tests simulating close failure close the underlying descriptors.</li>
+<li>Both new tutorial styles explain permission-probe debris for PNG
+and CSV users. The diagnostic-channel behavior change bumps the minor
+version from 1.7.0 to 1.8.0.</li></ul>
+<h2>Test Suite Growth</h2><p>Previous approved release: 173 tests.
+Kickoff4: 174 tests, including paired Help, guide, sample-image,
+command and output checks; the obsolete Reference Guide layout tests were
+replaced with scientific and tutorial contracts for both current Helps.
+Run from the program folder with
+<code>MPLBACKEND=Agg PYTHONWARNINGS=error::RuntimeWarning python -m unittest discover -s tests -p test_physics_gw.py -q</code>.
+The flattened-file smoke test copies both current Helps, without
+rerunning the full suite. A program-only checkout skips document checks
+when both are absent; exactly one present is an error.</p>
+<h2>Known Limitations</h2><ul>
+<li>Leading-order, face-on quasi-circular inspiral through the
+Schwarzschild ISCO; no physical merger or spinning-remnant model.
+Ringdown is an illustrative Schwarzschild prescription.</li>
+<li>Publication uses hard links in a trusted local directory; an
+adversarial process with write access there can still race the
+pathname check. CSV and PNG saves are individually atomic, not
+one cross-artifact transaction.</li>
+<li>Final cutoff time uses one linearly interpolated RK4 step; test
+convergence at matched times inside the inspiral, not by assuming
+fourth-order cutoff-time error.</li></ul>
+<h2>Known Minor Maintenance Items</h2><ul>
+<li>A real os.close failure could still leave the disposable probe
+descriptor open; the failure is now diagnosed, the probe path is
+independently unlinked, and simulated-failure tests no longer leak
+their actual descriptors.</li>
+<li>Splitting the long regression suite and sharing duplicated secure
+publication helpers between driver and plotting modules remain
+deferred maintainability choices.</li></ul>
+<h2>Version Identification</h2><p>MODEL_VERSION 1.8.0; BUILD_ID
+<code>f886fd0157ce</code>. The build covers only <code>physics_gw.py</code>,
+<code>driver_gw.py</code>, <code>main.py</code> and
+<code>plot_gw.py</code>, after newline normalization.</p>
+<h2>Earlier 1.7.0 release-note record</h2><p>The approved earlier
+release and its audit history are retained because this project resumed
+before a new release decision. Dates and build identifiers in the
+following record refer to version 1.7.0.</p>
 
-<h2>Release Status</h2>
+
+
+<h3>Release Status</h3>
 <p>Version 1.7.0 concludes a kickoff review followed by eight rounds of independent review involving Claude, Codex, Copilot, and Gemini. The reviewers verified the leading-order quadrupole inspiral physics, the RK4 numerical integrator and its convergence behavior, the illustrative Schwarzschild ringdown model, the physical-constants policy, atomic and secure CSV/PNG publication, input validation, plotting, Help-file accuracy, Version/Build synchronization, and regression coverage; and exercised both the canonical and flattened upload layouts. Copilot and Gemini both recommend immediate release after Audit 8, with no release-blocking defect identified in either review. Codex's Audit 8 review recommends against release, citing one substantive finding (resource-lifetime and diagnostic completeness in the permission-probe cleanup path added at Audit 6) and two minor documentation/diagnostic-channel findings -- all three are software-stability and polish issues in a narrow, low-probability code path, not defects in the physics engine, the published numerical results, or any student-facing scientific content. The program's author has reviewed Codex's findings, agrees they do not rise to release-blocking severity for an instructional program used in ordinary single-user, locally-trusted directories, and has approved release of 1.7.0 with all three items tracked below as Known Minor Maintenance Items for a future maintenance round.</p>
 
-<h2>Major Improvements in This Release</h2>
+<h3>Major Improvements in This Release</h3>
 <ul>
 <li>Coupled ringdown sampling to the QNM frequency so <code>--rd_pts</code> must resolve at least 8 samples per oscillation cycle relative to <code>--n_tau</code>, rejecting settings that previously produced a silently aliased or invisible ringdown waveform instead of a misleading plot.</li>
 <li>Added <code>chirp_mass_from_fdot()</code>, the observational inverse of the chirp-mass relation (deriving Mc from a measured frequency and its time derivative, matching the real gravitational-wave-detection analysis formula), with log-domain evaluation so extreme inputs return correct tiny or huge finite results instead of silently underflowing or overflowing.</li>
@@ -33,11 +85,11 @@
 <li>Added an explicit "Requires Python 3.10+" statement to the program and Help file, and verified the full regression suite passes from both the canonical <code>tests/</code> layout and a flattened upload layout.</li>
 </ul>
 
-<h2>Test Suite Growth</h2>
+<h3>Test Suite Growth</h3>
 <p>A regression suite was built from zero at kickoff (92 tests) and grew steadily through every review round -- 124, 141, 156, and 160 tests across Audits 1 through 4, then 164, 169, 173, and (unchanged) 173 tests across Audits 5 through 8 -- reaching 173 automated tests for this release. The suite defines the program's four core module filenames and locates the nearest directory containing all four, so the identical test file runs unmodified from the canonical <code>tests/</code> directory or a flattened upload layout.</p>
 <p>The final suite independently re-derives every physical formula the program uses (chirp mass, ISCO frequency, strain amplitude, inspiral time, QNM ringdown parameters, and now an exact closed-form frequency-versus-time solution) from raw physical constants copied separately from the program's own, specifically so a bug in the program's own derivation cannot be silently "confirmed" by a test sharing the same buggy value; verifies RK4 stepper order and convergence, input validation across every parameter and its boundary/overflow cases, atomic and collision-safe CSV/PNG publication under injected filesystem failures (including symlink-substitution and permission-probe-cleanup-failure scenarios), umask-derived file permissions and their thread-safety under concurrent export calls, full CLI subprocess execution, and Help-file structural and scientific-content accuracy against the program's own live parameter defaults. All 173 tests pass in one run of <code>MPLBACKEND=Agg PYTHONWARNINGS=error::RuntimeWarning python test_physics_gw.py</code> from within <code>tests/</code>, with RuntimeWarning promoted to an error.</p>
 
-<h2>Known Limitations</h2>
+<h3>Known Limitations</h3>
 <ul>
 <li>Intended for education and conceptual exploration of leading-order quadrupole gravitational-wave physics, not as a precision template-generation or research-grade data-analysis pipeline.</li>
 <li>Publication of the public CSV/PNG filename still relies on a pathname-based <code>os.link()</code> call after the private temporary file's identity has already been re-verified; a process with write access to the same output directory that is actively racing this program could still substitute a different file in the narrow window between that check and publication. This is disclosed explicitly in the Help file and is an accepted boundary of the program's documented single-user, trusted-directory threat model, not an eliminated defect -- do not point <code>--csvdir</code>/<code>--outdir</code> at a directory writable by users or processes you do not trust.</li>
@@ -49,7 +101,7 @@
 <li>The secure-publication helper functions are deliberately duplicated between <code>driver_gw.py</code> and <code>plot_gw.py</code> rather than factored into shared code, per this project's standing convention of not sharing code across that module split -- an acknowledged maintenance cost, not an oversight.</li>
 </ul>
 
-<h2>Known Minor Maintenance Items</h2>
+<h3>Known Minor Maintenance Items</h3>
 <ul>
 <li>The permission-probe cleanup path added at Audit 6 (<code>_default_output_file_mode()</code> in both <code>driver_gw.py</code> and <code>plot_gw.py</code>) attempts to close and then remove a disposable, empty temporary file; if the close operation itself fails, the exception is currently discarded without any diagnostic (unlike the parallel case of a failed removal, which does print a warning), and in that rare case the underlying file descriptor may remain open for the life of the process. The two regression tests added to exercise this path mock the close call away entirely and so do not themselves close the real descriptor, leaving two descriptors open for the life of a full test-suite run. Codex's Audit 8 review identified this precisely and recommends either propagating the close failure after the unlink attempt or emitting an explicit close-failure diagnostic, plus repairing both tests to close the real descriptor they intentionally prevent production code from closing. Tracked for the next maintenance round.</li>
 <li>The diagnostic warning printed when the disposable permission-probe file's own removal fails is written to standard output rather than standard error, so it cannot currently be distinguished from the ordinary run-summary/save-status stream by a caller that redirects or captures the two channels separately. Tracked for the next maintenance round, alongside the item above.</li>
@@ -58,7 +110,6 @@
 <li>The secure-publication helpers' duplication between <code>driver_gw.py</code> and <code>plot_gw.py</code> (see Known Limitations above) has, on multiple occasions during this project's review history, meant a defect found in one module's implementation was present verbatim in the other's and had to be fixed and independently re-verified in both places rather than once; a shared private implementation utility, or at minimum a contract-test mixin applied identically to both copies, remains a reasonable future simplification if this project's four-module teaching architecture is ever revisited.</li>
 </ul>
 
-<h2>Version Identification</h2>
+<h3>Version Identification</h3>
 <p>MODEL_VERSION: 1.7.0<br>BUILD_ID: 54e086464f39</p>
-</body>
-</html>
+</body></html>

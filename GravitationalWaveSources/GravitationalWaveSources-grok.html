@@ -1,0 +1,198 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GravitationalWaveSources — Grok style tutorial</title><style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--bg:#fdf5e6;--surface:#fff;--border:#c8bfa0;--accent:#7b2d00;
+--accent2:#a04010;--gold:#b5811a;--text:#1c1c1c;--muted:#5a4a3a;
+--code-bg:#f0ede4;--note-bg:#f4f0e8;--eq-bg:#f7f2e8;
+--mono:"Courier New",Courier,monospace;
+--sans:"Helvetica Neue",Arial,sans-serif;
+--serif:Georgia,"Times New Roman",Times,serif}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 var(--serif);color:var(--text);background:var(--bg)}
+.page-wrap{display:grid;grid-template-columns:230px minmax(0,1fr);
+grid-template-rows:auto 1fr auto;min-height:100vh}
+.skip-link{position:absolute;left:-10000px;top:auto}
+.skip-link:focus{left:12px;top:8px;z-index:5;background:#fff;color:var(--accent);padding:6px}
+header{grid-column:1/-1;background:var(--accent);color:#fff;
+padding:26px 38px 20px;border-bottom:4px solid var(--gold)}
+header .badge{display:inline-block;font:10.5px var(--mono);letter-spacing:.06em;
+background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);
+border-radius:3px;padding:2px 7px;margin-bottom:10px}
+header h1{font-size:1.95rem;font-weight:normal;letter-spacing:-.02em;
+margin:0;line-height:1.3}header h1 em{font-style:normal;color:#ffc9a0}
+header .sub{font:0.88rem/1.55 var(--sans);color:#f0d0b8;margin:6px 0 0}
+header .sub a{color:#ffd8b8;text-decoration:none;border-bottom:1px solid #c68b6e}
+header .sub a:hover{border-bottom-color:#ffd8b8}
+nav{background:var(--surface);border-right:1px solid var(--border);
+padding:24px 0 40px;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav .nav-label{font:700 10px/1.5 var(--sans);letter-spacing:.12em;
+text-transform:uppercase;color:var(--gold);padding:14px 18px 4px}
+nav a{display:block;font:13px/1.5 var(--sans);color:var(--muted);
+text-decoration:none;padding:6px 18px 6px 22px;border-left:3px solid transparent}
+nav a:hover,nav a:focus{color:var(--accent);background:#fdf0e0;
+border-left-color:var(--gold);outline:none}
+main{min-width:0;width:100%;max-width:900px;padding:38px 52px 60px}
+main .meta{font:13px/1.5 var(--mono);color:var(--muted);
+background:var(--note-bg);border:1px solid var(--border);border-radius:4px;
+padding:9px 12px;margin:0 0 22px}
+main h2{font-size:1.40rem;font-weight:normal;color:var(--accent);
+border-bottom:2px solid var(--gold);padding-bottom:6px;margin:2.2rem 0 1rem;
+line-height:1.35;scroll-margin-top:18px}
+main h3{font-size:1.08rem;color:var(--accent2);margin:1.6rem 0 .5rem}
+p{margin:.15rem 0 .85rem}ul,ol{margin:.4rem 0 .85rem 1.5rem;padding:0}
+li{margin-bottom:.35rem}section{margin-bottom:2.1rem}
+code{font:0.87em/1.45 var(--mono);background:var(--code-bg);
+border:1px solid #ddd8cc;border-radius:3px;padding:1px 5px;
+overflow-wrap:anywhere}
+pre{font:0.87em/1.55 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;
+background:var(--code-bg);border:1px solid #ddd8cc;border-radius:5px;
+padding:14px 18px;margin:.8rem 0 1.2rem}
+pre code{font:inherit;background:transparent;border:0;padding:0}
+main .note,main .answer{padding:11px 16px;margin:1rem 0 1.2rem;
+font-size:.93rem;color:var(--muted);border-radius:0 5px 5px 0}
+main .note{background:var(--note-bg);border:1px solid var(--border);
+border-left:4px solid var(--accent2)}
+main .answer{background:var(--eq-bg);border:1px solid var(--border);
+border-left:4px solid var(--gold)}
+.tag{display:inline-block;font:700 10px/1.5 var(--sans);letter-spacing:.05em;
+text-transform:uppercase;background:#dbe8f5;color:#1c3f63;
+border:1px solid #a4c0da;border-radius:3px;padding:1px 6px;margin-right:4px}
+footer{grid-column:1/-1;background:var(--accent);color:#fff;text-align:center;
+padding:18px 24px;font:12.5px/1.7 var(--sans)}
+footer a{color:#e0c090}footer a:hover{color:#fff}
+@media(max-width:740px){.page-wrap{grid-template-columns:1fr}
+header{padding:20px 20px 16px}header h1{font-size:1.65rem}
+nav{position:static;height:auto;padding:10px 8px;border-right:0;
+border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:0 4px}
+nav .nav-label{width:100%;padding:8px 12px 0}
+nav a{padding:5px 12px;border-left:0;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus{border-bottom-color:var(--gold)}
+main{padding:24px 20px 48px}}
+@media print{.page-wrap{display:block}nav{display:none}header,footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+main{max-width:none;padding:20px}section{break-inside:avoid}}
+</style></head>
+<body><a class="skip-link" href="#content">Skip to content</a><div class="page-wrap">
+<header><div class="badge">Supplement · Gravity from the Ground Up</div>
+<h1><em>GravitationalWaveSources</em> — inspiral, chirp and illustrative ringdown</h1>
+<p class="sub">Grok style tutorial · Three beats<br>
+Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a>
+ · Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header>
+<nav aria-label="Contents"><div class="nav-label">Start</div><a href="#start">Before the first run</a>
+<div class="nav-label">The three beats</div><a href="#b0">Beat 0 · Hear the chirp</a><a href="#b1">Beat 1 · Compare the masses</a><a href="#b2">Beat 2 · Illustrate a ringdown</a>
+<div class="nav-label">Keep exploring</div><a href="#experiments">Experiments</a>
+<a href="#parameters">Parameters and output</a><a href="#limits">Model limits</a>
+<a href="#license">License</a></nav><main id="content">
+<p class="meta" id="version_build">Version 1.8.0 Build f886fd0157ce · 2026-09-27 · run from the folder containing <code>main.py</code></p>
+<p><b>Spine:</b> A chirp rises in frequency and amplitude; the ISCO cutoff ends this calculation, and any red ringdown beyond it is an illustrative choice. Run the evidence before reading the equations.</p><h2 id="start">Before the first run</h2>
+<p>Use Python 3.10 or later with NumPy and Matplotlib. In the directory
+containing <code>main.py</code>, run <code>python main.py --version</code>
+and compare it with the version/build at the top of this page. Each beat command
+opens a Matplotlib figure; <code>--outdir ./figures</code> also saves a PNG.
+<code>--csvdir ./data</code> writes a timestamped CSV containing metadata
+and the columns <code>t_s,f_hz,A,h,phase_rad</code>. The default
+1.4+1.4 solar-mass run exports roughly 789,000 rows; for
+small CSV experiments begin at <code>--f_start 100</code> instead.
+Use <code>python main.py --help</code> to inspect all parameters.</p>
+<p class="note"><b>Reading the panels:</b> The top panel is the strain
+<code>h(t)</code>; the middle panel is its inspiral amplitude scale
+<code>A(t)</code>; the bottom panel is the gravitational-wave frequency
+<code>f(t)</code>. A full 158-second plot cannot resolve individual
+late-time cycles at ordinary screen width; use Matplotlib's zoom or the
+<code>--t_before</code> window to inspect them. The lower-right
+Matplotlib toolbar shows cursor coordinates in the current axes.</p><section id="b0"><h2>Beat 0 · See two changes at once</h2>
+<p>Which panel tells you the cycles accelerate, and which one tells
+you the strain scale grows?</p><pre><code>python main.py --outdir ./figures</code></pre>
+<p>Read the printout: <code>Mc=1.2188 M☉</code>, 157.868 s from
+20 Hz to <code>f_ISCO=1570.4 Hz</code>, and a face-on amplitude scale
+of <code>5.583e-23</code> at cutoff. The full 158-second trace packs
+too many cycles into one screen width; zoom the last few hundredths
+of a second to see individual oscillations. The middle panel is an
+envelope, not a separate detector signal.</p>
+<p><span class="tag">DERIVED</span> After the run, attach the equation:
+<code>df/dt=(96/5)π^(8/3)(G Mc/c³)^(5/3) f^(11/3)</code>, where
+<code>Mc=(m1 m2)^(3/5)/(m1+m2)^(1/5)</code>. The strain scale
+<code>A=4(G Mc)^(5/3)(πf)^(2/3)/(c⁴d)</code> grows with frequency
+and falls as <code>1/d</code>.</p></section><section id="b1"><h2>Beat 1 · Change the masses, keep the questions</h2>
+<p>Make a heavier binary. Before looking at the summary, predict
+the direction of the change in its time in band and cutoff frequency.</p><pre><code>python main.py --m1 36 --m2 29 --d 440 --outdir ./figures</code></pre>
+<p>This pair takes 0.813 s to sweep from 20 Hz to 67.6 Hz;
+its <code>Mc=28.0956 M☉</code>. The ISCO strain scale is
+<code>1.165e-21</code> at 440 Mpc. Compare the masses, distance and
+cutoff with Beat 0. Both chirp mass <i>and</i> total mass have changed:
+do not attribute every difference to one knob.</p>
+<p><span class="tag">DERIVED</span>
+<code>f_ISCO=c³/[6^(3/2)πG(m1+m2)]</code> depends on total mass;
+the frequency sweep depends on chirp mass. To isolate either, choose
+a controlled comparison in the experiments.</p></section><section id="b2"><h2>Beat 2 · Watch the model change at the dotted line</h2>
+<p>What ends at ISCO, and what begins only because we request it?</p><pre><code>python main.py --m1 36 --m2 29 --d 440 --ringdown --t_before 0.2 --t_after 0.05 --outdir ./figures</code></pre>
+<p>Read <code>f_QNM=195.5 Hz</code> and
+<code>τ=3.417 ms</code> for an assumed 61.750 M☉ nonspinning
+remnant. The red damped signal joins the blue strain continuously;
+the frequency and inspiral envelope panels stop at the cutoff.
+The figure labels the extension “illustrative ringdown — not a
+physical merger.” The calculated signal does not cross a modeled
+merger regime.</p>
+<p><span class="tag">PRESCRIPTION</span>
+<code>M_final=0.95(m1+m2)</code> and zero spin are teaching choices.
+The Schwarzschild mode <code>(G M_final/c³)ω≈0.3737−0.0890i</code>
+gives <code>f_QNM∝1/M_final</code> and
+<code>τ∝M_final</code>, conditional on that choice.</p></section><h2 id="experiments">Try it yourself · one question per run</h2><ol>
+<li><code>python main.py --d 200</code> — what happens to the ISCO
+strain scale, and what stays fixed?</li>
+<li><code>python main.py --f_start 40</code> — how much of the
+157.868-second default run did the 20–40 Hz segment account for?</li>
+<li><code>python main.py --m1 20 --m2 20 --f_start 40</code> followed by
+<code>python main.py --m1 30 --m2 10 --f_start 40</code> —
+which printed quantity stays fixed when total mass stays 40 M☉?</li>
+<li><code>python main.py --m1 36 --m2 29 --d 440 --dt 0.0001</code>
+— how much does the printed cutoff time shift? For numerical order,
+which fixed interior time should a CSV comparison use instead?</li>
+<li><code>python main.py --f_start 100 --csvdir ./data</code>
+— use two adjacent <code>t_s,f_hz</code> rows to estimate <code>df/dt</code>;
+take their mean frequency as <code>f_mid</code>. Can you recover
+<code>Mc≈1.2188 M☉</code> from
+<code>physics_gw.chirp_mass_from_fdot(f_mid, fdot_est)/physics_gw.M_sun</code>?
+The function itself returns kilograms; divide by <code>M_sun</code>
+to report solar masses.</li>
+<li><code>python main.py --m1 20 --m2 20 --ringdown --f_start 40</code>
+then <code>python main.py --m1 40 --m2 40 --ringdown --f_start 40</code>
+— what happens
+to the QNM frequency and decay time?</li>
+<li>Revisit Beat 2 — which plotted traces stop at ISCO, and which one
+continues as a prescribed toy signal?</li></ol>
+<h2 id="parameters">Quick reference after the three runs</h2>
+<p><code>--m1</code>, <code>--m2</code> and <code>--d</code> set masses
+and distance; <code>--f_start</code> and <code>--dt</code> set the
+band entrance and numerical step. <code>--ringdown</code> adds a
+Schwarzschild QNM with <code>--n_tau</code> decay times and
+<code>--rd_pts</code> points: at least eight samples per QNM cycle
+are required. <code>--t_before</code>/<code>--t_after</code> zoom the
+display only. <code>--outdir</code> saves a PNG; <code>--csvdir</code>
+saves the waveform columns <code>t_s,f_hz,A,h,phase_rad</code>
+with run metadata; <code>--dpi</code> accepts 1 through 600.
+See <code>python main.py --help</code> for defaults and full bounds.</p>
+<p>CSV and PNG publication is complete per individual file in a trusted
+output directory with hard-link support; two requested outputs are not
+one transaction. Keep an untrusted co-tenant out of that directory.
+Diagnostics go to standard error. An interrupted export can leave a
+<code>.gw_tmp_*</code> private file or an empty
+<code>.gw_modeprobe_*</code> permission probe, for PNG as well as CSV;
+after the process stops, either can be removed. The build hashes the
+four core sources after CRLF/LF newline normalization, so document
+edits do not change it.</p>
+<h2 id="limits">What the figure cannot represent</h2>
+<p>This is leading-order quasi-circular inspiral ending at a
+Schwarzschild ISCO cutoff. Its <code>A</code> is a face-on strain
+scale, not a detector response. Spin, eccentricity, inclination,
+cosmological redshift, tides, higher harmonics and the merger itself
+are absent. The optional zero-spin ringdown is illustrative only.
+The final-step cutoff time uses linear interpolation; use interior
+samples for a clean RK4 convergence check. Source calculations use
+<code>GM_sun_nominal=1.3271244e20 m³/s²</code> with the internally
+derived, unrounded <code>M_sun=GM_sun_nominal/G</code>.</p>
+<h2 id="license">License</h2><p>Original supplemental investigation
+for Bernard Schutz's <i>Gravity from the Ground Up</i>; CC BY-NC-SA 4.0
+as recorded in the archived Reference Guide.</p></main>
+<footer>GravitationalWaveSources · Grok style tutorial · Version 1.8.0 · Build f886fd0157ce</footer>
+</div></body></html>

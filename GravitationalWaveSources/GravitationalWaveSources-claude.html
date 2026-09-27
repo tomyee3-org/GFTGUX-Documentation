@@ -1,0 +1,279 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GravitationalWaveSources — Claude style tutorial</title><style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--bg:#fdf5e6;--surface:#fff;--border:#c8bfa0;--accent:#7b2d00;
+--accent2:#a04010;--gold:#b5811a;--text:#1c1c1c;--muted:#5a4a3a;
+--code-bg:#f0ede4;--note-bg:#f4f0e8;--eq-bg:#f7f2e8;
+--mono:"Courier New",Courier,monospace;
+--sans:"Helvetica Neue",Arial,sans-serif;
+--serif:Georgia,"Times New Roman",Times,serif}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 var(--serif);color:var(--text);background:var(--bg)}
+.page-wrap{display:grid;grid-template-columns:230px minmax(0,1fr);
+grid-template-rows:auto 1fr auto;min-height:100vh}
+.skip-link{position:absolute;left:-10000px;top:auto}
+.skip-link:focus{left:12px;top:8px;z-index:5;background:#fff;color:var(--accent);padding:6px}
+header{grid-column:1/-1;background:var(--accent);color:#fff;
+padding:26px 38px 20px;border-bottom:4px solid var(--gold)}
+header .badge{display:inline-block;font:10.5px var(--mono);letter-spacing:.06em;
+background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);
+border-radius:3px;padding:2px 7px;margin-bottom:10px}
+header h1{font-size:1.95rem;font-weight:normal;letter-spacing:-.02em;
+margin:0;line-height:1.3}header h1 em{font-style:normal;color:#ffc9a0}
+header .sub{font:0.88rem/1.55 var(--sans);color:#f0d0b8;margin:6px 0 0}
+header .sub a{color:#ffd8b8;text-decoration:none;border-bottom:1px solid #c68b6e}
+header .sub a:hover{border-bottom-color:#ffd8b8}
+nav{background:var(--surface);border-right:1px solid var(--border);
+padding:24px 0 40px;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav .nav-label{font:700 10px/1.5 var(--sans);letter-spacing:.12em;
+text-transform:uppercase;color:var(--gold);padding:14px 18px 4px}
+nav a{display:block;font:13px/1.5 var(--sans);color:var(--muted);
+text-decoration:none;padding:6px 18px 6px 22px;border-left:3px solid transparent}
+nav a:hover,nav a:focus{color:var(--accent);background:#fdf0e0;
+border-left-color:var(--gold);outline:none}
+main{min-width:0;width:100%;max-width:900px;padding:38px 52px 60px}
+main .meta{font:13px/1.5 var(--mono);color:var(--muted);
+background:var(--note-bg);border:1px solid var(--border);border-radius:4px;
+padding:9px 12px;margin:0 0 22px}
+main h2{font-size:1.40rem;font-weight:normal;color:var(--accent);
+border-bottom:2px solid var(--gold);padding-bottom:6px;margin:2.2rem 0 1rem;
+line-height:1.35;scroll-margin-top:18px}
+main h3{font-size:1.08rem;color:var(--accent2);margin:1.6rem 0 .5rem}
+p{margin:.15rem 0 .85rem}ul,ol{margin:.4rem 0 .85rem 1.5rem;padding:0}
+li{margin-bottom:.35rem}section{margin-bottom:2.1rem}
+code{font:0.87em/1.45 var(--mono);background:var(--code-bg);
+border:1px solid #ddd8cc;border-radius:3px;padding:1px 5px;
+overflow-wrap:anywhere}
+pre{font:0.87em/1.55 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;
+background:var(--code-bg);border:1px solid #ddd8cc;border-radius:5px;
+padding:14px 18px;margin:.8rem 0 1.2rem}
+pre code{font:inherit;background:transparent;border:0;padding:0}
+main .note,main .answer{padding:11px 16px;margin:1rem 0 1.2rem;
+font-size:.93rem;color:var(--muted);border-radius:0 5px 5px 0}
+main .note{background:var(--note-bg);border:1px solid var(--border);
+border-left:4px solid var(--accent2)}
+main .answer{background:var(--eq-bg);border:1px solid var(--border);
+border-left:4px solid var(--gold)}
+.tag{display:inline-block;font:700 10px/1.5 var(--sans);letter-spacing:.05em;
+text-transform:uppercase;background:#dbe8f5;color:#1c3f63;
+border:1px solid #a4c0da;border-radius:3px;padding:1px 6px;margin-right:4px}
+footer{grid-column:1/-1;background:var(--accent);color:#fff;text-align:center;
+padding:18px 24px;font:12.5px/1.7 var(--sans)}
+footer a{color:#e0c090}footer a:hover{color:#fff}
+@media(max-width:740px){.page-wrap{grid-template-columns:1fr}
+header{padding:20px 20px 16px}header h1{font-size:1.65rem}
+nav{position:static;height:auto;padding:10px 8px;border-right:0;
+border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:0 4px}
+nav .nav-label{width:100%;padding:8px 12px 0}
+nav a{padding:5px 12px;border-left:0;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus{border-bottom-color:var(--gold)}
+main{padding:24px 20px 48px}}
+@media print{.page-wrap{display:block}nav{display:none}header,footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+main{max-width:none;padding:20px}section{break-inside:avoid}}
+</style></head>
+<body><a class="skip-link" href="#content">Skip to content</a><div class="page-wrap">
+<header><div class="badge">Supplement · Gravity from the Ground Up</div>
+<h1><em>GravitationalWaveSources</em> — inspiral, chirp and illustrative ringdown</h1>
+<p class="sub">Claude style tutorial · Three beats<br>
+Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a>
+ · Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header>
+<nav aria-label="Contents"><div class="nav-label">Start</div><a href="#start">Before the first run</a>
+<div class="nav-label">The three beats</div><a href="#b0">Beat 0 · Hear the chirp</a><a href="#b1">Beat 1 · Compare the masses</a><a href="#b2">Beat 2 · Illustrate a ringdown</a>
+<div class="nav-label">Keep exploring</div><a href="#experiments">Experiments</a>
+<a href="#parameters">Parameters and output</a><a href="#limits">Model limits</a>
+<a href="#license">License</a></nav><main id="content">
+<p class="meta" id="version_build">Version 1.8.0 Build f886fd0157ce · 2026-09-27 · run from the folder containing <code>main.py</code></p>
+<p><b>The question for this laboratory:</b> Why can the same two bodies set both a rising frequency and a finite cutoff, yet not tell us a physical merger waveform? Run each beat before using its worked explanation.</p><h2 id="start">Before the first run</h2>
+<p>Use Python 3.10 or later with NumPy and Matplotlib. In the directory
+containing <code>main.py</code>, run <code>python main.py --version</code>
+and compare it with the version/build at the top of this page. Each beat command
+opens a Matplotlib figure; <code>--outdir ./figures</code> also saves a PNG.
+<code>--csvdir ./data</code> writes a timestamped CSV containing metadata
+and the columns <code>t_s,f_hz,A,h,phase_rad</code>. The default
+1.4+1.4 solar-mass run exports roughly 789,000 rows; for
+small CSV experiments begin at <code>--f_start 100</code> instead.
+Use <code>python main.py --help</code> to inspect all parameters.</p>
+<p class="note"><b>Reading the panels:</b> The top panel is the strain
+<code>h(t)</code>; the middle panel is its inspiral amplitude scale
+<code>A(t)</code>; the bottom panel is the gravitational-wave frequency
+<code>f(t)</code>. A full 158-second plot cannot resolve individual
+late-time cycles at ordinary screen width; use Matplotlib's zoom or the
+<code>--t_before</code> window to inspect them. The lower-right
+Matplotlib toolbar shows cursor coordinates in the current axes.</p><section id="b0"><h2>Beat 0 · The signal grows faster and louder</h2>
+<p><b>Three tasks.</b> (1) Run the equal-mass default and record the chirp
+mass, time to the cutoff and cutoff frequency from the terminal.
+(2) Locate the rising frequency in the bottom panel and the rising
+amplitude scale in the middle panel. (3) Identify where the upper
+waveform stops. Would a longer recording of this model contain a merger?</p><pre><code>python main.py --outdir ./figures</code></pre>
+<p class="answer"><b>Check your run.</b> The 1.4+1.4 solar-mass pair at
+400 Mpc begins at 20 Hz. The console prints a chirp mass of
+<code>1.2188 M☉</code>, 157.868 s to the cutoff,
+<code>f_ISCO=1570.4 Hz</code> and a face-on strain-amplitude scale
+<code>A_ISCO=5.583e-23</code>. The waveform is stopped deliberately at
+the Schwarzschild ISCO. At full extent, individual cycles may be too
+dense to distinguish; use <code>--t_before 0.05</code> to inspect
+the last 0.05 s on a separate run.</p>
+<p><span class="tag">DERIVED</span> The binary's chirp mass is
+<code>Mc=(m1 m2)^(3/5)/(m1+m2)^(1/5)</code>. The leading-order
+quadrupole equation integrated here is
+<code>df/dt=(96/5)π^(8/3)(G Mc/c³)^(5/3) f^(11/3)</code>, alongside
+<code>dΦ/dt=2πf</code>. Both frequency and phase advance with RK4.
+The printed chirp mass is the mass combination controlling that
+frequency sweep; it does not determine the Schwarzschild cutoff alone.</p>
+<p><span class="tag">DERIVED WITHIN THE MODEL</span> The inspiral envelope
+is <code>A=4(G Mc)^(5/3)(π f)^(2/3)/(c⁴ d)</code> for the chosen
+face-on quadrupole scale and luminosity distance <code>d</code>.
+This is neither a sky/polarization average nor the measured response
+of a particular detector. Doubling the distance halves the displayed
+envelope but leaves the frequency evolution unchanged.</p></section><section id="b1"><h2>Beat 1 · A heavier pair chirps through the band sooner</h2>
+<p><b>Three tasks.</b> (1) Compare the time to cutoff with Beat 0.
+(2) Compare both the chirp masses and cutoff frequencies.
+(3) Zoom the top panel if needed and decide whether a shorter waveform
+alone tells you the effect of chirp mass independently of total mass.</p><pre><code>python main.py --m1 36 --m2 29 --d 440 --outdir ./figures</code></pre>
+<p class="answer"><b>Check your run.</b> A 36+29 solar-mass pair at
+440 Mpc has <code>Mc=28.0956 M☉</code>; it goes from 20 Hz to its
+cutoff in 0.813 s (4,065 inspiral samples). The cutoff is
+<code>67.6 Hz</code> and the face-on amplitude scale there is
+<code>1.165e-21</code>. These two runs change the chirp mass,
+total mass <i>and</i> distance, so the strain amplitudes do not
+isolate any one change. Use a fixed-total-mass experiment below.</p>
+<p><span class="tag">DERIVED</span> The chosen cutoff is
+<code>f_ISCO=c³/[6^(3/2)πG(m1+m2)]</code>: its mass dependence is
+through the <i>total</i> mass, unlike the frequency sweep controlled
+by <code>Mc</code>. For a finite starting frequency,
+<code>T=(5/256)π^(-8/3)(G Mc/c³)^(-5/3)
+[f_start^(-8/3) − f_ISCO^(-8/3)]</code> gives a leading-order
+analytic time check. The program's reported time ends with a linear
+interpolation across the final RK4 step, so very fine comparisons
+of cutoff times need care.</p></section><section id="b2"><h2>Beat 2 · The red signal is a teaching extension</h2>
+<p><b>Three tasks.</b> (1) Find the dotted ISCO line where the blue
+inspiral ends and the red damped oscillation begins. (2) Read the
+frequency and decay time for that oscillation. (3) Explain why the
+middle and bottom panels do not continue through the red segment.</p><pre><code>python main.py --m1 36 --m2 29 --d 440 --ringdown --t_before 0.2 --t_after 0.05 --outdir ./figures</code></pre>
+<p class="answer"><b>Check your run.</b> The inspiral still cuts off
+after 0.813 s at 67.6 Hz. The assumed nonrotating final mass is
+<code>61.750 M☉</code> (95% of the original 65 M☉).
+The illustrative quadrupolar QNM has <code>f_QNM=195.5 Hz</code>
+and an amplitude-decay time of <code>3.417 ms</code>. Its strain and
+phase meet the inspiral continuously at the seam; a physical binary
+merger and its matching energy flux are not modeled. The red segment
+has no inspiral <code>f</code> or <code>A</code> values, so neither
+the middle nor bottom inspiral panel should extend through it.</p>
+<p><span class="tag">PRESCRIPTION</span> The assumed remnant is
+<code>M_final=0.95(m1+m2)</code> with zero spin. Within this
+Schwarzschild teaching model the chosen fundamental mode obeys
+<code>(G M_final/c³) ω ≈ 0.3737 − 0.0890 i</code>, hence
+<code>f_QNM=0.3737/[2π(G M_final/c³)]</code> and
+<code>τ=(G M_final/c³)/0.0890</code>. These formulae scale as
+<code>f_QNM∝1/M_final</code> and <code>τ∝M_final</code>.
+The figure itself labels the extension “illustrative ringdown — not a
+physical merger”; do not present it as a measured waveform.</p></section><h2 id="experiments">Graded experiments</h2><ol>
+<li><b>EXP-1 · Observe:</b> In Beat 0, read <code>Mc</code>,
+<code>f_ISCO</code> and the 157.868 s duration. Use the three panel
+labels to distinguish strain, its envelope and frequency.</li>
+<li><b>EXP-2 · Distance:</b> Rerun with <code>--d 200</code> and
+<code>--d 800</code>. With the original 400 Mpc, compare the printed
+ISCO strain scales; predict the 200 Mpc value
+<code>1.117e-22</code> (twice 5.583e-23 to displayed precision).
+Check whether 157.868 s and 1570.4 Hz change.</li>
+<li><b>EXP-3 · Band entrance:</b> Repeat the default with
+<code>--f_start 30</code> and <code>40</code>. Compare the printed
+durations with the finite-frequency inspiral-time expression from
+Beat 1. Do not infer an exact power law while the ISCO term is finite.</li>
+<li><b>EXP-4 · Chirp mass versus total mass:</b> Compare Beat 0 and
+Beat 1 with their printed masses and cutoff values. Identify which
+two mass combinations change; an attribution to chirp mass alone is
+not justified by these two runs.</li>
+<li><b>EXP-5 · Fixed total mass:</b> Compare
+<code>python main.py --m1 20 --m2 20 --f_start 40</code> and
+<code>python main.py --m1 30 --m2 10 --f_start 40</code>.
+Both have 40 M☉ total, so <code>f_ISCO</code> must agree;
+record the distinct chirp masses, durations and ISCO strain scales.</li>
+<li><b>EXP-6 · Numerical convergence:</b> Use
+<code>--m1 36 --m2 29 --d 440 --f_start 20</code> at
+<code>--dt 0.0002</code> and <code>--dt 0.0001</code> with
+<code>--csvdir ./data</code>. Compare interpolated <code>f</code>
+and <code>phase_rad</code> at a matched interior time such as
+<code>t=0.4000 s</code>, well before cutoff;
+do not use the final interpolated cutoff time alone to infer RK4 order.</li>
+<li><b>EXP-7 · Infer chirp mass:</b> Run
+<code>python main.py --f_start 100 --csvdir ./data</code>.
+Read the first two distinct CSV times and frequencies, compute an
+estimate of <code>df/dt=(f₂−f₁)/(t₂−t₁)</code> from those rows.
+Take <code>f_mid=(f₁+f₂)/2</code> and use
+<code>physics_gw.chirp_mass_from_fdot(f_mid, fdot_est)/physics_gw.M_sun</code>.
+Expect approximately <code>1.2188 M☉</code> with sufficiently
+close rows; the CSV includes 17-digit times and a metadata header.
+The finite difference is an approximation, not the exact derivative.</li>
+<li><b>EXP-8 · Phase:</b> In the same CSV, find a short interval
+near 100 Hz. Estimate its phase increase as <code>2π f Δt</code>
+and compare with the stored <code>phase_rad</code> difference.
+Explain why the approximation worsens as <code>f</code> changes faster.</li>
+<li><b>EXP-9 · The seam:</b> Use Beat 2's zoom and report what each
+panel does at the dotted cutoff. Why is continuity of strain not a
+claim of a physical merger?</li>
+<li><b>EXP-10 · QNM scaling:</b> With equal masses, compare
+<code>python main.py --m1 20 --m2 20 --ringdown --f_start 40</code>
+and <code>python main.py --m1 40 --m2 40 --ringdown --f_start 40</code>.
+Before running, predict a factor of two decrease in <code>f_QNM</code>
+and factor of two increase in <code>τ</code>.</li>
+<li><b>EXP-11 · Source versus detector:</b> Label each of these as
+included or absent: face-on quadrupole scale, spin, sky averaging,
+detector response, tidal effects, cosmological redshift and a fully
+modeled merger. Use the limitations below to check your list.</li>
+</ol>
+<h2 id="parameters">Parameters, outputs and method</h2>
+<p>The CLI accepts component masses <code>--m1</code> and
+<code>--m2</code> (solar masses), luminosity distance <code>--d</code>
+(Mpc), step <code>--dt</code> (seconds), starting GW frequency
+<code>--f_start</code> (Hz), and the optional <code>--ringdown</code>.
+For ringdown, <code>--n_tau</code> sets the number of decay times
+and <code>--rd_pts</code> the stored points: the chosen pair must
+provide at least eight samples per QNM cycle; <code>--rd_pts</code>
+also lies from 2 to 500,000. Zoom only the display with
+<code>--t_before</code> and <code>--t_after</code>, measured in seconds
+from cutoff; <code>--lw</code> changes line width and <code>--dpi</code>
+accepts integers 1 through 600. See <code>--help</code> for defaults
+and all other input bounds.</p>
+<p>The integrator solves the leading-order <code>f,Φ</code> system
+with RK4 and linearly interpolates the final step to the ISCO cutoff.
+Printed times and amplitudes are rounded; <code>--csvdir</code> writes
+the underlying samples with a provenance header. The <code>BUILD_ID</code>
+is a hash of the four core Python source files after universal-newline
+normalization (CRLF and LF produce the same identifier); edits to the
+Help, guide and tests do not change it. <b>Build identifier provenance:</b>
+version and build together distinguish a named model release from its
+particular core-source revision.</p>
+<p>Each requested CSV or PNG is published as a complete file under a new
+name in an ordinary, trusted output directory. This is not a transaction
+across CSV <i>and</i> PNG. If an untrusted co-tenant can modify the same
+directory, the pathname publication has a race after its identity check;
+use a directory you control. Hard-link support is required. Diagnostic
+permission-probe warnings go to standard error. An interrupted run may
+leave private temporary files named <code>.gw_tmp_*</code> or empty
+permission-probe files <code>.gw_modeprobe_*</code>, for either CSV
+<i>or</i> PNG export; once the process is no longer writing, these
+leftovers can be deleted.</p>
+<h2 id="limits">What this model can and cannot claim</h2>
+<p>The leading-order quasi-circular quadrupole inspiral is an idealized
+calculation, not a precision waveform template. Spin, eccentricity,
+source inclination, sky/polarization averaging, antenna response,
+cosmological redshift, higher harmonics, neutron-star tides and
+higher post-Newtonian corrections are absent. The optional
+Schwarzschild QNM extension has a prescribed nonspinning remnant;
+the binary merger is not computed. Even for a valid run the
+interpolated ISCO end time does not inherit a clean fourth-order
+convergence rate from the interior RK4 steps.</p>
+<p>The constant <code>GM_sun_nominal=1.3271244e20 m³/s²</code> is the
+nominal solar mass parameter used here; <code>M_sun</code> is computed
+as <code>GM_sun_nominal/G</code>, not rounded in storage. This makes
+hand calculations with a differently rounded solar mass differ
+slightly in their last displayed digits.</p>
+<h2 id="license">License</h2><p>This original supplemental Python
+investigation for Bernard Schutz's <i>Gravity from the Ground Up</i>
+is distributed under Creative Commons Attribution-NonCommercial-ShareAlike
+4.0 International (CC BY-NC-SA 4.0), as stated in the archived
+Reference Guide.</p></main>
+<footer>GravitationalWaveSources · Claude style tutorial · Version 1.8.0 · Build f886fd0157ce</footer>
+</div></body></html>
