@@ -1,1 +1,58 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Cosmology Expansion Simulator 1.5.0 Release Notes</title></head><body><h1>Cosmology Expansion Simulator 1.5.0 Release Notes</h1><p><b>Version:</b> 1.5.0<br><b>Build:</b> 9ef1e60257d3<br><b>Date:</b> 2026-08-24</p><h2>Release Status</h2><p>Version 1.5.0 has undergone multiple independent review rounds involving Codex, Copilot, Gemini, and Claude responses. Major numerical and physics-correctness issues identified during earlier audits were corrected before this release.</p><h2>Major Improvements Since 1.3.x</h2><ul><li>Contracting-branch endpoint handling corrected.</li><li>Big-Bang connectivity certification strengthened.</li><li>Corrected CPL asymptotic coefficient treatment.</li><li>Added past-eternal model classification.</li><li>Added structured fate reporting and crossing tracking.</li><li>Added BUILD_ID provenance support.</li><li>Expanded regression suite to 91 tests.</li></ul><h2>Known Limitations</h2><ul><li>Extreme CPL parameter choices may exceed representability policies.</li><li>Some extreme-parameter tests may still emit RuntimeWarning messages even when final classification is correct.</li><li>Crossing detection uses practical sign-change scanning and may not resolve arbitrarily close crossings.</li><li>The simulator is intended for education and exploration rather than precision cosmological parameter estimation.</li></ul><h2>Audit Summary</h2><ul><li>Audit 7: Contracting-branch endpoint and provenance improvements verified.</li><li>Audit 8: Big-Bang connectivity and CPL asymptotic fixes verified.</li><li>Audit 9: Past-eternal classification, build-ID, and new regression coverage verified; one RuntimeWarning cleanup item remains.</li></ul><h2>Version Identification</h2><p>This release corresponds to Version 1.5.0 and Build 9ef1e60257d3.</p><h2>Detailed Audit Records</h2><p>Detailed Audit 7–9 reports and responses are distributed separately from these release notes.</p></body></html>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>CosmologyExpansionSimulator 1.6.0 Release Notes</title></head><body>
+<h1>CosmologyExpansionSimulator 1.6.0 Release Notes</h1>
+<p><b>Version:</b> 1.6.0<br><b>Build:</b> 775b2b0ceb21<br><b>Date:</b> 2026-09-27</p>
+<h2>Release Status</h2><p>Claude Audit41 independently reviewed the
+Kickoff4 candidate and recommends APPROVE. The prior 1.5.0 numerical
+release had independent Audit 7–9 review; Claude verified both current
+tutorial styles, the 1.6.0 plotting adjustment, all four regenerated
+sample figures, and the complete 98-test suite.</p>
+<h2>Open Bugs</h2><p>Claude Audit41 found no P1–P3 defects. No such
+defects are open in this approved candidate.</p>
+<h2>Major Improvements in This Release</h2><ul>
+<li>Preserved the previous Reference Guide byte-for-byte as
+<code>CosmologyExpansionSimulator-original.html</code>, separate from both new tutorial Helps.</li>
+<li>Added Claude-style worked-laboratory and Grok-style terminal-script
+Helps. They share the same four source modules, version 1.6.0, build
+775b2b0ceb21, and commands for four figure beats.</li>
+<li>Regenerated four embedded figures from this build, reordered the
+SampleOutputs Guide by beat, replaced inherited images and historical
+provenance, and synchronized captions and printed numerical checkpoints.</li>
+<li>Clarified the finite <code>a=5</code> recollapse horizon of age scans,
+the exact-flatness default, the physical age of past-eternal models, and
+the distinction between a displayed bound and an eventual fate.</li>
+<li>Made the signed Hubble-axis tick labels legible around turnaround in
+contracting-branch figures; this visible plotting change bumps the minor
+model version to 1.6.0.</li></ul>
+<h2>Test Suite Growth</h2><p>Previous build: 91 physics and integration
+tests, all passed under <code>python -m unittest tests.test_physics_cosmo -q</code>.
+Kickoff4: 98 tests (91 existing plus 6 paired-help/guide contract tests
+and one contracting-axis readability regression),
+all passing under the same command with both current Helps under the sibling Documentation
+repository. Program-only layouts skip the document checks when neither
+Help is present; a layout with only one current Help fails those checks.</p>
+<h2>Known Limitations</h2><ul>
+<li>FLRW perfect-fluid background only; no density perturbations, galaxy
+formation, or dark-energy microphysics.</li>
+<li>The CPL equation of state is a phenomenological ansatz and its
+far-future extrapolation is not a physical prediction.</li>
+<li>Age-scan recollapse flags search only through <code>a=5</code>;
+arbitrarily close epoch crossings may escape finite numerical scans.
+Integration and root finding have finite precision and bounds.</li></ul>
+<h2>Known Minor Maintenance Items</h2><ul>
+<li>Some extreme-parameter pathways can emit NumPy RuntimeWarnings
+even when the final input rejection or classification is correct.
+The current documentation and test work does not change this numerical
+policy; investigate with a captured reproducer in a later code round.</li>
+<li>Claude Audit41 suggested an optional defensive guard for an empty
+finite-H array in the plotting tick calculation; the reviewed integration
+path cannot produce an identically zero H trajectory.</li>
+</ul><h2>Version Identification</h2><p>Version 1.6.0, build
+<code>775b2b0ceb21</code>. The build hashes only
+<code>physics_cosmo.py</code>, <code>driver_cosmo.py</code>,
+<code>main.py</code>, and <code>plot_cosmo.py</code>. Tutorial,
+guide, test and release-note edits do not change it.</p>
+<h2>Earlier 1.5.0 release-note record</h2><p>The following August
+record is retained because development resumed before a final release
+decision. Its dates and build refer to that earlier note.</p><h3>Release Status</h3><p>Version 1.5.0 has undergone multiple independent review rounds involving Codex, Copilot, Gemini, and Claude responses. Major numerical and physics-correctness issues identified during earlier audits were corrected before this release.</p><h3>Major Improvements Since 1.3.x</h3><ul><li>Contracting-branch endpoint handling corrected.</li><li>Big-Bang connectivity certification strengthened.</li><li>Corrected CPL asymptotic coefficient treatment.</li><li>Added past-eternal model classification.</li><li>Added structured fate reporting and crossing tracking.</li><li>Added BUILD_ID provenance support.</li><li>Expanded regression suite to 91 tests.</li></ul><h3>Known Limitations</h3><ul><li>Extreme CPL parameter choices may exceed representability policies.</li><li>Some extreme-parameter tests may still emit RuntimeWarning messages even when final classification is correct.</li><li>Crossing detection uses practical sign-change scanning and may not resolve arbitrarily close crossings.</li><li>The simulator is intended for education and exploration rather than precision cosmological parameter estimation.</li></ul><h3>Audit Summary</h3><ul><li>Audit 7: Contracting-branch endpoint and provenance improvements verified.</li><li>Audit 8: Big-Bang connectivity and CPL asymptotic fixes verified.</li><li>Audit 9: Past-eternal classification, build-ID, and new regression coverage verified; one RuntimeWarning cleanup item remains.</li></ul><h3>Version Identification</h3><p>This release corresponds to Version 1.5.0 and Build 9ef1e60257d3.</p><h3>Detailed Audit Records</h3><p>Detailed Audit 7–9 reports and responses are distributed separately from these release notes.</p>
+</body></html>

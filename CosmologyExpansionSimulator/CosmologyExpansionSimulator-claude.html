@@ -1,0 +1,254 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CosmologyExpansionSimulator — Claude style tutorial</title><style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--bg:#fdf5e6;--surface:#fff;--border:#c8bfa0;--accent:#7b2d00;
+--accent2:#a04010;--gold:#b5811a;--text:#1c1c1c;--muted:#5a4a3a;
+--code-bg:#f0ede4;--note-bg:#f4f0e8;--eq-bg:#f7f2e8;
+--mono:"Courier New",Courier,monospace;
+--sans:"Helvetica Neue",Arial,sans-serif;
+--serif:Georgia,"Times New Roman",Times,serif}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 var(--serif);color:var(--text);background:var(--bg)}
+.page-wrap{display:grid;grid-template-columns:230px minmax(0,1fr);
+grid-template-rows:auto 1fr auto;min-height:100vh}
+.skip-link{position:absolute;left:-10000px;top:auto}
+.skip-link:focus{left:12px;top:8px;z-index:5;background:#fff;color:var(--accent);padding:6px}
+header{grid-column:1/-1;background:var(--accent);color:#fff;
+padding:26px 38px 20px;border-bottom:4px solid var(--gold)}
+header .badge{display:inline-block;font:10.5px var(--mono);letter-spacing:.06em;
+background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);
+border-radius:3px;padding:2px 7px;margin-bottom:10px}
+header h1{font-size:1.95rem;font-weight:normal;letter-spacing:-.02em;
+margin:0;line-height:1.3}header h1 em{font-style:normal;color:#ffc9a0}
+header .sub{font:0.88rem/1.55 var(--sans);color:#f0d0b8;margin:6px 0 0}
+header .sub a{color:#ffd8b8;text-decoration:none;border-bottom:1px solid #c68b6e}
+header .sub a:hover{border-bottom-color:#ffd8b8}
+nav{background:var(--surface);border-right:1px solid var(--border);
+padding:24px 0 40px;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav .nav-label{font:700 10px/1.5 var(--sans);letter-spacing:.12em;
+text-transform:uppercase;color:var(--gold);padding:14px 18px 4px}
+nav a{display:block;font:13px/1.5 var(--sans);color:var(--muted);
+text-decoration:none;padding:6px 18px 6px 22px;border-left:3px solid transparent}
+nav a:hover,nav a:focus{color:var(--accent);background:#fdf0e0;
+border-left-color:var(--gold);outline:none}
+main{min-width:0;width:100%;max-width:900px;padding:38px 52px 60px}
+main .meta{font:13px/1.5 var(--mono);color:var(--muted);
+background:var(--note-bg);border:1px solid var(--border);border-radius:4px;
+padding:9px 12px;margin:0 0 22px}
+main h2{font-size:1.40rem;font-weight:normal;color:var(--accent);
+border-bottom:2px solid var(--gold);padding-bottom:6px;margin:2.2rem 0 1rem;
+line-height:1.35;scroll-margin-top:18px}
+main h3{font-size:1.08rem;color:var(--accent2);margin:1.6rem 0 .5rem}
+p{margin:.15rem 0 .85rem}ul,ol{margin:.4rem 0 .85rem 1.5rem;padding:0}
+li{margin-bottom:.35rem}section{margin-bottom:2.1rem}
+code{font:0.87em/1.45 var(--mono);background:var(--code-bg);
+border:1px solid #ddd8cc;border-radius:3px;padding:1px 5px;
+overflow-wrap:anywhere}
+pre{font:0.87em/1.55 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;
+background:var(--code-bg);border:1px solid #ddd8cc;border-radius:5px;
+padding:14px 18px;margin:.8rem 0 1.2rem}
+pre code{font:inherit;background:transparent;border:0;padding:0}
+main .note,main .answer{padding:11px 16px;margin:1rem 0 1.2rem;
+font-size:.93rem;color:var(--muted);border-radius:0 5px 5px 0}
+main .note{background:var(--note-bg);border:1px solid var(--border);
+border-left:4px solid var(--accent2)}
+main .answer{background:var(--eq-bg);border:1px solid var(--border);
+border-left:4px solid var(--gold)}
+.tag{display:inline-block;font:700 10px/1.5 var(--sans);letter-spacing:.05em;
+text-transform:uppercase;background:#dbe8f5;color:#1c3f63;
+border:1px solid #a4c0da;border-radius:3px;padding:1px 6px;margin-right:4px}
+footer{grid-column:1/-1;background:var(--accent);color:#fff;text-align:center;
+padding:18px 24px;font:12.5px/1.7 var(--sans)}
+footer a{color:#e0c090}footer a:hover{color:#fff}
+@media(max-width:740px){.page-wrap{grid-template-columns:1fr}
+header{padding:20px 20px 16px}header h1{font-size:1.65rem}
+nav{position:static;height:auto;padding:10px 8px;border-right:0;
+border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:0 4px}
+nav .nav-label{width:100%;padding:8px 12px 0}
+nav a{padding:5px 12px;border-left:0;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus{border-bottom-color:var(--gold)}
+main{padding:24px 20px 48px}}
+@media print{.page-wrap{display:block}nav{display:none}header,footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+main{max-width:none;padding:20px}section{break-inside:avoid}}
+</style></head>
+<body><a class="skip-link" href="#content">Skip to content</a><div class="page-wrap">
+<header><div class="badge">Supplement · Gravity from the Ground Up</div>
+<h1><em>CosmologyExpansionSimulator</em> — expansion, age and cosmic fate</h1>
+<p class="sub">Claude style tutorial · Four beats<br>
+Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a>
+ · Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header>
+<nav aria-label="Contents"><div class="nav-label">Start</div><a href="#start">Before the first run</a>
+<div class="nav-label">The four beats</div><a href="#b0">Beat 0 · A flat universe</a><a href="#b1">Beat 1 · The age scan</a><a href="#b2">Beat 2 · Four possible histories</a><a href="#b3">Beat 3 · A turnaround</a>
+<div class="nav-label">Keep exploring</div><a href="#experiments">Experiments</a>
+<a href="#parameters">Parameters and outputs</a><a href="#limits">Model limits</a></nav>
+<main id="content"><p class="meta">Version 1.6.0 Build 775b2b0ceb21 · 2026-09-27 · run from the folder containing <code>main.py</code></p>
+<p><b>The question for this laboratory:</b> If we know a universe's
+present-day expansion rate, what else must we know to predict its age and
+future? Run the four commands in order. In each beat, do the tasks at the
+terminal before using the numbered checks as a worked explanation.</p><h2 id="start">Before the first run</h2>
+<p>Install NumPy and Matplotlib, open a terminal in the program folder and run
+<code>python main.py --version</code>. Check the version and build against the line above.
+Each command below displays a Matplotlib window; <code>--outdir ./figures</code> also
+saves a timestamped PNG. In an interactive window, the lower-right cursor
+readout gives the plotted coordinates under your pointer. Read axis labels and
+units before interpreting a slope. Run <code>python main.py --help</code> for
+all options. <code>--csvdir ./data</code> saves numerical data and metadata;
+<code>--no_plot --csvdir ./data</code> runs without a figure.</p>
+<p class="note"><b>Three clocks:</b> <code>H0</code> has units km/s/Mpc,
+<code>1/H0</code> is a time scale, and <code>age today</code> is the computed
+time from a finite-age Big Bang to <code>a=1</code>. A past-eternal model has
+no finite Big-Bang age. Time on the plot is in Gyr; <code>a=1</code> denotes
+today in each model.</p><section id="b0"><h2>Beat 0 · One measured rate, a full expansion history</h2>
+<p><b>Three tasks.</b> (1) From the summary, record the age, the derived curvature
+term, and the radiation-to-matter equality redshift. (2) On the density-budget
+panel, find which component dominates at the beginning, near <code>a=1</code>,
+and far into the plotted future. (3) Find where <code>q</code> crosses zero;
+does the universe begin accelerating before or after matter–dark-energy equality?</p><pre><code>python main.py --mode evolve --H0 67.4 --omega_m 0.315 --outdir ./figures</code></pre>
+<p class="answer"><b>Check your run.</b> The summary prints an age of 13.79 Gyr,
+<code>Omega_k0=0</code>, matter–radiation equality <code>z=3408</code>,
+acceleration transition <code>z=0.6317</code>, and matter–dark-energy
+equality <code>z=0.2955</code>. Larger redshift is earlier: acceleration
+begins <i>before</i> the two densities become equal. Today
+<code>q0=-0.5273</code>.</p>
+<p><span class="tag">ODE</span> <b>Then the equation.</b> The program integrates
+<code>(H/H0)² = Ωm0/a³ + Ωr0/a⁴ + Ωk0/a² + ΩDE0 g(a)</code>, with
+<code>H=(1/a) da/dt</code>. At <code>a=1</code>, these terms sum to one.
+Omitting <code>--omega_de</code> solves that closure equation for
+<code>ΩDE0 = 1 − Ωm0 − Ωr0</code> and forces <code>Ωk0=0</code>.
+The default radiation term is <code>9.24e-5</code>, so supplying
+<code>--omega_de 0.685</code> explicitly would create a small
+<code>Ωk0=-9.24e-5</code> instead of the intended exactly flat model.</p>
+<p><span class="tag">DERIVED</span> For <code>w0=-1, wa=0</code>,
+<code>g(a)=1</code>. Matter and radiation dilute as <code>a⁻³</code> and
+<code>a⁻⁴</code>. The acceleration test uses the acceleration equation;
+equal matter and dark-energy densities alone do not locate <code>q=0</code>.</p>
+</section><section id="b1"><h2>Beat 1 · Can a high expansion rate coexist with old stars?</h2>
+<p><b>Three tasks.</b> (1) Identify the horizontal 13 Gyr reference line and
+read where the computed age crosses it. (2) Read the maximum and minimum ages
+and their scanned matter densities from the terminal. (3) Inspect any
+recollapse markers and ask how far into the future the scan actually checks.</p><pre><code>python main.py --mode age --scan_param omega_m --scan_lo 0.05 --scan_hi 1.5 --scan_n 50 --outdir ./figures</code></pre>
+<p class="answer"><b>Check your run.</b> At fixed <code>H0=70</code>, the 50
+flat-model scan points range from 20.75 Gyr at <code>Ωm0=0.05</code> to
+8.105 Gyr at <code>Ωm0=1.5</code>. The line crossing is around
+<code>Ωm0≈0.35</code> (read the figure for the approximate intersection;
+the plotted points are discrete). Seventeen points reach <code>a=1</code>
+and then recollapse before <code>a=5</code>; the marker does not certify
+the fate of every unmarked model.</p>
+<p><span class="tag">DERIVED / NUMERICAL</span> The age of a finite-age
+model is <code>t0 = ∫₀¹ da/[a H0 E(a)]</code>. The program starts at
+<code>a_i=1e-8</code>, adds an analytic early-time offset for a suitable
+dominant component, then integrates numerically. The dimensionless panel
+shows <code>H0 t0</code>; an exactly flat, matter-only Einstein–de Sitter
+model gives <code>2/3</code>. This scan retains the default radiation
+term and compensates dark energy to keep flatness, so even a point at
+<code>Ωm0=1</code> is not the exact matter-only EdS preset.</p>
+<p class="note">The scan's recollapse look-ahead stops at <code>a=5</code>;
+it can miss a turnaround beyond that limit. For detailed fate and warnings,
+rerun one chosen point in <code>--mode evolve</code>.</p></section><section id="b2"><h2>Beat 2 · Equal Hubble rates need not mean equal ages</h2>
+<p><b>Three tasks.</b> (1) Compare the four ages in the terminal table.
+(2) Find the marked <code>a=1</code> crossing for each plotted history.
+(3) Decide which model has an eventual Big Rip, which recollapses, and
+which keeps expanding with a cosmological constant.</p><pre><code>python main.py --mode compare --presets EdS,lambdaCDM,closed,phantom --outdir ./figures</code></pre>
+<p class="answer"><b>Check your run.</b> The preset ages are EdS 9.312 Gyr,
+flat <code>lambdaCDM</code> 13.79 Gyr, <code>closed</code> 8.538 Gyr,
+and <code>phantom</code> 14.15 Gyr. Their parameter sets are different;
+the figure compares their scale-factor histories, <code>q</code> and dark
+energy fractions. The table labels the closed model <code>recollapses</code>
+and the phantom model <code>Big Rip ahead</code>. The latter is a future
+classification, not a claim that the plotted curve itself reaches
+infinite <code>a</code>.</p>
+<p><span class="tag">CLOSURE / DERIVED</span> The named presets are chosen
+teaching parameter sets. Once they are chosen, the shared Friedmann
+equation determines the histories numerically. The acceleration equation
+gives <code>q = ½Ωm(a) + Ωr(a) + ½[1+3w(a)]ΩDE(a)</code>;
+spatial curvature has no direct stress-energy term in that equation.
+A model's <code>q0</code> and its age therefore need not rank together.</p>
+</section><section id="b3"><h2>Beat 3 · A turnaround changes the sign of H</h2>
+<p><b>Three tasks.</b> (1) Find the maximum scale factor and time in the
+summary. (2) Follow the expansion and mirrored contraction branches and
+find the sign change in the Hubble panel. (3) Compare the quoted lifetime
+to twice the turnaround time; where does the plotted contracting branch stop?</p><pre><code>python main.py --mode evolve --omega_m 1.5 --omega_de 0.0 --continue_collapse --outdir ./figures</code></pre>
+<p class="answer"><b>Check your run.</b> With <code>Ωm0=1.5</code> and
+<code>ΩDE0=0</code>, the derived curvature is <code>Ωk0=-0.50009</code>.
+The age at <code>a=1</code> is 8.538 Gyr; turnaround occurs near
+<code>a=2.9995</code> at 93.06 Gyr. The estimated Big-Bang-to-Big-Crunch
+lifetime is 186.1 Gyr. The generated contracting trajectory stops at
+<code>a_i</code>, not at the <code>a=0</code> singularity.</p>
+<p><span class="tag">ODE / SYMMETRY</span> At a genuine turnaround
+<code>H²=H0² E(a)²=0</code>. The same Friedmann evolution can be reflected
+in time to draw a contracting branch, with <code>H&lt;0</code>; this
+time-reversal factor of two is exact for this model, while the computed
+turnaround time carries numerical error. Because <code>q</code> divides by
+<code>H²</code>, it is undefined at the turnaround; do not read the clipped
+curve as a finite physical deceleration there.</p></section><h2 id="experiments">Try it yourself · graded experiments</h2>
+<ol>
+<li><b>EXP-1, closure:</b> Rerun Beat 0 with an explicit
+<code>--omega_de 0.685</code>. Predict and then read the sign of
+<code>Ωk0</code>. Explain why the two commands are different models.</li>
+<li><b>EXP-2, independent age check:</b> Run
+<code>python main.py --mode evolve --omega_m 1 --omega_r 0 --omega_de 0</code>.
+Compare the printed age to <code>2/(3H0)</code> in Gyr using the printed
+Hubble time. Give a numerical difference.</li>
+<li><b>EXP-3, curvature:</b> Run
+<code>python main.py --mode age --scan_param omega_m --scan_lo 0.2 --scan_hi 1.2 --scan_n 20 --no_force_flat</code>.
+At fixed other densities, does increasing <code>Ωm0</code> now alter curvature?</li>
+<li><b>EXP-4, future bound:</b> Rerun Beat 3 with
+<code>--a_max 2</code> added. Compare the stop reason, plotted range and
+reported fate. Does an <code>a_max</code> stop certify the absence of a
+later turnaround? Contrast this run with the full Beat 3 run.</li>
+<li><b>EXP-5, convergence:</b> Rerun Beat 0 with
+<code>--step_frac 0.0025</code>. Compare the age printed to four significant
+figures. Does one unchanged printed number establish arbitrary accuracy?</li>
+<li><b>EXP-6, evolving dark energy:</b> Run
+<code>python main.py --mode evolve --w0 -1 --wa 0.2 --a_max 2</code>.
+At <code>a=1</code>, what is <code>w</code>? What does the CPL formula predict
+at <code>a=2</code>? Do not extrapolate this fit to all future time.</li>
+<li><b>EXP-7, phantom:</b> Run
+<code>python main.py --mode evolve --w0 -1.2 --a_max 60</code>.
+Find the estimated Big Rip time in the printout; does the figure include
+infinite scale factor?</li>
+<li><b>EXP-8, past-eternal:</b> Run
+<code>python main.py --mode evolve --omega_m 0 --omega_r 0 --omega_de 1 --a_i 0.01</code>.
+What does the printout put in the age field? Repeat at smaller
+<code>a_i</code> and distinguish elapsed time from a physical age.</li>
+</ol>
+<h2 id="parameters">Parameters, outputs and method</h2>
+<p>The <code>evolve</code> mode prints input and derived densities, finite-age
+status, epoch crossings, fate estimates where established, and an explicit
+stop reason. Its four-panel figure shows <code>a(t)</code>, <code>H(t)</code>,
+density fractions versus <code>a</code>, and <code>q(t)</code>. A genuine
+turnaround has undefined fractional densities and <code>q</code> at that
+point. The <code>compare</code> mode overlays named parameter sets and prints
+their age and fate table. The <code>age</code> mode scans one parameter;
+<code>--scan_param</code> accepts <code>omega_m</code>, <code>omega_de</code>,
+<code>w0</code> or <code>H0</code>. Its recollapse flag searches only through
+<code>a=5</code>. The terminal summaries are rounded: use <code>--csvdir</code>
+for numerical study. Without <code>--omega_de</code>, evolve is flat by
+construction; <code>--no_force_flat</code> applies to age scans.</p>
+<p>The expansion trajectory uses a fixed fraction of the local Hubble
+time for RK4 stepping, with special endpoint and root handling; this is
+not a general error-controlled integrator. A smaller <code>--step_frac</code>
+provides a practical convergence check. <code>--a_i</code> sets the positive
+start of integration, <code>--a_max</code> and <code>--t_max</code> are stopping
+bounds for evolve/compare, and <code>--continue_collapse</code> displays the
+reflected contracting branch. See <code>python main.py --help</code> for
+validation ranges and output options.</p>
+<h2 id="limits">What these figures can establish</h2>
+<p><span class="tag">ODE</span> The first and second Friedmann equations hold
+within an FLRW perfect-fluid model. <span class="tag">FIT</span>
+<code>w(a)=w0+wa(1−a)</code> is a phenomenological CPL prescription; the
+associated dark-energy density history
+<code>g(a)=a^[-3(1+w0+wa)] exp[-3wa(1−a)]</code> follows from that choice.
+Its far-future extrapolation and all extreme toy parameter choices need
+special care. <span class="tag">NUMERICAL</span> The plotted points and
+fate estimates have finite precision and integration bounds. The model
+describes a homogeneous expansion background; it does not simulate
+galaxies, perturbations, dark-energy microphysics or the quantum origin
+of a Big Bang. A model can be mathematically accepted without being a
+plausible description of our universe.</p>
+<p><b>License.</b> Original supplemental Python investigation proposed for
+Bernard Schutz's <i>Gravity from the Ground Up</i>; distributed under
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+(CC BY-NC-SA 4.0), as stated in the archived Reference Guide.</p></main><footer>CosmologyExpansionSimulator · Claude style tutorial · Version 1.6.0 · Build 775b2b0ceb21</footer>
+</div></body></html>
