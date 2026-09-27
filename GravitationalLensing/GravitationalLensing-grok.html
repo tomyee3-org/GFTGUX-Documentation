@@ -423,7 +423,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.0.1&nbsp;&nbsp;&nbsp;&nbsp;Build ba265665c298
+    Version 1.1.0&nbsp;&nbsp;&nbsp;&nbsp;Build 3d4a4bec1859
   </p>
 
   <section id="description">
@@ -504,6 +504,8 @@ python main.py --mode point --logM 12.5 --beta_x 0.3 --beta_y 0.3</pre>
 
   <section id="beat2">
     <h2>Beat 2 · Why two, and where they sit</h2>
+<pre>python main.py --mode point --beta_x 1.0 --beta_y 0.0 --outdir ./figures</pre>
+    <p>Compare this with the Beat 1 default: the two images now lie at \(+2.579''\) and \(-1.579''\) along the source direction. The white cross at \(+1.0''\) is the <em>unlensed</em> source; the two spots are the images. Their ideal point-source positions and signed magnifications are also in the saved provenance file.</p>
     <p>For a source on the \(x\)-axis at angular distance \(\beta\) from the lens, the two image radii are</p>
     <div class="eq-block">
       <div class="eq-label">Analytic double</div>
@@ -582,8 +584,9 @@ python main.py --mode shear --gamma 0 --beta_x 0 --beta_y 0</pre>
 
   <section id="beat6">
     <h2>Beat 6 · Arcs as a fat source on the same diamond</h2>
-    <p>Keep the SIS + shear lens. Light up an extended ellipse instead of a star. Drape it on a fold and you get two long arcs. Drape it on a cusp and one arc splits. Park it at the origin with the default shear and you get four arcs around the oval critical curve — broken symmetry again, not a ring. A circular ring needs the shear removed.</p>
+    <p>Keep the SIS + shear lens. Light up an extended ellipse instead of a star. At (0.18, 0.30) arcsec the finite source straddles a diagonal fold and a merging pair makes a long bright feature. At (0.55, 0) arcsec it straddles the short-axis cusp near 0.519 arcsec and a crowded image triplet can blend into a broad patch; compare the two figures with the Beat 5 caustic. Park it at the origin with the default shear and you get four arcs around the oval critical curve — broken symmetry again, not a ring. A circular ring needs the shear removed.</p>
 <pre>python main.py --mode arcs
+python main.py --mode arcs --beta_x 0.18 --beta_y 0.30 --r_eff 0.14
 python main.py --mode arcs --beta_x 0.55 --r_eff 0.14
 python main.py --mode arcs --beta_x 0.00 --beta_y 0.00 --r_eff 0.20
 python main.py --mode arcs --gamma 0 --beta_x 0 --beta_y 0 --r_eff 0.20</pre>

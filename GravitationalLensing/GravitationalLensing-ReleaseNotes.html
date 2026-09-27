@@ -1,41 +1,68 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>GravitationalLensing 1.0.1 Release Notes</title>
-</head>
-<body>
-<h1>GravitationalLensing 1.0.1 Release Notes</h1>
-<p><b>Version:</b> 1.0.1<br><b>Build:</b> ba265665c298<br><b>Date:</b> 2026-09-11</p>
-
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>GravitationalLensing 1.1.0 Release Notes</title></head><body>
+<h1>GravitationalLensing 1.1.0 Release Notes</h1>
+<p><b>Version:</b> 1.1.0; <b>Build:</b> 3d4a4bec1859; <b>Date:</b> 2026-09-27.</p>
 <h2>Release Status</h2>
+<p>Kickoff4 continues the earlier Audit1–6 work and the 1.0.1 Python-compatibility patch. The earlier notes record a Claude Audit2 finding on 1.0.0 that was fixed in 1.0.1, and identify Codex and Copilot as Audit6 reviewers; the supplied archive does not include their full recommendations. This 1.1.0 candidate awaits Claude's independent review and a release decision. The complete supplied 1.0.1 notes follow below as historical sections; the separately cited 1.0.0 notes were not present in the supplied archive.</p>
+<h2>Open Bugs</h2>
+<p>No confirmed reviewer-reported P1–P3 defect remains open from the supplied 1.0.1 history; review of 1.1.0 is pending.</p>
+<h2>Major Improvements in This Release</h2>
+<ul>
+<li>Both tutorial formats now share the same four core files, one test suite, and a single sample guide; the suite requires both Help files, checks their matching version/build and validates the worked Beat commands against the real argument parser.</li>
+<li>Beat 2 now has its own point-mass run with a source at 1.0 arcsec. The point-mode provenance records both signed ideal image positions and magnifications; shear-mode provenance records both cusp axes and the minimum and maximum critical radii.</li>
+<li>The Claude-style Help corrects the default source cross from “outside” to “inside” the 2.018-arcsec Einstein circle, and narrows the magnification-sum statement to its point-mass scope. The sample guide distinguishes the SIS-plus-shear caustic from the point-mass caustic.</li>
+<li>Exercises EXP-2, EXP-6 and EXP-8 now specify the total source offset, use separately verified fold and cusp source positions, provide commands that save the needed provenance values, and limit the magnification-sum exercise to the point-mass model. Both tutorial styles show the new fold and cusp comparison commands.</li>
+<li>The build-only <code>--sync-help</code> option was removed from the student CLI. The maintainer helper still takes an explicit Help path; the guides were stamped separately. This public command-line change warrants the 1.1.0 minor version.</li>
+<li>The SampleOutputs Guide now embeds eight newly generated figures, one per Beat, and quotes this build's plot/provenance values, including the two unequal cusp distances.</li>
+</ul>
+<h2>Test Suite Growth</h2>
+<p>The original 1.0.1 suite contained 56 tests; the shared 1.1.0 suite contains 62, with 61 passing and one skipped on this host because the optional Python 3.10 interpreter is absent. Run once from the program folder: <code>MPLBACKEND=Agg python -W error::RuntimeWarning -m unittest tests.test_physics_gl -q</code>. New coverage includes both tutorial styles, every Beat's runnable commands and numeric point-image positions, the shared guide, the absence of the build-only CLI flag, and the new point-image and shear-cusp provenance.</p>
+<h2>Known Limitations</h2>
+<ul>
+<li>The lens plane and distances are fixed teaching choices: there is no evolving cosmology, multicomponent mass model or geodesic integration. Rays are a schematic side view and rendered intensities are false colour.</li>
+<li>Near a fold or cusp the Newton image solver does not promise a stable count within the documented buffer; source widths and pixel resolution limit visible image morphology.</li>
+<li>The SIS is singular at its centre and uses a softened sampling pixel for its convergence map. Its pseudo-caustic and image-count changes are properties of this idealized lens.</li>
+</ul>
+<h2>Known Minor Maintenance Items</h2>
+<ul>
+<li>Options belonging to other modes can be accepted without affecting a run. Mode-specific option checks and more explicit output remain candidates for a later round.</li>
+<li>The separate Python 3.10 syntax check skips when that interpreter is unavailable. Continuous integration should provide it to guarantee the documented minimum.</li>
+<li>The older 1.0.0 notes referenced by the retained 1.0.1 history were not included in the supplied archives.</li>
+</ul>
+<h2>Version Identification</h2>
+<p><b>MODEL_VERSION:</b> 1.1.0; <b>BUILD_ID:</b> 3d4a4bec1859. The identifier is the first twelve hex digits of SHA-256 over LF-normalized <code>physics_gl.py</code>, <code>driver_gl.py</code>, <code>main.py</code> and <code>plot_gl.py</code>, with file-name and length framing. The two Help files, shared tests and sample guide do not affect it.</p>
+<h2>Previous Release Notes — 1.0.1</h2>
+<p>The following retained notes describe 1.0.1 at its original date. Their claims about the then-current release and unavailable 1.0.0 file are historical; the 1.1.0 sections above state the current package status.</p>
+<p><b>Version:</b> 1.0.1; <b>Build:</b> ba265665c298; <b>Date:</b> 2026-09-11</p>
+
+<h3>Release Status</h3>
 <p>Version 1.0.1 is a targeted patch to 1.0.0, made directly at the maintainer's request after Claude's Audit2 review of the 1.0.0 Response artifacts identified a minimum-Python-version defect. It is not a further round of the Codex/Copilot audit cycle recorded for 1.0.0; it corrects a single, narrowly scoped bug in that release. No thin-lens physics, no plotted data, and no CLI behavior changed. Existing 1.0.0 sample outputs remain numerically valid; they were regenerated for this release only to update the version/build stamp burned into each figure's footer and provenance sidecar.</p>
 
-<h2>Bug Fixed</h2>
+<h3>Bug Fixed</h3>
 <ul>
-<li><b>Minimum Python version violated.</b> The Help file and 1.0.0 Release Notes document a minimum requirement of Python&nbsp;3.10, but <code>plot_gl.py</code> contained three provenance-dict field expressions of the form <code>f"{... \n ...}"</code>&nbsp;&mdash; an f-string whose replacement-field expression was split across a physical line break. That construct is legal only under the relaxed f-string grammar introduced by PEP&nbsp;701 in Python&nbsp;3.12, so it raised <code>SyntaxError</code> at import time on Python&nbsp;3.10 and 3.11, the two versions the documentation names as supported minimums. The three sites were in <code>plot_point</code>, <code>plot_arcs</code>, and <code>plot_kappa</code>, all in the <code>fov_arcsec</code> field of the saved provenance metadata.</li>
+<li><b>Minimum Python version violated.</b> The Help file and 1.0.0 Release Notes document a minimum requirement of Python 3.10, but <code>plot_gl.py</code> contained three provenance-dict field expressions of the form <code>f"{... \n ...}"</code> — an f-string whose replacement-field expression was split across a physical line break. That construct is legal only under the relaxed f-string grammar introduced by PEP 701 in Python 3.12, so it raised <code>SyntaxError</code> at import time on Python 3.10 and 3.11, the two versions the documentation names as supported minimums. The three sites were in <code>plot_point</code>, <code>plot_arcs</code>, and <code>plot_kappa</code>, all in the <code>fov_arcsec</code> field of the saved provenance metadata.</li>
 <li><b>Fix.</b> In each of the three functions, the field of view difference is now computed once into a local variable (<code>ext = _extent_arcsec(theta_x, theta_y)</code>) before the provenance dictionary is built, and the dictionary uses the single-line expression <code>f"{ext[1] - ext[0]:.4f}"</code>. The computed value, and every other field written to the provenance sidecar, is unchanged from 1.0.0.</li>
 <li><b>Regression test added.</b> <code>tests/test_physics_gl.py</code> gained <code>TestMinimumPythonVersionCompatibility</code>, which shells out to a <code>python3.10</code> interpreter (when one is available on the test host; the check is skipped, not failed, if it is not installed) and confirms that <code>physics_gl.py</code>, <code>driver_gl.py</code>, <code>plot_gl.py</code>, and <code>main.py</code> all still parse under <code>ast.parse</code> with that interpreter's grammar. This guards against the same class of syntax regression reappearing in a future edit.</li>
 </ul>
 
-<h2>What Did Not Change</h2>
+<h3>What Did Not Change</h3>
 <ul>
 <li>All thin-lens physics, the point-mass and SIS+shear formulas, the sampling and field-of-view contracts, and the seven teaching modes are identical to 1.0.0.</li>
 <li>No numeric output of any mode changed. The seven sample-output figures shipped with this release are regenerated only so their footer text and provenance sidecars report <code>1.0.1</code> / <code>ba265665c298</code> instead of <code>1.0.0</code> / <code>e1f4ab42a813</code>; the underlying data plotted is the same as 1.0.0 within ordinary run-to-run floating-point reproducibility.</li>
 <li>The Known Limitations and Known Minor Maintenance Items recorded in the 1.0.0 notes still apply and are not repeated here.</li>
 </ul>
 
-<h2>Test Suite</h2>
-<p>The release suite now contains 56 tests (the 55 tests carried over from 1.0.0, plus the new minimum-version regression test). All 56 pass under <code>MPLBACKEND=Agg</code> from <code>GravitationalLensing/</code> using a Python&nbsp;3.11 interpreter. Because the syntax defect this release fixes prevented the modules from even being imported on Python&nbsp;3.10/3.11, that failure could not previously have been caught by a runtime test on an affected interpreter; the new test instead parses the source directly with <code>ast.parse</code>, which does not require the module to be importable or require any third-party dependency to be installed.</p>
+<h3>Test Suite</h3>
+<p>The release suite now contains 56 tests (the 55 tests carried over from 1.0.0, plus the new minimum-version regression test). All 56 pass under <code>MPLBACKEND=Agg</code> from <code>GravitationalLensing/</code> using a Python 3.11 interpreter. Because the syntax defect this release fixes prevented the modules from even being imported on Python 3.10/3.11, that failure could not previously have been caught by a runtime test on an affected interpreter; the new test instead parses the source directly with <code>ast.parse</code>, which does not require the module to be importable or require any third-party dependency to be installed.</p>
 
-<h2>Audit History (locators)</h2>
+<h3>Audit History (locators)</h3>
 <p>See <code>GravitationalLensing-1.0.0-ReleaseNotes.html</code> for the Kickoff-through-1.0.0 audit history. This patch originates from:</p>
 <ul>
-<li>Audit2 (Claude) on the BlackHoleShadow 0.2.0 Response artifacts, which also carried out a fresh independent examination of the previously-released GravitationalLensing 1.0.0 code and documentation and identified the Python 3.10/3.11 syntax defect described above &mdash; <code>GravitationalLensing-Claude-Audit2-2026091123.txt</code>.</li>
+<li>Audit2 (Claude) on the BlackHoleShadow 0.2.0 Response artifacts, which also carried out a fresh independent examination of the previously-released GravitationalLensing 1.0.0 code and documentation and identified the Python 3.10/3.11 syntax defect described above — <code>GravitationalLensing-Claude-Audit2-2026091123.txt</code>.</li>
 <li>Fix implemented directly at the maintainer's request following that finding, rather than routed back through Grok for a further response cycle.</li>
 </ul>
 
-<h2>Version Identification</h2>
-<p>MODEL_VERSION: 1.0.1<br>BUILD_ID: ba265665c298</p>
-</body>
-</html>
+<h3>Version Identification</h3>
+<p>MODEL_VERSION: 1.0.1; BUILD_ID: ba265665c298</p>
+
+</body></html>
