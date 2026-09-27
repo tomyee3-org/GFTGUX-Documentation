@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.0.2&nbsp;&nbsp;&nbsp;&nbsp;Build f9c7252cba9e
+    Version 1.1.0&nbsp;&nbsp;&nbsp;&nbsp;Build 23719ebabe26
   </p>
 
   <section id="description">
@@ -181,7 +181,7 @@ b_{\mathrm{crit}} = 3\sqrt{3}\,M.
 \]
     </div>
 <pre>python main.py --mode rays</pre>
-    <p> The red curve at the default \(b=5\) hits \(r_s=2M\) and is reported <code>captured</code>. The blue curve at \(b=6\) turns at a periapsis outside the photon sphere and is reported <code>escaped</code>. The console \(\Delta\phi\) is accumulated azimuth to a finite stopping surface (the horizon, or twice the camera radius), exactly as in PhotonOrbit. It is <em>not</em> the asymptotic deflection angle \(\hat\alpha\). That distinction is Beat 7.</p>
+    <p> The red curve at the default \(b=5\) hits \(r_s=2M\) and is reported <code>captured</code>. The blue curve at \(b=6\) turns at a periapsis outside the photon sphere and is reported <code>escaped</code>. The console \(\Delta\phi\) is accumulated azimuth to a finite stopping surface (the horizon, or twice the camera radius), exactly as in PhotonOrbit. It is <em>not</em> the asymptotic deflection angle \(\hat\alpha\). That distinction is Beat 7. A <code>lambda_max</code> status means the ray has not reached the stopping surface; increase <code>--lambda_max</code> (roughly \(3r_{\rm cam}\) for a distant escaper).</p>
   </section>
 
   <section id="beat1">
@@ -263,15 +263,15 @@ python main.py --mode compare --logM 12.5</pre>
     <h2>Experiments</h2>
     <div class="exp-grid">
       <div class="exp-card"><div class="ec-num">EXP-1 · First run</div><h4>Capture versus escape</h4><p>Run <code>--mode rays</code> at the defaults, then again with <code>--b_in 5.19 --b_out 5.21</code>. Name the status of each ray from the console before you look at the figure.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-2 · Beginner</div><h4>A pixel is a direction</h4><p>Run <code>--mode pixels</code>. Point to the dark cell and the light cell and say which PhotonOrbit experiment each one is.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2 · Beginner</div><h4>A pixel is a direction</h4><p>Run <code>--mode pixels</code>. Point to the dark cell and the light cell and say which trajectory from <code>--mode rays</code> each one represents.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-3 · Beginner</div><h4>The rim is not the horizon</h4><p>Run <code>--mode radii</code>. The left panel is a coordinate-radius cross-section; the right panel is the image plane. Which circle on the right matches the dark disk, and why are \(r_s\) and \(r_{\mathrm{ph}}\) not drawn there?</p></div>
       <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>PhotonOrbit on the sky</h4><p>The shadow rim is PhotonOrbit’s critical capture/escape ray. The highlighter of <code>--mode ring</code> is PhotonOrbit’s near-critical whirling painted as pixels. Write that sentence in your own words, then run both programs side by side. If PhotonOrbit later renumbers its experiments, trust the titles rather than any old EXP-N cited in a notebook.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div><h4>Recover \(4M/b\)</h4><p>From the <code>weak</code> console line, compute the relative error of \(4M/b\) at the largest sampled \(b\). Then argue why the error must grow as you walk the curve toward \(b_{\mathrm{crit}}\).</p></div>
       <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate</div><h4>Two rings, two meanings</h4><p>Run <code>--mode compare</code>. Quote \(R_E/M\) for the galaxy and \(b_{\mathrm{crit}}/M\) for the hole. Invent a sentence that uses the word “ring” once only.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div><h4>Achromatic silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change if the annulus emitted blue light instead of red. (The capture map would not.) Then compare the three panels and say which crossing lights each ring.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Finite camera</h4><p>Rerun <code>--mode rays</code> with <code>--r_cam 10</code> and then <code>--r_cam 80</code>. The capture threshold in conserved \(b\) does not move. What does move is the local angle on the camera sky. Explain using \(\sin\alpha = (b/r)\sqrt{1-2M/r}\).</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Resolution contract</h4><p>Try <code>--mode capture --fov 80 --n_pix 11</code>. Read the error. Then satisfy the contract without raising <code>--n_pix</code> above 81.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>Where the source images sit</h4><p>Run <code>--mode transfer</code>. At the \(b\) of the direct-image peak, read \(r_1\). Does it sit near \(r_{\mathrm{hot}}\)? At a \(b\) just above \(b_{\mathrm{crit}}\), how many crossings exist?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Finite camera</h4><p>Rerun <code>--mode rays</code> with <code>--r_cam 10</code> and then <code>--r_cam 60</code>. The capture threshold in conserved \(b\) does not move. What does move is the local angle on the camera sky. Explain using \(\sin\alpha = (b/r)\sqrt{1-2M/r}\).</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Resolution contract</h4><p>Try <code>--mode capture --fov 80 --n_pix 11</code>. Read the error. Then satisfy the contract with the smallest odd <code>--n_pix</code> not above 81.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>Where the source images sit</h4><p>Run <code>--mode transfer</code>. Read the three \(b(r_m=r_{\mathrm{hot}})\) values from the console. At \(b=5.25M\) and \(b=5.20M\), which of the three plotted transfer curves exist? What happens to the true crossing count closer to the critical curve?</p></div>
     </div>
   </section>
 
@@ -282,11 +282,11 @@ python main.py --mode compare --logM 12.5</pre>
       <tbody>
         <tr><td class="pname">--mode</td><td class="pdefault">capture</td><td>rays, pixels, capture, ring, transfer, image, radii, weak, compare</td></tr>
         <tr><td class="pname">--M</td><td class="pdefault">1</td><td>gravitational length \(GM/c^2\)</td></tr>
-        <tr><td class="pname">--r_cam</td><td class="pdefault">40</td><td>launch radius for ray integrations, in units of \(M\)</td></tr>
+        <tr><td class="pname">--r_cam</td><td class="pdefault">40</td><td>launch radius for inward rays, in units of \(M\); must exceed \(3M\) and permit \(b\le r_{\rm cam}/\sqrt{1-2M/r_{\rm cam}}\)</td></tr>
         <tr><td class="pname">--b_in, --b_out</td><td class="pdefault">5, 6</td><td>demonstration impact parameters in units of \(M\)</td></tr>
-        <tr><td class="pname">--lambda_max, --d_lambda</td><td class="pdefault">200, 0.02</td><td>affine-parameter budget and RK4 step for <code>rays</code>, in units of \(M\)</td></tr>
+        <tr><td class="pname">--lambda_max, --d_lambda</td><td class="pdefault">200, 0.02</td><td>affine-parameter budget and RK4 step for <code>rays</code>, in units of \(M\); <code>lambda_max</code> status means the ray stopped before its fate was reached (budget near \(3r_{\rm cam}\) for a distant escaper)</td></tr>
         <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">161 (17 in pixels), 16</td><td>grid size (even values become the next odd) and field of view in units of \(M\). Capture maps need at least eight intervals across \(2b_{\mathrm{crit}}\). Automatic grids stop at 401 pixels. Mode <code>pixels</code> caps <code>--n_pix</code> at 41 and says so on the console.</td></tr>
-        <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>emitted-annulus radius for <code>transfer</code>/<code>image</code>, in units of \(M\); must exceed 3. Image mode also caps r_hot so the 1.4 r_hot frame and the 8-interval shadow rule can both hold (~74 M at 161 pixels, ~186 M at 401). The image table needs width at least 0.01 M; the analytic I_em profile does not.</td></tr>
+        <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>emitted-annulus radius for <code>transfer</code>/<code>image</code>, in units of \(M\); must exceed 3. Image mode also caps r_hot so the 1.4 r_hot frame and the 8-interval shadow rule can both hold (~74 M at 161 pixels, ~186 M at 401). </td></tr>
         <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>must be 0. Face-on only; any nonzero value is rejected</td></tr>
         <tr><td class="pname">--dpi, --interactive</td><td class="pdefault">140, off</td><td>PNG resolution; open a window even when <code>--outdir</code> is set</td></tr>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) of the comparison galaxy lens</td></tr>
