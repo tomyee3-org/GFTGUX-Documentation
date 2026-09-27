@@ -1,0 +1,190 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BlackHoleSpacetimeVisualizer — four runs at the terminal</title><style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--bg:#fdf5e6;--surface:#fff;--border:#c8bfa0;--accent:#7b2d00;
+--accent2:#a04010;--gold:#b5811a;--text:#1c1c1c;--muted:#5a4a3a;
+--code-bg:#f0ede4;--note-bg:#f4f0e8;--eq-bg:#f7f2e8;
+--mono:"Courier New",Courier,monospace;
+--sans:"Helvetica Neue",Arial,sans-serif;
+--serif:Georgia,"Times New Roman",Times,serif}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 var(--serif);color:var(--text);background:var(--bg)}
+.page-wrap{display:grid;grid-template-columns:230px minmax(0,1fr);
+grid-template-rows:auto 1fr auto;min-height:100vh}
+.skip-link{position:absolute;left:-10000px;top:auto}
+.skip-link:focus{left:12px;top:8px;z-index:5;background:#fff;color:var(--accent);padding:6px}
+header{grid-column:1/-1;background:var(--accent);color:#fff;
+padding:26px 38px 20px;border-bottom:4px solid var(--gold)}
+header .badge{display:inline-block;font:10.5px var(--mono);letter-spacing:.06em;
+background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);
+border-radius:3px;padding:2px 7px;margin-bottom:10px}
+header h1{font-size:1.95rem;font-weight:normal;letter-spacing:-.02em;
+margin:0;line-height:1.3}header h1 em{font-style:normal;color:#ffc9a0}
+header .sub{font:0.88rem/1.55 var(--sans);color:#f0d0b8;margin:6px 0 0}
+header .sub a{color:#ffd8b8;text-decoration:none;border-bottom:1px solid #c68b6e}
+header .sub a:hover{border-bottom-color:#ffd8b8}
+nav{background:var(--surface);border-right:1px solid var(--border);
+padding:24px 0 40px;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav .nav-label{font:700 10px/1.5 var(--sans);letter-spacing:.12em;
+text-transform:uppercase;color:var(--gold);padding:14px 18px 4px}
+nav a{display:block;font:13px/1.5 var(--sans);color:var(--muted);
+text-decoration:none;padding:6px 18px 6px 22px;border-left:3px solid transparent}
+nav a:hover,nav a:focus{color:var(--accent);background:#fdf0e0;
+border-left-color:var(--gold);outline:none}
+main{min-width:0;width:100%;max-width:900px;padding:38px 52px 60px}
+main .meta{font:13px/1.5 var(--mono);color:var(--muted);
+background:var(--note-bg);border:1px solid var(--border);border-radius:4px;
+padding:9px 12px;margin:0 0 22px}
+main h2{font-size:1.40rem;font-weight:normal;color:var(--accent);
+border-bottom:2px solid var(--gold);padding-bottom:6px;margin:2.2rem 0 1rem;
+line-height:1.35;scroll-margin-top:18px}
+main h3{font-size:1.08rem;color:var(--accent2);margin:1.6rem 0 .5rem}
+p{margin:.15rem 0 .85rem}ul,ol{margin:.4rem 0 .85rem 1.5rem;padding:0}
+li{margin-bottom:.35rem}section{margin-bottom:2.1rem}
+code{font:0.87em/1.45 var(--mono);background:var(--code-bg);
+border:1px solid #ddd8cc;border-radius:3px;padding:1px 5px;
+overflow-wrap:anywhere}
+pre{font:0.87em/1.55 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;
+background:var(--code-bg);border:1px solid #ddd8cc;border-radius:5px;
+padding:14px 18px;margin:.8rem 0 1.2rem}
+pre code{font:inherit;background:transparent;border:0;padding:0}
+main .note,main .answer{padding:11px 16px;margin:1rem 0 1.2rem;
+font-size:.93rem;color:var(--muted);border-radius:0 5px 5px 0}
+main .note{background:var(--note-bg);border:1px solid var(--border);
+border-left:4px solid var(--accent2)}
+main .answer{background:var(--eq-bg);border:1px solid var(--border);
+border-left:4px solid var(--gold)}
+.tag{display:inline-block;font:700 10px/1.5 var(--sans);letter-spacing:.05em;
+text-transform:uppercase;background:#dbe8f5;color:#1c3f63;
+border:1px solid #a4c0da;border-radius:3px;padding:1px 6px;margin-right:4px}
+footer{grid-column:1/-1;background:var(--accent);color:#fff;text-align:center;
+padding:18px 24px;font:12.5px/1.7 var(--sans)}
+footer a{color:#e0c090}footer a:hover{color:#fff}
+@media(max-width:740px){.page-wrap{grid-template-columns:1fr}
+header{padding:20px 20px 16px}header h1{font-size:1.65rem}
+nav{position:static;height:auto;padding:10px 8px;border-right:0;
+border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:0 4px}
+nav .nav-label{width:100%;padding:8px 12px 0}
+nav a{padding:5px 12px;border-left:0;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus{border-bottom-color:var(--gold)}
+main{padding:24px 20px 48px}}
+@media print{.page-wrap{display:block}nav{display:none}header,footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+main{max-width:none;padding:20px}section{break-inside:avoid}}
+</style></head><body><a class="skip-link" href="#content">Skip to content</a><div class="page-wrap"><header><div class="badge">Supplement · Gravity from the Ground Up</div><h1><em>BlackHoleSpacetimeVisualizer</em> — Embedding, Tides, Infall and Horizons</h1><p class="sub">A terminal walkthrough in four beats<br>Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a> · Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header><nav aria-label="Contents"><div class="nav-label">Start</div><a href="#start">Before the first run</a><div class="nav-label">The four beats</div><a href="#b0">Beat 0 · Space</a><a href="#b1">Beat 1 · Tides</a><a href="#b2">Beat 2 · Infall</a><a href="#b3">Beat 3 · Horizons</a><div class="nav-label">Keep exploring</div><a href="#experiments">Experiments</a><a href="#limits">Domain of validity</a><a href="#license">License</a></nav><main id="content"><p class="meta">Version 1.4.0 Build 100876a488a0 · 2026-09-27 · run from the program directory with <code>python main.py</code></p>
+<p><b>Four pictures, four questions:</b> what space looks like on a chosen
+slice; how strongly nearby worldlines pull apart; whose clock measures a
+fall; and which outgoing light ray separates escape from capture after a
+black hole grows. Work through the beats in order. Let the plot and the
+printed summary supply the evidence before reading each equation.</p>
+<h2 id="start">Before the first run</h2><p>From the folder with <code>main.py</code>,
+run <code>python main.py --version</code> and compare with the stamp above.
+Install NumPy and Matplotlib if needed. A run displays its figure;
+<code>--outdir ./figures</code> additionally saves a PNG. For a numerical
+table add <code>--csvdir ./data</code>. A CSV-only run requires both
+<code>--no_plot --csvdir ./data</code>.</p>
+
+<section id="b0"><h2>Beat 0 · Draw space, not a passage</h2>
+<p>Where is the narrowest ring? What part of the picture has been mirrored?</p>
+<pre><code>python main.py --mode embed --M 10 --outdir ./figures</code></pre>
+<p>Read the radial scale first. The left panel is a cross-section; the right
+revolves it into Flamm's paraboloid. The dashed lower profile only helps
+you see the shape: the model has not opened a second exterior or a tunnel.
+The vertical tangent at <code>r=r_s</code> is part of the embedding.</p>
+<p>The equation this picture earns is <code>z=2 sqrt[r_s(r−r_s)]</code>
+for the upper branch, with <code>r_s=2GM/c²</code>. Its height lives in
+an auxiliary drawing space. If you need a distance along the surface,
+use the CSV's <code>proper_radial_distance_m</code> column instead of
+reading the vertical axis as a physical altitude.</p></section>
+
+<section id="b1"><h2>Beat 1 · Compare two horizons by their tides</h2>
+<p>Before running, guess whether the larger hole has a harsher or gentler
+horizon for a short rod. Then read the comparison panels and summary.</p>
+<pre><code>python main.py --mode tidal --M 10 --compare_masses 10,4.31e6 --outdir ./figures</code></pre>
+<p>Radial stretching and transverse compression are magnitudes; the names
+carry their opposite signs. For small proper separation <code>δℓ</code>,
+the local coefficients give <code>a_radial=2GMδℓ/r³</code> and
+<code>a_transverse=GMδℓ/r³</code>. At each mass's own
+<code>r_s∝M</code>, the radial magnitude scales as <code>M⁻²</code>.
+The plotted <code>100 g</code> cutoff is an illustrative rule, not a
+calculation of whether a real body survives. A ratio
+<code>r_crit/r_s&lt;1</code> means only that this threshold is reached
+after the crossing in the model.</p></section>
+
+<section id="b2"><h2>Beat 2 · Stop the clock just short of the horizon</h2>
+<p>Which clock gives the infaller's own elapsed time, and which coordinate
+time grows steeply as the endpoint approaches <code>r_s</code>?</p>
+<pre><code>python main.py --mode infall --M 10 --r0_rs 6 --outdir ./figures</code></pre>
+<p>The run stops at <code>1.0005 r_s</code>; it does not show a crossing.
+Read the proper time <code>τ</code>, Schwarzschild time <code>t</code>,
+local speed and outward light's received/emitted frequency ratio. To
+see why the two times separate, the radial geodesic gives
+<code>(dr/dτ)²=c²(r_s/r−r_s/r0)</code> but
+<code>dt/dτ=E/(1−r_s/r)</code>, with
+<code>E=sqrt(1−r_s/r0)</code>. The latter diverges at the horizon
+in Schwarzschild coordinates. The particle's own time stays finite.
+“Local static observer” has meaning only outside the horizon.</p></section>
+
+<section id="b3"><h2>Beat 3 · Let the future choose a horizon</h2>
+<p>The hole doubles in mass. Look left of the shaded growth window: which
+horizon already exceeds the initial radius?</p>
+<pre><code>python main.py --mode horizons --M0 5 --M1 10 --outdir ./figures</code></pre>
+<p>The dashed apparent horizon responds to the prescribed local mass,
+<code>r_AH=2GM(v)/c²</code>. The solid event horizon separates outgoing
+light that escapes from light that cannot, so its position uses the future
+mass history. Here the program integrates the outgoing null equation
+<code>dr/dv=(1−2M(v)/r)/2</code> backward from the exact
+post-accretion condition <code>r(v2)=r_s1</code> (geometrized units).
+Its early rise is a global property, not information moving backward in
+time. The forward shooting rays on the right are illustrations and
+diagnostics; they do not supply the reported event-horizon curve.</p></section>
+
+<h2 id="experiments">Try it yourself</h2>
+<ol><li><b>EXP-5:</b> Repeat Beat 0 with <code>--csvdir ./data</code>. Compare the
+<code>proper_radial_distance_m</code> column with the coordinate
+difference <code>r_m−r_s</code> near <code>2 r_s</code>. Which is
+longer, and why can the profile's bowl shape still have negative intrinsic
+Gaussian curvature?</li>
+<li><b>EXP-8:</b> Repeat Beat 1 with <code>--compare_masses 10,100,1000</code>.
+What factor changes the horizon tide when mass grows tenfold? Locate
+the <code>r_crit/r_s</code> column before claiming anyone survives.</li>
+<li>Repeat Beat 2 with <code>--r_stop_rs 1.01</code>. Compare its two
+printed elapsed times with the default stop. They describe different
+endpoints; which one changes most?</li>
+<li>Repeat Beat 3 with <code>--csvdir ./data</code>. The main CSV has
+event and apparent radii: locate rows just before mass growth begins and
+just after it ends. Which of the two gaps is zero by construction?</li>
+<li><b>EXP-10:</b> Repeat Beat 3 with <code>--v_start_margin_rs0 5</code>
+and then 15, using <code>--csvdir ./data</code>. Compare the first-row
+<code>r_EH_over_rs0−1</code> in the main CSV. Different margins select
+different early events on the physical horizon.</li>
+<li><b>EXP-11:</b> Repeat Beat 2 and compare its printed proper time
+with <code>τ=sqrt[r0³/(8GM)]×(η+sin η)</code>, where
+<code>η=acos(2r_stop/r0−1)</code> and <code>GM</code> uses the
+nominal solar mass parameter specified by the program. Does it agree
+to better than one part in 1e5?</li>
+<li><b>EXP-13:</b> Run <code>python main.py --mode horizons --M0 5 --M1 10 --bisect_iters 10 --no_plot --csvdir ./data</code>, then repeat
+with <code>--bisect_iters 60</code>. The summary distinguishes the
+forward-search bracket width, starting-radius difference, whether the
+forward trial reached <code>v2</code>, and its largest difference from
+the backward curve. Which measurement actually compares curves?
+The small initial displacement printed at <code>v_start</code> is a
+physical value at that selected earlier event, not a truncation error.</li>
+<li><b>EXP-18:</b> Repeat all four modes at 10 solar masses, setting
+<code>--M0 10 --M1 10</code> for horizons. How do the embedding
+curvature and tidal acceleration at <code>r_s</code> change if you
+increase the mass while retaining the same test separation?</li></ol>
+
+<h2 id="limits">Boundaries of the demonstration</h2>
+<p><code>embed</code> is a spatial slice, <code>tidal</code> uses a
+linearized separation without material strength, and <code>infall</code>
+is radial motion of a point test particle. The <code>horizons</code>
+mode prescribes nondecreasing ingoing null-dust accretion rather than
+simulating a real accretion disk. None of the modes includes rotation.
+Use <code>python main.py --help</code> for defaults, accepted parameters
+and additional output choices; mode-specific options from other modes
+do not affect the selected calculation.</p>
+<h2 id="license">License and scope</h2><p>This supplemental Python investigation was
+proposed for use alongside Bernard Schutz’s <i>Gravity from the Ground Up</i>
+(Cambridge University Press). Distributed under
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
+Schwarzschild and ingoing Vaidya are idealized teaching spacetimes: no spin,
+charge, material response, radiation reaction or realistic accretion physics.</p></main><footer><i>Gravity from the Ground Up</i> — Python Programs · Bernard Schutz © 2003 (Cambridge University Press) · Python programs © 2024–2026 Thomas Yee · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></footer></div></body></html>

@@ -1,0 +1,303 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BlackHoleSpacetimeVisualizer — guided laboratory</title><style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--bg:#fdf5e6;--surface:#fff;--border:#c8bfa0;--accent:#7b2d00;
+--accent2:#a04010;--gold:#b5811a;--text:#1c1c1c;--muted:#5a4a3a;
+--code-bg:#f0ede4;--note-bg:#f4f0e8;--eq-bg:#f7f2e8;
+--mono:"Courier New",Courier,monospace;
+--sans:"Helvetica Neue",Arial,sans-serif;
+--serif:Georgia,"Times New Roman",Times,serif}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.8 var(--serif);color:var(--text);background:var(--bg)}
+.page-wrap{display:grid;grid-template-columns:230px minmax(0,1fr);
+grid-template-rows:auto 1fr auto;min-height:100vh}
+.skip-link{position:absolute;left:-10000px;top:auto}
+.skip-link:focus{left:12px;top:8px;z-index:5;background:#fff;color:var(--accent);padding:6px}
+header{grid-column:1/-1;background:var(--accent);color:#fff;
+padding:26px 38px 20px;border-bottom:4px solid var(--gold)}
+header .badge{display:inline-block;font:10.5px var(--mono);letter-spacing:.06em;
+background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);
+border-radius:3px;padding:2px 7px;margin-bottom:10px}
+header h1{font-size:1.95rem;font-weight:normal;letter-spacing:-.02em;
+margin:0;line-height:1.3}header h1 em{font-style:normal;color:#ffc9a0}
+header .sub{font:0.88rem/1.55 var(--sans);color:#f0d0b8;margin:6px 0 0}
+header .sub a{color:#ffd8b8;text-decoration:none;border-bottom:1px solid #c68b6e}
+header .sub a:hover{border-bottom-color:#ffd8b8}
+nav{background:var(--surface);border-right:1px solid var(--border);
+padding:24px 0 40px;position:sticky;top:0;height:100vh;overflow-y:auto}
+nav .nav-label{font:700 10px/1.5 var(--sans);letter-spacing:.12em;
+text-transform:uppercase;color:var(--gold);padding:14px 18px 4px}
+nav a{display:block;font:13px/1.5 var(--sans);color:var(--muted);
+text-decoration:none;padding:6px 18px 6px 22px;border-left:3px solid transparent}
+nav a:hover,nav a:focus{color:var(--accent);background:#fdf0e0;
+border-left-color:var(--gold);outline:none}
+main{min-width:0;width:100%;max-width:900px;padding:38px 52px 60px}
+main .meta{font:13px/1.5 var(--mono);color:var(--muted);
+background:var(--note-bg);border:1px solid var(--border);border-radius:4px;
+padding:9px 12px;margin:0 0 22px}
+main h2{font-size:1.40rem;font-weight:normal;color:var(--accent);
+border-bottom:2px solid var(--gold);padding-bottom:6px;margin:2.2rem 0 1rem;
+line-height:1.35;scroll-margin-top:18px}
+main h3{font-size:1.08rem;color:var(--accent2);margin:1.6rem 0 .5rem}
+p{margin:.15rem 0 .85rem}ul,ol{margin:.4rem 0 .85rem 1.5rem;padding:0}
+li{margin-bottom:.35rem}section{margin-bottom:2.1rem}
+code{font:0.87em/1.45 var(--mono);background:var(--code-bg);
+border:1px solid #ddd8cc;border-radius:3px;padding:1px 5px;
+overflow-wrap:anywhere}
+pre{font:0.87em/1.55 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere;
+background:var(--code-bg);border:1px solid #ddd8cc;border-radius:5px;
+padding:14px 18px;margin:.8rem 0 1.2rem}
+pre code{font:inherit;background:transparent;border:0;padding:0}
+main .note,main .answer{padding:11px 16px;margin:1rem 0 1.2rem;
+font-size:.93rem;color:var(--muted);border-radius:0 5px 5px 0}
+main .note{background:var(--note-bg);border:1px solid var(--border);
+border-left:4px solid var(--accent2)}
+main .answer{background:var(--eq-bg);border:1px solid var(--border);
+border-left:4px solid var(--gold)}
+.tag{display:inline-block;font:700 10px/1.5 var(--sans);letter-spacing:.05em;
+text-transform:uppercase;background:#dbe8f5;color:#1c3f63;
+border:1px solid #a4c0da;border-radius:3px;padding:1px 6px;margin-right:4px}
+footer{grid-column:1/-1;background:var(--accent);color:#fff;text-align:center;
+padding:18px 24px;font:12.5px/1.7 var(--sans)}
+footer a{color:#e0c090}footer a:hover{color:#fff}
+@media(max-width:740px){.page-wrap{grid-template-columns:1fr}
+header{padding:20px 20px 16px}header h1{font-size:1.65rem}
+nav{position:static;height:auto;padding:10px 8px;border-right:0;
+border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:0 4px}
+nav .nav-label{width:100%;padding:8px 12px 0}
+nav a{padding:5px 12px;border-left:0;border-bottom:2px solid transparent}
+nav a:hover,nav a:focus{border-bottom-color:var(--gold)}
+main{padding:24px 20px 48px}}
+@media print{.page-wrap{display:block}nav{display:none}header,footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+main{max-width:none;padding:20px}section{break-inside:avoid}}
+</style></head><body><a class="skip-link" href="#content">Skip to content</a><div class="page-wrap"><header><div class="badge">Supplement · Gravity from the Ground Up</div><h1><em>BlackHoleSpacetimeVisualizer</em> — Embedding, Tides, Infall and Horizons</h1><p class="sub">A guided laboratory in four beats<br>Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a> · Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header><nav aria-label="Contents"><div class="nav-label">Start</div><a href="#start">Before the first run</a><div class="nav-label">The four beats</div><a href="#b0">Beat 0 · Space</a><a href="#b1">Beat 1 · Tides</a><a href="#b2">Beat 2 · Infall</a><a href="#b3">Beat 3 · Horizons</a><div class="nav-label">Keep exploring</div><a href="#diagnostics">Diagnostics</a><a href="#methods">Parameters</a><a href="#experiments">Experiments</a><a href="#limits">Domain of validity</a><a href="#license">License</a></nav><main id="content"><p class="meta">Version 1.4.0 Build 100876a488a0 · 2026-09-27 · run from the program directory with <code>python main.py</code></p>
+<p><b>One idea to carry through the four runs:</b> a drawing of space, a local
+tidal measurement, a falling clock and a globally defined horizon answer four
+different questions about a black hole. Run each command before reading its
+explanation; the printed summary supplies a check on your interpretation.</p>
+<h2 id="start">Before the first run</h2>
+<p>Install NumPy and Matplotlib, open a terminal in the folder containing
+<code>main.py</code>, and run <code>python main.py --version</code>. The current
+version and build must match the line above. A normal run displays a Matplotlib
+figure. <code>--outdir ./figures</code> also saves a timestamped PNG;
+<code>--csvdir ./data</code> also writes full-precision CSV. For a data-only
+run, use <code>--no_plot --csvdir ./data</code> together. The program rejects
+<code>--no_plot</code> alone because it would produce no output.</p>
+<p class="note">Lengths labelled <code>r_s</code> are Schwarzschild radii of
+the stated mass. In horizons, <code>r_s0</code> is the radius of the initial
+mass, so its plotted length and advanced-time scales do not change when
+<code>M1</code> changes. These four plots are models, not telescope images.</p>
+
+<section id="b0"><h2>Beat 0 · A spatial throat is not a tunnel</h2>
+<p><b>Question:</b> Where does the upper profile become vertical, and what does
+the dashed lower branch mean?</p>
+<pre><code>python main.py --mode embed --M 10 --outdir ./figures</code></pre>
+<p>Find the throat at the left of the radial profile and at the narrow circle of
+the three-dimensional surface. The program gives <code>r_s = 29.53 km</code> and
+plots from 1 to 8 <code>r_s</code>. The lower dashed profile is a mirror for
+viewing the shape; this program draws one exterior spatial slice, not a
+traversable wormhole. The vertical tangent is a property of the embedding,
+not a singularity in the intrinsic geometry.</p>
+<p><span class="tag">DERIVED</span> For the constant Schwarzschild-time,
+equatorial spatial slice, <code>z(r) = 2 sqrt[r_s (r-r_s)]</code> for the
+upper branch. Its Gaussian curvature is <code>K = -r_s/(2r³)</code>, negative
+even though the picture looks like a bowl. The printout quotes
+<code>K(r_s) = -5.7328e-10 m⁻²</code> at the default mass. The plotted
+height is an embedding coordinate in an auxiliary Euclidean space, not a
+distance above the hole.</p>
+<p class="answer"><b>Check:</b> The dashed branch is a drawing convention;
+proper radial distance and coordinate difference <code>r-r_s</code> are
+different quantities. The CSV option exposes both for a comparison.</p></section>
+
+<section id="b1"><h2>Beat 1 · A larger horizon can have gentler tides</h2>
+<p><b>Prediction:</b> If you compare a 10-solar-mass hole with a 4.31-million-
+solar-mass one at each hole's own horizon, which has the smaller local
+stretching acceleration for the same short test separation?</p>
+<pre><code>python main.py --mode tidal --M 10 --compare_masses 10,4.31e6 --outdir ./figures</code></pre>
+<p>The first two panels show the radial stretching and transverse compression
+for <code>M=10</code>, over 1.01–8 <code>r_s</code>. The comparison panels
+extend across the two listed masses. Read <code>a_r(r_s)</code> and
+<code>r_crit/r_s</code> in the terminal table: approximately
+<code>1.8914e7 g, 57.4</code> for 10 solar masses, and
+<code>1.0182e-4 g, 0.01006</code> for 4.31 million solar masses.</p>
+<p><span class="tag">EXACT COEFFICIENT / LINEARIZED SEPARATION</span>
+Local geodesic deviation gives <code>a_radial = 2GM δℓ/r³</code> and the
+magnitude <code>a_transverse = GM δℓ/r³</code>. At <code>r_s=2GM/c²</code>,
+the result scales as <code>M⁻²</code> for fixed proper separation
+<code>δℓ</code>. The <code>100 g</code> cutoff is a chosen illustrative
+threshold; <code>r_crit&lt;r_s</code> means that cutoff is not reached before
+crossing, not that a person is known to survive. A 1.8 m body is treated only
+to leading order in its size relative to local curvature scales.</p>
+<p class="answer"><b>Check:</b> The tangential magnitude is half the radial
+one. The signed eigenvalues are <code>+2, −1, −1</code> in the same units:
+one stretching direction and two compressing directions.</p></section>
+
+<section id="b2"><h2>Beat 2 · One fall, two clocks</h2>
+<p><b>Question:</b> Does the infaller's elapsed time diverge as the last
+sample approaches the horizon? Which displayed time does?</p>
+<pre><code>python main.py --mode infall --M 10 --r0_rs 6 --outdir ./figures</code></pre>
+<p>The first panel plots radius against the infaller's proper time
+<code>τ</code>; the second compares Schwarzschild coordinate time
+<code>t</code> with <code>τ</code>. The last two panels show speed relative
+to local static observers outside the horizon and the received/emitted
+frequency ratio for a radially outward signal received at infinity.
+At the default stopping radius <code>1.0005 r_s</code>, the summary gives
+<code>τ=2.2048475 ms</code>, <code>t=3.3868254 ms</code>, final local
+speed <code>0.999700 c</code>, and frequency ratio
+<code>2.7377e-4</code>. These are values at a stopping radius, not
+values at the horizon. Static observers cannot stand at the horizon.</p>
+<p><span class="tag">ODE</span> A particle released from rest at
+<code>r0</code> obeys <code>(dr/dτ)² = c²(r_s/r − r_s/r0)</code> and
+<code>dt/dτ = E/(1−r_s/r)</code>, with
+<code>E=sqrt(1−r_s/r0)</code>. The program integrates to a stopping
+radius strictly above <code>r_s</code>; <code>t</code> tends to infinity
+as that radius tends to <code>r_s</code> in this coordinate system, while
+<code>τ</code> stays finite. This is a coordinate effect, not a physical
+halt of the particle. The frequency ratio combines gravitational redshift
+with the Doppler effect for the receding emitter.</p>
+<p class="answer"><b>Check:</b> Do not interpret a finite displayed
+<code>t</code> at <code>1.0005 r_s</code> as the time of horizon crossing;
+the integration deliberately stops before that event.</p></section>
+
+<section id="b3"><h2>Beat 3 · A horizon can respond before accretion</h2>
+<p><b>Prediction:</b> If the hole begins growing only at advanced time
+<code>v/r_s0=5</code>, which plotted horizon can already differ from the
+initial radius at <code>v/r_s0&lt;5</code>?</p>
+<pre><code>python main.py --mode horizons --M0 5 --M1 10 --outdir ./figures</code></pre>
+<p>The mass doubles during <code>5≤v/r_s0≤15</code>. The left panel
+contrasts the apparent horizon, tied to the local mass function, with the
+event horizon, defined by the ray that separates escape from non-escape
+given the future history. The right panel draws nearby outgoing null rays.
+The early plotted event-horizon radius is
+<code>r_EH(v_start)/r_s0=1.00000145</code> at
+<code>v_start/r_s0=−20</code>; that tiny displacement is physical at the
+chosen early event. A different <code>--v_start_margin_rs0</code> selects a
+different event, rather than refining one numerical estimate.</p>
+<p><span class="tag">PRESCRIBED MASS / ODE</span> This Vaidya model prescribes
+a nondecreasing, piecewise-linear <code>M(v)</code>. Its apparent horizon
+is <code>r_AH(v)=2GM(v)/c²</code>. In geometrized units the outgoing null
+generator obeys <code>dr/dv = (1−2M(v)/r)/2</code>. The reported event
+horizon is integrated <i>backward</i> from the exact future condition
+<code>r_EH(v2)=r_s1</code>. It coincides with the apparent horizon once
+accretion has ended, and sits outside it earlier in this model. The curve
+is a global prediction using the chosen future mass history, not a signal
+travelling backward in time.</p>
+<p class="answer"><b>Check:</b> The plotted event horizon comes from the
+backward integration. The forward shooting search is only a diagnostic;
+its narrow bracket alone does not certify that its whole trial curve
+matches the reported one.</p></section>
+
+<h2 id="diagnostics">Reading the numerical diagnostics</h2>
+<p>For a quick data-only comparison, run the same horizons command with
+<code>--no_plot --csvdir ./data --bisect_iters 10</code>, then repeat with
+<code>--bisect_iters 60</code>. Compare <code>residual_rs0</code>
+(forward search bracket width), <code>shooting_vs_backward_rs0</code>
+(difference at the starting radius), and
+<code>shooting_vs_backward_curve_max_rs0</code> (maximum difference over
+the portion of the forward curve reached). Also check
+<code>shooting_reached_v2</code>. A tiny bracket or starting difference
+does not imply that a forward integrated null ray stayed close to the
+backward curve. <code>--n_steps</code> changes the output grid, not the
+internal adaptive integration. These comparisons do not by themselves
+bound the backward integrator's absolute error.</p>
+
+<h2 id="methods">Methods and parameter map</h2>
+<ul><li><code>--mode embed</code>: <code>--M</code>, <code>--r_max_rs</code>,
+<code>--n_r</code>; closed-form spatial embedding and a sampled proper
+distance integral.</li><li><code>--mode tidal</code>: <code>--M</code>,
+<code>--r_min_rs</code>, <code>--r_max_rs</code>, <code>--n_r</code>,
+<code>--separation</code>, <code>--limit_g</code>, optional
+<code>--compare_masses</code>; local tidal coefficients and an illustrative
+threshold.</li><li><code>--mode infall</code>: <code>--M</code>,
+<code>--r0_rs</code>, <code>--r_stop_rs</code>, <code>--n_points</code>,
+<code>--step_frac</code>; RK4 track. Require
+<code>1&lt;r_stop_rs&lt;r0_rs</code>.</li><li><code>--mode horizons</code>:
+<code>--M0</code>, <code>--M1</code>, <code>--v1_rs0</code>,
+<code>--duration_rs0</code>, <code>--v_start_margin_rs0</code>,
+<code>--v_end_margin_rs0</code>, <code>--n_steps</code>,
+<code>--bisect_iters</code>, <code>--n_family</code>. Require
+<code>M1≥M0</code>; <code>v1_rs0</code> may be negative. Integration
+uses the time offset relative to the start of accretion.</li></ul>
+<p>Mode-specific options not belonging to the selected mode are ignored.
+For exact defaults and input validation, consult <code>python main.py --help</code>.
+Each CSV includes its own version, build, mode and effective parameters.</p>
+
+<h2 id="experiments">Experiments and checks</h2>
+<ol><li><b>EXP-1, read the throat.</b> Repeat Beat 0 and identify the
+throat on both panels. Explain why the dashed branch is a mirror for
+drawing rather than a route through a second exterior.</li>
+<li><b>EXP-2, compare tides.</b> Repeat Beat 1. Which mass reaches the
+chosen <code>100 g</code> threshold before crossing its horizon?
+Use <code>r_crit/r_s</code>, not the size of the hole, to answer.</li>
+<li><b>EXP-3, clocks.</b> Repeat Beat 2 with
+<code>--r_stop_rs 1.01</code> and then <code>1.0005</code>. Which
+elapsed time increases sharply as the stop moves closer to the horizon?
+Use the two printed summaries, and state that the two stops are different
+physical endpoints.</li>
+<li><b>EXP-4, horizons.</b> Run Beat 3 with
+<code>--csvdir ./data</code>. In the main horizons CSV, compare
+<code>r_EH_m</code> and <code>r_AH_m</code> at rows just before
+<code>v1</code>, and after <code>v2</code>. Expected: before accretion
+the event horizon is already outside the apparent horizon, though the gap
+can be very small; after accretion the two coincide by construction. Do
+not use the forward family CSV as the event horizon.</li>
+<li><b>EXP-5, spatial distance.</b> Run
+<code>python main.py --mode embed --M 10 --csvdir ./data</code>. Compare
+<code>proper_radial_distance_m</code> to <code>r_m-r_s</code> at
+<code>2 r_s</code> and <code>8 r_s</code> (the default grid includes
+both). Use the first row’s <code>r_m</code> for the unrounded
+<code>r_s</code>. Use <code>100×[proper−coordinate]/coordinate</code> for a percentage;
+state this denominator.</li>
+<li><b>EXP-8, tidal scaling.</b> Repeat Beat 1 with
+<code>--compare_masses 10,100,1000</code> and <code>--csvdir ./data</code>.
+The CSV comparison rows provide <code>a_radial_horizon_g</code>;
+compute the ratio for successive factors of ten in mass. Expected: a
+factor of 100 decrease, since <code>a(r_s)∝M⁻²</code>. Explain why
+<code>r_crit/r_s&lt;1</code> is not a physiological survival guarantee.</li>
+<li><b>EXP-10, the horizon's memory.</b> Run
+<code>python main.py --mode horizons --M0 5 --M1 10 --v_start_margin_rs0 5 --no_plot --csvdir ./data</code>,
+then repeat with margins 10, 15 and 20. In each main CSV, subtract 1 from
+the first <code>r_EH_over_rs0</code>. It should decrease as you select
+earlier events in the static past. It is a different physical displacement
+at each selected time, not the convergence of an error estimate. Prefer
+CSV precision over the rounded printed starting radius for this exercise.</li>
+<li><b>EXP-11, an independent clock.</b> Repeat Beat 2 with
+<code>--no_plot --csvdir ./data</code>. For <code>r0=6r_s</code> and
+<code>r_stop=1.0005r_s</code>, put
+<code>η=acos(2r_stop/r0−1)</code> in the closed form
+<code>τ=sqrt[r0³/(8GM)]×(η+sin η)</code>. Use the program's IAU nominal
+solar mass parameter <code>GM☉=1.3271244e20 m³/s²</code>, so
+<code>GM=10 GM☉</code>; combining an unrelated rounded kilogram solar
+mass with a tabulated <code>G</code> moves the check by about 1e−4
+relative. Expected: <code>2.2048475035 ms</code>, within
+<code>1e−5</code> relative of the run's printed proper time.</li>
+<li><b>EXP-13, test the forward diagnostic.</b> Repeat Beat 3 with
+<code>--no_plot --csvdir ./data --bisect_iters 10</code> and
+<code>--no_plot --csvdir ./data --bisect_iters 60</code>.
+Record whether the forward trial reaches <code>v2</code> and its maximum
+curve difference. Why does bracket-width improvement alone fail to
+measure the accuracy of the plotted event horizon?</li>
+<li><b>EXP-18, join the four views.</b> Run all modes at a shared mass
+of 10 solar masses (set <code>--M0 10 --M1 10</code> for horizons).
+Connect the radius and horizon Gaussian curvature in the embed summary,
+the horizon tidal acceleration, the proper infall time, and the static
+event/apparent horizon coincidence. Use
+<code>K(r_s)=−1/(2r_s²)</code> and <code>r_s∝M</code> to show
+why curvature and tidal acceleration at a fixed test separation both
+scale as <code>M⁻²</code>.</li></ol>
+<h2 id="limits">Where the model stops</h2>
+<p>The embedding draws one constant-time spatial slice and says nothing
+about traversability. Tidal accelerations apply geodesic deviation to a
+small proper separation; material failure is absent. Infall is radial
+motion of a point test particle; its Schwarzschild time is a coordinate
+that becomes singular at the horizon. Vaidya accretion is prescribed
+ingoing null dust, not a simulated star or disk. Both the horizon's early
+displacement and the forward shooting instability can become too small or
+large to resolve with finite precision; the program reports its
+computational-domain failures rather than guaranteeing every extreme
+input will work.</p>
+<h2 id="license">License and scope</h2><p>This supplemental Python investigation was
+proposed for use alongside Bernard Schutz’s <i>Gravity from the Ground Up</i>
+(Cambridge University Press). Distributed under
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
+Schwarzschild and ingoing Vaidya are idealized teaching spacetimes: no spin,
+charge, material response, radiation reaction or realistic accretion physics.</p></main><footer><i>Gravity from the Ground Up</i> — Python Programs · Bernard Schutz © 2003 (Cambridge University Press) · Python programs © 2024–2026 Thomas Yee · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></footer></div></body></html>
