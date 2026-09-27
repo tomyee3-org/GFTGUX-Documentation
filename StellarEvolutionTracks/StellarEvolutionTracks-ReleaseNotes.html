@@ -1,77 +1,87 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>StellarEvolutionTracks 1.7.0 Release Notes</title>
-</head>
-<body>
-<h1>StellarEvolutionTracks 1.7.0 Release Notes</h1>
-<p><b>Version:</b> 1.7.0<br><b>Build:</b> a28c8d1a30e0<br><b>Date:</b> 2026-09-20</p>
-
+<html lang="en"><head><meta charset="utf-8"><title>StellarEvolutionTracks 1.8.0 Release Notes</title></head><body>
+<h1>StellarEvolutionTracks 1.8.0 Release Notes</h1>
+<p><b>Version:</b> 1.8.0; <b>Build:</b> a33f673a91a1; <b>Date:</b> 2026-09-27.</p>
 <h2>Release Status</h2>
-<p>Version 1.7.0 follows the 1.5.0 release and its documentation-only Kickoff2 repackaging (Help rewritten as the Beats tutorial), then two further review rounds (Audit21 and Audit22, each with Codex, Grok and Copilot) and a third read-only review (Audit23) of the delivered 1.7.0 tree. Audit21 and Audit22 together raised 43 findings: 38 are repaired, 4 are repaired in part, 1 was accepted with no change needed, and none were declined.</p>
-<p>Audit23 found no P1 defect. Codex reported two P2 and one P3 defect and judged the build &ldquo;NOT READY for release as 1.7.0&rdquo;; Grok found one P3 documentation gap and said it would give the build to students; Copilot found nothing. <b>The Audit23 defects have not been fixed in this release.</b> They are listed below as Known Bugs (KB-1 to KB-3 are Codex&rsquo;s, KB-4 is Grok&rsquo;s, KB-5 was found while regenerating the sample figures). All five were reproduced against the delivered 1.7.0 files. The default runs shown in the Help and the sample figures are not affected by KB-1 to KB-4; KB-5 is visible in the default polytrope figure.</p>
+<p>This Kickoff4 continues the provisional 1.7.0 development and addresses the Audit23 findings. In that review Codex held 1.7.0 for two P2 and one P3 defect; Grok considered it suitable for students while flagging one P3 explanation; Copilot reported no finding. The earlier Audit22 round produced 1.7.0; Audit23 changed no files. The current 1.8.0 artifact awaits Claude's independent review and a release decision. The 1.7.0 provisional notes are retained below.</p>
+<h2>Open Bugs</h2>
+<p>No P1–P3 issue remains confirmed among the five reproduced 1.7.0 findings after this round's corrections and regression checks. Review of version 1.8.0 remains pending.</p>
+<h2>Major Improvements in This Release</h2>
+<ul>
+<li>The relativistic polytrope sequence now uses a tighter surface-density threshold and checks the maximum-mass radius against a further two-decade tightening. Its summary prints the threshold and measured radius drift, and warns when the drift remains material. This changes radius values for cutoff-sensitive parameter choices while leaving the default example essentially unchanged (KB-1).</li>
+<li>When there is no resolved interior turning point, the causality check covers all converged sampled models and names that scope in the printed summary and warnings. A previously missed acausal high-density sequence is flagged (KB-2).</li>
+<li>The public turn-off interpolation validates paired masses and lifetimes, while retaining missing lifetime sentinels for unfinished tracks (KB-3).</li>
+<li>Both tutorial Help styles now describe the low-index polytrope's falling mass, the new surface-cutoff check and the scope of the sound-speed test (KB-4). The mass–radius plot legend no longer covers the maximum-mass marker (KB-5).</li>
+<li>One shared suite requires both Help files and checks their commands and scientific identity. The SampleOutputs guide contains eleven new embedded images, one for each Beat, regenerated from this build.</li>
+</ul>
+<h2>Test Suite Growth</h2>
+<p>The suite grew from 309 tests in 1.7.0 to 315 tests in 1.8.0. Run it from the program folder with <code>MPLBACKEND=Agg python -W error::RuntimeWarning -m unittest tests.test_physics_sev -q</code>. The full suite passed after the revised Beat 9 output assertion was updated. The new cases cover the surface-radius check, provisional-branch causality, turn-off validation and Grok tutorial compatibility; both Help files are required.</p>
+<h2>Known Limitations</h2>
+<ul>
+<li>These are teaching models and simplified equations of state; no research-grade stellar evolution or realistic neutron-star equation of state is claimed. The four modes are separate model calculations.</li>
+<li>A reported relativistic turning point must be an interior sampled maximum; it is not refined between grid points. Newtonian sequences have no assigned radial-stability classification.</li>
+<li>The finite polytrope surface cutoff remains a numerical approximation. The measured radius drift at the selected peak checks one model and one two-decade tightening; it does not certify every sampled radius or parameter choice.</li>
+<li>The schematic helium-white-dwarf remnant is a mass-based heuristic. White-dwarf Mestel cooling uses the envelope electron weight and excludes several physical cooling mechanisms.</li>
+<li>Output collision avoidance is confined to a process; offline browsers may display MathJax equations in raw TeX.</li>
+</ul>
+<h2>Known Minor Maintenance Items</h2>
+<ul>
+<li>Some plot panels lack complete visual regression checks; extreme HR plot masses may clip the zero-age line.</li>
+<li>The isochrone/turn-off status categories have no machine-readable taxonomy; <code>build_hr_grid()</code> validates some inputs during integration instead of all at entry.</li>
+<li>The HR workload cap counts post-main-sequence points even when the run disables that stage. Neutron-gas mode silently ignores polytrope-only options.</li>
+<li>Some private helper docstrings refer to older audit IDs. A deliberately small figure produces a Matplotlib <code>UserWarning</code>; the suite promotes only <code>RuntimeWarning</code> to an error.</li>
+</ul>
+<h2>Version Identification</h2>
+<p><b>MODEL_VERSION:</b> 1.8.0; <b>BUILD_ID:</b> a33f673a91a1. The first 12 hexadecimal digits of a SHA-256 digest cover the LF-normalized contents of <code>physics_sev.py</code>, <code>driver_sev.py</code>, <code>main.py</code> and <code>plot_sev.py</code>, with file-name and length framing. Help, guide and tests do not change this identifier. The sample figures were generated on 2026-09-27 using this build.</p>
+<h2>Earlier Provisional Notes — 1.7.0</h2>
+<p>The following preserved notes report the state of 1.7.0 at Audit23. Their “open bugs” and release recommendation describe that earlier build; the 1.8.0 sections above supersede them. Earlier reproduced values remain as historical comparisons.</p>
+<p><b>Version:</b> 1.7.0; <b>Build:</b> a28c8d1a30e0; <b>Date:</b> 2026-09-20</p>
 
-<h2>Known Bugs (open)</h2>
+<h3>Release Status</h3>
+<p>Version 1.7.0 follows the 1.5.0 release and its documentation-only Kickoff2 repackaging (Help rewritten as the Beats tutorial), then two further review rounds (Audit21 and Audit22, each with Codex, Grok and Copilot) and a third read-only review (Audit23) of the delivered 1.7.0 tree. Audit21 and Audit22 together raised 43 findings: 38 are repaired, 4 are repaired in part, 1 was accepted with no change needed, and none were declined.</p>
+<p>Audit23 found no P1 defect. Codex reported two P2 and one P3 defect and judged the build “NOT READY for release as 1.7.0”; Grok found one P3 documentation gap and said it would give the build to students; Copilot found nothing. <b>The Audit23 defects have not been fixed in this release.</b> They are listed below as Known Bugs (KB-1 to KB-3 are Codex’s, KB-4 is Grok’s, KB-5 was found while regenerating the sample figures). All five were reproduced against the delivered 1.7.0 files. The default runs shown in the Help and the sample figures are not affected by KB-1 to KB-4; KB-5 is visible in the default polytrope figure.</p>
+
+<h3>Known Bugs (open)</h3>
 <p>Reproduction commands are given so that each report can be confirmed independently. Causes and fixes are deliberately not analysed here.</p>
 <ul>
-<li><b>KB-1 (P2, Codex A23-P2-01): polytrope radius depends on an internal surface cutoff.</b> For stiff-polytrope neutron stars the TOV radius changes when the internal surface cutoff <code>y_floor</code> is tightened from 1e-8 (the default) to 1e-10. The cutoff is not exposed through <code>ns_mass_radius_curve()</code> or the command line, and the program reports no warning for &Gamma; of 1.4 or above. In the reproduction below the mass changes by 0.006%. Reproduction:
-<pre>import physics_sev as P
-eos = P.PolytropeEOS(gamma=1.40, p_nuc=1.0)
-yc = eos.x_from_density(6.768e17)
-P.integrate_structure(eos, yc, relativistic=True, r_scale=1.5e4, y_floor=1e-8)   # 29.1967 Msun, 1172.544 km
-P.integrate_structure(eos, yc, relativistic=True, r_scale=1.5e4, y_floor=1e-10)  # 29.1984 Msun, 1257.492 km</pre>
-Radius change on tightening the cutoff, other cases checked:
-<table border="1" cellpadding="3" cellspacing="0">
-<tr><th>&Gamma;</th><th>p_nuc</th><th>central density (kg/m&sup3;)</th><th>R at 1e-8 (km)</th><th>R at 1e-10 (km)</th><th>change</th></tr>
-<tr><td>1.40</td><td>0.04</td><td>5e19</td><td>11.144</td><td>11.243</td><td>0.881%</td></tr>
-<tr><td>1.40</td><td>1.0</td><td>6.768e17</td><td>1172.544</td><td>1257.492</td><td>7.245%</td></tr>
-<tr><td>1.39</td><td>1.0</td><td>5.771e17</td><td>1417.557</td><td>1545.891</td><td>9.053% (the warning quotes 0.1&ndash;0.6%)</td></tr>
-<tr><td>1.50</td><td>1.0</td><td>2.84e18</td><td>285.490</td><td>288.548</td><td>1.071%</td></tr>
-</table>
-The 1.40 / p_nuc 1.0 case is the maximum-mass point of a default sequence (29.1967 M&#9737;; turning point found, causal, no warning). The warning <code>POLYTROPE_GAMMA_SLOW_SURFACE</code> fires only for &Gamma; below 1.4. Help statements contradicted: Beat 9 (&ldquo;0.1&ndash;0.6%&rdquo;) and the Validity-table row saying polytropes are reasonably represented for &Gamma; of about 1.4 and above. Sample-figure models (default polytrope, p_nuc 0.08, &Gamma; = 3.0, neutron TOV) change by less than 0.0001%.</li>
+<li><b>KB-1 (P2, Codex A23-P2-01): polytrope radius depends on an internal surface cutoff.</b> For stiff-polytrope neutron stars the TOV radius changes when the internal surface cutoff <code>y_floor</code> is tightened from 1e-8 (the default) to 1e-10. The cutoff is not exposed through <code>ns_mass_radius_curve()</code> or the command line, and the program reports no warning for Γ of 1.4 or above. In the reproduction below the mass changes by 0.006%. Reproduction:
+<p><code>import physics_sev as P ; eos = P.PolytropeEOS(gamma=1.40, p_nuc=1.0) ; yc = eos.x_from_density(6.768e17) ; P.integrate_structure(eos, yc, relativistic=True, r_scale=1.5e4, y_floor=1e-8)   # 29.1967 Msun, 1172.544 km ; P.integrate_structure(eos, yc, relativistic=True, r_scale=1.5e4, y_floor=1e-10)  # 29.1984 Msun, 1257.492 km</code></p><ul><li>Γ: 1.40; p_nuc: 0.04; central density (kg/m³): 5e19; R at 1e-8 (km): 11.144; R at 1e-10 (km): 11.243; change: 0.881%</li><li>Γ: 1.40; p_nuc: 1.0; central density (kg/m³): 6.768e17; R at 1e-8 (km): 1172.544; R at 1e-10 (km): 1257.492; change: 7.245%</li><li>Γ: 1.39; p_nuc: 1.0; central density (kg/m³): 5.771e17; R at 1e-8 (km): 1417.557; R at 1e-10 (km): 1545.891; change: 9.053% (the warning quotes 0.1–0.6%)</li><li>Γ: 1.50; p_nuc: 1.0; central density (kg/m³): 2.84e18; R at 1e-8 (km): 285.490; R at 1e-10 (km): 288.548; change: 1.071%</li></ul><code>POLYTROPE_GAMMA_SLOW_SURFACE</code> fires only for Γ below 1.4. Help statements contradicted: Beat 9 (“0.1–0.6%”) and the Validity-table row saying polytropes are reasonably represented for Γ of about 1.4 and above. Sample-figure models (default polytrope, p_nuc 0.08, Γ = 3.0, neutron TOV) change by less than 0.0001%.</li>
 
 <li><b>KB-2 (P2, Codex A23-P2-02): causality is checked only on the stable branch, which can be one model long.</b> When the maximum mass is the first sampled model, the sequence is reported as having a stable branch that is checked for causality over a single point, and a strongly acausal sequence is not flagged. Reproduction:
-<pre>ns_mass_radius_curve(eos_name="polytrope", gamma=2.5, p_nuc=0.04, n=20,
-                     rho_lo=2e18, rho_hi=1e19, relativistic=True)</pre>
-Returns <code>i_max</code> 0, <code>turning_point</code> False, <code>stable_branch</code> False, <code>causal</code> True, c<sub>s</sub>/c 0.9274 at the maximum and on the branch. An independent scan of the same 20 models finds a maximum c<sub>s</sub>/c of 1.185920 and 16 of the 20 models acausal. The command line prints &ldquo;NOT a maximum&rdquo; but no ACAUSAL flag. The default <code>--rho_lo</code> is 1e17, so default runs are not affected. Help statements contradicted: the &ldquo;whole branch&rdquo; causality row in the Validity table and the matching known-artefacts bullet.</li>
+<p><code>ns_mass_radius_curve(eos_name="polytrope", gamma=2.5, p_nuc=0.04, n=20, ; rho_lo=2e18, rho_hi=1e19, relativistic=True)</code></p><code>i_max</code> 0, <code>turning_point</code> False, <code>stable_branch</code> False, <code>causal</code> True, c<sub>s</sub>/c 0.9274 at the maximum and on the branch. An independent scan of the same 20 models finds a maximum c<sub>s</sub>/c of 1.185920 and 16 of the 20 models acausal. The command line prints “NOT a maximum” but no ACAUSAL flag. The default <code>--rho_lo</code> is 1e17, so default runs are not affected. Help statements contradicted: the “whole branch” causality row in the Validity table and the matching known-artefacts bullet.</li>
 
 <li><b>KB-3 (P3, Codex A23-P3-01): <code>turnoff_mass()</code> does not validate its inputs as a pair.</b> Reproduction:
-<pre>turnoff_mass([1,2,3], [10,5], 7)          # 1.4285714285714288  (lists of unequal length; no error)
-turnoff_mass([-1,1,2], [20,10,5], 7)      # 1.4285714285714288  (negative mass; no error)
-turnoff_mass(["1","2"], [10,5], 7)        # raw TypeError
-turnoff_mass([1,2,3], [10,10,5], 10)      # 2.0  (non-strictly-decreasing lifetimes; no error)</pre>
-The only caller is <code>build_hr_grid()</code>, which passes clean internal arrays, so the command line is unaffected.</li>
+<p><code>turnoff_mass([1,2,3], [10,5], 7)          # 1.4285714285714288  (lists of unequal length; no error) ; turnoff_mass([-1,1,2], [20,10,5], 7)      # 1.4285714285714288  (negative mass; no error) ; turnoff_mass(["1","2"], [10,5], 7)        # raw TypeError ; turnoff_mass([1,2,3], [10,10,5], 10)      # 2.0  (non-strictly-decreasing lifetimes; no error)</code></p><code>build_hr_grid()</code>, which passes clean internal arrays, so the command line is unaffected.</li>
 
-<li><b>KB-4 (P3 documentation, Grok A23-P3-1): the accepted &Gamma; range includes values where the default TOV grid already shows the mass falling.</b> The accepted range is 4/3 &lt; &Gamma; &le; 5. On the default grid (n = 8, 1e16 to 5e19 kg/m&sup3;, p_nuc 0.04): &Gamma; 1.34 falls from 1.437 to 0.430 M&#9737; with no turning point; &Gamma; 1.40 has M<sub>max</sub> 1.064 M&#9737; at 1.14e17; &Gamma; 1.50 has 0.979 M&#9737; at 1.3e18. Grok asked for one sentence in Beat 9 or EXP-17. No Help text has been added.</li>
+<li><b>KB-4 (P3 documentation, Grok A23-P3-1): the accepted Γ range includes values where the default TOV grid already shows the mass falling.</b> The accepted range is 4/3 &lt; Γ ≤ 5. On the default grid (n = 8, 1e16 to 5e19 kg/m³, p_nuc 0.04): Γ 1.34 falls from 1.437 to 0.430 M☉ with no turning point; Γ 1.40 has M<sub>max</sub> 1.064 M☉ at 1.14e17; Γ 1.50 has 0.979 M☉ at 1.3e18. Grok asked for one sentence in Beat 9 or EXP-17. No Help text has been added.</li>
 
-<li><b>KB-5 (cosmetic, found while preparing the sample figures): the mass&ndash;radius legend can cover the maximum-mass star.</b> In the left panel of <code>--mode nsmr</code> the legend partly hides the star marking the maximum mass at the default polytrope, and hides it completely at &Gamma; = 3.0. The value is still printed in the legend text and in the terminal summary.</li>
+<li><b>KB-5 (cosmetic, found while preparing the sample figures): the mass–radius legend can cover the maximum-mass star.</b> In the left panel of <code>--mode nsmr</code> the legend partly hides the star marking the maximum mass at the default polytrope, and hides it completely at Γ = 3.0. The value is still printed in the legend text and in the terminal summary.</li>
 </ul>
 
-<h2>Known Limitations</h2>
+<h3>Known Limitations</h3>
 <p>By design, or accepted and documented. These are not defects.</p>
 <ul>
 <li>Intended for education and conceptual exploration, not research-grade modeling. Every mode is a simplified teaching model: homology relations and empirical closures for the stars; idealized zero-temperature or ideal-gas equations of state for white dwarfs and neutron stars; no rotation, magnetic fields, mass loss, convective overshoot or binary interaction. The four modes are separate models, not one continuous evolution.</li>
-<li>The schematic low-mass &ldquo;helium white dwarf&rdquo; remnant is a single-star, mass-only heuristic. The Help has said so since 1.6.0.</li>
-<li>The ideal neutron gas (<code>--eos neutron</code>) reaches a maximum of about 0.71 M&#9737; (0.7100 in 1.7.0) by design. The stiff polytrope is a toy stand-in for nuclear repulsion, not a fit to nuclear matter or observations.</li>
-<li>Turning-point detection requires an interior sampled maximum and does not refine between grid points; the maximum mass is only as precise as the grid. Since 1.6.0 only TOV sequences get a turning point; Newtonian sequences report a &ldquo;largest sampled mass&rdquo; and are not stability-classified (the field name <code>M_max</code> is kept).</li>
-<li>No comparison with a published white-dwarf mass&ndash;radius table. Partly addressed in 1.7.0 by independent oracle tests and a Sirius B check.</li>
-<li>The Mestel cooling matching layer uses the envelope&rsquo;s &mu;<sub>e</sub>. The alternative (core value) would make the coefficient 14.2 times smaller and the default cooling age 79.8 Gyr instead of 5.6235 Gyr. The convention is stated in the Help and tested. The public option is still named <code>--mu_e</code> (Codex A22 asked for a rename; not done; Codex Audit23 accepted the convention).</li>
-<li>White-dwarf integration is second order in <code>step_frac</code>, and the default step is coarse above about 1e15 kg/m&sup3; (stated in Beat 6).</li>
-<li>Chandrasekhar-limit coefficient derived in 1.7.0 (5.836 &rarr; 5.8252): M<sub>Ch</sub>(&mu;<sub>e</sub> = 2) is now 1.4563 M&#9737;, not 1.459. The cutoff at 0.999 M<sub>Ch</sub> is 1.4548 M&#9737;, so a white-dwarf mass of 1.455 is now refused.</li>
+<li>The schematic low-mass “helium white dwarf” remnant is a single-star, mass-only heuristic. The Help has said so since 1.6.0.</li>
+<li>The ideal neutron gas (<code>--eos neutron</code>) reaches a maximum of about 0.71 M☉ (0.7100 in 1.7.0) by design. The stiff polytrope is a toy stand-in for nuclear repulsion, not a fit to nuclear matter or observations.</li>
+<li>Turning-point detection requires an interior sampled maximum and does not refine between grid points; the maximum mass is only as precise as the grid. Since 1.6.0 only TOV sequences get a turning point; Newtonian sequences report a “largest sampled mass” and are not stability-classified (the field name <code>M_max</code> is kept).</li>
+<li>No comparison with a published white-dwarf mass–radius table. Partly addressed in 1.7.0 by independent oracle tests and a Sirius B check.</li>
+<li>The Mestel cooling matching layer uses the envelope’s μ<sub>e</sub>. The alternative (core value) would make the coefficient 14.2 times smaller and the default cooling age 79.8 Gyr instead of 5.6235 Gyr. The convention is stated in the Help and tested. The public option is still named <code>--mu_e</code> (Codex A22 asked for a rename; not done; Codex Audit23 accepted the convention).</li>
+<li>White-dwarf integration is second order in <code>step_frac</code>, and the default step is coarse above about 1e15 kg/m³ (stated in Beat 6).</li>
+<li>Chandrasekhar-limit coefficient derived in 1.7.0 (5.836 → 5.8252): M<sub>Ch</sub>(μ<sub>e</sub> = 2) is now 1.4563 M☉, not 1.459. The cutoff at 0.999 M<sub>Ch</sub> is 1.4548 M☉, so a white-dwarf mass of 1.455 is now refused.</li>
 <li>Output-collision protection (CSV, PNG, provenance sidecars) works within one process only; there is no cross-process atomic exclusive create.</li>
 <li>Scientific narrative is duplicated across the terminal output, CSV/PNG provenance and the Help rather than centralized. Since 1.7.0 the synchronization tests (<code>TestHelpClaimsAgreeAcrossLayers</code>, 12 tests) guard it.</li>
 <li>The Help loads MathJax from a public CDN; offline, the TeX is shown untypeset. The program itself needs no network.</li>
 <li>Kickoff2 shipped no <code>.py.txt</code> transport companions, so the earlier limitation about them no longer applies.</li>
 </ul>
 
-<h2>Known Minor Maintenance Items</h2>
+<h3>Known Minor Maintenance Items</h3>
 <ul>
 <li>A three-way isochrone/turn-off status taxonomy (outside the mass grid; inside the grid but time-truncated; too few surviving points) is not implemented as machine-readable states; the two symptoms it would address are fixed and explained in text.</li>
 <li>The boolean-type-checking sweep covers the public API (45 entry points, 408 cases, done in 1.7.0); private helpers are not swept. Numeric strings are still coerced by <code>float()</code> (<code>PolytropeEOS(gamma="2.5")</code> works); booleans are refused.</li>
 <li><code>build_hr_grid()</code> does not pre-validate every mass before integrating; the command line does. A direct call fails later with a clear error.</li>
 <li>The HR-mode workload cap counts <code>n_post</code> even under <code>--no_postms</code>. It errs on the safe side.</li>
-<li><code>--eos neutron</code> silently ignores <code>--gamma</code> and <code>--p_nuc</code>, and the CSV lists them as &ldquo;default&rdquo;.</li>
+<li><code>--eos neutron</code> silently ignores <code>--gamma</code> and <code>--p_nuc</code>, and the CSV lists them as “default”.</li>
 <li>Numerical-methods refinements to the integrators (intermediate-state clamping near a white-dwarf surface; linear rather than event-detected interpolation at the TAMS crossing and the cooling-track endpoint) remain candidates for a dedicated round.</li>
 <li>Plot regression tests are structurally partial; not every panel of every mode is covered.</li>
 <li>HR-plot ZAMS line may clip at extreme masses, and the Sun marker is not labelled as an external reference (declined as polish).</li>
@@ -80,53 +90,32 @@ The only caller is <code>build_hr_grid()</code>, which passes clean internal arr
 <li>One test emits a Matplotlib <code>UserWarning</code> for a deliberately tiny figure; the suite promotes only <code>RuntimeWarning</code> to an error.</li>
 <li>Beat 2 keeps six commands together by design; splitting would renumber every beat, pointer and test.</li>
 <li>Outside the release: the repository copy of <code>package/transport_codec.py</code> has a leading-space <code>IndentationError</code> (Kickoff2 finding F2).</li>
-<li>Retired: &ldquo;duplicate isochrone ages are not rejected&rdquo; (listed in 1.5.0). Duplicate ages have been rejected since 1.3.0; the Help documents it since 1.6.0.</li>
+<li>Retired: “duplicate isochrone ages are not rejected” (listed in 1.5.0). Duplicate ages have been rejected since 1.3.0; the Help documents it since 1.6.0.</li>
 </ul>
 
-<h2>Repaired Since 1.5.0</h2>
+<h3>Repaired Since 1.5.0</h3>
 <p>All of the following were reported by reviewers and are repaired in the version shown.</p>
 <ul>
-<li>1.6.0: Newtonian sequences never report a turning point (they report a &ldquo;largest sampled mass&rdquo;).</li>
-<li>1.6.0: <code>PolytropeEOS</code> and <code>chandrasekhar_mass</code> reject negative, non-finite, boolean and complex input; <code>chandrasekhar_mass(0)</code> no longer raises <code>ZeroDivisionError</code> and <code>chandrasekhar_mass(-2)</code> no longer returns 1.459; &mu;<sub>e</sub> must lie in [1, 3].</li>
+<li>1.6.0: Newtonian sequences never report a turning point (they report a “largest sampled mass”).</li>
+<li>1.6.0: <code>PolytropeEOS</code> and <code>chandrasekhar_mass</code> reject negative, non-finite, boolean and complex input; <code>chandrasekhar_mass(0)</code> no longer raises <code>ZeroDivisionError</code> and <code>chandrasekhar_mass(-2)</code> no longer returns 1.459; μ<sub>e</sub> must lie in [1, 3].</li>
 <li>1.6.0: <code>run()</code> rejects string booleans such as <code>postms="False"</code>.</li>
 <li>1.6.0: fifth equation tag PRESCRIPTION added; Help wording corrected (helium-white-dwarf scope among others); <code>TestHelpQuotedNumbers</code> ties Help numbers to real runs (repaired in part: only one Help layout ships, so the other is covered by fixtures).</li>
-<li>1.7.0: Chandrasekhar-limit coefficient derived rather than typed (5.836 &rarr; 5.8252).</li>
-<li>1.7.0: polytrope &Gamma; restricted to (4/3, 5]; earlier any &Gamma; &gt; 1 was accepted, including &Gamma; &le; 6/5 polytropes that have no finite surface (Codex asked for 6/5; 4/3 chosen; the surface-cutoff estimate that accompanied it is KB-1).</li>
+<li>1.7.0: Chandrasekhar-limit coefficient derived rather than typed (5.836 → 5.8252).</li>
+<li>1.7.0: polytrope Γ restricted to (4/3, 5]; earlier any Γ &gt; 1 was accepted, including Γ ≤ 6/5 polytropes that have no finite surface (Codex asked for 6/5; 4/3 chosen; the surface-cutoff estimate that accompanied it is KB-1).</li>
 <li>1.7.0: boolean refusal in <code>mestel_constant</code>, <code>turnoff_mass</code> and the <code>FermiGasEOS</code> constructor (<code>False</code> raised <code>ZeroDivisionError</code>).</li>
 <li>1.7.0: <code>run(m_observed=...)</code> validated in every mode (<code>-3</code> was accepted and written to the provenance).</li>
-<li>1.7.0: Mestel envelope convention documented, quantified and tested (repaired in part: option not renamed); white-dwarf oracle tests added (repaired in part: no published table); cross-layer narrative tests added (repaired in part: not centralized); Help equation blocks 17 &rarr; 22.</li>
+<li>1.7.0: Mestel envelope convention documented, quantified and tested (repaired in part: option not renamed); white-dwarf oracle tests added (repaired in part: no published table); cross-layer narrative tests added (repaired in part: not centralized); Help equation blocks 17 → 22.</li>
 <li>Audit21 counts: Codex 17 (16 repaired, 1 in part), Grok 8 (8 repaired), Copilot 0. Audit22 counts: 18 findings (14 repaired, 3 in part, 1 accepted: a typo in a response report).</li>
 <li>Earlier rounds (1.1.2 to 1.5.0) are described in the 1.5.0 notes: interior-maximum turning point, helium-ignition flag, core-mass continuity, <code>remnant_basis</code>, <code>wd_structure</code> convergence error, Fermi-gas small-<i>x</i> series, provenance sidecars, collision handling, CODATA 2022 constants, YEAR constant, input validation.</li>
 </ul>
 
-<h2>Version History</h2>
-<table border="1" cellpadding="3" cellspacing="0">
-<tr><th>Version</th><th>Build</th><th>Tests</th><th>Round</th></tr>
-<tr><td>1.1.1</td><td>4412fce2fda3</td><td>none</td><td>as uploaded</td></tr>
-<tr><td>1.1.2</td><td>f9f19e598626</td><td>158</td><td>Kickoff</td></tr>
-<tr><td>1.2.0</td><td>e6b4674d23c6</td><td>184</td><td>Audit1</td></tr>
-<tr><td>1.3.0</td><td>7703fa47bf20</td><td>197</td><td>Audit2</td></tr>
-<tr><td>1.4.0</td><td>16faf4c1e9f5</td><td>207</td><td>Audit3</td></tr>
-<tr><td>1.5.0</td><td>4ab0d0a5d73c</td><td>210</td><td>Audit4</td></tr>
-<tr><td>1.5.0</td><td>4ab0d0a5d73c</td><td>220</td><td>Kickoff2 (Help and tests only; program modules unchanged)</td></tr>
-<tr><td>1.6.0</td><td>b57e37aa8a99</td><td>251</td><td>Audit21</td></tr>
-<tr><td>1.7.0</td><td>a28c8d1a30e0</td><td>309</td><td>Audit22; Audit23 was review only</td></tr>
-</table>
+<h3>Version History</h3>
+<ul><li>Version: 1.1.1; Build: 4412fce2fda3; Tests: none; Round: as uploaded</li><li>Version: 1.1.2; Build: f9f19e598626; Tests: 158; Round: Kickoff</li><li>Version: 1.2.0; Build: e6b4674d23c6; Tests: 184; Round: Audit1</li><li>Version: 1.3.0; Build: 7703fa47bf20; Tests: 197; Round: Audit2</li><li>Version: 1.4.0; Build: 16faf4c1e9f5; Tests: 207; Round: Audit3</li><li>Version: 1.5.0; Build: 4ab0d0a5d73c; Tests: 210; Round: Audit4</li><li>Version: 1.5.0; Build: 4ab0d0a5d73c; Tests: 220; Round: Kickoff2 (Help and tests only; program modules unchanged)</li><li>Version: 1.6.0; Build: b57e37aa8a99; Tests: 251; Round: Audit21</li><li>Version: 1.7.0; Build: a28c8d1a30e0; Tests: 309; Round: Audit22; Audit23 was review only</li></ul><h3>Test Suite Growth</h3>
+<p>158 → 184 → 197 → 207 → 210 → 220 (Kickoff2) → 251 (1.6.0) → 309 (1.7.0). All 309 pass; Codex and Grok each ran the suite on the delivered tree (217 s and 241 s). The suite locates the program modules from the canonical <code>tests/</code> directory or a flattened layout. Run it once per delivery from a clean extraction:</p>
+<p><code>cd tests ; MPLBACKEND=Agg python3 -W error::RuntimeWarning -m unittest test_physics_sev -v</code></p><p>None of the open bugs KB-1 to KB-3 has a regression test; each needs one when fixed. The suite also reproduces BUILD_ID independently and checks the Help against the running code (35 quoted commands, 78 printed/quoted pairs).</p>
 
-<h2>Test Suite Growth</h2>
-<p>158 &rarr; 184 &rarr; 197 &rarr; 207 &rarr; 210 &rarr; 220 (Kickoff2) &rarr; 251 (1.6.0) &rarr; 309 (1.7.0). All 309 pass; Codex and Grok each ran the suite on the delivered tree (217 s and 241 s). The suite locates the program modules from the canonical <code>tests/</code> directory or a flattened layout. Run it once per delivery from a clean extraction:</p>
-<pre>cd tests
-MPLBACKEND=Agg python3 -W error::RuntimeWarning -m unittest test_physics_sev -v</pre>
-<p>None of the open bugs KB-1 to KB-3 has a regression test; each needs one when fixed. The suite also reproduces BUILD_ID independently and checks the Help against the running code (35 quoted commands, 78 printed/quoted pairs).</p>
-
-<h2>Version Identification</h2>
-<p>MODEL_VERSION: 1.7.0<br>BUILD_ID: a28c8d1a30e0<br>BUILD_ID_COVERS: physics_sev.py, driver_sev.py, main.py, plot_sev.py (first 12 hex digits of the SHA-256 over these four files, LF-normalized; the Help and the tests are excluded).<br>Environment used for the sample figures: Python 3.11.15, numpy 2.4.4, scipy 1.17.1, matplotlib 3.10.9.</p>
+<h3>Version Identification</h3>
+<p>MODEL_VERSION: 1.7.0; BUILD_ID: a28c8d1a30e0; BUILD_ID_COVERS: physics_sev.py, driver_sev.py, main.py, plot_sev.py (first 12 hex digits of the SHA-256 over these four files, LF-normalized; the Help and the tests are excluded).; Environment used for the sample figures: Python 3.11.15, numpy 2.4.4, scipy 1.17.1, matplotlib 3.10.9.</p>
 <p>SHA-256 of the delivered files:</p>
-<pre>ca1c878a1516df67e235b1e75a2d326445dc37e095c23cf08fd29553be1e303a  physics_sev.py
-4ed73b4bf5ed4da52fb96a3c28c333ea89d51a42bad1aea7ce7ae3736d35b3e5  driver_sev.py
-ad2e2fa1066728d5eeb17b37c6aaeb7f65956821c6d403ac75bf2b60643a1381  main.py
-cd54fc2fec1a9fe0c55a9ce882be988126087ecdb3d2ea57e597323a55bf9e33  plot_sev.py
-51eb6b6bc5e2398d8ca724e6dc3c1978ab0ad74374da6a02a592479ca5378cb4  StellarEvolutionTracks.html
-b67342ea7282f2cab43eb9de13242ca99060034477ae65eee24ebd707603feaa  tests/test_physics_sev.py</pre>
-</body>
-</html>
+<p><code>ca1c878a1516df67e235b1e75a2d326445dc37e095c23cf08fd29553be1e303a  physics_sev.py ; 4ed73b4bf5ed4da52fb96a3c28c333ea89d51a42bad1aea7ce7ae3736d35b3e5  driver_sev.py ; ad2e2fa1066728d5eeb17b37c6aaeb7f65956821c6d403ac75bf2b60643a1381  main.py ; cd54fc2fec1a9fe0c55a9ce882be988126087ecdb3d2ea57e597323a55bf9e33  plot_sev.py ; 51eb6b6bc5e2398d8ca724e6dc3c1978ab0ad74374da6a02a592479ca5378cb4  StellarEvolutionTracks.html ; b67342ea7282f2cab43eb9de13242ca99060034477ae65eee24ebd707603feaa  tests/test_physics_sev.py</code></p>
+</body></html>

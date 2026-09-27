@@ -139,7 +139,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.7.0&nbsp;&nbsp;&nbsp;&nbsp;Build a28c8d1a30e0
+    Version 1.8.0&nbsp;&nbsp;&nbsp;&nbsp;Build a33f673a91a1
   </p>
 
   <section id="description">
@@ -356,7 +356,7 @@ L=C\,M\,T_c^{7/2},
 python main.py --mode nsmr --p_nuc 0.02
 python main.py --mode nsmr --p_nuc 0.08
 python main.py --mode nsmr --gamma 3.0 --p_nuc 0.04</pre>
-    <p>Defaults \(\Gamma=2.5\), \(p_{\rm nuc}=0.04\) clear the \(2\,M_\odot\) line. Softening drops below it; stiffening rises above it and the notes may drop a model at the highest density. The last command flags <code>*** ACAUSAL ***</code>: the sound speed on the branch exceeds \(c\). A maximum mass obtained with an acausal equation of state cannot be trusted, however large it is. The index is refused outside \(4/3&lt;\Gamma\le 5\): below \(4/3\) there is no stable polytrope, and at or below \(6/5\) there is no finite radius.</p>
+    <p>Defaults \(\Gamma=2.5\), \(p_{\rm nuc}=0.04\) clear the \(2\,M_\odot\) line. Softening drops below it; stiffening rises above it and the notes may drop a model at the highest density. The last command flags <code>*** ACAUSAL ***</code>: the sound speed on the branch exceeds \(c\). A maximum mass obtained with an acausal equation of state cannot be trusted, however large it is. With no resolved turning point the printed peak speed covers the whole converged sampled sequence, not a supposed one-point stable branch. The index is refused outside \(4/3&lt;\Gamma\le 5\): below \(4/3\) there is no stable polytrope, and at or below \(6/5\) there is no finite radius. Try <code>python main.py --mode nsmr --gamma 1.34 --n_mr 8 --rho_lo 1e16 --rho_hi 5e19</code>: even though 1.34 is accepted, the grid mass is already falling at its low-density edge, so no stable branch has been established. The polytrope sequence uses a surface cutoff of \(10^{-14}\) of central density and prints a check at \(10^{-16}\); if the largest sampled mass has a radius drift of 0.05 per cent or more, the run warns that this radius remains cutoff-dependent.</p>
     <div class="eq-block">
       <div class="eq-label">Stiffness at nuclear saturation — closure, not a nuclear EOS</div>
 \[
@@ -470,7 +470,7 @@ python main.py --mode nsmr --eos neutron --newtonian --rho_hi 1e21</pre>
       <li>Tracks stop at helium ignition. Core helium burning, the AGB, dredge-up, mass loss and envelope ejection are absent. The remnant is a label except on the low-mass branch described in Beat 5.</li>
       <li>Absolute ages and luminosities are approximate. Use the program for scalings, turn-offs, and limiting masses.</li>
       <li>White dwarfs are the zero-temperature Chandrasekhar model plus classical Mestel cooling. Coulomb corrections, GR, neutrinos, crystallisation and convective coupling are absent. Cooling starts at \(3\times10^{7}\,\mathrm{K}\) because that is where neutrinos would have already dropped out.</li>
-      <li>Neither neutron-star equation of state is nuclear physics. The Fermi gas is the historical OV benchmark. The polytrope is a tunable stiffness. Rotation, crusts, hyperons and quark matter are absent.</li>
+      <li>Neither neutron-star equation of state is nuclear physics. The Fermi gas is the historical OV benchmark. The polytrope is a tunable stiffness. Rotation, crusts, hyperons and quark matter are absent. Accepted polytropic indices do not guarantee a sampled stable branch, and radii near the lower index limit can depend on the surface cutoff.</li>
       <li>Isochrones are interpolants through the tracks you asked for. The morphology change at \(2\,M_\odot\) is a switch of prescription.</li>
       <li>Binarity is omitted on purpose. Most helium white dwarfs of the mass Beat 5 can produce are understood, in nature, as stripped by a companion.</li>
     </ul>
