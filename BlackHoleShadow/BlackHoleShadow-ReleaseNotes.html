@@ -3,23 +3,24 @@
 <h1>BlackHoleShadow 1.1.0 Release Notes</h1>
 <p><b>Version:</b> 1.1.0</p>
 <p><b>Build:</b> 23719ebabe26</p>
-<p><b>Date:</b> 2026-09-26 (CDT)</p>
+<p><b>Date:</b> 2026-09-27 (CDT)</p>
 <h2>Release Status</h2>
-<p>The two latest code-changing rounds are Codex Kickoff4 (1.0.2) and Codex Response-to-Audit41 (1.1.0). Claude recommended HOLD for the delivered 1.0.2 package in Audit41. Codex recommends this 1.1.0 build for Claude's independent Audit42 and holds external presentation until that review. Claude has not yet recommended release of 1.1.0. Copilot, Grok and Gemini supplied no release recommendation for these two rounds. The earlier numbered builds are retained as provisional development history.</p>
+<p>The two latest code-changing rounds are Codex Kickoff4 (1.0.2) and Codex Response-to-Audit41 (1.1.0). Claude recommended HOLD for the delivered 1.0.2 package in Audit41. Claude Audit42 recommends APPROVE WITH CONDITIONS for 1.1.0. This documentation response addresses the student-facing EXP-10 condition; Codex recommends the corrected package for Claude Audit43 before external presentation. The remaining P3 test gap is listed below; A42-1 and A42-3 now have regression guards. Copilot, Grok and Gemini supplied no release recommendation for these two rounds. The earlier numbered builds are retained as provisional development history.</p>
 <h2>Open Bugs</h2>
-<p>Both P2 findings and eleven of the twelve P3 findings in Claude Audit41 are addressed. One P3 documentation-test coverage gap remains below; Audit42 has not yet reviewed these corrections.</p>
-<ul><li><b>P3-01 (A41-9):</b> Some slow-mode values quoted in Claude Beats 3–5 lack a direct Help-text-to-run assertion. Reproduction: change Beat 5’s quoted 0.4457 to 0.4458; the 101-test suite still passes, whereas a complete documentation contract test would fail.</li></ul>
+<ul>
+<li><b>P3-01 (A42-2; test):</b> Quoted Help values in several beats and Parameters lack section-specific checks against program results. Reproduction: change Claude Beat 5’s 0.4457 to 0.4458; the suite passes; expected: a documentation contract failure.</li>
+</ul>
 <h2>Major Improvements in This Release</h2>
 <ul>
 <li>The compare figure draws only the critical impact-parameter curve on its image-plane axes. Horizon and photon-sphere coordinate radii remain described in its text and in the radii figure.</li>
 <li>Both tutorial Help files correct the near-critical azimuth and finite-camera experiment. The documented 10M and 60M runs reach their stopping surfaces with the default integration budget; a <code>lambda_max</code> status is explained as an incomplete integration.</li>
-<li>The Claude guide corrects its claims about disk-plane crossings, omitted image orders, and the meaning of deflection beyond pi. Both guides make the transfer-function exercise answerable from the displayed curves.</li>
-<li><code>--sync-help</code> is hidden from student <code>--help</code>. It updates Version and Build only; the displayed order limit is reviewed explicitly when the model changes.</li>
+<li>The Claude guide corrects its claims about disk-plane crossings, omitted image orders, and the meaning of deflection beyond pi. Both guides now explain how EXP-10 uses the interactive Matplotlib cursor coordinate readout and magnifier to examine closely spaced transfer curves; the saved PNG has no live cursor readout.</li>
+<li>The capture-grid refusal message now describes the grid limit without an image-only hint. <code>--sync-help</code> is hidden from student <code>--help</code>. It updates Version and Build only; the displayed order limit is reviewed explicitly when the model changes.</li>
 <li>The Sample Outputs guide includes nine figures regenerated from this build and headline values for the second commands in Beats 2, 5 and 8. Printed physics quantities are unchanged from 1.0.2.</li>
 </ul>
 <h2>Test Suite Growth</h2>
-<p>Recorded counts: 1.0.0 had 93 tests; the 1.0.1 suite has 94; 1.0.2 has 96; this 1.1.0 suite has 101. It checks both Help files, their beat commands and experiment fragments, the finite-camera statuses, the hidden maintenance flag, key documented numbers, and the compare panel's sole image-plane curve.</p>
-<p>From a clean extraction in the program directory run <code>MPLBACKEND=Agg python -W error::ResourceWarning -m unittest tests.test_physics_bhs -q</code>. Result for the final package: 101 of 101 passed.</p>
+<p>Recorded counts: 1.0.0 had 93 tests; the 1.0.1 suite has 94; 1.0.2 has 96; this 1.1.0 documentation response has 102. It also tests temporary-tree BUILD_ID independence, the absence of corrected false claims, the interactive EXP-10 instructions, both Help files, their beat commands and experiment fragments, the finite-camera statuses, the hidden maintenance flag, key documented numbers, and the compare panel's sole image-plane curve.</p>
+<p>From a clean extraction in the program directory run <code>MPLBACKEND=Agg python -W error::ResourceWarning -m unittest tests.test_physics_bhs -q</code>. Result for the final package: 102 of 102 passed.</p>
 <h2>Known Limitations</h2>
 <ul>
 <li>The static, face-on, optically thin Gaussian annulus omits spin, inclination, orbital Doppler, optical depth, plasma and time dependence.</li>
@@ -32,6 +33,7 @@
 <li>The float64 ordinary-ray helpers remain separate from the mpmath utilities; consolidation is optional.</li>
 <li>The SciPy warning-plus-relative-error fallback path has no isolated trigger test.</li>
 <li>Near-critical numerical checks take roughly one to two minutes on typical hosts.</li>
+<li>A42-8: a comment in <code>utilities_bhs.py</code> retains development-history wording; deferred until a code-changing build.</li>
 <li>A41-29: captured-ray printed azimuth can differ from independent quadrature in the fifth decimal place, beneath the precision quoted in Help.</li>
 </ul>
 <h2>Version Identification</h2>
