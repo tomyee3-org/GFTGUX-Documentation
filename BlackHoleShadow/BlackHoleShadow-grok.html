@@ -126,7 +126,7 @@
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.0.1&nbsp;&nbsp;&nbsp;&nbsp;Build 33580543b0cb
+    Version 1.0.2&nbsp;&nbsp;&nbsp;&nbsp;Build f9c7252cba9e
   </p>
 
   <section id="description">
@@ -180,7 +180,8 @@ python main.py --mode image --outdir ./runs</pre>
 b_{\mathrm{crit}} = 3\sqrt{3}\,M.
 \]
     </div>
-    <p>Run <code>python main.py --mode rays</code>. The red curve at the default \(b=5\) hits \(r_s=2M\) and is reported <code>captured</code>. The blue curve at \(b=6\) turns at a periapsis outside the photon sphere and is reported <code>escaped</code>. The console \(\Delta\phi\) is accumulated azimuth to a finite stopping surface (the horizon, or twice the camera radius), exactly as in PhotonOrbit. It is <em>not</em> the asymptotic deflection angle \(\hat\alpha\). That distinction is Beat 7.</p>
+<pre>python main.py --mode rays</pre>
+    <p> The red curve at the default \(b=5\) hits \(r_s=2M\) and is reported <code>captured</code>. The blue curve at \(b=6\) turns at a periapsis outside the photon sphere and is reported <code>escaped</code>. The console \(\Delta\phi\) is accumulated azimuth to a finite stopping surface (the horizon, or twice the camera radius), exactly as in PhotonOrbit. It is <em>not</em> the asymptotic deflection angle \(\hat\alpha\). That distinction is Beat 7.</p>
   </section>
 
   <section id="beat1">
@@ -246,7 +247,8 @@ python main.py --mode image --r_hot 8</pre>
 \hat\alpha = \frac{4GM}{c^2 b} = \frac{4M}{b}.
 \]
     </div>
-    <p>Run <code>python main.py --mode weak</code>. The two curves agree at large \(b/M\) and come apart as \(b\to b_{\mathrm{crit}}^+\). That divergence is strong deflection: it permits higher-order images when a source supplies photons. It is not itself a photon ring.</p>
+<pre>python main.py --mode weak</pre>
+    <p> The two curves agree at large \(b/M\) and come apart as \(b\to b_{\mathrm{crit}}^+\). That divergence is strong deflection: it permits higher-order images when a source supplies photons. It is not itself a photon ring.</p>
   </section>
 
   <section id="beat8">

@@ -150,7 +150,7 @@
 </nav>
 <main>
 <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.0.1&nbsp;&nbsp;&nbsp;&nbsp;Build 33580543b0cb
+    Version 1.0.2&nbsp;&nbsp;&nbsp;&nbsp;Build f9c7252cba9e
   </p>
 
   <!-- ================================================================ -->
@@ -275,7 +275,7 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
 <pre>python main.py --mode transfer</pre>
     <p>Read the console: for the default hot-ring radius \(r_{\rm hot}=6M\), the three transfer functions equal \(r_{\rm hot}\) at \(b/M=6.9321\), \(5.4789\) and \(5.208\) respectively — three different impact parameters, converging toward \(b_{\rm crit}=5.19615\) as the crossing order rises. That convergence is the whole geometric content of a photon ring: higher-order crossings are squeezed into an ever-narrower band of \(b\) just outside \(b_{\rm crit}\).</p>
     <p>Three tasks, in order. First identify \(m=1\): the direct image, one crossing per ray, the ordinary case. Then identify \(m=2\): the "lensing ring" crossing, a second pass through the disk plane on the far side of the hole. Then note that a <em>captured</em> ray (\(b\le b_{\rm crit}\)) only ever travels inbound — it cannot loop back out — but it can still cross the disk plane once on its way to the horizon; the program's own integrator stops such a ray exactly at \(r=2M\), so a captured ray's crossing, if any, is always found before that stop.</p>
-    <p><em>Then</em> the count: this program computes \(m\) up to 4 and no further. Read the console line again — <em>finite \(r_3\) samples: 110</em> out of 192 adaptively placed \(b\) values — and notice that not every sampled \(b\) has a well-defined third crossing at all; some rays simply do not pass the disk plane a third time within the domain the program searches. \(m\ge5\) is not a rounding choice: the program does not compute it, at any \(b\), because the higher orders contribute a vanishingly small share of any realistic image's flux and because each additional order needs the arbitrary-precision machinery of <code>utilities_bhs.py</code> over an ever-narrower range of \(b\).</p>
+    <p><em>Then</em> the count: this program computes \(m\) up to 4 and no further. Read the console line again — <em>finite \(r_3\) samples: 110</em> out of 192 adaptively placed \(b\) values — and notice that not every sampled \(b\) has a well-defined third crossing at all; some rays simply do not pass the disk plane a third time within the domain the program searches. In these teaching figures the transfer panel stops at \(m=3\), and the image sums through \(m=4\); higher orders are omitted from the displayed image. The physics routines can calculate higher-order crossings when explicitly requested, as the regression tests do. The omitted orders occupy narrow impact-parameter intervals for this smooth, static annulus, but the program has not established a universal flux bound for other source models. Resolving additional orders near the critical curve can require the arbitrary-precision machinery in <code>utilities_bhs.py</code>.</p>
     <p><em>Experiments that go with this beat:</em> EXP-10 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
