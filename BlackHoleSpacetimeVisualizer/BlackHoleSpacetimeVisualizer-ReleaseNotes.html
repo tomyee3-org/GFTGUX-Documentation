@@ -4,11 +4,13 @@
 <p><b>Version:</b> 1.4.0; <b>Build:</b> 100876a488a0; <b>Date:</b> 2026-09-27.</p>
 <h2>Release Status</h2><p>Kickoff4 resumes the supplied 1.4.0 candidate
 following its earlier Codex, Copilot, Gemini and Claude review cycles. The
-four core Python files are unchanged; independent Claude review of the two
-new tutorial formats, shared tests and regenerated guide is pending. The
-supplied previous notes are retained below as history until a release decision.</p>
-<h2>Open Bugs</h2><p>No unresolved reviewer-reported P1–P3 defect is
-documented in the supplied 1.4.0 notes. Kickoff4 awaits independent review.</p>
+four core Python files are unchanged. Claude Audit41 recommends APPROVE
+with one P4 editorial correction; that wording has been corrected in this
+response. A release decision remains with the project owner. The supplied
+previous notes are retained below as history until that decision.</p>
+<h2>Open Bugs</h2><p>Claude Audit41 found no P1–P3 defect in the 1.4.0
+candidate. No unresolved reviewer-reported P1–P3 defect is documented
+in the supplied earlier notes.</p>
 <h2>Major Improvements in This Release</h2><ul>
 <li>Renamed the former reference-format Help to
 <code>BlackHoleSpacetimeVisualizer-original.html</code> without changing its
@@ -21,7 +23,9 @@ updated the self-contained guide's commands, captions, values and image
 provenance.</li><li>Aligned both tutorial pages and the sample guide with
 the established Help/documentation typography, parchment and rust palette,
 and navigation or figure-section layout. This presentation change does not
-alter the core version/build.</li></ul>
+alter the core version/build.</li><li>Following Claude Audit41, corrected
+the EXP-11 aside on the size of the tabulated-constant discrepancy and
+subordinated the preserved notes' headings to their historical section.</li></ul>
 <h2>Test Suite Growth</h2><p>The supplied 1.4.0 suite had 139 passing tests.
 Kickoff4 raises the suite to 148 passing tests, adding shared checks that
 require both current tutorial files, verify their version/build and
@@ -39,22 +43,22 @@ infall calculation stops outside the Schwarzschild coordinate singularity
 and assumes radial point-particle motion.</li><li>Vaidya accretion uses
 a prescribed nondecreasing mass function and ingoing null dust; no black-hole
 spin, realistic disk or evaporation is included.</li></ul>
-<h2>Known Minor Maintenance Items</h2><p>No outstanding P4 item is
-listed in the supplied notes. Independent review may identify one.</p>
+<h2>Known Minor Maintenance Items</h2><p>No outstanding P4 item is known.
+Claude Audit41's P4 wording correction was applied.</p>
 <h2>Version Identification</h2><p>MODEL_VERSION:
 <code>1.4.0</code>; BUILD_ID: <code>100876a488a0</code>.
 BUILD_ID hashes <code>physics_bh.py</code>, <code>driver_bh.py</code>,
 <code>plot_bh.py</code> and <code>main.py</code>; document and test edits
 do not alter it.</p>
-<h2>Previous Release Notes — 1.4.0</h2><h1>Black Hole Spacetime Visualizer 1.4.0 Release Notes</h1>
+<h2>Previous Release Notes — 1.4.0</h2><h3>Black Hole Spacetime Visualizer 1.4.0 Release Notes</h3>
 <p>Version:  1.4.0 Build:  100876a488a0 Date:  2026-08-26</p>
-<h2>Release Status</h2>
+<h4>Release Status</h4>
 <p>Version 1.4.0 concludes a multi-round independent review process involving Codex, Copilot, Gemini, and Claude response cycles. Earlier audits identified issues involving event-horizon construction, numerical robustness, convergence claims, diagnostic design, finite-precision behavior, documentation accuracy, and regression coverage. These findings were systematically addressed through architectural changes, expanded validation, documentation revisions, and substantial test-suite growth.</p>
-<h2>Major Improvements Since 1.1.x</h2>
+<h4>Major Improvements Since 1.1.x</h4>
 <ul><li>Replaced the primary event-horizon construction with backward integration from the exact post-accretion boundary condition.</li><li>Added explicit event-horizon integrity checks and physical-invariant enforcement.</li><li>Corrected interpretation of early-time event-horizon displacement as a physical property rather than a numerical truncation error.</li><li>Repaired infall startup conditions using cycloid-based initialization.</li><li>Migrated mass-dependent calculations to the IAU nominal solar mass parameter.</li><li>Added Gaussian-curvature outputs and curvature-based educational exercises.</li><li>Introduced translation-invariant Vaidya horizon integration using shifted coordinates.</li><li>Corrected horizon-diagnostic methodology to evaluate exact node-based curve differences rather than sampled approximations.</li><li>Improved handling of long-duration accretion scenarios and strengthened horizon postconditions.</li><li>Added support for arbitrary finite advanced-time origins.</li><li>Improved finite-value validation, overflow protection, and computational-domain enforcement.</li><li>Added collision-safe CSV and image output generation.</li><li>Expanded student-facing documentation and exercise accuracy.</li><li>Added BUILD_ID provenance support and improved release consistency.</li></ul>
-<h2>Test Suite Growth</h2>
+<h4>Test Suite Growth</h4>
 <p>90 → 111 → 130 → 139 tests across the audit process.</p>
-<h2>Known Limitations</h2>
+<h4>Known Limitations</h4>
 <ul><li>Intended for education and conceptual exploration rather than research-grade numerical relativity.</li><li>Extreme parameter combinations may encounter computational-domain limits.</li><li>Tidal-force calculations use linearized geodesic-deviation approximations across finite separations.</li><li>Models remain idealized and do not include rotating black holes.</li></ul>
-<h2>Version Identification</h2>
+<h4>Version Identification</h4>
 <p>MODEL_VERSION: 1.4.0 BUILD_ID: 100876a488a0</p></body></html>

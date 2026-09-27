@@ -266,9 +266,9 @@ CSV precision over the rounded printed starting radius for this exercise.</li>
 <code>η=acos(2r_stop/r0−1)</code> in the closed form
 <code>τ=sqrt[r0³/(8GM)]×(η+sin η)</code>. Use the program's IAU nominal
 solar mass parameter <code>GM☉=1.3271244e20 m³/s²</code>, so
-<code>GM=10 GM☉</code>; combining an unrelated rounded kilogram solar
-mass with a tabulated <code>G</code> moves the check by about 1e−4
-relative. Expected: <code>2.2048475035 ms</code>, within
+<code>GM=10 GM☉</code>; using the program's separate tabulated
+<code>G</code> and kilogram <code>M_sun</code> instead shifts this
+check by about 2.6e−4 relative. Expected: <code>2.2048475035 ms</code>, within
 <code>1e−5</code> relative of the run's printed proper time.</li>
 <li><b>EXP-13, test the forward diagnostic.</b> Repeat Beat 3 with
 <code>--no_plot --csvdir ./data --bisect_iters 10</code> and
