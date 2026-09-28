@@ -4,16 +4,18 @@
 <p><b>Version:</b> 1.5.0<br><b>Build:</b> a8778e60ea78<br>
 <b>Date:</b> 2026-09-28</p>
 <h2>Release Status</h2>
-<p>Kickoff4 candidate awaiting Claude's independent review. This is a
-continuation of the approved 1.4.0 release, whose record is preserved below.
-That version passed four independent review rounds; its reviewers reported no
-release-blocking defect. This round creates two current student tutorials
-sharing the same core code, test suite, and SampleOutputs Guide. Version 1.5.0
-reflects a student-visible plot-layout change. No external reviewer has yet
-approved the Kickoff4 candidate.</p>
+<p>Version 1.5.0 is approved for release: Claude's independent Audit41
+(2026-09-28) recommended release as delivered, with no P1–P3 finding.
+Claude also independently ran all 130 tests without failures or skips.
+Xedoc's internal review passed before packaging. This round continued the
+approved 1.4.0 release, whose full record is preserved below; that version
+passed four independent review rounds. The current two student tutorials
+share one core codebase, test suite and SampleOutputs Guide. Version 1.5.0
+reflects the student-visible plot-layout change.</p>
 <h2>Open Bugs</h2>
-<p>No unresolved P1–P3 defect was found in Xedoc's internal audit of this
-candidate. Independent review remains pending.</p>
+<p>None. Claude's Audit41 found no P1–P3 defect and approved release.
+The one P4 test-coverage observation is listed under Known Minor
+Maintenance Items.</p>
 <h2>Major Improvements in This Release</h2>
 <ul>
 <li>Preserved the prior Reference Guide byte for byte as
@@ -68,6 +70,9 @@ of a four-ulp acceptance band. This may alter public boundary behavior and
 needs a separately reviewed numerical/API change.</li>
 <li>Bundling MathJax would provide fully typeset equations offline if future
 distribution requires it.</li>
+<li>Audit41 P4: a future test could scan both tutorial Helps and the
+SampleOutputs Guide for internal review vocabulary. Claude checked all three
+directly and found them clean in this release.</li>
 </ul>
 <h2>Version Identification</h2>
 <p>MODEL_VERSION 1.5.0; BUILD_ID <code>a8778e60ea78</code>.
