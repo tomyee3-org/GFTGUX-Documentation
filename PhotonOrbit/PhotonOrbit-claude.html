@@ -686,42 +686,17 @@ python main.py --b 6.0 --outdir ./runs --dpi 300</pre>
         <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>Tangential Launches and the Local Kinematic Bound</h4><p>A photon launched exactly tangentially (zero initial radial velocity) at <code>b</code> equal to the locally-allowed maximum for that <code>r0</code> is a legal initial condition, not merely a boundary case. Try <code>python main.py --r0 6.0 --b 7.3484692283495345</code> (this is <code>r0/sqrt(1-2*GM_over_c2/r0)</code> at the default <code>GM_over_c2=1</code>): the photon starts at rest radially and, because <code>r0</code> is outside the photon sphere, is pushed outward immediately and is reported as <code>escaped</code>. Now try the same tangential construction with <code>python main.py --r0 2.5 --b 5.590169943749475</code> (between the horizon and photon sphere): confirm the photon is <code>captured</code> instead, and explain why using the radial acceleration equation's sign for <code>r&lt;3GM/c^2</code> versus <code>r&gt;3GM/c^2</code>. Finally, try <code>--r0 3.0</code> with the exact circular-orbit <code>b</code> from EXP-7: confirm this tangential launch is the one case that does neither, remaining at <code>status=lambda_max</code>.</p></div>
       </div>
     </section>
-    
-    <!-- Restore defaults -->
-    <section id="restore" style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
-      <div style="border: 1.5px solid #b5811a; border-left: 5px solid #b5811a; border-radius: 6px; background: #fffbeb; padding: 1.1em 1.4em; display: flex; gap: 1em; align-items: flex-start;">
-        <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
-        <div>
-          <div style="font-weight: 700; font-size: 0.95em; color: #7b2d00; margin-bottom: 0.35em; text-transform: uppercase; letter-spacing: 0.04em;">Restoring Default Parameter Values</div>
-          <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">Ordinary experiments are run entirely from the command line and never modify <code>main.py</code> or any other file, so there is usually nothing to restore. If you do edit <code>main.py</code> or another program file — for example, to change a default value — you can restore the original program files using any of the following methods:</p>
-          <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
-            <li><strong>Same session:</strong> Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd> (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd> (macOS) repeatedly in your editor to undo your edits.</li>
-            <li><strong>If you are using PyCharm:</strong> Right-click the edited file in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.</li>
-            <li><strong>Full reset:</strong> Re-download the ZIP from <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank">github.com/tomyee3-org/GFTGUX-Programs</a> and replace this program's folder with the fresh copy.</li>
-          </ul>
-          <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">For additional ways to restore program files, see the corresponding recovery instructions in the <em>GFTGUX Python Setup Guide</em>.</p>
-        </div>
-      </div>
-    </section>    
 
-<section id="validity"><h2>Domain of Validity</h2>
+
+    <section id="validity"><h2>Domain of Validity</h2>
       <p>This is an educational single-ray model for equatorial Schwarzschild null geodesics. It omits spin, plasma, scattering by other bodies and the camera geometry of a black-hole image. “Escaped” means outward crossing of <code>2r0</code>, not arrival at infinity. <code>Δφ</code> is finite-interval Schwarzschild-coordinate azimuth rather than the asymptotic deflection angle; <code>lambda_max</code> is an affine-parameter cutoff, not a geometric stopping surface. The horizon and escape crossings are linearly interpolated in the final RK4 step; closest approach is the smallest sampled radius. The local kinematic test tolerates a few floating-point ulps above its computed upper bound, which does not represent an additional physical orbit.</p>
     </section>
-        <!-- Related Programs -->
+
+    <!-- Related Programs -->
     <section id="related">
-      <h2>Related Programs</h2>
-      <ul class="related-list">
-        <li>
-          <a href="../11-Binary/Binary.html"><strong>Binary</strong></a> —
-          Explores bound orbits and gravitational radiation from compact binaries;
-          PhotonOrbit focuses on individual photon paths in the same spacetime.
-        </li>
-        <li>
-          <a href="../11-LightDeflection/LightDeflection.html"><strong>LightDeflection</strong></a> —
-          Illustrates weak-field light bending; PhotonOrbit extends the picture
-          into the strong-field regime near the photon sphere.
-        </li>
-      </ul>
+        <h2>Related Programs</h2>
+        <p>Continue with <i>BlackHoleShadow</i> for an observer image and <i>RelativisticOrbit</i> for massive-particle trajectories. 
+        </p>
     </section>
 
     <!-- License -->
@@ -737,8 +712,8 @@ python main.py --b 6.0 --outdir ./runs --dpi 300</pre>
         license.
       </p>
     </section>
+</main>
 
-  </main><!-- /main -->
 
   <!-- FOOTER -->
   <footer>
