@@ -1,17 +1,105 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>NbodyGalaxySimulator 1.0.1 Release Notes</title>
-</head>
-<body>
-<h1>NbodyGalaxySimulator 1.0.1 Release Notes</h1>
-<p><b>Version:</b> 1.0.1<br><b>Build:</b> fda9adf9e39a<br><b>Date:</b> 2026-09-05</p>
-
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>NbodyGalaxySimulator 1.0.1 Release Notes</title></head>
+<body><h1>NbodyGalaxySimulator 1.0.1 Release Notes</h1>
+<p><b>Version:</b> 1.0.1<br><b>Build:</b> 5dc0f45efa6c<br>
+<b>Date:</b> 2026-09-27</p>
 <h2>Release Status</h2>
+<p>Kickoff4 candidate awaiting independent review. The earlier 1.0.1
+release received approval after ten review rounds; its record is retained
+below. This resumed development round creates two tutorial styles and
+does not alter equations or simulation behavior. The build identifier
+changes because comment-only cross-reference updates are included in the
+four hashed core sources. No outside reviewer has yet approved this
+Kickoff4 candidate.</p>
+<h2>Open Bugs</h2>
+<p>No outstanding P1–P3 defect is established by this round's internal
+review; independent review of this candidate is pending.</p>
+<h2>Major Improvements in This Release</h2>
+<ul>
+<li>Preserved the existing Reference Guide byte for byte as
+<code>NbodyGalaxySimulator-original.html</code>. Added a runnable
+Claude-style tutorial laboratory with detailed scientific explanations
+and a shorter Grok-style terminal script. Both share four beat commands,
+one test suite, one core build and one SampleOutputs Guide.</li>
+<li>Reproduced all four figures and terminal checkpoints from the current
+build. The chaos beat now sets both <code>--seed</code> and
+<code>--perturbation_seed</code>: the latter defaults to unseeded, so the
+old guide's one-seed command did not reproduce its numerical image.
+Converted and embedded fresh indexed PNGs. The program also writes
+provenance sidecars when figures are exported. The guide's chaos fit consequently changes
+from 0.281 to 0.2994 inverse Myr and its fitted time from 3.56 to
+3.34 Myr; these are changes in the selected reproducible example, not
+changes to the physics or fitting code.</li>
+<li>Qualified the cold-collapse verdict in both tutorials and the guide:
+the 90%-mass shell can continue expanding even as half-mass radius and
+virial ratio satisfy the selected late-window checks. The verdict does
+not establish that every outer particle has equilibrated.</li>
+<li>Reworded two outdated source comments that referenced the retired
+Help filename or Claude-only exercise numbers; the program's numerical
+behavior and public CLI are unchanged. Added a machine-readable SHA-256
+verification manifest for the packaged code and documents.</li>
+</ul>
+<h2>Test Suite Growth</h2>
+<p>The approved 1.0.1 baseline had 291 tests; Kickoff4 has 299 tests.
+The current checks require both tutorial Helps together, run existing
+scientific and 17-exercise contracts against the Claude-style page, and
+check the four shared beats, seeded chaos, science caveats, Grok parameter
+coverage and embedded indexed PNGs across both. In a program-only checkout,
+document checks skip when neither Help is present; exactly one is an error.
+The flattened-layout smoke test copies both when present and does not
+repeat the whole suite. From the program folder run
+<code>MPLBACKEND=Agg PYTHONWARNINGS=error::RuntimeWarning python3 -m unittest discover -s tests -p test_physics_nbg.py -q</code>.
+The full suite passed all 299 tests in 610.815 seconds on 2026-09-28
+with <code>RuntimeWarning</code> treated as an error. The paired-Help
+focused run also passed all 29 tests.</p>
+<h2>Known Limitations</h2>
+<ul>
+<li>Equal-mass Newtonian particles with Plummer force softening, a
+fixed global timestep and a tree monopole approximation are a teaching
+model, not a research simulation of gas, external tides, or detailed
+galaxy formation.</li>
+<li>Typical Barnes–Hut O(N log N) behavior is not guaranteed for a
+degenerate tree or zero opening angle; the tree need not beat direct
+summation at small N.</li>
+<li>Default cluster softening suppresses close encounters and therefore
+physical two-body relaxation. The cold-collapse settling verdict is a
+finite-window diagnostic, and a fitted chaos slope is a heuristic
+finite-time estimate, not a certified asymptotic exponent.</li>
+<li>Unphysical input mixtures spanning hundreds of orders of magnitude
+can exceed special floating-point safeguards outside the documented
+solar-mass and parsec-scale regime.</li>
+<li>The Claude-style Help loads MathJax from a public CDN; offline,
+its equations appear as unrendered TeX. The Grok-style Help uses
+plain Unicode equations and needs no network connection.</li>
+</ul>
+<h2>Known Minor Maintenance Items</h2>
+<ul>
+<li>The classifier's numerical tolerances and chaos-fit significance
+threshold could be recalibrated against a wider independent sample.</li>
+<li>The real three-seed chaos integration check is the longest-running
+part of the suite; an equivalent cheaper invariant would shorten tests.</li>
+<li>Bundling MathJax locally could provide fully typeset offline
+Claude-style help if that becomes a distribution requirement.</li>
+</ul>
+<h2>Version Identification</h2>
+<p>MODEL_VERSION 1.0.1; BUILD_ID
+<code>5dc0f45efa6c</code>. The build hash covers only
+<code>physics_nbg.py</code>, <code>driver_nbg.py</code>,
+<code>main.py</code> and <code>plot_nbg.py</code> after universal-newline
+normalization. Comment-only changes in the first and third source files
+change the hash but do not justify a model-version bump.</p>
+<h2>Earlier approved 1.0.1 release-note record</h2>
+<p>The following historical record pertains to the previously approved
+1.0.1 build <code>fda9adf9e39a</code> dated 2026-09-05; its figures,
+test counts and recommendations refer to that earlier artifact.</p>
+
+
+
+
+<h3>Release Status</h3>
 <p>Version 1.0.1 concludes a kickoff development pass followed by ten rounds of independent review involving Claude, Codex, Copilot, Gemini and Grok. The reviewers verified the Barnes&ndash;Hut octree force approximation and direct pairwise summation against each other and against closed-form and high-precision oracles; the Plummer-softened gravity, leapfrog integration, and energy/virial-ratio bookkeeping (including the distinction between the unsoftened potential energy and the correct softened scalar-virial quantity); input validation and floating-point overflow, underflow, and subnormal behavior across an extensive range of extreme and boundary inputs; the star-cluster relaxation, cold-collapse galaxy-formation, and chaos/Lyapunov-sensitivity modes; plotting, CSV output, command-line behavior, Help-file accuracy, and Version/Build synchronization; and both the canonical and flattened upload layouts under a real Python 3.10 interpreter. The final review round's most recent findings were weighed directly for reachability within this program's own documented physical domain (see Known Limitations below); none of the remaining findings are reachable by ordinary or deliberately aggressive-but-physical student use, and the program is sufficiently robust, accurate, and clear for student use within the tutorial scope and limitations described below.</p>
 
-<h2>Major Improvements in This Release</h2>
+<h3>Major Improvements in This Release</h3>
 <ul>
 <li>Verified Newtonian point-mass gravity with Plummer softening, evaluated either by direct O(N<sup>2</sup>) pairwise summation or by a Barnes&ndash;Hut (1986) octree approximation, and confirmed the two methods agree with each other and with closed-form/high-precision references across ordinary, boundary, and many extreme-magnitude configurations.</li>
 <li>Hardened the floating-point arithmetic underlying every force and energy calculation against intermediate overflow and underflow for physically representable inputs: scale-safe, order-independent summation for kinetic and potential energy and for direct-summation forces; an exact-rational (Fraction-based) fallback for reduction slices that would otherwise lose a representable result to rounding; and a center-of-mass-relative kinetic energy formulation that survives an overflowing raw velocity difference.</li>
@@ -24,11 +112,11 @@
 <li>Validated behavior under both the canonical <code>tests/</code> project layout and a flattened single-directory upload layout, and confirmed compatibility with Python 3.10 as the minimum supported interpreter.</li>
 </ul>
 
-<h2>Test Suite Growth</h2>
+<h3>Test Suite Growth</h3>
 <p>A 118-test regression suite was created at kickoff and expanded to 291 automated tests over ten review rounds. The suite defines the four core module filenames and locates the nearest directory containing all four, so the same test file works from the canonical <code>tests/</code> directory or when flattened beside the program modules.</p>
 <p>The final suite verifies physical constants and closed forms; input validation across ordinary, boundary, invalid, and extreme finite inputs, including binary64 overflow, subnormal, and underflow boundaries; direct and tree-based force calculation, including their agreement with each other and with independent oracles; energy, momentum, and virial-ratio bookkeeping, including the potential-energy-versus-Wvir distinction; Lagrangian radii, escaper tracking, and relaxation/dynamical timescales; Plummer-sphere and uniform-sphere initial conditions; leapfrog integration and its diagnostic time series; the late-time settled-remnant classifier against both positive and negative real-integration controls; chaos-mode Lyapunov-time estimation, including real multi-seed integration regression; permutation, rotation, translation, and Galilean-boost invariance properties; run-mode summary contracts, driver-level validation, CSV output, command-line behavior, and plotting; Help-file structure and scientific content; Python 3.10 compatibility; and independent Build-ID reproduction. All 291 tests pass under CPython 3.10.20 in both canonical and flattened upload layouts.</p>
 
-<h2>Known Limitations</h2>
+<h3>Known Limitations</h3>
 <ul>
 <li>Intended for education and conceptual exploration of gravitational N-body dynamics rather than research-grade stellar dynamics or production astrophysical simulation.</li>
 <li>This is a from-scratch, transparent, pure-Python teaching implementation: no individual (per-body) or block timestepping, no higher-order symplectic integrator, no quadrupole or higher multipole correction in the tree (monopole only), no parallelism or GPU acceleration, no gas or radiative physics, no external tidal field or cosmological expansion, and every simulation particle carries the same mass.</li>
@@ -39,7 +127,7 @@
 <li>The Help file loads MathJax from a public CDN. Offline, its prose and unrendered TeX source remain available, but equations are not typeset.</li>
 </ul>
 
-<h2>Known Minor Maintenance Items</h2>
+<h3>Known Minor Maintenance Items</h3>
 <ul>
 <li>The late-time settled-remnant classifier's Q-range and Q-center tolerance bands, and the in-sample calibration basis for the chaos-mode Lyapunov-time significance gate, are documented as intentionally generous; a future round could tighten either against a wider, out-of-sample calibration campaign without changing the current pass/fail behavior of any existing regression fixture.</li>
 <li>The chaos mode's three-seed real-integration regression test is the single largest contributor to the full suite's wall-clock time; a future round could replace its categorical side-of-threshold check with a continuous invariant-based one, which would likely run faster without weakening the check.</li>
@@ -47,7 +135,6 @@
 <li>A future documentation-wide overhaul may bundle MathJax locally if fully typeset offline Help becomes a distribution requirement.</li>
 </ul>
 
-<h2>Version Identification</h2>
+<h3>Version Identification</h3>
 <p>MODEL_VERSION: 1.0.1<br>BUILD_ID: fda9adf9e39a</p>
-</body>
-</html>
+</body></html>
