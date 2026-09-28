@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhotonOrbit · Tutorial laboratory — Photon Trajectories</title>
+
+  <!-- MathJax for inline and display equations -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(','\\)'], ['$', '$']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
+      },
+      loader: { load: ['[tex]/textmacros'] }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    /* ── Reset & custom properties ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.80;
+      color: var(--text);
+      background: var(--bg);
+    }
+    /* ── Page grid ── */
+    .page-wrap {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    /* ── Header ── */
+    header {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      padding: 26px 38px 20px;
+      border-bottom: 4px solid var(--gold);
+    }
+    header .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 3px;
+      padding: 2px 7px;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.95rem;
+      font-weight: normal;
+      letter-spacing: -.02em;
+    }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub {
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: #f0d0b8;
+      line-height: 1.55;
+    }
+    header .sub a {
+      color: #ffd8b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,200,150,.4);
+    }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    /* ── Sidebar ── */
+    nav {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 14px 18px 4px;
+    }
+    nav a {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 18px 5px 22px;
+      border-left: 3px solid transparent;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: #fdf0e0;
+      border-left-color: var(--gold);
+    }
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      background: #fdecd8;
+    }
+    /* ── Main content ── */
+    main {
+      padding: 38px 52px 60px;
+      max-width: 900px;
+    }
+    h2 {
+      font-size: 1.40rem;
+      font-weight: normal;
+      color: var(--accent);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 6px;
+      margin: 2.2rem 0 1.0rem;
+    }
+    h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 1.6rem 0 .5rem;
+    }
+    h4 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 1.2rem 0 .35rem;
+    }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block {
+      background: var(--eq-bg);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 22px 10px;
+      margin: 1.1rem 0 1.3rem;
+      overflow-x: auto;
+    }
+    .eq-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.865em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    pre {
+      font-family: var(--mono);
+      font-size: 0.855em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: .8rem 0 1.1rem;
+      line-height: 1.55;
+    }
+    .note {
+      background: var(--note-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .note strong { color: var(--accent2); }
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin: 1.1rem 0 1.4rem;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .module-card .mc-name {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .module-card .mc-role {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .module-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    .module-card .sig {
+      font-family: var(--mono);
+      font-size: 0.80rem;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 7px 10px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .param-table, .out-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .param-table th, .out-table th {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .out-table th { background: var(--accent2); }
+    .param-table td, .out-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0d8c8;
+      vertical-align: top;
+    }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table tr:hover td, .out-table tr:hover td { background: #f3ecdf; }
+    .param-table .pname, .out-table .oname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      box-shadow: var(--shadow);
+    }
+    .exp-card .ec-num {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin-bottom: 7px;
+    }
+    .exp-card h4 {
+      font-size: 0.94rem;
+      color: var(--accent2);
+      margin: 0 0 5px;
+    }
+    .exp-card p {
+      font-size: 0.855rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .related-list {
+      list-style: none;
+      margin: .6rem 0 1.2rem;
+      padding: 0;
+    }
+    .related-list li {
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 7px;
+      font-size: 0.90rem;
+    }
+    .related-list li strong {
+      font-family: var(--mono);
+      color: var(--accent2);
+    }
+    footer {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      text-align: center;
+      padding: 18px 24px;
+      line-height: 1.7;
+    }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+  
+    .beat{background:var(--surface);border:1px solid var(--border);
+      border-left:5px solid var(--gold);border-radius:var(--radius);
+      padding:14px 22px 18px;margin:26px 0;box-shadow:var(--shadow)}
+    .beat h3{margin-top:.3em}
+    .beat .question{background:var(--eq-bg);padding:10px 14px;margin:12px 0}
+    .beat pre{white-space:pre-wrap;overflow-wrap:anywhere}
+    .beat .check{font-size:.92em;color:var(--muted)}
+    .reading-path{background:var(--note-bg);border-left:5px solid var(--accent);
+      padding:13px 18px;margin:18px 0}
+
+  </style>
+</head>
+
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="badge">PhotonOrbit · guided laboratory</div>
+    <h1><em>PhotonOrbit</em> — Photon Trajectories in Schwarzschild Spacetime</h1>
+    <div class="sub">
+      Source Code:
+      <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+         target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+      Documentation:
+      <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+         target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+    </div>
+  </header>
+
+  <!-- SIDEBAR NAV -->
+  <nav id="sidebar">
+    <div class="nav-label">Run the laboratory</div>
+<a href="#setup">Setup and question</a>
+<a href="#beat0">Beat 0 · capture</a>
+<a href="#beat1">Beat 1 · escape</a>
+<a href="#beat2">Beat 2 · near critical</a>
+<a href="#beat3">Beat 3 · circular</a>
+<div class="nav-label">Overview</div>
+    <a href="#description">Description</a>
+    <a href="#background">Physical Background</a>
+
+    <div class="nav-label">Mathematics</div>
+    <a href="#equations">Governing Equations</a>
+    <a href="#algorithm">Algorithm</a>
+
+    <div class="nav-label">Code</div>
+    <a href="#modules">Module Overview</a>
+    <a href="#parameters">Parameters</a>
+    <a href="#output">Output and the PNG File</a>
+
+    <div class="nav-label">Experiments</div>
+    <a href="#experiments">Suggested Experiments</a>
+    <a href="#restore">Restoring Defaults</a>    
+    <a href="#validity">Domain of Validity</a>
+    <a href="#related">Related Programs</a>
+
+    <div class="nav-label">Legal</div>
+    <a href="#license">License</a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
+      Version 1.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build a8778e60ea78
+    </p>
+    <p style="font-size:0.7em; color:#666; margin-top:-16px;">
+      Build covers the four executable modules (<code>physics_photon.py</code>, <code>driver_photon.py</code>, <code>main.py</code>, <code>plot_photon.py</code>) only; it does not change when this Help file or the test suite changes.
+    </p>
+
+    
+
+    <section id="setup"><h2>Before the first run</h2>
+      <p>Work in the folder containing <code>main.py</code>; use Python 3.10 or later with Matplotlib. Run <code>python main.py --version</code> to check Version 1.5.0, Build a8778e60ea78. <code>python main.py --help</code> lists the flags. Each command below opens a plot and saves a timestamped PNG plus provenance text in <code>./figures</code>; the console gives precise checkpoints. The <a href="SampleOutputs/PhotonOrbit-SampleOutputs_Guide.html">SampleOutputs Guide</a> embeds one current-build figure from each run. First make a prediction, then compare the plot with the terminal status and numbers.</p>
+      <div class="reading-path"><strong>Question for the evening.</strong> What changes at the boundary between capture and escape, and which plotted/printed quantities can actually measure that change? Keep <code>GM_over_c2</code>, <code>r0</code>, step size and rendering settings fixed for the first three runs.</div>
+    </section>
+    <section id="beat0" class="beat"><h3>Beat 0 · Capture is a terminating event</h3>
+      <p class="question"><strong>Predict.</strong> With the critical impact parameter <code>3√3 ≈ 5.19615</code> at <code>GM_over_c2=1</code>, what should happen when <code>b=5</code>? Locate the dotted photon sphere and filled horizon before you run.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 5.0 --lambda_max 200.0 --d_lambda 0.01 --lw 1.5 --dpi 150 --outdir ./figures</code></pre>
+      <p><strong>Observe.</strong> The status is <code>captured</code>; the interpolated final point is at <code>r=2</code>, after 2,388 RK4 steps. The accumulated azimuth is 4.37461 rad and the final affine parameter is 23.8741. Follow the blue path to the horizon; the closest approach of 2 is an event radius, not a sampled radial turning point.</p>
+      <p><strong>Explain.</strong> The first integral permits radial motion at the starting radius. For this low impact parameter the inward photon does not turn back before the horizon. Record why a large azimuthal sweep is possible even when the ray is captured.</p>
+      <p class="check"><strong>Check yourself.</strong> <code>Δφ</code> is finite-interval Schwarzschild-coordinate azimuth; a captured ray has no conventional asymptotic light-deflection angle.</p>
+    </section>
+    <section id="beat1" class="beat"><h3>Beat 1 · Change one number and scatter</h3>
+      <p class="question"><strong>Predict.</strong> Keeping everything from Beat 0 except <code>b=6</code>, should the ray cross the horizon or turn outward? Estimate where a turning point could lie relative to <code>r=3</code>.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 6.0 --lambda_max 200.0 --d_lambda 0.01 --lw 1.5 --dpi 150 --outdir ./figures</code></pre>
+      <p><strong>Observe.</strong> The status changes to <code>escaped</code>. Its sampled minimum radius is 4.45336, outside the photon sphere. <code>Δφ=4.40611</code> rad, affine parameter 63.0332, and 6,304 steps. The integration stops at <code>r=2r0=40</code> on the outbound leg, located within the final RK4 step.</p>
+      <p><strong>Explain.</strong> Compare the turning point, not just the final pixel, with Beat 0. The start is at finite <code>r0=20</code>: the threshold <code>bcrit=3√3 GM/c²</code> is the infinity-launch result; a finite-radius launch also has a local kinematic upper bound on allowed <code>b</code>.</p>
+      <p class="check"><strong>Record.</strong> The program calls a ray “escaped” at a finite radius; it does not trace the ray to infinity, so do not infer the asymptotic deflection angle from these finite-run Δφ values.</p>
+    </section>
+    <section id="beat2" class="beat"><h3>Beat 2 · Whirling near an unstable orbit</h3>
+      <p class="question"><strong>Predict.</strong> Set <code>b=5.205</code>, just above <code>3√3</code>. Which of the Beat 1 numbers should respond most sharply as the ray spends time near the photon sphere?</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 5.205 --lambda_max 400.0 --d_lambda 0.01 --lw 1.5 --dpi 150 --outdir ./figures</code></pre>
+      <p><strong>Observe.</strong> The path winds close to <code>r=3</code> and eventually escapes. The smallest <em>sampled</em> radius is 3.10571, <code>Δφ=8.72842</code> rad, final affine parameter 70.4343, and 7,044 steps. Compared at the same start and step size, Δφ is roughly twice Beat 1’s value.</p>
+      <p><strong>Test.</strong> Repeat at <code>--d_lambda 0.02</code> and <code>0.005</code> with the other flags fixed; compare status, Δφ and the final affine parameter. Horizon and escape crossings use linear event interpolation, while closest approach is just a sampled minimum; do not demand monotonic last digits from that minimum.</p>
+      <p class="check"><strong>Boundary.</strong> A tiny change in <code>b</code> near the separatrix can greatly change winding. <code>--lambda_max 400</code> is a safety cutoff; a <code>lambda_max</code> outcome would mean no horizon/escape crossing was reached during that interval.</p>
+    </section>
+    <section id="beat3" class="beat"><h3>Beat 3 · Balance at the photon sphere</h3>
+      <p class="question"><strong>Predict.</strong> Start exactly at <code>r0=3</code> and use the displayed full-precision <code>b=3√3</code>. Both initial radial velocity and radial acceleration vanish. How can an orbit circle without moving inward or outward?</p><pre><code>python main.py --GM_over_c2 1.0 --r0 3.0 --b 5.196152422706632 --lambda_max 100.0 --d_lambda 0.01 --lw 1.5 --dpi 150 --outdir ./figures</code></pre>
+      <p><strong>Observe.</strong> Status <code>lambda_max</code> means the requested affine parameter 100 ended the run. The sampled radius remains 3; <code>Δφ=57.735</code> rad over 10,000 steps (about 9.19 revolutions). The trajectory overdraws the dashed photon-sphere circle.</p>
+      <p><strong>Explain.</strong> This is an unstable circular null geodesic, not a stable photon track. Reduce <code>b</code> slightly with <code>--r0 3.0 --b 5.196152</code> to see capture; an appreciably larger <code>b</code> violates the local ingoing/tangential launch bound and is rejected. The implementation tolerates a few floating-point ulps immediately above the bound; do not interpret that numerical band as a new physical orbit.</p>
+      <p class="check"><strong>Next.</strong> Use the numbered <a href="#experiments">Suggested Experiments</a> for scale invariance, finite-radius starts, local tangential launches and convergence. The detailed derivations below support those checks.</p>
+    </section>
+    
+    <!-- Description -->
+    <section id="description">
+      <h2>Description</h2>
+      <p><strong>PhotonOrbit</strong> investigates null geodesics—photon trajectories—in Schwarzschild spacetime, restricted to the equatorial plane. It integrates the general-relativistic equations of motion with a fourth-order Runge–Kutta (RK4) scheme and plots the resulting path in Cartesian coordinates \((x,y)\) around a non-rotating black hole.</p>
+      <p>An initially ingoing photon can be captured by the black hole and fall to the event horizon, or, if its impact parameter is above the capture threshold and the chosen finite-radius initial condition permits a turning point, reverse its radial motion and escape. Every nonradial trajectory (<code>b&gt;0</code>) is influenced by gravitational light bending: the plotted path curves away from a straight line. The two outcomes bend in opposite senses as <code>b</code> moves toward the critical impact parameter: an escaping trajectory (<code>b&gt;b_crit</code>) bends more as <code>b</code> is decreased toward the critical value, while a captured trajectory (<code>b&lt;b_crit</code>) approaching the separatrix from below accumulates more azimuth -- more bending -- as <code>b</code> is increased toward it. Near the critical impact parameter on either side, trajectories can spend a long time whirling close to the unstable photon sphere at \(r=3GM/c^2\), bending through many radians before finally escaping or falling in. The <code>b=0</code> radial-infall case is the one exception: it has no angular momentum and its plotted path is a straight line, not a bent one. The plot marks both the event horizon and photon sphere.</p>
+      <p>The program reports the outcome, closest-approach radius, accumulated azimuthal angle \(\Delta\phi\), number of integration steps, and related geometric quantities. These diagnostics make it possible to explore the boundary between capture and scattering as well as the numerical sensitivity of near-critical trajectories. \(\Delta\phi\) is the accumulated Schwarzschild-coordinate azimuth swept from the starting radius <code>r0</code> until the horizon or escape-radius crossing, or until the affine-parameter cutoff <code>lambda_max</code> is reached — it is not the conventional asymptotic light-deflection angle of a ray arriving from and returning to infinity, which is not defined at all for a captured trajectory. Use \(\Delta\phi\) here to compare winding and whirling behavior among otherwise matched runs (as in EXP-8 and EXP-9), not as a numeric deflection-angle measurement.</p>
+      
+      <div class="note"><strong>Reading this page.</strong> The equations on this page are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; with no connection, the raw \(\LaTeX\) source (e.g. <code>\(a(t)\)</code>) will show as plain text instead of a formula. This has no effect on the program itself, which needs no internet access to run.</div>  
+    </section>
+
+    <!-- Physical Background -->
+    <section id="background">
+      <h2>Physical Background</h2>
+
+      <h3>Schwarzschild Geometry and Null Geodesics</h3>
+      <p>
+        In Schwarzschild coordinates \((t,r,\theta,\phi)\), the line element for a
+        non-rotating black hole of mass \(M\) is
+      </p>
+      <div class="eq-block"><div class="eq-label">Schwarzschild metric</div>
+        
+
+\[
+          ds^2 = -\left(1-\frac{2GM}{c^2 r}\right)c^2 dt^2
+                 + \left(1-\frac{2GM}{c^2 r}\right)^{-1} dr^2
+                 + r^2 d\theta^2
+                 + r^2 \sin^2\theta\, d\phi^2.
+        \]
+
+
+      </div>
+      <p>
+        PhotonOrbit restricts motion to the equatorial plane \(\theta=\pi/2\), so
+        \(d\theta=0\) and the angular part reduces to \(r^2 d\phi^2\). For a photon,
+        the trajectory is a <em>null</em> geodesic, meaning \(ds^2=0\).
+      </p>
+
+      <h3>Conserved Quantities and Impact Parameter</h3>
+      <p>
+        Stationarity and spherical symmetry imply conserved energy \(E\) and angular
+        momentum \(L\) along the geodesic. It is convenient to work with the impact
+        parameter
+      </p>
+      <div class="eq-block"><div class="eq-label">Impact parameter</div>
+        
+
+\[
+          b = \frac{L}{E},
+        \]
+
+
+      </div>
+      <p>
+        which characterizes how “grazing” the trajectory is. Because both \(E\) and
+        \(L\) are conserved, \(b\) is conserved along the entire geodesic. Large
+        \(b\) corresponds to more strongly grazing motion, while sufficiently small
+        \(b\) can lead to capture. The sign of \(L\) would only reverse the sense
+        of azimuthal motion, so PhotonOrbit uses the nonnegative magnitude \(b\).
+      </p>
+
+      <h3>Photon Sphere and Event Horizon</h3>
+      <p>
+        The Schwarzschild radius is
+      </p>
+      <div class="eq-block"><div class="eq-label">Event horizon radius</div>
+        
+
+\[
+          r_s = \frac{2GM}{c^2},
+        \]
+
+
+      </div>
+      <p>
+        and the unstable circular photon orbit—the photon sphere—occurs at
+      </p>
+      <div class="eq-block"><div class="eq-label">Photon sphere radius</div>
+        
+
+\[
+          r_\text{photon} = \frac{3GM}{c^2}.
+        \]
+
+
+      </div>
+      <p>
+        PhotonOrbit marks both \(r_s\) and \(r_\text{photon}\) on the plot. Trajectories
+        with impact parameters near the critical value can loop around the black hole
+        many times, skimming the photon sphere before eventually escaping or falling in.
+        An initially ingoing photon started between the event horizon and the photon
+        sphere, \(r_s&lt;r_0&lt;r_\text{photon}\), cannot turn around: every value of
+        \(b\) allowed by the initial first integral leads to capture.
+      </p>
+    </section>
+
+    <!-- Governing Equations -->
+    <section id="equations">
+      <h2>Governing Equations</h2>
+      <h3>First Integral of the Radial Motion</h3>
+      <p>In the equatorial plane, choose the affine-parameter normalization \(E=1\), so the conserved angular momentum is numerically \(L=b\). The radial first integral is</p>
+      <div class="eq-block"><div class="eq-label">Radial first integral</div>
+      \[\left(\frac{dr}{d\lambda}\right)^2=1-\left(1-\frac{2GM}{c^2r}\right)\frac{b^2}{r^2}.\]
+      </div>
+      <p>The initial photon is chosen to be ingoing, so \(dr/d\lambda\) begins with the negative square root. A scattered photon must later pass continuously through \(dr/d\lambda=0\) and emerge with a positive radial velocity.</p>
+      <h3>Second-Order Radial Equation</h3>
+      <p>To handle a turning point without manually switching the sign of a square root, PhotonOrbit integrates the equivalent second-order equation</p>
+      <div class="eq-block"><div class="eq-label">Radial acceleration</div>
+      \[\frac{d^2r}{d\lambda^2}=\frac{L^2}{r^3}\left(1-\frac{3GM}{c^2r}\right).\]
+      </div>
+      <p>Together with \(v_r=dr/d\lambda\), this lets the numerical solution reverse from inward to outward radial motion naturally at closest approach.</p>
+      <h3>Azimuthal Equation</h3>
+      <div class="eq-block"><div class="eq-label">Azimuthal equation</div>\[\frac{d\phi}{d\lambda}=\frac{L}{r^2}.\]</div>
+      <p>The plotted coordinates are \(x=r\cos\phi\) and \(y=r\sin\phi\).</p>
+      <h3>Photon Sphere and Critical Impact Parameter</h3>
+      <p>The unstable circular null orbit is at \(r=3GM/c^2\). For a photon arriving from infinity, the capture threshold is</p>
+      <div class="eq-block"><div class="eq-label">Critical impact parameter</div>\[b_{\rm crit}=3\sqrt{3}\,\frac{GM}{c^2}.\]</div>
+      <p>Because the program begins at a finite radius \(r_0\), its initial radial velocity is computed from the first integral rather than assuming the photon literally starts at infinity. Values of \(b\) for which that initial radial velocity would be imaginary are rejected. For allowed starts outside the photon sphere, \(b_{\rm crit}\) is the separatrix between capture and scattering. For allowed starts inside the photon sphere, however, the photon is already in the inner radial region and is captured even when \(b&gt;b_{\rm crit}\). The diagnostics therefore call this quantity <code>critical_b_infinity</code>.</p>
+      <h3>Units and Scaling</h3>
+      <p>All lengths must use the same unit. With <code>GM_over_c2 = 1.0</code>, the event horizon is at \(r=2\), the photon sphere at \(r=3\), and \(b_{\rm crit}=3\sqrt{3}\approx5.196\). With the chosen \(E=1\) normalization, \(r\) and the affine parameter \(\lambda\) use the same length scale. The affine parameter is simply the path parameter used to advance the geodesic; it is not the Schwarzschild coordinate time \(t\).</p>
+    </section>
+
+    <!-- Algorithm -->
+    <section id="algorithm">
+      <h2>Algorithm</h2>
+      <ol>
+        <li>Validate that all inputs are finite, and that <code>GM_over_c2</code> is positive.</li>
+        <li>Require the starting radius to lie outside the resulting event horizon, the impact parameter <code>b</code> to be nonnegative, and <code>lambda_max</code> and <code>d_lambda</code> to be positive.</li>
+        <li>Check the radial first integral at <code>r0</code>; reject a value of <code>b</code> incompatible with an initially ingoing null geodesic there.</li>
+        <li>Normalize <code>E=1</code>, set <code>L=b</code>, and initialize the negative (ingoing) radial velocity.</li>
+        <li>Integrate \((r,v_r,\phi)\) using RK4. The second-order radial equation permits <code>v_r</code> to cross zero at a scattering turning point.</li>
+        <li>Terminate at the event horizon or at the escape radius <code>2*r0</code> (interpolating the crossing within the final RK4 step in either case, so neither stopping surface leaves a whole-step overshoot in the recorded trajectory or diagnostics), or when <code>lambda_max</code> is reached.</li>
+        <li>Return Cartesian trajectory samples plus diagnostics including status, closest approach, \(\Delta\phi\), and step count.</li>
+        <li>Print a run summary to the console and render the trajectory, event horizon, and photon sphere on screen; if <code>--outdir</code> is given, additionally save a timestamped PNG copy to that folder.</li>
+      </ol>
+      <h3>Integration Accuracy</h3>
+      <p>Near-critical trajectories are especially sensitive to numerical error because a photon can spend a long affine time near the unstable photon sphere. Repeat such calculations with smaller <code>d_lambda</code> and compare quantitative diagnostics, not merely the visual smoothness of the plotted curve. The program also refuses parameter combinations that would request more than five million RK4 steps; this is a numerical safety limit, not a physical restriction.</p>
+    </section>
+
+    <!-- Modules -->
+    <section id="modules">
+      <h2>Module Overview</h2>
+      <div class="module-grid">
+        <div class="module-card"><div class="mc-role">Physics Layer</div><div class="mc-name">physics_photon.py</div><p>Validates the physical/numerical inputs, computes the Schwarzschild null-geodesic equations, advances \((r,v_r,\phi)\) with RK4, stops captured trajectories at an interpolated event-horizon crossing, recognizes escape, and returns trajectory diagnostics.</p><div class="sig">def radial_acceleration(r, L, GM_over_c2)
+  -&gt; d²r/dλ²
+
+def dphi_dlambda(r, L)
+  -&gt; dφ/dλ
+
+def integrate_photon_orbit(
+  GM_over_c2, r0, b,
+  lambda_max, d_lambda
+) -&gt; (x_values, y_values, info)</div></div>
+        <div class="module-card"><div class="mc-role">Driver Layer</div><div class="mc-name">driver_photon.py</div><p>Validates the plot-output settings, calls the physics integrator, prints a run summary (ending with a losslessly-precise, ready-to-copy "Reproduce this exact run with:" command line) to the console, passes the result and the run's physics parameters to the plotting layer (including <code>outdir</code>, <code>dpi</code>, and <code>lw</code>), and returns the diagnostics dictionary to a caller that wants to inspect it programmatically.</p><div class="sig">def driver_photon_orbit(
+  GM_over_c2=1.0,
+  r0=20.0,
+  b=5.0,
+  lambda_max=200.0,
+  d_lambda=0.01,
+  outdir=None,
+  dpi=150,
+  lw=1.5
+) -&gt; info</div></div>
+        <div class="module-card"><div class="mc-role">Plot Layer</div><div class="mc-name">plot_photon.py</div><p>Plots the trajectory, event horizon, and photon sphere, and annotates the integration status, closest approach, and accumulated azimuth. Always displays the figure on screen; when <code>outdir</code> is given, additionally saves a timestamped PNG and a matching provenance sidecar there first, using an atomic, collision-safe filename reservation.</p><div class="sig">def plot_photon_orbit(
+  x_values, y_values, b, info,
+  outdir=None, dpi=150, lw=1.5,
+  GM_over_c2=None, r0=None,
+  lambda_max=None, d_lambda=None
+) -&gt; None</div></div>
+        <div class="module-card"><div class="mc-role">Entry Point</div><div class="mc-name">main.py</div><p>Defines the student-facing command-line options and converts validation or runtime failures into concise command-line error messages. Run <code>python main.py --help</code> for the current command summary.</p><div class="sig">python main.py
+  [--GM_over_c2 LEN] [--r0 LEN] [--b LEN]
+  [--lambda_max LAMBDA] [--d_lambda LAMBDA]
+  [--lw PT] [--dpi N]
+  [--outdir PATH]</div></div>
+      </div>
+    </section>
+
+    <!-- Parameters -->
+    <section id="parameters">
+      <h2>Parameters</h2>
+      <p>Experiment settings are supplied as command-line options to <code>main.py</code>, which forwards them to <code>driver_photon.py</code>. Run <code>python main.py --help</code> for the current command summary. Most students should begin by running <code>python main.py</code> with no options, then vary one option at a time; if an option is rejected, read the exception message first, since most invalid parameter choices are caught by the physics layer.</p>
+      <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="pname">--GM_over_c2</td><td class="pdefault">1.0</td><td>length</td><td>The gravitational length \(GM/c^2\). Must be finite and greater than zero.</td></tr>
+        <tr><td class="pname">--r0</td><td class="pdefault">20.0</td><td>length</td><td>Starting Schwarzschild radius. It must lie outside the event horizon: <code>r0 &gt; 2*GM_over_c2</code>.</td></tr>
+        <tr><td class="pname">--b</td><td class="pdefault">5.0</td><td>length</td><td>Nonnegative impact-parameter magnitude \(b=L/E\). It must also be compatible with a real initial radial velocity at the selected <code>r0</code>. A negative value would merely mirror the azimuthal orientation.</td></tr>
+        <tr><td class="pname">--lambda_max</td><td class="pdefault">200.0</td><td>affine parameter</td><td>Maximum affine parameter. Must be finite and greater than zero. This is a path parameter, not coordinate time.</td></tr>
+        <tr><td class="pname">--d_lambda</td><td class="pdefault">0.01</td><td>affine parameter</td><td>RK4 step size. Must be finite and greater than zero. Reduce it for convergence tests near the critical orbit.</td></tr>
+        <tr><td class="pname">--lw</td><td class="pdefault">1.5</td><td>points</td><td>Line width used for the plotted trajectory. Must be greater than zero.</td></tr>
+        <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>Resolution of the saved PNG. Must be a positive integer. Ignored unless <code>--outdir</code> is also given.</td></tr>
+        <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>Folder for an additional timestamped PNG. The figure is always shown on screen; supplying <code>--outdir</code> also saves a copy there and does not suppress the on-screen display. The folder is created if it does not already exist.</td></tr>
+      </tbody></table>
+      <div class="note"><strong>Input checking:</strong> The physics layer raises explanatory <code>ValueError</code> exceptions for invalid inputs and caps a single run at five million requested RK4 steps, including inputs so extreme (e.g. an astronomically small <code>d_lambda</code> paired with a huge <code>lambda_max</code>) that the requested-step count itself would not fit in a finite number — that case is rejected the same way as an ordinary excessive step count, not left to overflow. A <code>RuntimeError</code> is raised if numerical stepping produces a nonphysical, non-finite, or numerically overflowing state (for example a starting radius so large that intermediate arithmetic exceeds the range of a Python float). <code>main.py</code> catches <code>ValueError</code>, <code>RuntimeError</code>, <code>OSError</code> (for example an unwritable <code>--outdir</code>), and, as a last line of defense, <code>OverflowError</code>, and reports them as a single-line command-line error rather than a Python traceback.</div>
+      <div class="note"><strong>Meaning of <code>escaped</code>:</strong> The program uses this status after a photon has turned outward and reached <code>escape_radius = 2*r0</code>, including a photon that starts exactly tangentially (zero initial radial velocity) at a radius outside the photon sphere, which is pushed outward immediately. It is a practical stopping convention; the program does not integrate the photon all the way to infinity. The recorded <code>lambda_final</code> and \(\Delta\phi\) are interpolated to the exact <code>escape_radius</code> crossing (the same treatment already used at the event horizon), not merely the first sample beyond it, so they are suitable for the step-size convergence study in EXP-9.</div>
+    </section>
+
+    <!-- Output -->
+    <section id="output">
+      <h2>Output and the PNG File</h2>
+      <p>Every run prints a short console summary (the physical parameters, event horizon and photon-sphere radii, the critical impact parameter, and the outcome diagnostics) and then displays the trajectory plot in an interactive window. <code>--outdir</code> does not replace either of those; it only adds a saved copy of the figure and a provenance sidecar.</p>
+      <table class="out-table"><thead><tr><th>Output</th><th>What to Look For</th></tr></thead><tbody>
+        <tr><td class="oname">Console summary</td><td>Reports <code>GM_over_c2</code>, <code>r0</code>, <code>b</code>, <code>r_s</code>, <code>r_photon</code>, the critical impact parameter, status, closest approach, \(\Delta\phi\), the final affine parameter, the RK4 step size <code>d_lambda</code>, and the RK4 step count, each rounded to six significant digits for readability. It ends with a <strong>"Reproduce this exact run with:"</strong> line giving the five physics parameters plus <code>--lw</code>/<code>--dpi</code> as a ready-to-copy <code>python main.py --GM_over_c2 ... --r0 ... --b ... --lambda_max ... --d_lambda ... --lw ... --dpi ...</code> command, printed losslessly (enough digits to reconstruct the exact floating-point value) rather than rounded — the six-significant-digit fields above are for reading, not for retyping, since PhotonOrbit is specifically about a numerically sensitive separatrix where a rounded <code>b</code> can change the outcome (see EXP-7). Add <code>--outdir</code> yourself if you also want to save a new copy; where to save one is a per-invocation choice, not part of what produced this run. This command reproduces the exact physics inputs and PhotonOrbit's own two rendering options (<code>--dpi</code>, <code>--lw</code>); it does not fix or record Matplotlib's own defaults (fonts, colors, version), so a saved PNG regenerated from it is not guaranteed to be byte-identical to the original.</td></tr>
+        <tr><td class="oname">On-screen figure</td><td>Always shown, whether or not <code>--outdir</code> is given: the trajectory, the shaded event-horizon disk, the dashed photon-sphere circle, and the same status/closest-approach/\(\Delta\phi\) summary annotated in the lower-left corner.</td></tr>
+        <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>, additionally saves a timestamped figure (named from the impact parameter and outcome status, e.g. <code>photon_b6_escaped_20260822_103520.png</code>) in the requested folder at the resolution given by <code>--dpi</code>; the figure is still shown on screen in the same run. If two runs would otherwise save to the same folder within the same wall-clock second (for example, the repeated <code>--d_lambda</code> runs in EXP-9), the filename gains a <code>_2</code>, <code>_3</code>, ... suffix so no earlier run is silently overwritten.</td></tr>
+        <tr><td class="oname">Provenance sidecar</td><td>With <code>--outdir PATH</code>, a same-named <code>&lt;stem&gt;.provenance.txt</code> text file is saved next to every PNG. Because the on-figure annotation alone does not include <code>GM_over_c2</code>, <code>r0</code>, <code>lambda_max</code>, <code>d_lambda</code>, <code>--dpi</code>, <code>--lw</code>, or the program's version/build, the sidecar records all of them losslessly, plus the same outcome fields as the console summary and a ready-to-copy <code>python main.py ...</code> command (including <code>--lw</code>/<code>--dpi</code>) — so a saved PNG can always be traced back to the run that made it, and that run's exact physics inputs and PhotonOrbit's own two rendering options recovered from it. Overall appearance also depends on Matplotlib's own defaults (fonts, colors, version), which the sidecar does not fix or record, so a regenerated PNG is not guaranteed to be byte-identical to the original — only the same trajectory at the same resolution and line width. (The command omits <code>--outdir</code>; supply your own to also save a new copy.)</td></tr>
+      </tbody></table>
+      <pre># Default trajectory, on screen only
+python main.py
+
+# A scattering trajectory that escapes
+python main.py --b 6.0
+
+# Also save a timestamped PNG, in addition to the on-screen display
+python main.py --b 6.0 --outdir ./runs
+
+# Higher-resolution PNG for print or slides
+python main.py --b 6.0 --outdir ./runs --dpi 300</pre>
+    </section>
+
+    <!-- Suggested Experiments -->
+    <section id="experiments">
+      <h2>Suggested Experiments</h2>
+      <p>The exercises below are arranged approximately from introductory to more demanding.</p>
+      <div class="exp-grid">
+        <div class="exp-card"><div class="ec-num">EXP-1 · Introductory</div><h4>Capture and Escape</h4><p>With the default <code>GM_over_c2=1</code> and <code>r0=20</code>, compare <code>python main.py --b 5.0</code> with <code>python main.py --b 6.0</code>. Record the reported status and closest approach. Explain why increasing the impact parameter can permit a turning point and prevent capture.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-2 · Introductory</div><h4>Radial and Nearly Radial Infall</h4><p>Run <code>python main.py --b 0</code> and then several small positive values, e.g. <code>python main.py --b 0.5</code>. Record \(\Delta\phi\) and describe how the trajectory changes as angular momentum is introduced. For <code>b=0</code>, verify from the radial-acceleration equation that the acceleration vanishes and, with the chosen normalization, the inward radial velocity remains constant.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-3 · Introductory / Intermediate</div><h4>Capture Inside the Photon Sphere</h4><p>Run <code>python main.py --r0 2.5 --b 0</code>, then <code>--b 3</code>, then <code>--b 5.3</code>, keeping <code>r0=2.5</code> between the horizon and photon sphere. Confirm that every run is captured. Use the radial first integral and radial-acceleration equation to explain why an initially ingoing photon in this region cannot turn around.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>Locate the Capture Threshold</h4><p>With the default <code>GM_over_c2=1</code> and <code>r0=20</code>, bracket the transition between capture and escape by running <code>python main.py --b VALUE</code> for a sequence of trial values. Refine the bracket and compare your estimate with \(3\sqrt{3}\approx5.19615\). Very near the threshold, increase <code>--lambda_max</code> if needed and repeat with a smaller <code>--d_lambda</code> before trusting the classification.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div><h4>Closest Approach and the Radial First Integral</h4><p>Choose several escaping trajectories, e.g. <code>python main.py --b 6.0</code>. For each reported closest-approach radius \(r_{\min}\), test \(1=(1-2(GM/c^2)/r_{\min})b^2/r_{\min}^2\), using <code>GM_over_c2</code> for \(GM/c^2\). Compute the absolute residual between the two sides and see how it changes when <code>--d_lambda</code> is reduced.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate / Advanced</div><h4>Scale Invariance</h4><p>Multiply <code>--GM_over_c2</code>, <code>--r0</code>, <code>--b</code>, <code>--lambda_max</code>, and <code>--d_lambda</code> by the same positive factor, e.g. <code>python main.py --GM_over_c2 2 --r0 40 --b 10 --lambda_max 400 --d_lambda 0.02</code>. Compare the closest approach divided by <code>GM_over_c2</code> and \(\Delta\phi\) with the original run; both are printed in the console summary, so they can be compared numerically to the displayed precision (for an exact comparison, use the console's "Reproduce this exact run with:" values, or call <code>physics_photon.integrate_photon_orbit</code> directly). Then compare the two plotted trajectories visually and confirm that <code>x/GM_over_c2</code> and <code>y/GM_over_c2</code> trace the same dimensionless path. (main.py does not print individual trajectory points; a numeric point-by-point comparison of <code>x</code> and <code>y</code> requires calling <code>physics_photon.integrate_photon_orbit</code> directly from Python.) Explain why changing only <code>--GM_over_c2</code> alone would instead change the dimensionless orbit.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-7 · Advanced</div><h4>The Circular Photon Orbit</h4><p>Run <code>python main.py --r0 3 --b 5.196152422706632</code>. Verify that the ideal trajectory remains on the photon sphere and normally ends with status <code>lambda_max</code>. This orbit is a finely tuned unstable separatrix. At <code>r0=3</code>, decreasing <code>b</code> slightly (for example <code>--b 5.196152</code>) produces capture; increasing <code>b</code> is not a legal initial condition there — the program will reject anything above the printed critical value, because at <code>r0=3</code> the locally-allowed maximum <code>b</code> and the global critical impact parameter \(b_{\rm crit}=3\sqrt{3}\) coincide exactly. For a nearby escaping case, try <code>python main.py --r0 3.1 --b 5.20</code>.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Near-Critical Whirling</h4><p>With the default <code>r0=20</code>, try escaping values such as <code>python main.py --b 5.3</code>, then <code>--b 5.25</code>, <code>--b 5.22</code>, and <code>--b 5.205</code>. Record \(\Delta\phi\) and closest approach. Observe how the photon accumulates increasing azimuth near \(r=3\) as the threshold is approached.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Numerical Convergence Near the Photon Sphere</h4><p>Repeat one near-critical case, e.g. <code>b=5.205</code>, with <code>--d_lambda 0.04</code>, <code>0.02</code>, <code>0.01</code>, and <code>0.005</code> in turn. Make a small table of step size, status, closest approach, \(\Delta\phi\), and step count (all printed in the console summary). \(\Delta\phi\) and the final affine parameter are interpolated to the exact stopping surface and converge cleanly as <code>d_lambda</code> shrinks; the reported closest approach, by contrast, is simply the smallest sampled radius along the path, not an interpolated turning point, so it can show a little run-to-run jitter even as the other quantities converge smoothly — note that distinction rather than expecting every column to improve monotonically. Do not use visual smoothness alone as an accuracy test.</p></div>
+        <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>Tangential Launches and the Local Kinematic Bound</h4><p>A photon launched exactly tangentially (zero initial radial velocity) at <code>b</code> equal to the locally-allowed maximum for that <code>r0</code> is a legal initial condition, not merely a boundary case. Try <code>python main.py --r0 6.0 --b 7.3484692283495345</code> (this is <code>r0/sqrt(1-2*GM_over_c2/r0)</code> at the default <code>GM_over_c2=1</code>): the photon starts at rest radially and, because <code>r0</code> is outside the photon sphere, is pushed outward immediately and is reported as <code>escaped</code>. Now try the same tangential construction with <code>python main.py --r0 2.5 --b 5.590169943749475</code> (between the horizon and photon sphere): confirm the photon is <code>captured</code> instead, and explain why using the radial acceleration equation's sign for <code>r&lt;3GM/c^2</code> versus <code>r&gt;3GM/c^2</code>. Finally, try <code>--r0 3.0</code> with the exact circular-orbit <code>b</code> from EXP-7: confirm this tangential launch is the one case that does neither, remaining at <code>status=lambda_max</code>.</p></div>
+      </div>
+    </section>
+    
+    <!-- Restore defaults -->
+    <section id="restore" style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
+      <div style="border: 1.5px solid #b5811a; border-left: 5px solid #b5811a; border-radius: 6px; background: #fffbeb; padding: 1.1em 1.4em; display: flex; gap: 1em; align-items: flex-start;">
+        <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
+        <div>
+          <div style="font-weight: 700; font-size: 0.95em; color: #7b2d00; margin-bottom: 0.35em; text-transform: uppercase; letter-spacing: 0.04em;">Restoring Default Parameter Values</div>
+          <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">Ordinary experiments are run entirely from the command line and never modify <code>main.py</code> or any other file, so there is usually nothing to restore. If you do edit <code>main.py</code> or another program file — for example, to change a default value — you can restore the original program files using any of the following methods:</p>
+          <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
+            <li><strong>Same session:</strong> Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd> (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd> (macOS) repeatedly in your editor to undo your edits.</li>
+            <li><strong>If you are using PyCharm:</strong> Right-click the edited file in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.</li>
+            <li><strong>Full reset:</strong> Re-download the ZIP from <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank">github.com/tomyee3-org/GFTGUX-Programs</a> and replace this program's folder with the fresh copy.</li>
+          </ul>
+          <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">For additional ways to restore program files, see the corresponding recovery instructions in the <em>GFTGUX Python Setup Guide</em>.</p>
+        </div>
+      </div>
+    </section>    
+
+<section id="validity"><h2>Domain of Validity</h2>
+      <p>This is an educational single-ray model for equatorial Schwarzschild null geodesics. It omits spin, plasma, scattering by other bodies and the camera geometry of a black-hole image. “Escaped” means outward crossing of <code>2r0</code>, not arrival at infinity. <code>Δφ</code> is finite-interval Schwarzschild-coordinate azimuth rather than the asymptotic deflection angle; <code>lambda_max</code> is an affine-parameter cutoff, not a geometric stopping surface. The horizon and escape crossings are linearly interpolated in the final RK4 step; closest approach is the smallest sampled radius. The local kinematic test tolerates a few floating-point ulps above its computed upper bound, which does not represent an additional physical orbit.</p>
+    </section>
+        <!-- Related Programs -->
+    <section id="related">
+      <h2>Related Programs</h2>
+      <ul class="related-list">
+        <li>
+          <a href="../11-Binary/Binary.html"><strong>Binary</strong></a> —
+          Explores bound orbits and gravitational radiation from compact binaries;
+          PhotonOrbit focuses on individual photon paths in the same spacetime.
+        </li>
+        <li>
+          <a href="../11-LightDeflection/LightDeflection.html"><strong>LightDeflection</strong></a> —
+          Illustrates weak-field light bending; PhotonOrbit extends the picture
+          into the strong-field regime near the photon sphere.
+        </li>
+      </ul>
+    </section>
+
+    <!-- License -->
+    <section id="license">
+      <h2>License</h2>
+      <p>
+        PhotonOrbit is an original Python program accompanying the general-relativistic
+        investigations in Bernard Schutz's <em>Gravity from the Ground Up</em>
+        (Cambridge University Press). It is distributed under the
+        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+          Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+        </a>
+        license.
+      </p>
+    </section>
+
+  </main><!-- /main -->
+
+  <!-- FOOTER -->
+  <footer>
+    <em>Gravity from the Ground Up</em> — Python Programs ·
+    Bernard Schutz © 2003 (Cambridge University Press) ·
+    Python programs © 2024–2026 Thomas Yee ·
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> ·
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<!-- Sidebar active-link tracking -->
+<script>
+  (function () {
+    const links = document.querySelectorAll('nav a');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const match = document.querySelector(`nav a[href="#${e.target.id}"]`);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('main section[id]').forEach(s => observer.observe(s));
+  })();
+</script>
+
+</body>
+</html>

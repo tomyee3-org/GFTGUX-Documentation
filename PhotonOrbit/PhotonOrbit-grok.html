@@ -1,0 +1,389 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PhotonOrbit · Four-run terminal lab</title><style>
+    /* ── Reset & custom properties ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #fdf5e6;
+      --surface:  #ffffff;
+      --border:   #c8bfa0;
+      --accent:   #7b2d00;
+      --accent2:  #a04010;
+      --gold:     #b5811a;
+      --text:     #1c1c1c;
+      --muted:    #5a4a3a;
+      --code-bg:  #f0ede4;
+      --note-bg:  #f4f0e8;
+      --eq-bg:    #f7f2e8;
+      --radius:   5px;
+      --shadow:   0 2px 8px rgba(0,0,0,0.10);
+      --mono:     "Courier New", Courier, monospace;
+      --sans:     "Helvetica Neue", Arial, sans-serif;
+      --serif:    Georgia, "Times New Roman", Times, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--serif);
+      font-size: 16px;
+      line-height: 1.80;
+      color: var(--text);
+      background: var(--bg);
+    }
+    /* ── Page grid ── */
+    .page-wrap {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    /* ── Header ── */
+    header {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      padding: 26px 38px 20px;
+      border-bottom: 4px solid var(--gold);
+    }
+    header .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 3px;
+      padding: 2px 7px;
+      letter-spacing: .06em;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.95rem;
+      font-weight: normal;
+      letter-spacing: -.02em;
+    }
+    header h1 em { font-style: normal; color: #ffc9a0; }
+    header .sub {
+      margin-top: 6px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: #f0d0b8;
+      line-height: 1.55;
+    }
+    header .sub a {
+      color: #ffd8b8;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,200,150,.4);
+    }
+    header .sub a:hover { border-bottom-color: #ffd8b8; }
+    /* ── Sidebar ── */
+    nav {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0 40px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .nav-label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 14px 18px 4px;
+    }
+    nav a {
+      display: block;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 18px 5px 22px;
+      border-left: 3px solid transparent;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: #fdf0e0;
+      border-left-color: var(--gold);
+    }
+    nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+      background: #fdecd8;
+    }
+    /* ── Main content ── */
+    main {
+      padding: 38px 52px 60px;
+      max-width: 900px;
+    }
+    h2 {
+      font-size: 1.40rem;
+      font-weight: normal;
+      color: var(--accent);
+      border-bottom: 2px solid var(--gold);
+      padding-bottom: 6px;
+      margin: 2.2rem 0 1.0rem;
+    }
+    h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin: 1.6rem 0 .5rem;
+    }
+    h4 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 1.2rem 0 .35rem;
+    }
+    p { margin-bottom: .85rem; }
+    ul, ol { margin: .4rem 0 .85rem 1.5rem; }
+    li { margin-bottom: .28rem; }
+    .eq-block {
+      background: var(--eq-bg);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 22px 10px;
+      margin: 1.1rem 0 1.3rem;
+      overflow-x: auto;
+    }
+    .eq-label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 0.865em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 1px 5px;
+    }
+    pre {
+      font-family: var(--mono);
+      font-size: 0.855em;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: .8rem 0 1.1rem;
+      line-height: 1.55;
+    }
+    .note {
+      background: var(--note-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 11px 16px;
+      margin: 1.0rem 0 1.2rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+    .note strong { color: var(--accent2); }
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin: 1.1rem 0 1.4rem;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .module-card .mc-name {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .module-card .mc-role {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .module-card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+    .module-card .sig {
+      font-family: var(--mono);
+      font-size: 0.80rem;
+      background: var(--code-bg);
+      border: 1px solid #ddd8cc;
+      border-radius: 3px;
+      padding: 7px 10px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .param-table, .out-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .param-table th, .out-table th {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .out-table th { background: var(--accent2); }
+    .param-table td, .out-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0d8c8;
+      vertical-align: top;
+    }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table tr:hover td, .out-table tr:hover td { background: #f3ecdf; }
+    .param-table .pname, .out-table .oname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+    .exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 14px;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px 17px;
+      box-shadow: var(--shadow);
+    }
+    .exp-card .ec-num {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-radius: 3px;
+      padding: 1px 6px;
+      margin-bottom: 7px;
+    }
+    .exp-card h4 {
+      font-size: 0.94rem;
+      color: var(--accent2);
+      margin: 0 0 5px;
+    }
+    .exp-card p {
+      font-size: 0.855rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    .related-list {
+      list-style: none;
+      margin: .6rem 0 1.2rem;
+      padding: 0;
+    }
+    .related-list li {
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 7px;
+      font-size: 0.90rem;
+    }
+    .related-list li strong {
+      font-family: var(--mono);
+      color: var(--accent2);
+    }
+    footer {
+      grid-column: 1 / -1;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      text-align: center;
+      padding: 18px 24px;
+      line-height: 1.7;
+    }
+    footer a { color: #e0c090; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 740px) {
+      .page-wrap { grid-template-columns: 1fr; }
+      nav { position: static; height: auto; }
+      main { padding: 24px 20px 48px; }
+      header { padding: 20px 20px 16px; }
+      .module-grid, .exp-grid { grid-template-columns: 1fr; }
+    }
+  
+    .beat{background:var(--surface);border:1px solid var(--border);
+      border-left:5px solid var(--gold);border-radius:var(--radius);
+      padding:14px 22px 18px;margin:26px 0;box-shadow:var(--shadow)}
+    .beat h3{margin-top:.3em}
+    .beat .question{background:var(--eq-bg);padding:10px 14px;margin:12px 0}
+    .beat pre{white-space:pre-wrap;overflow-wrap:anywhere}
+    .beat .check{font-size:.92em;color:var(--muted)}
+    .reading-path{background:var(--note-bg);border-left:5px solid var(--accent);
+      padding:13px 18px;margin:18px 0}
+</style></head>
+<body><div class="page-wrap"><header><div class="badge">PhotonOrbit · directed terminal lab</div>
+<h1><em>PhotonOrbit</em> · Where does the photon go?</h1>
+<div class="sub">Follow four runs, then change one control at a time.</div></header>
+<nav><div class="nav-label">At the terminal</div>
+<a href="#setup">Get ready</a><a href="#beat0">0 · Capture</a>
+<a href="#beat1">1 · Escape</a><a href="#beat2">2 · Whirl</a>
+<a href="#beat3">3 · Circle</a><a href="#followup">Try it yourself</a>
+<div class="nav-label">After the runs</div><a href="#equations">Equations</a>
+<a href="#algorithm">Algorithm and flags</a><a href="#validity">Domain of Validity</a>
+<a href="#related">Related programs</a></nav><main>
+<p id="version_build" class="note">Version 1.5.0 Build a8778e60ea78 · 2026-09-28</p>
+<section id="setup"><h2>Get ready</h2><p>Use Python 3.10+ and Matplotlib. Run from the folder with <code>main.py</code>. Try <code>python main.py --help</code> if a flag is unfamiliar. Each command below opens a plot and saves a PNG and provenance sidecar under <code>./figures</code>. The <a href="SampleOutputs/PhotonOrbit-SampleOutputs_Guide.html">SampleOutputs Guide</a> shows the four current-build figures.</p>
+<p><b>One question:</b> When does an inward-going light ray escape, and what does the plotted winding really measure?</p></section>
+
+<section id="beat0" class="beat"><h3>0 · Cross the horizon</h3>
+<p><b>Before the run:</b> <code>b=5</code> is below <code>3√3≈5.19615</code>. Point to the dashed <code>r=3</code> photon sphere and the filled <code>r=2</code> horizon. Predict capture or escape.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 5.0 --lambda_max 200.0 --d_lambda 0.01 --lw 1.5 --dpi 150 --outdir ./figures</code></pre>
+<p><b>Read:</b> status <code>captured</code>; closest radius <code>2</code>; <code>Δφ=4.37461</code> rad; final affine parameter <code>23.8741</code>. The blue curve ends at the horizon, which is located within the last step. Capture does not give an asymptotic deflection angle.</p>
+<p><b>Write down:</b> Which printed field tells you the outcome, and which shows how much Schwarzschild-coordinate azimuth accumulated before it?</p></section>
+<section id="beat1" class="beat"><h3>1 · Make it turn back</h3>
+<p><b>Before the run:</b> Change only <code>b</code> to <code>6</code>. Predict where the closest point lies relative to <code>r=3</code>.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 6.0 --lambda_max 200.0 --d_lambda 0.01 --lw 1.5 --dpi 150 --outdir ./figures</code></pre>
+<p><b>Read:</b> status <code>escaped</code>; sampled closest radius <code>4.45336</code>; <code>Δφ=4.40611</code> rad. Follow the path outward to the program's finite escape radius <code>2r0=40</code>; “escaped” does not mean the calculation reached infinity.</p>
+<p><b>Write down:</b> What changed between Beat 0 and Beat 1 besides the outcome? Keep the finite starting radius <code>r0=20</code> in mind.</p></section>
+<section id="beat2" class="beat"><h3>2 · Approach the dividing line</h3>
+<p><b>Before the run:</b> Use <code>b=5.205</code>, just above critical. Guess whether the ray escapes immediately or loops near <code>r=3</code>.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 5.205 --lambda_max 400.0 --d_lambda 0.01 --lw 1.5 --dpi 150 --outdir ./figures</code></pre>
+<p><b>Read:</b> it escapes after a whirl: sampled closest radius <code>3.10571</code>, <code>Δφ=8.72842</code> rad, final affine parameter <code>70.4343</code>. Compare with Beat 1's <code>Δφ</code> at the same <code>r0</code> and RK4 step size.</p>
+<p><b>Try:</b> Repeat with <code>--d_lambda 0.02</code> and <code>0.005</code>. Compare Δφ and the event-located final affine parameter; the sampled minimum radius need not improve monotonically in its last digits.</p></section>
+<section id="beat3" class="beat"><h3>3 · Balance at the photon sphere</h3>
+<p><b>Before the run:</b> Set <code>r0=3</code> and copy the full-precision <code>b=3√3</code>. What should the initial radial acceleration be?</p><pre><code>python main.py --GM_over_c2 1.0 --r0 3.0 --b 5.196152422706632 --lambda_max 100.0 --d_lambda 0.01 --lw 1.5 --dpi 150 --outdir ./figures</code></pre>
+<p><b>Read:</b> status <code>lambda_max</code>, radius <code>3</code>, <code>Δφ=57.735</code> rad over <code>100</code> affine units. It circles about 9.19 times during this finite run. <code>lambda_max</code> is a time cutoff, not a surface in space; this orbit is unstable.</p>
+<p><b>Try:</b> Decrease <code>b</code> to <code>5.196152</code> at the same <code>r0</code>: capture. A sufficiently larger <code>b</code> is an invalid initial condition. The code tolerates a few floating-point ulps just over the bound; do not assign that band physical meaning.</p></section>
+<section id="followup"><h2>Try it yourself · one change per run</h2><ol>
+<li><code>python main.py --b 0</code>. Why is the blue path straight, and why is <code>Δφ=0</code>?</li>
+<li><code>python main.py --r0 2.5 --b 3</code>. Between horizon and photon sphere, can an initially ingoing allowed ray turn back?</li>
+<li>At fixed <code>r0=20</code>, bracket the transition with <code>--b 5.19</code> and <code>--b 5.20</code>. Narrow the bracket; give both status and step size.</li>
+<li>Compare <code>--b 6</code> with <code>--b 5.205</code> at the same <code>r0</code> and <code>--d_lambda</code>. Which field quantifies the extra winding?</li>
+<li>Repeat Beat 1 with all lengths and affine settings multiplied by ten: <code>--GM_over_c2 10 --r0 200 --b 60 --lambda_max 2000 --d_lambda 0.1</code>. Which dimensionless angular diagnostic stays the same?</li>
+<li>Run <code>python main.py --r0 6 --b 7.3484692283495345</code> and <code>python main.py --r0 2.5 --b 5.590169943749475</code>. Both start tangentially. Why do their statuses differ? Use the radial acceleration's sign.</li>
+</ol></section>
+<section id="equations"><h2>Governing Equations</h2>
+<p>In units with <code>E=1</code> and <code>L=b≥0</code>, <code>(dr/dλ)² = 1 − (b²/r²)(1−2M/r)</code>, <code>d²r/dλ² = (b²/r³)(1−3M/r)</code>, and <code>dφ/dλ=b/r²</code>, where <code>M=GM/c²</code>. The event horizon is <code>2M</code>, the photon sphere <code>3M</code>, and the critical impact parameter for infinity launch <code>3√3 M</code>. At finite <code>r0</code>, only a locally allowed range of <code>b</code> can start with real inward or tangential velocity.</p></section>
+<section id="algorithm"><h2>Algorithm and flags</h2><p>A fourth-order Runge–Kutta step advances radial position, radial velocity and azimuth. A crossing of <code>r=2M</code> or the outbound escape radius <code>2r0</code> is linearly located within the last step. The closest radius is a sampled minimum. <code>--GM_over_c2</code>, <code>--r0</code>, <code>--b</code>, <code>--lambda_max</code>, <code>--d_lambda</code>, <code>--lw</code>, <code>--dpi</code>, <code>--outdir</code>, <code>--help</code> and <code>--version</code> are the available controls. The console gives status, closest approach, <code>Δφ</code>, steps, and final affine parameter. A saved PNG has a text provenance sidecar and a lossless reproduction command; Matplotlib environment and style are not recorded, so pixels need not be identical across machines.</p></section>
+<section id="validity"><h2>Domain of Validity</h2><p>Educational equatorial Schwarzschild null geodesics only: no spin, plasma or multi-ray imaging. “Escaped” stops at finite <code>2r0</code>; <code>Δφ</code> is finite-interval Schwarzschild-coordinate azimuth, not the asymptotic deflection angle. The circular orbit is unstable. Event crossing uses linear interpolation even though the underlying step uses RK4. Closest approach is not interpolated. A few ulps above the computed local bound may be accepted as tangential by the floating-point tolerance; that does not add a physical solution. If an event is not reached by <code>lambda_max</code>, status records the cutoff rather than a third physical destination.</p></section>
+<section id="related"><h2>Related programs</h2><p>Continue with <i>BlackHoleShadow</i> for an observer image and <i>RelativisticOrbit</i> for massive-particle trajectories. This page and the fuller Claude laboratory use the same Version and Build and the same four commands.</p></section>
+</main><footer>PhotonOrbit · educational Schwarzschild null geodesics</footer>
+</div></body></html>

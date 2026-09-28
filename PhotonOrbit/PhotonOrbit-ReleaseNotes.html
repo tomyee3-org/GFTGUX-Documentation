@@ -1,17 +1,93 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>PhotonOrbit 1.4.0 Release Notes</title>
-</head>
-<body>
-<h1>PhotonOrbit 1.4.0 Release Notes</h1>
-<p><b>Version:</b> 1.4.0<br><b>Build:</b> 93ed2226486b<br><b>Date:</b> 2026-09-02</p>
-
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>PhotonOrbit 1.5.0 Release Notes</title></head>
+<body><h1>PhotonOrbit 1.5.0 Release Notes</h1>
+<p><b>Version:</b> 1.5.0<br><b>Build:</b> a8778e60ea78<br>
+<b>Date:</b> 2026-09-28</p>
 <h2>Release Status</h2>
+<p>Kickoff4 candidate awaiting Claude's independent review. This is a
+continuation of the approved 1.4.0 release, whose record is preserved below.
+That version passed four independent review rounds; its reviewers reported no
+release-blocking defect. This round creates two current student tutorials
+sharing the same core code, test suite, and SampleOutputs Guide. Version 1.5.0
+reflects a student-visible plot-layout change. No external reviewer has yet
+approved the Kickoff4 candidate.</p>
+<h2>Open Bugs</h2>
+<p>No unresolved P1–P3 defect was found in Xedoc's internal audit of this
+candidate. Independent review remains pending.</p>
+<h2>Major Improvements in This Release</h2>
+<ul>
+<li>Preserved the prior Reference Guide byte for byte as
+<code>PhotonOrbit-original.html</code>. Created styled Claude and Grok
+tutorials with four identical commands: capture, escape, near-critical
+whirling, and the circular orbit. The Claude tutorial retains its ten
+numbered experiments, detailed derivations and program reference.</li>
+<li>Moved plot status, closest radius and accumulated azimuth beneath the
+data rectangle, where they no longer obscure the captured trajectory.
+Regenerated and embedded four indexed current-build figures in the
+SampleOutputs Guide. The four console checkpoint numbers remain unchanged.</li>
+<li>Distinguished the affine-parameter cutoff <code>lambda_max</code> from
+the horizon and escape-radius surfaces in the Claude tutorial. Both current
+tutorials explain that <code>Δφ</code> is finite-interval coordinate azimuth,
+and that a sidecar reproduces physics inputs and PhotonOrbit's own rendering
+options but cannot guarantee identical pixels across Matplotlib environments.</li>
+<li>Expanded the shared suite to require both current Helps together,
+validate shared Beat commands and embedded palette figures, guard the plot
+annotation placement, and retain dedicated assertions for the documentation
+caveats. A program-only checkout can run numerical tests with document checks
+skipped; exactly one tutorial present is a test error.</li>
+</ul>
+<h2>Test Suite Growth</h2>
+<p>The last approved 1.4.0 release had 123 tests; this candidate has 130.
+Existing scientific, CLI, provenance, concurrency and ten-experiment checks
+remain. The new checks compare both tutorial styles against the same guide
+and build, require paired discovery, check the model limits and verify that
+plot text is outside the trajectory axes. The flattened-layout test remains
+a one-test smoke check, not a duplicate full run. From the program directory:
+<code>MPLBACKEND=Agg PYTHONWARNINGS=error::RuntimeWarning python3 -m unittest discover -s tests -p test_physics_photon.py -q</code>.
+All 130 tests passed in 10.673 seconds under CPython 3.12.14 with RuntimeWarnings treated as errors.</p>
+<h2>Known Limitations</h2>
+<ul>
+<li>The model follows one equatorial null geodesic in Schwarzschild spacetime:
+no spin, plasma, multi-ray camera or research-grade ray tracing.</li>
+<li>“Escaped” stops at finite radius <code>2r0</code>. <code>Δφ</code> is
+finite-interval azimuth, not an asymptotic deflection angle. An exact circular
+orbit is unstable, and <code>lambda_max</code> is an affine-time cutoff.</li>
+<li>Horizon/escape crossings are located linearly inside the last RK4 step;
+the reported closest approach is a sampled minimum. Independent PNG pixels
+can differ with the Matplotlib environment despite identical physics inputs.</li>
+<li>Numerical tolerance admits a few representable values just above the
+computed local kinematic bound. These do not represent physical additional
+initial conditions. The Claude tutorial uses CDN-hosted MathJax for typeset
+equations; offline TeX remains readable as source.</li>
+</ul>
+<h2>Known Minor Maintenance Items</h2>
+<ul>
+<li>The local kinematic-bound guard could use the maximum of the two
+documented, algebraically equivalent floating-point bound formulas instead
+of a four-ulp acceptance band. This may alter public boundary behavior and
+needs a separately reviewed numerical/API change.</li>
+<li>Bundling MathJax would provide fully typeset equations offline if future
+distribution requires it.</li>
+</ul>
+<h2>Version Identification</h2>
+<p>MODEL_VERSION 1.5.0; BUILD_ID <code>a8778e60ea78</code>.
+The normalized SHA-256 build covers <code>physics_photon.py</code>,
+<code>driver_photon.py</code>, <code>main.py</code>, <code>plot_photon.py</code>.
+Version 1.4.0 used Build 93ed2226486b. In this release only the version
+declaration in physics and the figure annotation in plotting changed;
+the underlying geodesic integrator and CLI arguments are unchanged.</p>
+<h2>Earlier approved 1.4.0 release-note record</h2>
+<p>The historical sections below pertain to Version 1.4.0, Build
+<code>93ed2226486b</code>, dated 2026-09-02. Their test counts and recommendations
+are archival and are not statements about this 1.5.0 candidate.</p>
+
+
+
+
+<h3>Release Status</h3>
 <p>Version 1.4.0 concludes a kickoff regression-suite build followed by four rounds of independent review involving Claude, Codex, Copilot, and Gemini. The reviewers verified the Schwarzschild null-geodesic equations of motion against an independently re-derived first integral and potential-maximization argument; the event-horizon, photon-sphere, and critical-impact-parameter closed forms; the fourth-order Runge&ndash;Kutta integration and its linear event-location interpolation; input validation and extreme-value/floating-point behavior; scale invariance; plotting, output-file collision avoidance, and provenance/reproducibility; Help-file scientific and pedagogical accuracy; Version/Build synchronization; and regression coverage in both the canonical and flattened upload layouts. No release-blocking defect remains. Copilot and Gemini both report no functional concern in the final review round, and Gemini states the codebase is structurally complete and ready for Prof. Schutz to evaluate for the second edition of <i>Gravity from the Ground Up</i>. The program is sufficiently robust, accurate, and clear for student use within the tutorial scope and limitations described below.</p>
 
-<h2>Major Improvements in This Release</h2>
+<h3>Major Improvements in This Release</h3>
 <ul>
 <li>Independently re-derived and verified the governing physics &mdash; the radial first integral <code>(dr/d&lambda;)&sup2; = E&sup2; &minus; (L&sup2;/r&sup2;)(1&minus;2M/r)</code>, the radial acceleration <code>d&sup2;r/d&lambda;&sup2; = (L&sup2;/r&sup3;)(1&minus;3M/r)</code>, the angular equation <code>d&phi;/d&lambda; = L/r&sup2;</code>, and the event horizon, photon sphere, and critical impact parameter at 2M, 3M, and 3&radic;3&thinsp;M &mdash; against a from-scratch finite-difference cross-check and a potential-maximization argument, and built the program's first regression suite (89 tests) covering the physics, input validation, plotting, output, and Help-file content.</li>
 <li>Fixed a tangential-launch misclassification: a photon launched exactly at the local kinematic bound for its starting radius (zero initial radial velocity) was not recognized as outward-moving on either side of the photon sphere, due to a negative-zero sign comparison. Fixed by testing the current-step velocity directly, and confirmed correct on both sides of the photon sphere and at the exact circular orbit.</li>
@@ -25,11 +101,11 @@
 <li>Added a reproducible <code>BUILD_ID</code> computed from the four executable modules, independent of line endings, verified by importing the production hashing implementation itself (not a duplicated test-side algorithm) from freshly generated source trees, and kept synchronized with the Help file on every source change.</li>
 </ul>
 
-<h2>Test Suite Growth</h2>
+<h3>Test Suite Growth</h3>
 <p>A new 89-test regression suite was created at kickoff and expanded to 123 automated tests across four rounds of independent review. The suite defines the four core module filenames and uses <code>find_module_dir(start)</code> to locate the nearest directory containing all four, so the same test file works from the canonical <code>tests/</code> directory or when flattened beside the program modules; the flattened layout is exercised by a single isolated discovery smoke test rather than a second full run of the suite.</p>
 <p>The final suite verifies the governing equations against an independent finite-difference and potential-maximization derivation; capture, escape, radial-infall, and circular-orbit outcomes; tangential launches on both sides of the photon sphere; the local kinematic bound and its floating-point boundary behavior; scale invariance, including a uniformly tiny but representable scale; extreme and invalid finite inputs; step-size convergence of &Delta;&phi; and the final affine parameter; array and diagnostics consistency; plotting guardrails; output-file collision avoidance under both sequential and concurrent access; provenance-sidecar content and independent round-trip reproduction (including an exact-parsing status oracle immune to a CLI-option-name false positive); console-summary reproducibility; command-line error handling; Help-file structure, defaults, and scientific content; Python&nbsp;3.10 syntax compatibility (verified by AST parsing, not by running under a second interpreter); reproducible <code>BUILD_ID</code> computation, independently exercised from real line-ending-normalized source trees; and freedom of the four core modules from reviewer/audit vocabulary. All 123 tests pass under CPython 3.11 in this environment, including a run with <code>-W error::RuntimeWarning</code>, with zero failures, errors, or skips.</p>
 
-<h2>Known Limitations</h2>
+<h3>Known Limitations</h3>
 <ul>
 <li>Intended for education and conceptual exploration of Schwarzschild null geodesics rather than research-grade relativistic ray tracing.</li>
 <li>PhotonOrbit exposes a single calculation mode: integrating one photon (null-geodesic) trajectory in the equatorial plane per run. It has no multi-mode switch.</li>
@@ -43,14 +119,13 @@
 <li>The Help file loads MathJax from a public CDN. Offline, its prose and unrendered TeX source remain available, but equations are not typeset.</li>
 </ul>
 
-<h2>Known Minor Maintenance Items</h2>
+<h3>Known Minor Maintenance Items</h3>
 <ul>
 <li>The local kinematic-bound check's few-ulp tolerance still accepts a small number of representable impact-parameter values strictly above the exact bound at a given starting radius (four such values at the documented <code>r0=3</code> circular-orbit case), each reported as the circular <code>lambda_max</code> outcome rather than rejected. The interval is a few parts in 10<sup>15</sup> of the bound itself and does not affect any documented worked example. A future pass could tighten this by comparing against the maximum of the two algebraically equivalent bound formulas already used in the code and the Help file, rather than adding a fixed tolerance band on top of one of them.</li>
 <li>Two recent Help-file documentation corrections &mdash; the rendering-reproducibility caveat and the &Delta;&phi;-versus-deflection-angle distinction &mdash; do not yet have their own dedicated regression assertions, beyond a related check on the plotting module's own docstring. A future pass could add narrow semantic checks (for example, confirming specific key phrases remain present in the relevant Help sections) so that a future edit cannot silently drop either clarification.</li>
 <li>The Help file's &Delta;&phi; discussion currently describes the event horizon, the escape radius, and the <code>lambda_max</code> affine-parameter cutoff together as the run's "stopping surface." The first two are geometric surfaces; <code>lambda_max</code> is a termination condition on the affine parameter, not a spatial or spacetime surface, and the wording could be tightened to distinguish them.</li>
 </ul>
 
-<h2>Version Identification</h2>
+<h3>Version Identification</h3>
 <p>MODEL_VERSION: 1.4.0<br>BUILD_ID: 93ed2226486b</p>
-</body>
-</html>
+</body></html>
