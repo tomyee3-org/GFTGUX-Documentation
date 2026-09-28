@@ -432,8 +432,8 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 
   <section id="description">
     <h2>Description</h2>
-    <p><strong>GravitationalLensing</strong> is a proposed new program for a second edition of <em>Gravity from the Ground Up</em>. It teaches the thin-lens mapping that turns a background galaxy into an Einstein ring, a double image, a quad, or a pair of arcs. Each section below is one beat: a short argument, the equation that argument earns, and a command whose window is the figure for that beat.</p>
-    <p>The spine of the lesson is one sentence: <em>where the source sits relative to the caustic and the SIS pseudo-caustic decides the photograph</em>. A point-mass lens is the chapter in which the caustic has collapsed to a point. An SIS plus a little external shear is the chapter in which the caustic opens into a diamond with folds and cusps.</p>
+    <p><strong>GravitationalLensing</strong> teaches the thin-lens mapping that turns a background galaxy into an Einstein ring, a double image, a quad, or a pair of arcs. Each section below is one beat: a short argument, the equation that argument earns, and a command whose window is the figure for that beat.</p>
+    <p>The spine of the lesson is one sentence: <em>where the source sits relative to the caustic and the SIS (singular isothermal sphere) pseudo-caustic decides the photograph</em>. A point-mass lens is the chapter in which the caustic has collapsed to a point. An SIS plus a little external shear is the chapter in which the caustic opens into a diamond with folds and cusps.</p>
     <div class="warn"><strong>What this program is not.</strong> It does not integrate null geodesics in the Schwarzschild metric (that is <code>PhotonOrbit</code>). It does not fit a mass model to a Hubble image. The thin-lens deflection is applied in one plane. Galaxy-scale strong lensing is the intended domain; a black-hole silhouette is not.</div>
     <div class="warn"><strong>False colour.</strong> Modes <code>point</code>, <code>blob</code>, <code>critical</code>, <code>arcs</code>, and <code>kappa</code> paint intensity or convergence with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic: a point-mass or SIS lens does not split light into rainbows the way a glass prism or the atmosphere can. A white galaxy stays white; the program has simply chosen a palette so a faint arc is visible on a screen.</div>
     <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax from a public CDN. Without a network connection the raw \(\LaTeX\) remains visible as text. The program itself needs no internet access.</div>
@@ -484,12 +484,12 @@ python main.py --mode critical --outdir ./runs</pre>
 
   <section id="beat1">
     <h2>Beat 1 · Play with a point mass</h2>
-    <p>Now the same geometry as a picture on the sky. The default source is already off-axis, so the first frame is two images, not a ring.</p>
+    <p>Now the same geometry as a picture on the sky. The default source is already off-axis (beta_x=0.50), so the first frame is two images, not a ring.</p>
 <pre>python main.py --mode point
 python main.py --mode point --beta_x 0.0 --beta_y 0.0
 python main.py --mode point --logM 12.5 --beta_x 0.3 --beta_y 0.3</pre>
-    <p>Three tasks, in order. First rerun with <code>--beta_x 0 --beta_y 0</code> and name what appears. Then move the source in the vertical direction with a new <code>--beta_y</code> (that is the height drawn in every side view) and watch the ring split into two images. Then raise <code>--logM</code> and watch the ring grow. There is nothing to drag; each run is one command.</p>
-    <p><em>Then</em> write the Einstein radius and the lens equation. The commands above were already solving them.</p>
+    <p>Three tasks, in order. First rerun with <code>--beta_x 0 --beta_y 0</code> and name what appears. Then move the source in the vertical direction with a new <code>--beta_y</code> (that is the height drawn in every side view) and watch the ring split into two images. Then raise <code>--logM</code> and watch the ring grow.</p>
+    <p>Now study the Einstein radius and the lens equation. The commands above were already solving them.</p>
     <div class="eq-block">
       <div class="eq-label">Point-mass Einstein radius</div>
 \[
@@ -508,7 +508,7 @@ python main.py --mode point --logM 12.5 --beta_x 0.3 --beta_y 0.3</pre>
 
   <section id="beat2">
     <h2>Beat 2 · Why two, and where they sit</h2>
-<pre>python main.py --mode point --beta_x 1.0 --beta_y 0.0 --outdir ./figures</pre>
+<pre>python main.py --mode point --beta_x 1.0 --beta_y 0.0</pre>
     <p>Compare this with the Beat 1 default: the two images now lie at \(+2.579''\) and \(-1.579''\) along the source direction. The white cross at \(+1.0''\) is the <em>unlensed</em> source; the two spots are the images. Their ideal point-source positions and signed magnifications are also in the saved provenance file.</p>
     <p>For a source on the \(x\)-axis at angular distance \(\beta\) from the lens, the two image radii are</p>
     <div class="eq-block">
@@ -549,7 +549,10 @@ python main.py --mode blob --beta_y 0.8 --r_eff 0.20</pre>
 \det A = 1 - \left(\frac{\theta_E}{\lvert\theta\rvert}\right)^4.
 \]
     </div>
-    <p>The zero set is the Einstein circle. Mapped backwards it collapses to <strong>one point</strong> at \(\beta = 0\). On that point: a ring. Off it: two images. That is the whole point-mass zoo.</p>
+    <p>The zero set is the Einstein circle. Mapped backwards it collapses to <strong>one point</strong> at \(\beta = 0\). 
+	 On that point: a ring. Off it: two images. 
+	 For a point-mass gravitational lens (like a star or a compact black hole), 
+	 every possible image configuration reduces to just these two simple topological outcomes.</p>
     <p>Mode <code>critical</code> shows three panels at once: the photograph with the critical curve overplotted; the source plane with the caustic marked as a star at the origin; and a side-view of the same source. The side view is the thin-lens unwrapping of Beat 0, not a Schwarzschild geodesic. Red rays reach the observer; blue rays miss. The height in that panel is \(\beta_y\). The diagram is a slice through a three-dimensional geometry. Motion in \(\beta_x\) points into or out of the page and cannot be shown in this projection — use <code>--beta_y</code> to move the star in the drawing.</p>
 <pre>python main.py --mode critical
 python main.py --mode critical --beta_y 0.4</pre>
@@ -605,7 +608,7 @@ python main.py --mode arcs --gamma 0 --beta_x 0 --beta_y 0 --r_eff 0.20</pre>
 \kappa(\boldsymbol{\theta}) = \frac{\Sigma(\boldsymbol{\theta})}{\Sigma_{\mathrm{crit}}}.
 \]
     </div>
-    <p>For an SIS, \(\kappa = \theta_E/(2\lvert\theta\rvert)\). On the Einstein circle \(\kappa = 1/2\), and that is exactly where the critical curve sits. Mode <code>kappa</code> draws the mass map with that \(\kappa=1/2\) circle on top. Changing <code>--sigma_v</code> rescales the map; the relation “critical curve where \(\kappa=1/2\)” does not change. That is why this mode comes last: you already know what the circle is.</p>
+    <p>Convergence quantifies how efficiently a localized mass distribution focuses light rays passing through or near it. For an SIS, \(\kappa = \theta_E/(2\lvert\theta\rvert)\). On the Einstein circle \(\kappa = 1/2\), and that is exactly where the critical curve sits. Mode <code>kappa</code> draws the mass map with that \(\kappa=1/2\) circle on top. Changing <code>--sigma_v</code> rescales the map; the relation “critical curve where \(\kappa=1/2\)” does not change. That is why this mode comes last: you already know what the circle is.</p>
 <pre>python main.py --mode kappa
 python main.py --mode kappa --sigma_v 180</pre>
     <p>The SIS Einstein radius itself is</p>
@@ -687,7 +690,7 @@ python main.py --mode kappa --sigma_v 180</pre>
     <ul>
       <li>Thin lens, small angles. Fine for galaxy-scale strong lensing at arcsecond Einstein radii. Not a black-hole ray tracer.</li>
       <li>Fixed distances 1&nbsp;Gpc and 2&nbsp;Gpc, chosen so \(\theta_E\) is a few arcseconds. They are not a cosmology. Angular-diameter distances are not generally related by \(D_{ls}=D_s-D_l\).</li>
-      <li>SIS + shear is the cheapest diamond, not an elliptical mass that has been fitted to a cluster. The dashed circle on the source plane is the SIS pseudo-caustic.</li>
+      <li>SIS + shear is the "cheapest" (i.e. requiring minimal computational and analytical effort) diamond, not an elliptical mass that has been fitted to a cluster. The dashed circle on the source plane is the SIS pseudo-caustic.</li>
       <li>The Newton image finder is tested in the one-, two-, and four-image regions used by the Help file. If the source-plane distance to the nearest fold or cusp is less than \(10^{-4}\,\theta_E\), the count is not a promised teaching output.</li>
     </ul>
   </section>
@@ -695,19 +698,24 @@ python main.py --mode kappa --sigma_v 180</pre>
   <section id="related">
     <h2>Related Programs</h2>
     <ul class="related-list">
-      <li><strong>PhotonOrbit</strong> — null geodesics in Schwarzschild spacetime. Use it when the deflection cannot be treated as a single kink in one plane.</li>
-      <li><strong>BlackHoleSpacetimeVisualizer</strong> — spacetime diagrams around a hole, not an Einstein ring on the sky.</li>
+      <li><strong>PhotonOrbit</strong> — null geodesics integrated in the Schwarzschild metric. Use it when the deflection can no longer be modeled as a small kink in one plane.</li>
+      <li><strong>BlackHoleShadow</strong> — the critical null geodesic and the capture map this program's thin-lens model cannot produce, 
+	      at scales of a handful of gravitational radii rather than the hundred-thousand-plus this program's comparisons live at. 
+	  </li>
+      <li><strong>BlackHoleSpacetimeVisualizer</strong> — spacetime diagrams around a hole, not an Einstein ring or an arc on the sky.</li>
     </ul>
   </section>
 
   <section id="license">
     <h2>License</h2>
-    <p>Proposed teaching supplement for <em>Gravity from the Ground Up</em>, second edition, under discussion with Bernard Schutz and Cambridge University Press. Not a published CUP product.</p>
+    <p>GravitationalLensing is a proposed supplemental Python investigation for possible inclusion in a second edition of Bernard Schutz's <em>Gravity from the Ground Up</em>, currently under discussion with Professor Schutz and Cambridge University Press. It is not a published CUP product. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
   </section>
 </main>
 <footer>
-  GravitationalLensing — proposed GFTGUX supplement —
-  <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a>
+  <em>Gravity from the Ground Up</em> — Python Programs ·
+  Bernard Schutz © 2003 (Cambridge University Press) ·
+  Python programs © 2024–2026 Thomas Yee ·
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> ·
 </footer>
 </div>
 </body>
