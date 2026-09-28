@@ -341,6 +341,9 @@
     .beat .check{font-size:.92em;color:var(--muted)}
     .reading-path{background:var(--note-bg);border-left:5px solid var(--accent);
       padding:13px 18px;margin:18px 0}
+
+/* Keep the version and build line visually separate from boxed callouts. */
+main #version_build { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 0; font-family: inherit; line-height: inherit; }
 </style></head>
 <body><div class="page-wrap"><header><div class="badge">PhotonOrbit · directed terminal lab</div>
 <h1><em>PhotonOrbit</em> · Where does the photon go?</h1>
@@ -352,7 +355,7 @@
 <div class="nav-label">After the runs</div><a href="#equations">Equations</a>
 <a href="#algorithm">Algorithm and flags</a><a href="#validity">Domain of Validity</a>
 <a href="#related">Related programs</a></nav><main>
-<p id="version_build" class="note">Version 1.5.0 Build a8778e60ea78 · 2026-09-28</p>
+<p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">Version 1.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build a8778e60ea78</p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
 <section id="setup"><h2>Get ready</h2><p>Use Python 3.10+ and Matplotlib. Run from the folder with <code>main.py</code>. Try <code>python main.py --help</code> if a flag is unfamiliar. Each command below opens a plot and saves a PNG and provenance sidecar under <code>./figures</code>. The <a href="SampleOutputs/PhotonOrbit-SampleOutputs_Guide.html">SampleOutputs Guide</a> shows the four current-build figures.</p>
 <p><b>One question:</b> When does an inward-going light ray escape, and what does the plotted winding really measure?</p></section>

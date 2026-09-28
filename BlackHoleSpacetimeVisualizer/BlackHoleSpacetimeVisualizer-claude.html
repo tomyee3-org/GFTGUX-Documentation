@@ -31,9 +31,7 @@ text-decoration:none;padding:6px 18px 6px 22px;border-left:3px solid transparent
 nav a:hover,nav a:focus{color:var(--accent);background:#fdf0e0;
 border-left-color:var(--gold);outline:none}
 main{min-width:0;width:100%;max-width:900px;padding:38px 52px 60px}
-main .meta{font:13px/1.5 var(--mono);color:var(--muted);
-background:var(--note-bg);border:1px solid var(--border);border-radius:4px;
-padding:9px 12px;margin:0 0 22px}
+
 main h2{font-size:1.40rem;font-weight:normal;color:var(--accent);
 border-bottom:2px solid var(--gold);padding-bottom:6px;margin:2.2rem 0 1rem;
 line-height:1.35;scroll-margin-top:18px}
@@ -69,7 +67,10 @@ nav a:hover,nav a:focus{border-bottom-color:var(--gold)}
 main{padding:24px 20px 48px}}
 @media print{.page-wrap{display:block}nav{display:none}header,footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 main{max-width:none;padding:20px}section{break-inside:avoid}}
-</style></head><body><a class="skip-link" href="#content">Skip to content</a><div class="page-wrap"><header><div class="badge">Supplement · Gravity from the Ground Up</div><h1><em>BlackHoleSpacetimeVisualizer</em> — Embedding, Tides, Infall and Horizons</h1><p class="sub">A guided laboratory in four beats<br>Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a> · Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header><nav aria-label="Contents"><div class="nav-label">Start</div><a href="#start">Before the first run</a><div class="nav-label">The four beats</div><a href="#b0">Beat 0 · Space</a><a href="#b1">Beat 1 · Tides</a><a href="#b2">Beat 2 · Infall</a><a href="#b3">Beat 3 · Horizons</a><div class="nav-label">Keep exploring</div><a href="#diagnostics">Diagnostics</a><a href="#methods">Parameters</a><a href="#experiments">Experiments</a><a href="#limits">Domain of validity</a><a href="#license">License</a></nav><main id="content"><p class="meta">Version 1.4.0 Build 100876a488a0 · 2026-09-27 · run from the program directory with <code>python main.py</code></p>
+
+/* Keep the version and build line visually separate from boxed callouts. */
+main #version_build { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 0; font-family: inherit; line-height: inherit; }
+</style></head><body><a class="skip-link" href="#content">Skip to content</a><div class="page-wrap"><header><div class="badge">Supplement · Gravity from the Ground Up</div><h1><em>BlackHoleSpacetimeVisualizer</em> — Embedding, Tides, Infall and Horizons</h1><p class="sub">A guided laboratory in four beats<br>Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a> · Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header><nav aria-label="Contents"><div class="nav-label">Start</div><a href="#start">Before the first run</a><div class="nav-label">The four beats</div><a href="#b0">Beat 0 · Space</a><a href="#b1">Beat 1 · Tides</a><a href="#b2">Beat 2 · Infall</a><a href="#b3">Beat 3 · Horizons</a><div class="nav-label">Keep exploring</div><a href="#diagnostics">Diagnostics</a><a href="#methods">Parameters</a><a href="#experiments">Experiments</a><a href="#limits">Domain of validity</a><a href="#license">License</a></nav><main id="content"><p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">Version 1.4.0&nbsp;&nbsp;&nbsp;&nbsp;Build 100876a488a0</p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
 <p><b>One idea to carry through the four runs:</b> a drawing of space, a local
 tidal measurement, a falling clock and a globally defined horizon answer four
