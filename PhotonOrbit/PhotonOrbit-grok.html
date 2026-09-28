@@ -1,6 +1,20 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PhotonOrbit · Four-run terminal lab</title><style>
+<title>PhotonOrbit · Four-run terminal lab</title>
+  <!-- MathJax for inline and display equations -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(','\\)'], ['$', '$']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
+      },
+      loader: { load: ['[tex]/textmacros'] }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
     /* ── Reset & custom properties ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -353,7 +367,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 <a href="#beat1">1 · Escape</a><a href="#beat2">2 · Whirl</a>
 <a href="#beat3">3 · Circle</a><a href="#followup">Try it yourself</a>
 <div class="nav-label">After the runs</div><a href="#equations">Equations</a>
-<a href="#algorithm">Algorithm and flags</a><a href="#validity">Domain of Validity</a>
+<a href="#algorithm">Algorithm and flags</a><a href="#parameters">Parameters</a><a href="#validity">Domain of Validity</a>
 <a href="#related">Related programs</a></nav><main>
 <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">Version 1.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build a8778e60ea78</p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
@@ -387,6 +401,20 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 <section id="equations"><h2>Governing Equations</h2>
 <p>In units with <code>E=1</code> and <code>L=b≥0</code>, <code>(dr/dλ)² = 1 − (b²/r²)(1−2M/r)</code>, <code>d²r/dλ² = (b²/r³)(1−3M/r)</code>, and <code>dφ/dλ=b/r²</code>, where <code>M=GM/c²</code>. The event horizon is <code>2M</code>, the photon sphere <code>3M</code>, and the critical impact parameter for infinity launch <code>3√3 M</code>. At finite <code>r0</code>, only a locally allowed range of <code>b</code> can start with real inward or tangential velocity.</p></section>
 <section id="algorithm"><h2>Algorithm and flags</h2><p>A fourth-order Runge–Kutta step advances radial position, radial velocity and azimuth. A crossing of <code>r=2M</code> or the outbound escape radius <code>2r0</code> is linearly located within the last step. The closest radius is a sampled minimum. <code>--GM_over_c2</code>, <code>--r0</code>, <code>--b</code>, <code>--lambda_max</code>, <code>--d_lambda</code>, <code>--lw</code>, <code>--dpi</code>, <code>--outdir</code>, <code>--help</code> and <code>--version</code> are the available controls. The console gives status, closest approach, <code>Δφ</code>, steps, and final affine parameter. A saved PNG has a text provenance sidecar and a lossless reproduction command; Matplotlib environment and style are not recorded, so pixels need not be identical across machines.</p></section>
+<section id="parameters">
+      <h2>Parameters</h2>
+      <p>Experiment settings are supplied as command-line options to <code>main.py</code>, which forwards them to <code>driver_photon.py</code>. Run <code>python main.py --help</code> for the current command summary. Most students should begin by running <code>python main.py</code> with no options, then vary one option at a time; if an option is rejected, read the exception message first, since most invalid parameter choices are caught by the physics layer.</p>
+      <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+        <tr><td class="pname">--GM_over_c2</td><td class="pdefault">1.0</td><td>length</td><td>The gravitational length \(GM/c^2\). Must be finite and greater than zero.</td></tr>
+        <tr><td class="pname">--r0</td><td class="pdefault">20.0</td><td>length</td><td>Starting Schwarzschild radius. It must lie outside the event horizon: <code>r0 &gt; 2*GM_over_c2</code>.</td></tr>
+        <tr><td class="pname">--b</td><td class="pdefault">5.0</td><td>length</td><td>Nonnegative impact-parameter magnitude \(b=L/E\), where L is angular momentum and E is energy. It is distance of closest approach the photon would have had if spacetime were flat. It must also be compatible with a real initial radial velocity at the selected <code>r0</code>. A negative value would merely mirror the azimuthal orientation.</td></tr>
+        <tr><td class="pname">--lambda_max</td><td class="pdefault">200.0</td><td>affine parameter</td><td>Maximum affine parameter. Must be finite and greater than zero. This is a path parameter, not coordinate time.</td></tr>
+        <tr><td class="pname">--d_lambda</td><td class="pdefault">0.01</td><td>affine parameter</td><td>RK4 step size. Must be finite and greater than zero. Reduce it for convergence tests near the critical orbit.</td></tr>
+        <tr><td class="pname">--lw</td><td class="pdefault">1.5</td><td>points</td><td>Line width used for the plotted trajectory. Must be greater than zero.</td></tr>
+        <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>Resolution of the saved PNG. Must be a positive integer. Ignored unless <code>--outdir</code> is also given.</td></tr>
+        <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>Folder for an additional timestamped PNG. The figure is always shown on screen; supplying <code>--outdir</code> also saves a copy there and does not suppress the on-screen display. The folder is created if it does not already exist.</td></tr>
+      </tbody></table>
+</section>
 <section id="validity"><h2>Domain of Validity</h2><p>Educational equatorial Schwarzschild null geodesics only: no spin, plasma or multi-ray imaging. “Escaped” stops at finite <code>2r0</code>; <code>Δφ</code> is finite-interval Schwarzschild-coordinate azimuth, not the asymptotic deflection angle. The circular orbit is unstable. Event crossing uses linear interpolation even though the underlying step uses RK4. Closest approach is not interpolated. A few ulps above the computed local bound may be accepted as tangential by the floating-point tolerance; that does not add a physical solution. If an event is not reached by <code>lambda_max</code>, status records the cutoff rather than a third physical destination.</p></section>
 <section id="related"><h2>Related programs</h2><p>Continue with <i>BlackHoleShadow</i> for an observer image and <i>RelativisticOrbit</i> for massive-particle trajectories. This page and the fuller Claude laboratory use the same Version and Build and the same four commands.</p></section>
 </main><footer>PhotonOrbit · educational Schwarzschild null geodesics</footer>

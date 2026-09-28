@@ -421,11 +421,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
       Version 1.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build a8778e60ea78
     </p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
-    <p style="font-size:0.7em; color:#666; margin-top:-16px;">
-      Build covers the four executable modules (<code>physics_photon.py</code>, <code>driver_photon.py</code>, <code>main.py</code>, <code>plot_photon.py</code>) only; it does not change when this Help file or the test suite changes.
-    </p>
-
-    
+  
 
     <section id="setup"><h2>Before the first run</h2>
       <p>Work in the folder containing <code>main.py</code>; use Python 3.10 or later with Matplotlib. Run <code>python main.py --version</code> to check Version 1.5.0, Build a8778e60ea78. <code>python main.py --help</code> lists the flags. Each command below opens a plot and saves a timestamped PNG plus provenance text in <code>./figures</code>; the console gives precise checkpoints. The <a href="SampleOutputs/PhotonOrbit-SampleOutputs_Guide.html">SampleOutputs Guide</a> embeds one current-build figure from each run. First make a prediction, then compare the plot with the terminal status and numbers.</p>
@@ -639,7 +635,7 @@ def integrate_photon_orbit(
       <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
         <tr><td class="pname">--GM_over_c2</td><td class="pdefault">1.0</td><td>length</td><td>The gravitational length \(GM/c^2\). Must be finite and greater than zero.</td></tr>
         <tr><td class="pname">--r0</td><td class="pdefault">20.0</td><td>length</td><td>Starting Schwarzschild radius. It must lie outside the event horizon: <code>r0 &gt; 2*GM_over_c2</code>.</td></tr>
-        <tr><td class="pname">--b</td><td class="pdefault">5.0</td><td>length</td><td>Nonnegative impact-parameter magnitude \(b=L/E\). It must also be compatible with a real initial radial velocity at the selected <code>r0</code>. A negative value would merely mirror the azimuthal orientation.</td></tr>
+        <tr><td class="pname">--b</td><td class="pdefault">5.0</td><td>length</td><td>Nonnegative impact-parameter magnitude \(b=L/E\), where L is angular momentum and E is energy. It is distance of closest approach the photon would have had if spacetime were flat. It must also be compatible with a real initial radial velocity at the selected <code>r0</code>. A negative value would merely mirror the azimuthal orientation.</td></tr>
         <tr><td class="pname">--lambda_max</td><td class="pdefault">200.0</td><td>affine parameter</td><td>Maximum affine parameter. Must be finite and greater than zero. This is a path parameter, not coordinate time.</td></tr>
         <tr><td class="pname">--d_lambda</td><td class="pdefault">0.01</td><td>affine parameter</td><td>RK4 step size. Must be finite and greater than zero. Reduce it for convergence tests near the critical orbit.</td></tr>
         <tr><td class="pname">--lw</td><td class="pdefault">1.5</td><td>points</td><td>Line width used for the plotted trajectory. Must be greater than zero.</td></tr>
