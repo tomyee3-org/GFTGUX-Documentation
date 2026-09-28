@@ -4,16 +4,18 @@
 <p><b>Version:</b> 1.0.1<br><b>Build:</b> 5dc0f45efa6c<br>
 <b>Date:</b> 2026-09-27</p>
 <h2>Release Status</h2>
-<p>Kickoff4 candidate awaiting independent review. The earlier 1.0.1
-release received approval after ten review rounds; its record is retained
-below. This resumed development round creates two tutorial styles and
-does not alter equations or simulation behavior. The build identifier
-changes because comment-only cross-reference updates are included in the
-four hashed core sources. No outside reviewer has yet approved this
-Kickoff4 candidate.</p>
+<p>Claude's independent Audit41 approved this Kickoff4 candidate after
+checking all four core modules, both tutorial styles, the guide, figures,
+and the full test suite. Two low-severity documentation findings were
+corrected in Response-to-Audit41. The earlier 1.0.1 release received
+approval after ten review rounds; its record is retained below. This
+resumed development round creates two tutorial styles and does not alter
+equations or simulation behavior. The build identifier changes because
+comment-only cross-reference updates are included in the four hashed
+core sources.</p>
 <h2>Open Bugs</h2>
-<p>No outstanding P1–P3 defect is established by this round's internal
-review; independent review of this candidate is pending.</p>
+<p>No outstanding P1–P3 defect was identified after Claude's independent
+Audit41 and the two low-severity documentation corrections in this response.</p>
 <h2>Major Improvements in This Release</h2>
 <ul>
 <li>Preserved the existing Reference Guide byte for byte as
@@ -38,18 +40,23 @@ not establish that every outer particle has equilibrated.</li>
 Help filename or Claude-only exercise numbers; the program's numerical
 behavior and public CLI are unchanged. Added a machine-readable SHA-256
 verification manifest for the packaged code and documents.</li>
+<li>Response-to-Audit41: corrected the Claude tutorial exercise count to
+18 in these notes and the kickoff response, and aligned four tutorial
+cross-references with their current subsection heading. The guide's
+review-history test and the paired-help fixture restoration were tightened.</li>
 </ul>
 <h2>Test Suite Growth</h2>
 <p>The approved 1.0.1 baseline had 291 tests; Kickoff4 has 299 tests.
 The current checks require both tutorial Helps together, run existing
-scientific and 17-exercise contracts against the Claude-style page, and
+scientific and exercise contracts against the Claude-style page (which
+contains 18 EXP-numbered exercises), and
 check the four shared beats, seeded chaos, science caveats, Grok parameter
 coverage and embedded indexed PNGs across both. In a program-only checkout,
 document checks skip when neither Help is present; exactly one is an error.
 The flattened-layout smoke test copies both when present and does not
 repeat the whole suite. From the program folder run
 <code>MPLBACKEND=Agg PYTHONWARNINGS=error::RuntimeWarning python3 -m unittest discover -s tests -p test_physics_nbg.py -q</code>.
-The full suite passed all 299 tests in 610.815 seconds on 2026-09-28
+The Response-to-Audit41 full suite passed all 299 tests in 504.378 seconds on 2026-09-28
 with <code>RuntimeWarning</code> treated as an error. The paired-Help
 focused run also passed all 29 tests.</p>
 <h2>Known Limitations</h2>
