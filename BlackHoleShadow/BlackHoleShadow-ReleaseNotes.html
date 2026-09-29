@@ -1,5 +1,40 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>BlackHoleShadow 1.2.0 Release Notes</title></head><body>
+<html lang="en"><head><meta charset="utf-8"><title>BlackHoleShadow 1.3.0 Release Notes</title></head><body>
+<h1>BlackHoleShadow 1.3.0 Release Notes</h1>
+<p><b>Version:</b> 1.3.0</p><p><b>Build:</b> a72375fa2c0f</p>
+<p><b>Date:</b> 2026-09-29 (CDT)</p>
+<h2>Release Status</h2>
+<p>Version 1.3.0 is a candidate for Claude's independent review. Claude's Audit43 approved the preceding corrected 1.1.0 candidate; the subsequent 1.2.0 and current 1.3.0 changes have not yet been independently audited. Historical release notes are retained below.</p>
+<h2>Open Bugs</h2>
+<ul><li><b>P3-01 (A42-2; test):</b> Some quoted Help values and Parameters numbers lack section-specific checks against program results. Reproduction: change Claude Beat 5's 0.4457 to 0.4458; the suite may pass. Expected: a documentation-contract failure.</li></ul>
+<h2>Major Improvements in This Release</h2>
+<ul>
+<li>The Beat 8 compare figure now plots both the black-hole capture critical radius and the transparent galaxy's Einstein critical radius on one logarithmic axis, each divided by its own lens's gravitational length. Markers and a ratio annotation replace the earlier single-circle plus text display. The point-mass lensing and Schwarzschild formulas and their console values did not change.</li>
+<li>Both tutorial Helps start from Tom's latest copy edits to EXP-7 and its Beat 5 explanation. Their Beat 8 text, mode descriptions and exercises now match the two-marker compare figure and explain that the radii belong to different objects rather than one common image plane.</li>
+<li>The Sample Outputs guide embeds nine newly generated 256-colour indexed PNGs from this version/build. Its Beat 8 caption and notes describe the two plotted radii.</li>
+</ul>
+<h2>Test Suite Growth</h2>
+<p>The 1.2.0 package recorded 103 tests. The current suite contains 106 tests: it replaces the old one-circle assertion with a two-marker/log-axis regression at three galaxy masses, and adds checks for custom-distance captions, reversed radius ordering and the revised Beat 8 in both Helps. Run once from the program directory with <code>MPLBACKEND=Agg python -W error::ResourceWarning -m unittest tests.test_physics_bhs -q</code>. The final result was 106 passed, zero skipped.</p>
+<h2>Known Limitations</h2>
+<ul>
+<li>The compare chart gives a dimensionless scale comparison. It does not put the galaxy and black-hole curves in one physical image plane. The student command uses fixed cartoon distances; the underlying calculation also accepts explicitly supplied distances.</li>
+<li>The static, face-on, optically thin Gaussian annulus omits spin, inclination, orbital Doppler, optical depth, plasma and time dependence.</li>
+<li>At the default effective field of view of 16.8 M and 161-by-161 grid, only eight pixel centres pick up an m=3 contribution greater than 0.01; its raster maximum is about 0.07043, compared with about 0.4457 in the radial table. The m=4 peak misses the grid. A sparse curve reduces overlay occlusion but cannot restore unsampled light.</li>
+<li>Help equations use online MathJax; without network access the TeX source remains visible. PNG and sidecar publication uses ordinary single-user file I/O.</li>
+</ul>
+<h2>Known Minor Maintenance Items</h2>
+<ul>
+<li>The float64 ordinary-ray helpers remain separate from the mpmath utilities; consolidation is optional.</li>
+<li>The SciPy warning-plus-relative-error fallback path has no isolated trigger test.</li>
+<li>Near-critical numerical checks take roughly one to two minutes on typical hosts.</li>
+<li>A42-8: a comment in <code>utilities_bhs.py</code> retains development-history wording.</li>
+<li>A41-29: captured-ray printed azimuth can differ from independent quadrature in the fifth decimal place, beneath the precision quoted in Help.</li>
+</ul>
+<h2>Version Identification</h2>
+<p>MODEL_VERSION: 1.3.0</p><p>BUILD_ID: a72375fa2c0f</p>
+<p>BUILD_ID hashes the five core Python files; documentation, tests and release history do not affect it.</p>
+<h2>Provisional Development History</h2>
+<p>The complete 1.2.0 notes and their earlier history follow. Their release status, plot descriptions and test counts describe those development snapshots.</p>
 <h1>BlackHoleShadow 1.2.0 Release Notes</h1>
 <p><b>Version:</b> 1.2.0</p><p><b>Build:</b> ec71120db2b4</p>
 <p><b>Date:</b> 2026-09-29 (CDT)</p>

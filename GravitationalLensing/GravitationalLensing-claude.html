@@ -202,7 +202,7 @@ python main.py --mode point
 python main.py --mode shear --beta_x 0.55 --beta_y 0.10
 
 # Three panels: image plane, source plane, side view
-python main.py --mode critical --outdir ./runs</pre>
+python main.py --mode critical</pre>
   </section>
 
   <!-- ================================================================ -->
@@ -452,7 +452,12 @@ python main.py --mode kappa --sigma_v 180</pre>
     <h3>Introductory</h3>
     <div class="exp-grid">
       <div class="exp-card"><div class="ec-num">EXP-1</div><h4>Two Panels, One Kink</h4><p>Run <code>--mode rays</code>. In one sentence for each panel, say what changed about the <em>observer's</em> rays between the on-axis and off-axis cases, being careful not to describe it as something that changed about the lens.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-2</div><h4>Two, Always</h4><p>Keep <code>--beta_x 0.5</code> and run <code>--mode point</code> at three different <code>--beta_y</code> values, including zero. For each use the total source offset \(\beta=\sqrt{\beta_x^2+\beta_y^2}\), then compute \(\theta_\pm=\tfrac12(\beta\pm\sqrt{\beta^2+4\theta_E^2})\). Add <code>--outdir ./figures</code> to each run so it saves a matching <code>.provenance.txt</code> beside the PNG. Compare these signed distances <em>along the source-lens line</em> with the sidecar values; they are not generally the horizontal coordinate \(\theta_x\). Explain why a nonzero source offset gives exactly two point-source images.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2</div><h4>Two, Always</h4><p>Keep <code>--beta_x 0.5</code> and run 
+	  <code>--mode point</code> at three different <code>--beta_y</code> values, including zero. 
+	  For each use the total source offset \(\beta=\sqrt{\beta_x^2+\beta_y^2}\), then 
+	  compute \(\theta_\pm=\tfrac12(\beta\pm\sqrt{\beta^2+4\theta_E^2})\). 
+	  Add <code>--outdir ./figures</code> to each run so it saves a matching <code>.provenance.txt</code> beside the PNG. 
+	  Compare these signed distances <em>along the source-lens line</em> with the sidecar values; they are not generally the horizontal coordinate \(\theta_x\). Explain why a nonzero source offset gives exactly two point-source images.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-3</div><h4>A Ring Has No Preferred Direction</h4><p>Run <code>--mode blob --beta_x 0 --beta_y 0</code>, then <code>--mode blob --beta_y 0.8 --r_eff 0.20</code>. Describe in words what "the caustic is a single point" implies about the first image, and what it implies about how abruptly the ring breaks into two arcs as the source moves off that point by even a small amount.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-4</div><h4>Two Planes, Never Confused</h4><p>Run <code>--mode critical</code>. Point to the critical curve and say which plane it lives in; point to the caustic and say which plane <em>it</em> lives in. Then explain why an observer can point a telescope at the first but never directly at the second.</p></div>
     </div>

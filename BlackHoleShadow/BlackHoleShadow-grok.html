@@ -129,7 +129,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.2.0&nbsp;&nbsp;&nbsp;&nbsp;Build ec71120db2b4
+    Version 1.3.0&nbsp;&nbsp;&nbsp;&nbsp;Build a72375fa2c0f
   </p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
 
@@ -260,7 +260,7 @@ I_{\mathrm{obs}}(b)=\sum_{m=1}^{4} g(r_m)^4 I_{\mathrm{em}}(r_m),\qquad g(r)=\sq
     <p>Mode <code>image</code> draws three panels: direct (\(m=1\)), plus lensing (\(m\le 2\)), plus photon-ring (\(m\ge 3\)). The figure itself labels the inferno display as false color: these colors indicate displayed intensity, not observed wavelength. There is no inclination: a correct inclined image needs three-dimensional camera/disk geometry, which is a later program.</p>
 <pre>python main.py --mode image
 python main.py --mode image --r_hot 8</pre>
-    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third camera panel is a point sample at each pixel centre. Narrow \(m=3,4\) peaks can miss the raster; the combined high-order peak is drawn in the radial \(I(b)\) profile under the image. The cyan critical curve is sparsely dotted so the image shows through its gaps. Do not identify an orange dot beside the curve as \(m=3\) solely from its colour. \(m\ge 5\) is omitted.</p>
+    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third camera panel is a point sample at each pixel centre. Narrow \(m=3,4\) peaks can miss the raster; the combined high-order peak is drawn in the radial \(I(b)\) profile under the image. The cyan critical curve is sparsely dotted so the image can show through its gaps. Do not identify an orange dot beside the curve as \(m=3\) solely from its colour. \(m\ge 5\) is omitted.</p>
     <p><em>Experiments that go with this beat:</em> EXP-7 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
@@ -290,6 +290,7 @@ python main.py --mode image --r_hot 8</pre>
     <p>GravitationalLensing’s Einstein ring and this hole’s critical curve are different objects. One is the thin-lens critical curve of a transparent mass. The other is the capture boundary of the vacuum Schwarzschild metric.</p>
 <pre>python main.py --mode compare
 python main.py --mode compare --logM 12.5</pre>
+    <p>Read the two dots on the logarithmic chart: the upper dot is \(b_{\rm crit}/M_{\rm BH}\) for this hole; the lower dot is \(R_E/M_{\rm gal}\) for the galaxy. Each \(M\) belongs to its own object. The horizontal separation shows their ratio in gravitational units. These are radii, not two concentric circles on the same image plane.</p>
     <p>The default comparison is a \(10^{12}M_\odot\) point-mass galaxy at the GravitationalLensing cartoon distances \(D_l=1\,\mathrm{Gpc}\), \(D_s=2\,\mathrm{Gpc}\). Its \(\theta_E\) is a couple of arcseconds. The physical Einstein radius at that lens, in units of the galaxy’s own \(GM/c^2\), is of order \(10^5\). The photon sphere is \(3M\); the image-plane critical curve is \(b_{\mathrm{crit}}\approx 5.196\,M\).</p>
     <p><em>Experiments that go with this beat:</em> EXP-6 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
@@ -307,8 +308,13 @@ python main.py --mode compare --logM 12.5</pre>
 	  </p>
 	  </div>
       <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div><h4>Recover \(4M/b\)</h4><p>From the <code>weak</code> console line, compute the relative error of \(4M/b\) at the largest sampled \(b\). Then argue why the error must grow as you walk the curve toward \(b_{\mathrm{crit}}\).</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate</div><h4>Two rings, two meanings</h4><p>Run <code>--mode compare</code>. Quote \(R_E/M\) for the galaxy and \(b_{\mathrm{crit}}/M\) for the hole. Invent a sentence that uses the word “ring” once only.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div><h4>Achromatic silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change if the annulus emitted blue light instead of red. (The capture map would not.) Compare the first two panels to identify the direct \(m=1\) image and the added \(m=2\) lensing image. The third adds \(m=3,4\), but its sampled pixels may be difficult to distinguish. Use the console's table and raster maxima and the radial \(I(b)\) panel to explain why.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate</div><h4>Two rings, two meanings</h4><p>Run <code>--mode compare</code>. Read both plotted radii and their ratio, each in its own lens's gravitational units. Quote \(R_E/M_{\rm gal}\) and \(b_{\mathrm{crit}}/M_{\rm BH}\). Invent a sentence that uses the word “ring” once only.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div><h4>Achromatic silhouette</h4><p>Run 
+	  <code>--mode image</code>. The palette is inferno. Write down what would change if the annulus emitted blue light instead 
+	  of red. (The capture map would not.) Compare the first two panels to identify the direct \(m=1\) image and the 
+	  added \(m=2\) lensing image. The third adds \(m=3,4\), but its sampled pixels will be scattered 
+	  and may be difficult to distinguish. Use the console's table and raster maxima and the 
+	  radial \(I(b)\) panel to explain why the higher-order peaks are hard to see in the image.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Finite camera</h4><p>Rerun <code>--mode rays</code> with <code>--r_cam 10</code> and then <code>--r_cam 60</code>. The capture threshold in conserved \(b\) does not move. What does move is the local angle on the camera sky. Explain using \(\sin\alpha = (b/r)\sqrt{1-2M/r}\).</p></div>
       <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Resolution contract</h4><p>Try <code>--mode capture --fov 80 --n_pix 11</code>. Read the error. Then satisfy the contract with the smallest odd <code>--n_pix</code> not above 81.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>Where the source images sit</h4><p>Run <code>--mode transfer</code>. Read the three \(b(r_m=r_{\mathrm{hot}})\) values from the console. Use the interactive Matplotlib window (run without <code>--outdir</code>): hover over the left transfer panel and read <code>(x, y)</code> at the lower right of the window. The coordinates there are \(b/M\) and crossing radius \(r_m/M\). The meaning of the readout depends on the panel under the pointer: the <code>--mode image</code> radial panel reports \(b/M\) and pointwise image intensity, and its three face-on panels report \(b_x/M\) and \(b_y/M\). In <code>--mode transfer</code> the right-hand source-profile panel reports source radius \(r/M\) and emitted intensity. For this crossing question use the left-hand transfer curves, whose vertical coordinate is \(r_m/M\). Zoom near \(b_{\rm crit}\approx5.196M\) with the toolbar magnifier, or enlarge the window, so that the closely spaced curves can be distinguished at \(b=5.20M\). Saved PNGs have no live readout. At \(b=5.25M\) and \(b=5.20M\), which of the three plotted crossing curves are defined at each \(b\)? What happens to the true crossing count closer to the critical curve?</p></div>
