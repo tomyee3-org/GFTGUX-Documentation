@@ -112,7 +112,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 <div class="page-wrap">
 <header>
   <div class="badge">Proposed supplement · Gravity from the Ground Up</div>
-  <h1><em>BlackHoleShadow</em> — A Camera, Not a Coordinate</h1>
+  <h1><em>BlackHoleShadow</em> — The Capture Map a Camera Records</h1>
   <div class="sub">
     Source Code:
     <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
@@ -153,16 +153,28 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 </nav>
 <main>
 <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.1.0&nbsp;&nbsp;&nbsp;&nbsp;Build 23719ebabe26
+    Version 1.2.0&nbsp;&nbsp;&nbsp;&nbsp;Build ec71120db2b4
   </p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
 
   <!-- ================================================================ -->
   <section id="description">
     <h2>Description</h2>
-    <p><strong>BlackHoleShadow</strong> answers one question that <code>PhotonOrbit</code> and <code>GravitationalLensing</code> each leave for the other to answer: what does a camera actually record when it points a whole grid of directions at a black hole? PhotonOrbit already classifies a single Schwarzschild photon by its impact parameter \(b\); GravitationalLensing already maps a whole source plane onto an image plane for a transparent lens. Neither program launches a bundle of photons into a camera and asks which directions on the sky come back dark. This one does.</p>
+    <p><strong>BlackHoleShadow</strong> answers a question that <code>PhotonOrbit</code> and <code>GravitationalLensing</code> 
+	do not: what does a camera actually record when it points at a black hole? 
+	
+	PhotonOrbit already classifies a single Schwarzschild photon by its impact parameter \(b\); 
+	GravitationalLensing already maps a whole source plane onto an image plane for a transparent lens. 
+	Neither program launches a bundle of photons into a camera and asks which directions on the sky come back dark. This one does.</p>
     <p>The spine of the lesson is one sentence: <em>the silhouette a camera records is an image-plane set of captured directions, bounded by the critical curve \(b_{\rm crit}=3\sqrt3\,M\) — not the coordinate circle \(r=2M\), and not a thin-lens Einstein ring.</em> Nine modes, selected with <code>--mode</code>, build that sentence up one piece at a time: two rays, a coarse pixel grid, a dense capture map, a highlighter for the near-critical rays that wind around before escaping, the radii at which a face-on emitting ring crosses each ray, a false-colour image built from those crossings, a reminder that a coordinate radius and an image-plane radius are not the same axis, the large-\(b\) limit of the deflection, and a direct comparison against a transparent galaxy's Einstein ring.</p>
-    <div class="warn"><strong>What this program is, and what it is not.</strong> Every ray in every mode is an exact null geodesic of the vacuum Schwarzschild metric, integrated or quadrated to the precision <code>utilities_bhs.py</code> asks for near the critical impact parameter. It is not a Kerr movie: there is no spin. It is not an Event Horizon Telescope pipeline: there is no interferometry, no scattering screen, no plasma. It is not a fluid or radiative-transfer simulation: mode <code>image</code> is a face-on, optically thin toy (Gralla, Holz &amp; Wald 2019), and there is no inclination — <code>--inclination</code> accepts only \(0\) and refuses anything else, because a correctly inclined image needs a three-dimensional camera/disk geometry this program does not build. It is not <code>PhotonOrbit</code> with a slider: PhotonOrbit's object is one ray's accumulated azimuth; this program's object is a whole grid of rays and the boundary between the ones that come back and the ones that do not. And it is not <code>GravitationalLensing</code> with \(M\) turned up: a thin-lens kink \(\boldsymbol\alpha=\theta_E^2\boldsymbol\theta/|\boldsymbol\theta|^2\) has no critical null geodesic in it and cannot produce a shadow, which is the whole content of Beat&nbsp;8.</div>
+    <div class="warn"><strong>What this program is, and what it is not.</strong> Every ray in every mode is an exact null geodesic of the vacuum Schwarzschild metric, 
+	integrated or quadrated to the precision <code>utilities_bhs.py</code> asks for near the critical impact parameter. 
+	It is not a Kerr movie: there is no spin. It is not an Event Horizon Telescope pipeline: there is no interferometry, 
+	no scattering screen, no plasma. It is not a fluid or radiative-transfer simulation: mode <code>image</code> is a face-on, 
+	optically thin toy (Gralla, Holz &amp; Wald 2019), and there is no inclination — <code>--inclination</code> accepts only \(0\) 
+	and refuses anything else, because a correctly inclined image needs a three-dimensional camera/disk geometry this program does not build. 
+	Although it shares mathematics with <code>PhotonOrbit</code>, 
+	PhotonOrbit's object is one ray's accumulated azimuth; this program's object is a whole grid of rays and the boundary between the ones that come back and the ones that do not. And it is not <code>GravitationalLensing</code> with \(M\) turned up: a thin-lens kink \(\boldsymbol\alpha=\theta_E^2\boldsymbol\theta/|\boldsymbol\theta|^2\) has no critical null geodesic in it and cannot produce a shadow, which is the whole content of Beat&nbsp;8.</div>
     <div class="warn"><strong>False colour, always.</strong> Mode <code>image</code> paints a scalar intensity with the inferno colormap. That colour is a display scale for a single bolometric number, not the spectrum of the source. Gravitational deflection here is achromatic: nothing in this program bends blue light differently from red. A palette was chosen only so a faint ring is visible on a screen.</div>
     <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; offline, the raw \(\LaTeX\) source shows as plain text. The program itself needs no internet access to run. A blue <span class="tag tag-der">DERIVED</span> tag marks an equation obtained by exact reasoning from the Schwarzschild metric and geometric optics — almost everything on this page. A grey <span class="tag tag-rule">PRESCRIPTION</span> tag marks a rule the program adopts rather than derives: there is exactly one, the high-winding threshold of Beat&nbsp;3. Unlike StellarEvolutionTracks, there are no fits, no calibrated closures and no integrated evolution equations here — the physics is a single exact metric, and the tagging system has correspondingly little work to do. That is itself worth noticing: not every program in this suite needs the same scaffolding, and forcing a five-way taxonomy onto a program with only one kind of ingredient would be decoration, not honesty.</div>
 
@@ -207,14 +219,14 @@ python main.py --mode rays
 python main.py --mode capture
 
 # A face-on toy image of an emitting ring
-python main.py --mode image --outdir ./runs</pre>
+python main.py --mode image</pre>
   </section>
 
   <!-- ================================================================ -->
   <section id="beats">
     <h2>How to read this page</h2>
     <p>Each numbered section below is one beat: a short argument, a command whose figure is the evidence, and then the equation the figure has earned. Do them in order the first time; the modes build on each other in exactly the order the nav bar lists them, and the program's own figure titles carry the same beat numbers you will see here. After the first pass, any beat can be opened on its own.</p>
-    <p>This program has far less internal machinery than StellarEvolutionTracks: one metric, one first integral, nine ways of asking a question about it. The beats are correspondingly about <em>where a familiar quantity lives</em> — on the sky, in a coordinate, in a source plane — more often than they are about a new equation.</p>
+    <p>The beats all revolve around one metric and one first integral, but present nine ways of asking a question about it. The beats are correspondingly about <em>where a familiar quantity lives</em> — on the sky, in a coordinate, in a source plane — more often than they are about a new equation.</p>
   </section>
 
   <!-- ================================================================ -->
@@ -237,7 +249,7 @@ python main.py --mode image --outdir ./runs</pre>
     <p>The only new object between Beat 0 and here is the camera itself: a map from a two-dimensional grid of impact-parameter pairs \((b_x,b_y)\) to one of two labels, captured or escaped. Nothing about the differential equation has changed; what has changed is that you are now looking at a picture of a classification rather than a single trajectory.</p>
 <pre>python main.py --mode pixels</pre>
     <p>The figure is a coarse \(17\times17\) grid, deliberately too coarse to look like a shadow yet. Find the cell nearest \(b=5M\) and the cell nearest \(b=6M\): one is dark, one is light, and they are the same two rays from Beat 0, now expressed as directions on a sky rather than as trajectories in a side view. <code>--n_pix</code> in this mode is capped at 41, and the program says so on the console if you ask for more, because the point of <code>pixels</code> is to make individual cells visible, not to anticipate <code>capture</code>.</p>
-    <p><em>Then</em> the idea the rest of the program builds on: a camera does not record trajectories, it records a function of direction. Every later mode is a denser, cleverer, or more physically dressed version of exactly this map.</p>
+    <p>The idea the rest of the program builds on, is that a camera does not record trajectories, it records a function of direction. Every later mode is a denser, cleverer, or more physically dressed version of exactly this map.</p>
     <p><em>Experiments that go with this beat:</em> EXP-2 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
@@ -294,7 +306,7 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
 <pre>python main.py --mode image
 python main.py --mode image --r_hot 8</pre>
     <p>The emitted profile \(I_{\rm em}\) is a Gaussian annulus centred on \(r_{\rm hot}=6M\) with width \(0.45M\); it is an invented teaching source, not a measured one. Read the redshift factor at the annulus: \(g(6M)^4=0.444444\) exactly, since \(g(6M)^2=1-2/6=2/3\) and \((2/3)^2=4/9\). Three panels are drawn: direct only (\(m=1\)), plus the lensing-ring crossing (\(m\le2\)), and plus the photon-ring/subring crossings (\(m\ge3\)).</p>
-    <p>Three tasks, in order. First read the console's <code>max table I_2 / I_m=3,4</code> line — 0.4457 for the lensing-ring peak and, separately, 0.4457 for the combined \(m=3,4\) peak in the adaptively sampled table — and notice the two peak <em>heights</em> are comparable even though the higher-order image occupies a vastly narrower range of \(b\); a peak's height alone does not tell you its share of the total flux. Then read <code>max raster m&gt;=3 increment: 0.07043</code>, the largest \(m\ge3\) contribution the fixed pixel raster itself actually samples, and compare it with the table's 0.4457 — the raster undershoots badly, because a grid of pixel centres has no reason to land inside a band only a few thousandths of \(M\) wide in \(b\). Then look at the radial \(I(b)\) panel beneath the images, which is drawn from the adaptively placed table rather than the raster, and find the narrow spike the 2-D image itself is too coarse to show.</p>
+    <p>Three tasks, in order. First read the console's <code>max table I_2 / I_m=3,4</code> line — 0.4457 for the lensing-ring peak and, separately, 0.4457 for the combined \(m=3,4\) peak in the adaptively sampled table — and notice the two peak <em>heights</em> are comparable even though the higher-order image occupies a vastly narrower range of \(b\); a peak's height alone does not tell you its share of the total flux. Then read <code>max raster m&gt;=3 increment: 0.07043</code>, the largest \(m\ge3\) contribution the fixed pixel raster itself actually samples, and compare it with the table's 0.4457 — the raster undershoots badly, because a grid of pixel centres has no reason to land inside a band only a few thousandths of \(M\) wide in \(b\). Then look at the radial \(I(b)\) panel beneath the images, which is drawn from the adaptively placed table rather than the raster, and find the narrow combined \(m=3,4\) spike that the 2-D image cannot show at full peak brightness. The cyan critical curve in the three image panels is sparsely dotted so the underlying image can be seen through the gaps. A bright dot next to the curve is not, by colour alone, evidence of \(m=3\) or \(m=4\).</p>
     <p><em>Then</em> the two disclaimers that keep this mode from being mistaken for something it is not. There is no orbital Doppler: \(g\) here is gravitational redshift only, for a <em>static</em> emitter, not an emitter orbiting the hole, which is why the console calls these "static emitters" explicitly. And a captured ray traced backward from the camera crosses the event horizon and stops there — the integrator halts at \(r=2M\) — so if that inbound ray would have crossed the disk plane only after passing through the horizon, this program cannot and does not report that crossing; it may still find an earlier one before the horizon, which is exactly what the console's closing note describes.</p>
     <p><em>Experiments that go with this beat:</em> EXP-7 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
@@ -444,7 +456,9 @@ python main.py --mode compare --logM 12.5</pre>
   <!-- ================================================================ -->
   <section id="experiments">
     <h2>Suggested Experiments</h2>
-    <p>Nothing here needs anything beyond the program itself and the printed console summary. The exercises run from reading the output through controlled comparisons to a little numerical judgement; nothing in this program needs curve fitting or calibration, because — unlike StellarEvolutionTracks — there is nothing here that was calibrated in the first place.</p>
+    <p>Nothing here needs anything beyond the program itself and the printed console summary. 
+	The exercises run from reading the output through controlled comparisons to a little numerical judgement; 
+	nothing in this program needs curve fitting or calibration.</p>
 
     <h3>Introductory</h3>
     <div class="exp-grid">
@@ -458,7 +472,7 @@ python main.py --mode compare --logM 12.5</pre>
     <div class="exp-grid">
       <div class="exp-card"><div class="ec-num">EXP-5</div><h4>Recover \(4M/b\)</h4><p>From the <code>--mode weak</code> console line, compute the relative error of \(4M/b\) at the largest sampled \(b\) (41.6\(M\)) and at the smallest (5.3\(M\)). By roughly what factor does the error grow between the two? Then argue, from the form of the exact first integral in Beat 0, why the error has to grow as \(b\to b_{\rm crit}^+\) rather than staying small.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-6</div><h4>Two Rings, Two Meanings</h4><p>Run <code>--mode compare</code> at <code>--logM 10</code>, <code>12</code> and <code>14</code>, and tabulate \(\theta_E\) and \(R_E/M\) for each. Confirm that \(\theta_E\) grows with mass while \(R_E/M\) shrinks, and explain the two different scalings (\(\sqrt M\) against distances that do not change, versus a length compared with a gravitational scale that itself grows as \(M\)) that together produce that split behaviour. Then write one sentence, using the word "ring" only once, that keeps the galaxy's Einstein ring and this hole's critical curve from being confused.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-7</div><h4>Achromatic Silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change in the figure if the emitting annulus radiated at a different wavelength. (Nothing in the capture map would.) Then compare the three image panels and, for each, say which transfer-function crossing is responsible for the light in it.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-7</div><h4>Achromatic Silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change in the figure if the emitting annulus radiated at a different wavelength. (Nothing in the capture map would.) Compare the first two image panels to identify the direct \(m=1\) image and the added \(m=2\) lensing image. The third panel adds \(m=3,4\), but their sampled pixels need not form an identifiable ring. Use the console's table and raster maxima and the radial \(I(b)\) panel to explain why the higher-order peak is hard to see in the image.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-8</div><h4>Finite Camera</h4><p>Rerun <code>--mode rays</code> with <code>--r_cam 10</code> and then <code>--r_cam 60</code>, and read \(\Delta\phi\) for both rays each time. The physical capture threshold in conserved \(b\) does not change with \(r_{\rm cam}\). With the stated integration budget, both console statuses still reach their stopping surfaces; a status of <code>lambda_max</code> would instead mean the run stopped early. A static observer at finite \(r\) measures a local emission angle \(\alpha\) related to \(b\) by \(\sin\alpha=(b/r)\sqrt{1-2M/r}\); use it to explain why the same ray looks different to cameras at different radii even though its classification never changes.</p></div>
     </div>
 
@@ -487,35 +501,6 @@ python main.py --mode compare --logM 12.5</pre>
       <li><strong>Near-critical precision is real work, not free.</strong> Ring, transfer and image modes are slower than capture because they are switching to arbitrary-precision arithmetic exactly where an ordinary float would silently lose accuracy; there is no shortcut around that cost if the near-\(b_{\rm crit}\) numbers are to be trusted at all.</li>
     </ul>
   </section>
-
-  <!-- ============================================================
-       RESTORE TO DEFAULTS CALLOUT
-       ============================================================ -->
-  <section style="margin: 2.5em auto; max-width: 860px; font-family: inherit;">
-    <div style="border: 1.5px solid #b5811a; border-left: 5px solid #b5811a; border-radius: 6px; background: #fffbeb; padding: 1.1em 1.4em; display: flex; gap: 1em; align-items: flex-start;">
-      <div style="font-size: 1.5em; line-height: 1; flex-shrink: 0;">↩️</div>
-      <div>
-        <div style="font-weight: 700; font-size: 0.95em; color: #7b2d00; margin-bottom: 0.35em; text-transform: uppercase; letter-spacing: 0.04em;">Restoring Default Parameter Values</div>
-        <p style="margin: 0 0 0.5em 0; font-size: 0.92em; color: #1c1c1c; line-height: 1.6;">
-          If you edit <code style="background:#f0ede4; padding:1px 5px; border-radius:3px; font-size:0.9em;">main.py</code> or another program file while experimenting,
-          you can restore the original program files using any of the following methods:
-        </p>
-        <ul style="margin: 0; padding-left: 1.4em; font-size: 0.92em; color: #1c1c1c; line-height: 1.8;">
-          <li><strong>Same session:</strong> Press <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Ctrl+Z</kbd> (Windows) or <kbd style="background:#e2e8f0; border:1px solid #cbd5e1; border-radius:3px; padding:1px 5px; font-size:0.88em;">Cmd+Z</kbd> (macOS) repeatedly in your editor to undo your edits.</li>
-          <li><strong>If you are using PyCharm:</strong> Right-click the edited file in the Project panel → <em>Local History → Show History</em> → select a version from before your changes → click <em>Revert</em>.</li>
-          <li><strong>Full reset:</strong> Re-download the ZIP from
-            <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank" style="color:#7b2d00; text-decoration:underline;">github.com/tomyee3-org/GFTGUX-Programs</a>
-            and replace this program's folder with the fresh copy.</li>
-        </ul>
-        <p style="margin: 0.6em 0 0 0; font-size: 0.88em; color: #5a4a3a;">
-          For additional ways to restore program files, see the corresponding recovery instructions in the <em>GFTGUX Python Setup Guide</em>.
-        </p>
-      </div>
-    </div>
-  </section>
-  <!-- ============================================================
-       END RESTORE TO DEFAULTS CALLOUT
-       ============================================================ -->
 
   <section id="related">
     <h2>Related Programs</h2>

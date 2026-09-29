@@ -120,7 +120,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
   <a href="#beat7">7 · Weak field</a>
   <a href="#beat8">8 · Not an Einstein ring</a>
   <div class="nav-label">Reference</div>
-  <a href="#experiments">Experiments</a>
+  <a href="#experiments">Suggested Experiments</a>
   <a href="#parameters">Parameters</a>
   <a href="#output">Output</a>
   <a href="#validity">Domain of Validity</a>
@@ -129,16 +129,29 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.1.0&nbsp;&nbsp;&nbsp;&nbsp;Build 23719ebabe26
+    Version 1.2.0&nbsp;&nbsp;&nbsp;&nbsp;Build ec71120db2b4
   </p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
 
   <section id="description">
     <h2>Description</h2>
-    <p><strong>BlackHoleShadow</strong> is a proposed new program for a second edition of <em>Gravity from the Ground Up</em>. It teaches the one fact that <code>PhotonOrbit</code> and <code>GravitationalLensing</code> together still leave on the table: the black-hole “silhouette” is an <em>image-plane</em> set of captured null geodesics. A student who can already classify one Schwarzschild photon from its impact parameter \(b\), and who has already mapped a thin-lens source plane onto an image plane, has never launched a bundle of those photons into a camera and asked which directions on the sky go dark.</p>
+    <p><strong>BlackHoleShadow</strong> answers a question that <code>PhotonOrbit</code> and <code>GravitationalLensing</code> 
+	do not: what does a camera actually record when it points at a black hole? 	
+	
+	PhotonOrbit already classifies a single Schwarzschild photon by its impact parameter \(b\); 
+	GravitationalLensing already maps a whole source plane onto an image plane for a transparent lens. 
+	Neither program launches a bundle of photons into a camera and asks which directions on the sky come back dark. This one does.</p>
+
+	
     <p>The spine of the lesson is one sentence:</p>
-    <p><em>The silhouette a camera records is the set of image-plane directions whose Schwarzschild null geodesics are captured — a critical curve at \(b_{\mathrm{crit}}=3\sqrt{3}\,M\), not a thin-lens \(\boldsymbol{\alpha}(\boldsymbol{\theta})\), and not the coordinate circle \(r_s\).</em></p>
-    <div class="warn"><strong>What this program is not.</strong> It is not a Kerr movie, not an Event Horizon Telescope pipeline, and not a full fluid or radiative-transfer simulation. It is not <code>PhotonOrbit</code> with a slider: PhotonOrbit’s object is one affine ray and its accumulated \(\Delta\phi\). It is not <code>GravitationalLensing</code> with \(M\) set to a black hole: the thin-lens kink \(\boldsymbol{\alpha}=\theta_E^2\boldsymbol{\theta}/\lvert\boldsymbol{\theta}\rvert^2\) cannot produce the critical null geodesic that rims the shadow. It is not <code>RelativisticOrbit</code> (timelike zoom-whirls stay there) and not <code>GravitationalWaveSources</code> (no strain, no chirp mass).</div>
+    <p><em>The silhouette a camera records is the set of image-plane directions 
+	whose Schwarzschild null geodesics are captured — a critical curve at \(b_{\mathrm{crit}}=3\sqrt{3}\,M\), 
+	not a thin-lens Einstein ring, and not the coordinate circle \(r_s\).</em></p>
+    <div class="warn"><strong>What this program is not.</strong> It is not a Kerr movie, not an Event Horizon Telescope pipeline, 
+	and not a full fluid or radiative-transfer simulation. 
+	Although it shares mathematics with <code>PhotonOrbit</code>, 
+	PhotonOrbit’s object is one affine ray and its accumulated \(\Delta\phi\). 
+	It is not <code>GravitationalLensing</code> with \(M\) set to a black hole: the thin-lens kink \(\boldsymbol{\alpha}=\theta_E^2\boldsymbol{\theta}/\lvert\boldsymbol{\theta}\rvert^2\) cannot produce the critical null geodesic that rims the shadow. It is not <code>RelativisticOrbit</code> (timelike zoom-whirls stay there) and not <code>GravitationalWaveSources</code> (no strain, no chirp mass).</div>
     <div class="warn"><strong>False colour.</strong> Mode <code>image</code> paints bolometric intensity \(I_{\mathrm{obs}}\approx\sum_{m=1}^{4} g(r_m)^4 I_{\mathrm{em}}(r_m)\) with a colour map. Those colours are a display scale, not the spectrum of the source. Gravitational deflection is achromatic. The calculation is face-on and optically thin. Emitters are static: \(g=\sqrt{1-2M/r}\) includes gravitational redshift only, not orbital Doppler. There is no inclination slider.</div>
     <div class="note"><strong>Reading this page.</strong> Equations are rendered by MathJax from a public CDN. Without a network connection the raw \(\LaTeX\) remains visible as text. The program itself needs no internet access.</div>
   </section>
@@ -167,9 +180,14 @@ python main.py --mode rays</pre>
         <tr><td class="mname">compare</td><td>8</td><td>A \(10^{12}M_\odot\) galaxy Einstein radius versus this hole’s \(b_{\mathrm{crit}}\).</td></tr>
       </tbody>
     </table>
-<pre>python main.py --mode capture
-python main.py --mode rays --b_in 5.0 --b_out 6.0
-python main.py --mode image --outdir ./runs</pre>
+<pre># Two named rays, one captured and one not
+python main.py --mode rays
+
+# A dense capture map -- the shadow itself
+python main.py --mode capture
+
+# A face-on toy image of an emitting ring
+python main.py --mode image</pre>
   </section>
 
   <section id="beat0">
@@ -186,12 +204,16 @@ b_{\mathrm{crit}} = 3\sqrt{3}\,M.
     </div>
 <pre>python main.py --mode rays</pre>
     <p> The red curve at the default \(b=5\) hits \(r_s=2M\) and is reported <code>captured</code>. The blue curve at \(b=6\) turns at a periapsis outside the photon sphere and is reported <code>escaped</code>. The console \(\Delta\phi\) is accumulated azimuth to a finite stopping surface (the horizon, or twice the camera radius), exactly as in PhotonOrbit. It is <em>not</em> the asymptotic deflection angle \(\hat\alpha\). That distinction is Beat 7. A <code>lambda_max</code> status means the ray has not reached the stopping surface; increase <code>--lambda_max</code> (roughly \(3r_{\rm cam}\) for a distant escaper).</p>
+    <p><em>Experiments that go with this beat:</em> EXP-1 and EXP-8 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="beat1">
     <h2>Beat 1 · A ray becomes a pixel</h2>
-    <p>The new object is only the camera map \((b_x,b_y)\mapsto\{\text{captured},\ \text{escaped}\}\). Place the same two impact parameters on a coarse grid. One cell is dark, one is light. Nothing about the ODE has changed.</p>
+    <p>The new object is only the camera map \((b_x,b_y)\mapsto\{\text{captured},\ \text{escaped}\}\). 
+	Place the same two impact parameters on a coarse grid. Directions to captured rays are dark, while directions to escaped rays are light. 
+	Nothing about the ODE has changed.</p>
 <pre>python main.py --mode pixels</pre>
+    <p><em>Experiments that go with this beat:</em> EXP-2 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="beat2">
@@ -200,6 +222,7 @@ b_{\mathrm{crit}} = 3\sqrt{3}\,M.
 <pre>python main.py --mode capture
 python main.py --mode capture --fov 24 --n_pix 201</pre>
     <p>The program refuses a grid on which the shadow diameter spans fewer than eight pixels. That is a visibility floor, not an EHT resolution claim.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-3 and EXP-9 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="beat3">
@@ -210,8 +233,11 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
       <li>the <em>critical curve</em> is the image-plane circle \(b=b_{\mathrm{crit}}\);</li>
       <li>a <em>photon ring</em> is a bright image that appears near that curve only when emitting matter sends high-order rays to the observer.</li>
     </ul>
-    <p>Mode <code>ring</code> does not compute a photon ring. It paints a pedagogical highlighter on escaping rays whose periapsis sits near \(r=3M\) and whose asymptotic azimuth exceeds \(2\pi\). Those rays are the near-critical whirling demonstration in PhotonOrbit, shown here as a set of directions on the sky rather than as one trajectory. This Help file does not pin a PhotonOrbit experiment number; that numbering can move. The orange band is that high-winding window, not a measurement of photon-ring brightness. The width of the highlighted band is chosen by educational thresholds and should not be interpreted as a measured width of a physical photon ring.</p>
+    <p>Mode <code>ring</code> does not compute a photon ring. It paints a pedagogical highlighter on escaping rays whose periapsis sits near \(r=3M\) and whose asymptotic azimuth exceeds \(2\pi\). Those rays are the near-critical whirling demonstration in PhotonOrbit, 
+	shown here as a set of directions on the sky rather than as one trajectory. 
+	The orange band is that high-winding window, not a measurement of photon-ring brightness. The width of the highlighted band is chosen by educational thresholds and should not be interpreted as a measured width of a physical photon ring.</p>
 <pre>python main.py --mode ring</pre>
+    <p><em>Experiments that go with this beat:</em> EXP-4 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="beat4">
@@ -219,6 +245,7 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
     <p>A face-on observer at infinity looks down on a thin equatorial emitting plane. Each impact parameter \(b\) labels a null geodesic in a meridian plane. That geodesic crosses the disk at orbital angles \(\pi/2\), \(3\pi/2\), \(5\pi/2\), \(\ldots\). The radii of those crossings are the transfer functions \(r_m(b)\).</p>
     <p>\(r_1\) is the direct image. \(r_2\) is the lensing-ring crossing. \(r_3\) and later are photon-ring / subring crossings. Captured rays (\(b\le b_{\mathrm{crit}}\)) only travel inbound, but they can still cross the disk before the horizon. A backward-traced captured ray crosses the event horizon (the exterior integrator stops there) and may intersect the disk first.</p>
 <pre>python main.py --mode transfer</pre>
+    <p><em>Experiments that go with this beat:</em> EXP-10 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="beat5">
@@ -233,13 +260,15 @@ I_{\mathrm{obs}}(b)=\sum_{m=1}^{4} g(r_m)^4 I_{\mathrm{em}}(r_m),\qquad g(r)=\sq
     <p>Mode <code>image</code> draws three panels: direct (\(m=1\)), plus lensing (\(m\le 2\)), plus photon-ring (\(m\ge 3\)). The figure itself labels the inferno display as false color: these colors indicate displayed intensity, not observed wavelength. There is no inclination: a correct inclined image needs three-dimensional camera/disk geometry, which is a later program.</p>
 <pre>python main.py --mode image
 python main.py --mode image --r_hot 8</pre>
-    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third camera panel is a point sample at each pixel centre. Narrow \(m=3,4\) peaks can miss the raster; they are drawn in the radial \(I(b)\) profile under the image. \(m\ge 5\) is omitted.</p>
+    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. The third camera panel is a point sample at each pixel centre. Narrow \(m=3,4\) peaks can miss the raster; the combined high-order peak is drawn in the radial \(I(b)\) profile under the image. The cyan critical curve is sparsely dotted so the image shows through its gaps. Do not identify an orange dot beside the curve as \(m=3\) solely from its colour. \(m\ge 5\) is omitted.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-7 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="beat6">
     <h2>Beat 6 · Coordinate radii are not image-plane radii</h2>
     <p>Two panels. The left panel is a Schwarzschild coordinate-radius cross-section: \(r_s=2M\) and the photon sphere \(r_{\mathrm{ph}}=3M\). It is not a spacetime diagram. The right panel is the image plane: only the critical curve \(b_{\mathrm{crit}}\) is drawn on the capture map. A finite camera records an angular critical curve related to \(b_{\mathrm{crit}}\), not a ruler measurement of \(b\).</p>
 <pre>python main.py --mode radii</pre>
+    <p><em>Experiments that go with this beat:</em> EXP-3 and EXP-8 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="beat7">
@@ -253,6 +282,7 @@ python main.py --mode image --r_hot 8</pre>
     </div>
 <pre>python main.py --mode weak</pre>
     <p> The two curves agree at large \(b/M\) and come apart as \(b\to b_{\mathrm{crit}}^+\). That divergence is strong deflection: it permits higher-order images when a source supplies photons. It is not itself a photon ring.</p>
+    <p><em>Experiments that go with this beat:</em> EXP-5 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="beat8">
@@ -261,18 +291,24 @@ python main.py --mode image --r_hot 8</pre>
 <pre>python main.py --mode compare
 python main.py --mode compare --logM 12.5</pre>
     <p>The default comparison is a \(10^{12}M_\odot\) point-mass galaxy at the GravitationalLensing cartoon distances \(D_l=1\,\mathrm{Gpc}\), \(D_s=2\,\mathrm{Gpc}\). Its \(\theta_E\) is a couple of arcseconds. The physical Einstein radius at that lens, in units of the galaxy’s own \(GM/c^2\), is of order \(10^5\). The photon sphere is \(3M\); the image-plane critical curve is \(b_{\mathrm{crit}}\approx 5.196\,M\).</p>
+    <p><em>Experiments that go with this beat:</em> EXP-6 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="experiments">
-    <h2>Experiments</h2>
+    <h2>Suggested Experiments</h2>
     <div class="exp-grid">
       <div class="exp-card"><div class="ec-num">EXP-1 · First run</div><h4>Capture versus escape</h4><p>Run <code>--mode rays</code> at the defaults, then again with <code>--b_in 5.19 --b_out 5.21</code>. Name the status of each ray from the console before you look at the figure.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-2 · Beginner</div><h4>A pixel is a direction</h4><p>Run <code>--mode pixels</code>. Point to the dark cell and the light cell and say which trajectory from <code>--mode rays</code> each one represents.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-3 · Beginner</div><h4>The rim is not the horizon</h4><p>Run <code>--mode radii</code>. The left panel is a coordinate-radius cross-section; the right panel is the image plane. Which circle on the right matches the dark disk, and why are \(r_s\) and \(r_{\mathrm{ph}}\) not drawn there?</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>PhotonOrbit on the sky</h4><p>The shadow rim is PhotonOrbit’s critical capture/escape ray. The highlighter of <code>--mode ring</code> is PhotonOrbit’s near-critical whirling painted as pixels. Write that sentence in your own words, then run both programs side by side. If PhotonOrbit later renumbers its experiments, trust the titles rather than any old EXP-N cited in a notebook.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4 · Intermediate</div><h4>PhotonOrbit on the sky</h4>
+	      <p>The shadow rim is PhotonOrbit’s critical capture/escape ray. 
+	      The highlighter of <code>--mode ring</code> is PhotonOrbit’s near-critical whirling painted as pixels. 
+	      Write that sentence in your own words, then run both programs side by side.
+	  </p>
+	  </div>
       <div class="exp-card"><div class="ec-num">EXP-5 · Intermediate</div><h4>Recover \(4M/b\)</h4><p>From the <code>weak</code> console line, compute the relative error of \(4M/b\) at the largest sampled \(b\). Then argue why the error must grow as you walk the curve toward \(b_{\mathrm{crit}}\).</p></div>
       <div class="exp-card"><div class="ec-num">EXP-6 · Intermediate</div><h4>Two rings, two meanings</h4><p>Run <code>--mode compare</code>. Quote \(R_E/M\) for the galaxy and \(b_{\mathrm{crit}}/M\) for the hole. Invent a sentence that uses the word “ring” once only.</p></div>
-      <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div><h4>Achromatic silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change if the annulus emitted blue light instead of red. (The capture map would not.) Then compare the three panels and say which crossing lights each ring.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-7 · Intermediate</div><h4>Achromatic silhouette</h4><p>Run <code>--mode image</code>. The palette is inferno. Write down what would change if the annulus emitted blue light instead of red. (The capture map would not.) Compare the first two panels to identify the direct \(m=1\) image and the added \(m=2\) lensing image. The third adds \(m=3,4\), but its sampled pixels may be difficult to distinguish. Use the console's table and raster maxima and the radial \(I(b)\) panel to explain why.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-8 · Advanced</div><h4>Finite camera</h4><p>Rerun <code>--mode rays</code> with <code>--r_cam 10</code> and then <code>--r_cam 60</code>. The capture threshold in conserved \(b\) does not move. What does move is the local angle on the camera sky. Explain using \(\sin\alpha = (b/r)\sqrt{1-2M/r}\).</p></div>
       <div class="exp-card"><div class="ec-num">EXP-9 · Advanced</div><h4>Resolution contract</h4><p>Try <code>--mode capture --fov 80 --n_pix 11</code>. Read the error. Then satisfy the contract with the smallest odd <code>--n_pix</code> not above 81.</p></div>
       <div class="exp-card"><div class="ec-num">EXP-10 · Advanced</div><h4>Where the source images sit</h4><p>Run <code>--mode transfer</code>. Read the three \(b(r_m=r_{\mathrm{hot}})\) values from the console. Use the interactive Matplotlib window (run without <code>--outdir</code>): hover over the left transfer panel and read <code>(x, y)</code> at the lower right of the window. The coordinates there are \(b/M\) and crossing radius \(r_m/M\). The meaning of the readout depends on the panel under the pointer: the <code>--mode image</code> radial panel reports \(b/M\) and pointwise image intensity, and its three face-on panels report \(b_x/M\) and \(b_y/M\). In <code>--mode transfer</code> the right-hand source-profile panel reports source radius \(r/M\) and emitted intensity. For this crossing question use the left-hand transfer curves, whose vertical coordinate is \(r_m/M\). Zoom near \(b_{\rm crit}\approx5.196M\) with the toolbar magnifier, or enlarge the window, so that the closely spaced curves can be distinguished at \(b=5.20M\). Saved PNGs have no live readout. At \(b=5.25M\) and \(b=5.20M\), which of the three plotted crossing curves are defined at each \(b\)? What happens to the true crossing count closer to the critical curve?</p></div>
@@ -328,12 +364,14 @@ python main.py --mode compare --logM 12.5</pre>
 
   <section id="license">
     <h2>License</h2>
-    <p>Proposed teaching supplement for <em>Gravity from the Ground Up</em>, second edition, under discussion with Bernard Schutz and Cambridge University Press. Not a published CUP product.</p>
+    <p>BlackHoleShadow is a proposed supplemental Python investigation for possible inclusion in a second edition of Bernard Schutz's <em>Gravity from the Ground Up</em>, currently under discussion with Professor Schutz and Cambridge University Press. It is not a published CUP product. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
   </section>
 </main>
 <footer>
-  BlackHoleShadow — proposed GFTGUX supplement —
-  <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a>
+  <em>Gravity from the Ground Up</em> — Python Programs ·
+  Bernard Schutz © 2003 (Cambridge University Press) ·
+  Python programs © 2024–2026 Thomas Yee ·
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> ·
 </footer>
 </div>
 </body>
