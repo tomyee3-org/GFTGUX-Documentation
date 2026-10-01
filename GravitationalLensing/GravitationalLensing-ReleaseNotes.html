@@ -10,7 +10,7 @@
 <ul>
 <li>Both tutorial formats now share the same four core files, one test suite, and a single sample guide; the suite requires both Help files, checks their matching version/build and validates the worked Beat commands against the real argument parser.</li>
 <li>Beat 2 now has its own point-mass run with a source at 1.0 arcsec. The point-mode provenance records both signed ideal image positions and magnifications; shear-mode provenance records both cusp axes and the minimum and maximum critical radii.</li>
-<li>The Claude-style Help corrects the default source cross from “outside” to “inside” the 2.018-arcsec Einstein circle, and narrows the magnification-sum statement to its point-mass scope. The sample guide distinguishes the SIS-plus-shear caustic from the point-mass caustic.</li>
+<li>The Extended-style Help corrects the default source cross from “outside” to “inside” the 2.018-arcsec Einstein circle, and narrows the magnification-sum statement to its point-mass scope. The sample guide distinguishes the SIS-plus-shear caustic from the point-mass caustic.</li>
 <li>Exercises EXP-2, EXP-6 and EXP-8 now specify the total source offset, use separately verified fold and cusp source positions, provide commands that save the needed provenance values, and limit the magnification-sum exercise to the point-mass model. Both tutorial styles show the new fold and cusp comparison commands.</li>
 <li>The build-only <code>--sync-help</code> option was removed from the student CLI. The maintainer helper still takes an explicit Help path; the guides were stamped separately. This public command-line change warrants the 1.1.0 minor version.</li>
 <li>The SampleOutputs Guide now embeds eight newly generated figures, one per Beat, and quotes this build's plot/provenance values, including the two unequal cusp distances.</li>
@@ -58,7 +58,7 @@
 <h3>Audit History (locators)</h3>
 <p>See <code>GravitationalLensing-1.0.0-ReleaseNotes.html</code> for the Kickoff-through-1.0.0 audit history. This patch originates from:</p>
 <ul>
-<li>Audit2 (Claude) on the BlackHoleShadow 0.2.0 Response artifacts, which also carried out a fresh independent examination of the previously-released GravitationalLensing 1.0.0 code and documentation and identified the Python 3.10/3.11 syntax defect described above — <code>GravitationalLensing-Claude-Audit2-2026091123.txt</code>.</li>
+<li>Audit2 (Claude) on the BlackHoleShadow 0.2.0 Response artifacts, which also carried out a fresh independent examination of the previously-released GravitationalLensing 1.0.0 code and documentation and identified the Python 3.10/3.11 syntax defect described above — <code>GravitationalLensing-extended-Audit2-2026091123.txt</code>.</li>
 <li>Fix implemented directly at the maintainer's request following that finding, rather than routed back through Grok for a further response cycle.</li>
 </ul>
 

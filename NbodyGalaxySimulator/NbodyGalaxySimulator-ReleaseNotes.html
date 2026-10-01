@@ -20,8 +20,8 @@ Audit41 and the two low-severity documentation corrections in this response.</p>
 <ul>
 <li>Preserved the existing Reference Guide byte for byte as
 <code>NbodyGalaxySimulator-original.html</code>. Added a runnable
-Claude-style tutorial laboratory with detailed scientific explanations
-and a shorter Grok-style terminal script. Both share four beat commands,
+Extended-style tutorial laboratory with detailed scientific explanations
+and a shorter Short-style terminal script. Both share four beat commands,
 one test suite, one core build and one SampleOutputs Guide.</li>
 <li>Reproduced all four figures and terminal checkpoints from the current
 build. The chaos beat now sets both <code>--seed</code> and
@@ -48,7 +48,7 @@ review-history test and the paired-help fixture restoration were tightened.</li>
 <h2>Test Suite Growth</h2>
 <p>The approved 1.0.1 baseline had 291 tests; Kickoff4 has 299 tests.
 The current checks require both tutorial Helps together, run existing
-scientific and exercise contracts against the Claude-style page (which
+scientific and exercise contracts against the Extended-style page (which
 contains 18 EXP-numbered exercises), and
 check the four shared beats, seeded chaos, science caveats, Grok parameter
 coverage and embedded indexed PNGs across both. In a program-only checkout,
@@ -75,8 +75,8 @@ finite-time estimate, not a certified asymptotic exponent.</li>
 <li>Unphysical input mixtures spanning hundreds of orders of magnitude
 can exceed special floating-point safeguards outside the documented
 solar-mass and parsec-scale regime.</li>
-<li>The Claude-style Help loads MathJax from a public CDN; offline,
-its equations appear as unrendered TeX. The Grok-style Help uses
+<li>The Extended-style Help loads MathJax from a public CDN; offline,
+its equations appear as unrendered TeX. The Short-style Help uses
 plain Unicode equations and needs no network connection.</li>
 </ul>
 <h2>Known Minor Maintenance Items</h2>
@@ -86,7 +86,7 @@ threshold could be recalibrated against a wider independent sample.</li>
 <li>The real three-seed chaos integration check is the longest-running
 part of the suite; an equivalent cheaper invariant would shorten tests.</li>
 <li>Bundling MathJax locally could provide fully typeset offline
-Claude-style help if that becomes a distribution requirement.</li>
+Extended-style help if that becomes a distribution requirement.</li>
 </ul>
 <h2>Version Identification</h2>
 <p>MODEL_VERSION 1.0.1; BUILD_ID
