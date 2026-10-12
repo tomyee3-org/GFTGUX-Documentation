@@ -243,7 +243,11 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
   <section id="beat4">
     <h2>Beat 4 · Transfer functions \(r_m(b)\)</h2>
     <p>A face-on observer at infinity looks down on a thin equatorial emitting plane. Each impact parameter \(b\) labels a null geodesic in a meridian plane. That geodesic crosses the disk at orbital angles \(\pi/2\), \(3\pi/2\), \(5\pi/2\), \(\ldots\). The radii of those crossings are the transfer functions \(r_m(b)\).</p>
-    <p>\(r_1\) is the direct image. \(r_2\) is the lensing-ring crossing. \(r_3\) and later are photon-ring / subring crossings. Captured rays (\(b\le b_{\mathrm{crit}}\)) only travel inbound, but they can still cross the disk before the horizon. A backward-traced captured ray crosses the event horizon (the exterior integrator stops there) and may intersect the disk first.</p>
+    <p>\(r_1\) is the direct image. \(r_2\) is the lensing-ring crossing. \(r_3\) and later are photon-ring / subring crossings. 
+	Captured rays (\(b\le b_{\mathrm{crit}}\)) only travel inbound, but they can still cross the disk before the horizon. 
+	A backward-traced captured ray crosses the event horizon (the exterior integrator stops there) and may intersect the disk first.
+	
+	(Note: On the Transfer functions diagram, the \(b_{\mathrm{crit}}\) plot is nearly obscured by the \( r_3/M \) plot.)</p>
 <pre>python main.py --mode transfer</pre>
     <p><em>Experiments that go with this beat:</em> EXP-10 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
