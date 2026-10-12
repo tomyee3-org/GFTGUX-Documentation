@@ -260,14 +260,26 @@ I_{\mathrm{obs}}(b)=\sum_{m=1}^{4} g(r_m)^4 I_{\mathrm{em}}(r_m),\qquad g(r)=\sq
     <p>Mode <code>image</code> draws three panels: direct (\(m=1\)), plus lensing (\(m\le 2\)), plus photon-ring (\(m\ge 3\)). The figure itself labels the inferno display as false color: these colors indicate displayed intensity, not observed wavelength. There is no inclination: a correct inclined image needs three-dimensional camera/disk geometry, which is a later program.</p>
 <pre>python main.py --mode image
 python main.py --mode image --r_hot 8</pre>
-    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. By default, the third camera panel is a point sample at each pixel centre. Narrow \(m=3,4\) peaks can miss the raster; the combined high-order peak is drawn in the radial \(I(b)\) profile under the image. The cyan critical curve is sparsely dotted so the image can show through its gaps. Do not identify an orange dot beside the curve as \(m=3\) solely from its colour. \(m\ge 5\) is omitted.</p>
+    <p>For an annulus at \(6M\), \(r_1\), \(r_2\), and \(r_3\) all cross the source. The later images are extremely narrow in \(b\), 
+	so their <em>integrated flux</em> is small even when their peak surface brightness is comparable to the direct ring. 
+	By default, the third camera panel is a point sample at each pixel centre. Narrow \(m=3,4\) peaks can miss the raster; 
+	the combined high-order peak is drawn in the radial \(I(b)\) profile under the image. 
+	The cyan critical curve is sparsely dotted so the image can show through its gaps. Peaks \(m\ge 5\) are omitted.</p>
     
-    <div class="note"><strong>Display-only subring spread.</strong> The default <code>--subring_spread 0</code> keeps the original point-sampled raster. The peaks have finite width; a centre need not coincide exactly with a peak, but most centres miss these extremely narrow features. To make them visible, try:
-<pre>python main.py --mode image --subring_spread 0.05
-python main.py --mode image --subring_spread 0.25
+    <div class="note"><strong>Display-only subring spread.</strong> The default <code>--subring_spread 0.05</code> 
+	enhances the appearance of the <code>m=3,4</code> bands. Setting this to 0 keeps the original point-sampled raster. 
+	The peaks have finite width; a centre need not coincide exactly with a peak, but most centres miss these extremely narrow features. Try:
+<pre>python main.py --mode image --subring_spread 0
+python main.py --mode image --subring_spread 0.05
 python main.py --mode image --subring_spread 0.5</pre>
-    <p>The value is a radial half-width in pixel-centre spacings. For each of <code>m=3,4</code>, the third image panel paints a band around the location of that order's maximum in the adaptive table, using that order's peak intensity. A value of 0.25 allows a centre to miss the peak by a quarter of a pixel spacing; 0.5 makes a much wider band. The display paints <code>m=4</code> first and <code>m=3</code> second, so the lower order's intensity takes precedence where the artificial bands overlap. The original direct-plus-lensing contribution is still added. Outside these bands the raster remains unchanged.</p>
-    <p>This is an artificial visibility aid: it is not pixel-integrated flux, an optical blur, or a physical change in ring width, and it can spread light across the critical curve.</p>
+    <p>The value is a radial half-width in pixel-centre spacings. For each of <code>m=3,4</code>, 
+	the third image panel paints a band around the location of that order's maximum in the adaptive table, 
+	using that order's peak intensity. A value of 0.05 allows a centre to miss the peak by a twentieth of a pixel spacing; 
+	0.5 makes a much wider band. The display paints <code>m=4</code> first and <code>m=3</code> second, 
+	so the lower order's intensity takes precedence where the artificial bands overlap. 
+	The original direct-plus-lensing contribution is still added. Outside these bands the raster remains unchanged.</p>
+    <p>This is an artificial visibility aid: it is not pixel-integrated flux, an optical blur, 
+	or a physical change in ring width.</p>
     </div>
     <p><em>Experiments that go with this beat:</em> EXP-7 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
@@ -334,13 +346,13 @@ python main.py --mode compare --logM 12.5</pre>
     <table class="param-table">
       <thead><tr><th>Flag</th><th>Default</th><th>Meaning</th></tr></thead>
       <tbody>
-        <tr><td class="pname">--mode</td><td class="pdefault">capture</td><td>rays, pixels, capture, ring, transfer, image, radii, weak, compare</td></tr>
+      <tr><td class="pname">--mode</td><td class="pdefault">capture</td><td>One of <code>rays</code>, <code>pixels</code>, <code>capture</code>, <code>ring</code>, <code>transfer</code>, <code>image</code>, <code>radii</code>, <code>weak</code>, <code>compare</code>.</td></tr>
         <tr><td class="pname">--M</td><td class="pdefault">1</td><td>gravitational length \(GM/c^2\)</td></tr>
-        <tr><td class="pname">--r_cam</td><td class="pdefault">40</td><td>launch radius for inward rays, in units of \(M\); must exceed \(3M\) and permit \(b\le r_{\rm cam}/\sqrt{1-2M/r_{\rm cam}}\)</td></tr>
-        <tr><td class="pname">--b_in, --b_out</td><td class="pdefault">5, 6</td><td>demonstration impact parameters in units of \(M\)</td></tr>
+        <tr><td class="pname">--r_cam</td><td class="pdefault">40</td><td>launch radius for inward rays, in units of \(M\); must exceed \(3M\) and satisfy \(b\le r_{\rm cam}/\sqrt{1-2M/r_{\rm cam}}\)</td></tr>
+        <tr><td class="pname">--b_in, --b_out</td><td class="pdefault">5, 6</td><td>demonstration impact parameters used by <code>rays</code> and <code>pixels</code> in units of \(M\)</td></tr>
         <tr><td class="pname">--lambda_max, --d_lambda</td><td class="pdefault">200, 0.02</td><td>affine-parameter budget and RK4 step for <code>rays</code>, in units of \(M\); <code>lambda_max</code> status means the ray stopped before its fate was reached (budget near \(3r_{\rm cam}\) for a distant escaper)</td></tr>
         <tr><td class="pname">--n_pix, --fov</td><td class="pdefault">161 (17 in pixels), 16</td><td>grid size (even values become the next odd) and field of view in units of \(M\). Capture maps need at least eight intervals across \(2b_{\mathrm{crit}}\). Automatic grids stop at 401 pixels. Mode <code>pixels</code> caps <code>--n_pix</code> at 41 and says so on the console.</td></tr>
-        <tr><td class="pname">--subring_spread</td><td class="pdefault">0</td><td>Image only: radial display half-width in pixel spacings (0–20); lower m wins overlapping artificial bands. Physical quantities are unchanged.</td></tr>
+        <tr><td class="pname">--subring_spread</td><td class="pdefault">0.05</td><td>Image only: radial display half-width in pixel spacings (0–20). Physical quantities are unchanged.</td></tr>
         <tr><td class="pname">--r_hot</td><td class="pdefault">6</td><td>emitted-annulus radius for <code>transfer</code>/<code>image</code>, in units of \(M\); must exceed 3. Image mode also caps r_hot so the 1.4 r_hot frame and the 8-interval shadow rule can both hold (~74 M at 161 pixels, ~186 M at 401). </td></tr>
         <tr><td class="pname">--inclination</td><td class="pdefault">0</td><td>must be 0. Face-on only; any nonzero value is rejected</td></tr>
         <tr><td class="pname">--dpi, --interactive</td><td class="pdefault">140, off</td><td>PNG resolution; open a window even when <code>--outdir</code> is set</td></tr>
