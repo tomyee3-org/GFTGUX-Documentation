@@ -1,5 +1,31 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>BlackHoleShadow 1.3.0 Release Notes</title></head><body>
+<html lang="en"><head><meta charset="utf-8"><title>BlackHoleShadow 1.4.0 Release Notes</title></head><body>
+<h1>BlackHoleShadow 1.4.0 Release Notes</h1>
+<p><b>Version:</b> 1.4.0</p><p><b>Build:</b> d94d7f9be528</p>
+<p><b>Date:</b> 2026-10-11 (CDT)</p>
+<h2>Release Status</h2>
+<p>Codex has verified this display-only change and completed an internal adversarial review. The complete regression suite passes (112 tests, zero skipped). This version has not received a new independent review. Earlier release entries remain below.</p>
+<h2>Changes</h2>
+<ul>
+<li>Image mode adds <code>--subring_spread</code> (default 0; finite range 0–20). This is a radial half-width in pixel-centre spacings. Zero preserves the original raster. Positive values give each m=3,4 peak a display band at that order's tabulated peak intensity. The display paints higher m first, then lower m; m=3 takes precedence in overlapping artificial bands. Direct and lensing emission retain their physical sum.</li>
+<li>This operation runs only in the plotting layer. The original intensity table, radial profiles, physical rasters, peak locations and printed quantitative results remain unchanged. The common colour scale also retains its original limits. Saved figures identify the display spread in their title and provenance sidecar.</li>
+<li>Both current Help files explain the option, overlap priority and quantitative interpretation. The Sample Outputs guide now includes the default image plus labelled examples at spreads 0.25 and 8; all nine default figures were regenerated for this version/build.</li>
+<li>The hidden <code>--sync-help</code> maintenance command now uses the current <code>-extended</code> and <code>-short</code> filenames. The shipped regression already checks these names.</li>
+</ul>
+<h2>Verification</h2>
+<p>106 existing tests plus six new display regressions pass. New checks cover fractional misses, lower-order priority when the lower-order peak is fainter, unchanged input arrays, M scaling, zero emission, invalid CLI settings, unchanged first two image arrays and all radial curves, fixed colour limits, and labelled provenance. An independent old/new comparison found all six physical result arrays exactly equal. Console output at spreads 0, 0.25 and 8 is identical; the original package's console differs only in its version/build banner.</p>
+<p>Run from the program directory: <code>MPLBACKEND=Agg python -W error::ResourceWarning -m unittest tests.test_physics_bhs -q</code>.</p>
+<h2>Display Interpretation</h2>
+<p>The artificial bands are a visibility aid, not integrated flux, an optical point-spread function or a physical ring-width estimate. They may cross the critical curve, merge adjacent rings, or saturate the original colour scale. Printed raster maxima continue to refer to the unmodified centre samples. Outside the artificial bands the raster is unchanged.</p>
+<p>Default grid (161 × 161, effective field of view 16.8 M): spread 0.05 covers 68 high-order display pixels; 0.25 covers 196; 8 covers 5,012 (19.3% of the grid). Coverage counts the union of the bands, not all illuminated pixels. Other grid/source settings give different coverage.</p>
+<h2>Existing Open Items</h2>
+<p>The earlier P3 documentation-contract coverage gap (A42-2) and the physical/numerical limitations in the historical entries remain. This release does not claim to resolve them.</p>
+<h2>Version Identification</h2>
+<p>MODEL_VERSION: 1.4.0</p><p>BUILD_ID: d94d7f9be528</p>
+<p>The existing BUILD_ID calculation hashes all five shipped core Python modules; documentation and tests do not affect it.</p>
+<h2>Development History</h2>
+<p>The complete previous release entries follow unchanged.</p>
+
 <h1>BlackHoleShadow 1.3.0 Release Notes</h1>
 <p><b>Version:</b> 1.3.0</p><p><b>Build:</b> a72375fa2c0f</p>
 <p><b>Date:</b> 2026-09-29 (CDT)</p>
