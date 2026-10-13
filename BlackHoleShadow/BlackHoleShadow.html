@@ -231,7 +231,8 @@ b_{\mathrm{crit}} = 3\sqrt{3}\,M.
     <p>A dense grid of the same classifier is a geometric capture map: a dark disk whose rim sits at the critical curve \(b_{\mathrm{crit}}\approx 5.196\,M\), not at the horizon radius \(2M\). <code>BlackHoleSpacetimeVisualizer</code> draws \(r_s\) as a circle in an embedding or a horizon diagram; that circle is not what a camera records. Only \(b_{\mathrm{crit}}\) is drawn on this map.</p>
 <pre>python main.py --mode capture
 python main.py --mode capture --fov 24 --n_pix 201</pre>
-    <p>The program refuses a grid on which the shadow diameter spans fewer than eight pixels. That is a visibility floor, not an EHT resolution claim.</p>
+    <p>Every pixel on this grid is a value of the impact parameter \(b\), a constant of motion measured at infinity (or, for a finite camera, an angle converted to that same constant — EXP-8 explores that conversion). The rim of the dark disk sits at \(b=b_{\rm crit}=3\sqrt3\,M\approx5.196\,M\), not at \(r=2M\) and not at \(r=3M\). Those two coordinate radii belong to a different axis entirely — Beat 6 puts both axes on the same page so the difference cannot be missed twice.</p>
+    <div class="note"><strong>A resolution floor, not a resolution claim.</strong> The program refuses a grid on which the shadow diameter \(2b_{\rm crit}\) spans fewer than eight pixel intervals; asking for <code>--fov 80 --n_pix 11</code> is refused with <em>the shadow diameter 2 b_crit = 10.39 M spans only 1.30 grid intervals</em>. That floor exists so a run cannot silently draw a shadow no wider than a handful of pixels and call it resolved. It is not a claim about what angular resolution a real telescope needs to see a real shadow.</div>
     <p><em>Experiments that go with this beat:</em> EXP-3 and EXP-9 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
@@ -239,9 +240,9 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
     <h2>Beat 3 · High-winding overlay (not a photon ring)</h2>
     <p>Three names that students mix up, kept apart on purpose:</p>
     <ul>
-      <li>the <em>photon sphere</em> is the spacetime locus \(r=3M\);</li>
-      <li>the <em>critical curve</em> is the image-plane circle \(b=b_{\mathrm{crit}}\);</li>
-      <li>a <em>photon ring</em> is a bright image that appears near that curve only when emitting matter sends high-order rays to the observer.</li>
+      <li>The <strong>photon sphere</strong> is a place in spacetime: the coordinate locus \(r=3M\), where a circular photon orbit is (unstably) possible.</li>
+      <li>The <strong>critical curve</strong> is a place on the sky: the image-plane circle \(b=b_{\rm crit}\), the rim of the dark disk that we had identified Beat&nbsp;2.</li>
+      <li>A <strong>photon ring</strong> is a bright image that appears near that curve only when emitting matter sends high-order rays to the observer.</li>
     </ul>
     <p>Mode <code>ring</code> does not compute a photon ring. It paints a pedagogical highlighter on escaping rays whose periapsis sits near \(r=3M\) and whose asymptotic azimuth exceeds \(2\pi\). Those rays are the near-critical whirling demonstration in PhotonOrbit, 
 	shown here as a set of directions on the sky rather than as one trajectory. 
@@ -252,12 +253,25 @@ python main.py --mode capture --fov 24 --n_pix 201</pre>
 
   <section id="beat4">
     <h2>Beat 4 · Transfer functions \(r_m(b)\)</h2>
-    <p>A face-on observer at infinity looks down on a thin equatorial emitting plane. Each impact parameter \(b\) labels a null geodesic in a meridian plane. That geodesic crosses the disk at orbital angles \(\pi/2\), \(3\pi/2\), \(5\pi/2\), \(\ldots\). The radii of those crossings are the transfer functions \(r_m(b)\).</p>
-    <p>\(r_1\) is the direct image. \(r_2\) is the lensing-ring crossing. \(r_3\) and later are photon-ring / subring crossings. 
+    <p>A face-on observer at infinity looks down on a thin equatorial emitting plane. Each impact parameter \(b\) labels a null geodesic in a meridian plane, 
+	that crosses that plane one or more times as it orbits and either escapes or falls to the horizon. 
+	That geodesic crosses the disk at orbital angles \(\pi/2\), \(3\pi/2\), \(5\pi/2\), \(\ldots\). The radii of those crossings are the transfer functions \(r_m(b)\).</p>
+    
+	
+	
+    <p>In the console, we read that for the default hot-ring radius \(r_{\rm hot}=6M\), 
+	the three transfer functions equal \(r_{\rm hot}\) at \(b/M=6.9321\), \(5.4789\) and \(5.208\) respectively — three different impact parameters, 
+	converging toward \(b_{\rm crit}=5.19615\) as the crossing order rises. 
+	Higher-order crossings are squeezed into an ever-narrower 
+	band of \(b\) just outside \(b_{\rm crit}\).</p>
+	
+	<p>\(r_1\) is the direct image, one crossing per ray, the ordinary case. 
+	\(r_2\) is the lensing-ring crossing, a second pass through the disk plane on the far side of the hole. 
+	\(r_3\) and later are photon-ring / subring crossings. 
 	Captured rays (\(b\le b_{\mathrm{crit}}\)) only travel inbound, but they can still cross the disk before the horizon. 
 	A backward-traced captured ray crosses the event horizon (the exterior integrator stops there) and may intersect the disk first.
 	
-	(Note: On the Transfer functions diagram, the \(b_{\mathrm{crit}}\) plot is nearly obscured by the \( r_3/M \) plot.)</p>
+	(Note: On the Transfer functions diagram, the \(b_{\mathrm{crit}}\) plot is nearly obscured by the photon ring/subring plot.)</p>
 <pre>python main.py --mode transfer</pre>
     <p><em>Experiments that go with this beat:</em> EXP-10 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
@@ -289,18 +303,21 @@ python main.py --mode image --subring_spread 0.5</pre>
     <p>The value is a radial half-width in pixel-centre spacings. For each of <code>m=3,4</code>, 
 	the third image panel paints a band around the location of that order's maximum in the adaptive table, 
 	using that order's peak intensity. A value of 0.05 allows a centre to miss the peak by a twentieth of a pixel spacing; 
-	0.5 makes a much wider band. The display paints <code>m=4</code> first and <code>m=3</code> second, 
-	so the lower order's intensity takes precedence where the artificial bands overlap. 
-	The original direct-plus-lensing contribution is still added. Outside these bands the raster remains unchanged.</p>
+	0.5 makes a much wider band.</p>
     <p>This is an artificial visibility aid: it is not pixel-integrated flux, an optical blur, 
-	or a physical change in ring width.</p>
+	or a physical change in ring width.</p>python main.py --mode radiipython main.py --mode radii
     </div>
     <p><em>Experiments that go with this beat:</em> EXP-7 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
   <section id="beat6">
     <h2>Beat 6 · Coordinate radii are not image-plane radii</h2>
-    <p>Two panels. The left panel is a Schwarzschild coordinate-radius cross-section: \(r_s=2M\) and the photon sphere \(r_{\mathrm{ph}}=3M\). It is not a spacetime diagram. The right panel is the image plane: only the critical curve \(b_{\mathrm{crit}}\) is drawn on the capture map. A finite camera records an angular critical curve related to \(b_{\mathrm{crit}}\), not a ruler measurement of \(b\).</p>
+    <p>Beats 2 and 4 have now both used the symbol "radius" for two different concepts, 
+	and it is extremely easy to conflate the two. 
+	The left panel is a Schwarzschild coordinate-radius cross-section: \(r_s=2M\) and the photon 
+	sphere \(r_{\mathrm{ph}}=3M\). It is not a spacetime diagram. The right panel is the image plane: only the critical 
+	curve \(b_{\mathrm{crit}}\) is drawn on the capture map. A finite camera records an angular 
+	critical curve related to \(b_{\mathrm{crit}}\), not a ruler measurement of \(b\).</p>
 <pre>python main.py --mode radii</pre>
     <p><em>Experiments that go with this beat:</em> EXP-3 and EXP-8 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
@@ -315,7 +332,14 @@ python main.py --mode image --subring_spread 0.5</pre>
 \]
     </div>
 <pre>python main.py --mode weak</pre>
-    <p> The two curves agree at large \(b/M\) and come apart as \(b\to b_{\mathrm{crit}}^+\). That divergence is strong deflection: it permits higher-order images when a source supplies photons. It is not itself a photon ring.</p>
+
+    <p> The two curves agree at large \(b/M\) and diverge as \(b\to b_{\mathrm{crit}}^+\). That divergence is strong deflection: 
+	What is physically happening is that the ray's total asymptotic 
+	azimuth \(\Delta\phi_\infty\) exceeds \(2\pi\), more than one full turn around the hole.
+  
+    This is what makes higher-order images possible when a source supplies photons to bend. 
+	It is the mechanism behind a photon ring, not a photon ring by itself, since this 
+	mode does not model the presence of emitting matter.</p>
     <p><em>Experiments that go with this beat:</em> EXP-5 in <a href="#experiments">Suggested Experiments</a>.</p>
   </section>
 
