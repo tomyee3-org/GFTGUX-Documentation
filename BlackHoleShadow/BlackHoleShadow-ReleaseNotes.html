@@ -1,5 +1,28 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>BlackHoleShadow 1.4.0 Release Notes</title></head><body>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BlackHoleShadow 1.4.1 Release Notes</title><style>body{font:16px/1.65 Georgia,serif;max-width:1040px;margin:auto;padding:24px;color:#202025;background:#faf7f1}header,section{background:white;border:1px solid #d2cbc0;border-radius:7px;padding:20px 28px;margin:20px 0}header{border-top:6px solid #7b2d00}h1,h2,h3{color:#7b2d00}h1{margin-bottom:0}h2{border-bottom:1px solid #b5811a;padding-bottom:6px}a{color:#7b2d00}pre{background:#eee9df;padding:12px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.9em}img{display:block;max-width:100%;height:auto;margin:auto}figure{margin:20px 0}figcaption{font-style:italic;color:#51483c}li{margin:.3em 0}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{padding:8px 12px;border:1px solid #d2cbc0;text-align:left;vertical-align:top}th{background:#eee9df}.note{background:#f5f0e6;padding:12px 16px;border-left:4px solid #b5811a}.table-wrap{overflow-x:auto}footer{font-size:.8em;color:#51483c;padding:16px 0}@media(max-width:600px){body{padding:10px}header,section{padding:14px}th,td{padding:6px}}</style></head><body>
+<header><h1>BlackHoleShadow 1.4.1 Release Notes</h1>
+<p><b>Version:</b> 1.4.1 · <b>Build:</b> 66e118c0b45f</p>
+<p><b>Documentation updated:</b> 2026-10-13 (CDT)</p></header>
+<section id="current"><h2>Current Release</h2>
+<p>This update records the 1.4.1 Python fixes and the revised canonical Beats Help. Codex reviewed the Help and regenerated the Sample Outputs Guide. The core Python files are unchanged by this documentation update; no new independent-review approval is claimed.</p>
+<h3>Changes</h3><ul>
+<li>The CLI default <code>--subring_spread</code> is 0.05 pixel spacings. Explicit zero retains the unspread third-panel raster. The spread remains a display-only radial half-width, with the existing finite range 0–20 and lower-order priority in overlapping m = 3,4 bands.</li>
+<li>The image console identifies the selected spread and distinguishes its artificial display from the unspread raster maxima and radial profile. Physical calculations and quantitative results are unchanged.</li>
+<li>The current Help is <code>BlackHoleShadow.html</code>. The hidden <code>--sync-help</code> command updates only that file’s Version/Build stamp. Canonical-file discovery and synchronization regressions replace the older paired-format expectations; archived Helps are preserved.</li>
+<li>The revised Help consistently distinguishes physical mass from gravitational length, the dark disk from its critical-curve rim, and strictly captured rays from the ideal critical ray. Beat 8 separates coordinate radii, image-plane impact parameter and Einstein angle, with a combined A → B → C illustration.</li>
+<li>The Sample Outputs Guide now accompanies the single canonical Help and embeds 15 newly generated indexed PNGs: all nine default modes, three explicit spread settings (0, 0.25, 8), and the changed capture-grid, annulus-radius and galaxy-mass examples. The default third image panel uses spread 0.05; its radial profile remains unspread.</li>
+</ul>
+<h3>Verification</h3><p>All 115 tests and 55 subtests passed with no failures or skips in 100.12 seconds. The canonical suite was run once from tests/ against the revised Help and the unchanged 1.4.1 source. The review host used Python 3.12.14; this was not a Windows/Python 3.14 run.</p>
+<p>Run the canonical suite from <code>GFTGUX-Programs/BlackHoleShadow/tests</code>. In Windows PowerShell:</p>
+<pre>$env:MPLBACKEND = "Agg"
+python -W error::ResourceWarning -m pytest test_physics_bhs.py -v</pre>
+<p>For macOS/Linux, use <code>MPLBACKEND=Agg python -W error::ResourceWarning -m pytest test_physics_bhs.py -v</code>. Sample images were generated separately by the exact commands printed in their Guide. Their Version/Build footers and provenance sidecars identify the current source, and the quoted console values were checked against those runs.</p>
+<h3>Known Limitations</h3><p>The physical and numerical limitations remain: Schwarzschild, face-on static emitters, no orbital Doppler, and image orders through m = 4. Artificial spread is a visibility aid rather than integrated pixel flux or a physical ring width. Compare-mode distances are a toy geometry, not a cosmological distance calculation. The historical documentation-contract coverage gap is not claimed to be fully closed by this update.</p>
+<h3>Version Identification</h3><p>MODEL_VERSION: 1.4.1 · BUILD_ID: 66e118c0b45f</p>
+<p>The existing build calculation hashes the five core Python modules. Help, tests, Release Notes and the Sample Outputs Guide do not change that hash.</p></section>
+<h2 id="history">Earlier Release Notes — Preserved History</h2>
+<p>The following entries describe their respective releases. Earlier defaults, Help filenames, build IDs and test counts are retained as historical records.</p>
+
 <h1>BlackHoleShadow 1.4.0 Release Notes</h1>
 <p><b>Version:</b> 1.4.0</p><p><b>Build:</b> d94d7f9be528</p>
 <p><b>Date:</b> 2026-10-11 (CDT)</p>
@@ -325,5 +348,6 @@ any leftovers are documentation tone rather than incorrect physics.</li>
 <h2>Version Identification</h2>
 <p>MODEL_VERSION: 1.0.0</p><p>
 BUILD_ID: eaf36a217f39</p>
+
 
 </body></html>
