@@ -1,5 +1,22 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>BlackHoleSpacetimeVisualizer 1.4.0 Release Notes</title></head><body>
+<title>BlackHoleSpacetimeVisualizer 1.5.0 Release Notes</title></head><body>
+<h1>BlackHoleSpacetimeVisualizer 1.5.0 Release Notes</h1>
+<p><b>Version:</b> 1.5.0; <b>Build:</b> bdbc6ec1b770; <b>Date:</b> 2026-10-14 (CDT).</p>
+<h2>Changes</h2><ul>
+<li>The Vaidya teaching demo now has one apparent-versus-event-horizon panel. The nearby-ray/shooting illustration and its bracket-width annotation are removed.</li>
+<li>Normal command-line runs skip the forward-shooting calculation entirely, print only the primary horizon result, and write one horizon CSV. The retired <code>--bisect_iters</code> and <code>--n_family</code> controls are no longer accepted by the student CLI. The existing forward-diagnostic Python helper remains available for numerical regression checks and existing Python callers.</li>
+<li>The primary backward-integrated event and apparent horizon arrays are unchanged. The tests compare them exactly with the preceding diagnostic-enabled construction.</li>
+<li>The assembled canonical Help now uses MathJax for mathematical expressions, including formerly Unicode and pseudo-LaTeX code spans. Commands and actual file/column identifiers remain literal code. MathJax configuration precedes its asynchronous loader.</li>
+<li>The Vaidya discussion now describes the single plot and stable future-boundary construction. EXP-13 checks the exact no-accretion limit. The rest of the in-progress Help has not received a new scientific or editorial critique.</li>
+<li>Regenerated all four indexed sample figures and the supplied Vaidya PNG for this build. Updated the Sample Outputs Guide to match.</li>
+</ul><h2>Verification</h2><p>All 152 tests passed in 57.851 seconds on Python 3.12.14 with RuntimeWarning treated as an error and MPLBACKEND=Agg. All 77 Help expressions compiled in MathJax 3.2.2 without errors. The single-panel figure and typeset equations were visually inspected. This is not a Windows/Python 3.14 run.</p>
+<p>Run the canonical suite once from the program’s <code>tests</code> folder. In Windows PowerShell:</p>
+<pre>$env:MPLBACKEND = "Agg"
+python -W error::RuntimeWarning -m unittest discover -s . -p test_physics_bh.py -v</pre>
+<p>The existing physical limitations and previous audit history remain. No new independent-review approval or full review of the unfinished Help is claimed.</p>
+<h2>Preserved Release History</h2>
+<p>Earlier entries below describe their respective versions, displays, filenames and test counts.</p>
+
 <h1>BlackHoleSpacetimeVisualizer 1.4.0 Release Notes</h1>
 <p><b>Version:</b> 1.4.0; <b>Build:</b> 100876a488a0; <b>Date:</b> 2026-09-27.</p>
 <h2>Release Status</h2><p>Kickoff4 resumes the supplied 1.4.0 candidate
@@ -61,4 +78,5 @@ do not alter it.</p>
 <h4>Known Limitations</h4>
 <ul><li>Intended for education and conceptual exploration rather than research-grade numerical relativity.</li><li>Extreme parameter combinations may encounter computational-domain limits.</li><li>Tidal-force calculations use linearized geodesic-deviation approximations across finite separations.</li><li>Models remain idealized and do not include rotating black holes.</li></ul>
 <h4>Version Identification</h4>
-<p>MODEL_VERSION: 1.4.0 BUILD_ID: 100876a488a0</p></body></html>
+<p>MODEL_VERSION: 1.4.0 BUILD_ID: 100876a488a0</p>
+</body></html>
