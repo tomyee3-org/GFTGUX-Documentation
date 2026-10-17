@@ -241,7 +241,7 @@ a picture that belongs to the different, larger maximally-extended (Kruskal) spa
 <p>The equation this picture illustrates is \(z=2 \sqrt{r_s(r-r_s)}\)
 for the upper branch, with \(r_s=2GM/c^2\). Its height lives in
 an auxiliary drawing space. If you need a distance along the surface,
-use the CSV's <code>proper_radial_distance_m</code> column instead of
+use the CSV's <code>proper_radial_distance</code> column instead of
 reading the vertical axis as a physical altitude.</p>
 
 <p><em>Experiments that go with this beat:</em> <a href="#exp1">EXP-1</a>, <a href="#exp5">EXP-4</a>, 
@@ -464,9 +464,9 @@ does the local infall speed first exceed half the speed of light?</p></div>
 <div class="experiment-card">
 <div class="exp-num" id="exp5">EXP-4 — introductory/intermediate</div>
 <div class="exp-title">Coordinate Distance Is Not Proper Distance</div>
-<p>Using <code>--mode embed --csvdir ./data</code>, compare the <code>proper_radial_distance_m</code> 
-column with the naive coordinate difference \(r-r_s\) at a few radii out to 8 \(r_s\). Report the excess 
-as a percentage <em>of the coordinate difference</em>, i.e. \(100\times[(\)<code>proper_radial_distance_m</code>\()-(r-r_s)]/(r-r_s)\). 
+<p>Using <code>--mode embed --csvdir ./data</code>, compare the <code>proper_radial_distance</code> 
+column \(\ell(r)\) with the naive coordinate difference \(r-r_s\) at a few radii out to 8 \(r_s\). Report the excess 
+as a percentage <em>of the coordinate difference</em>, i.e. \(100\times[\ell(r) -(r-r_s)/(r-r_s)]\). 
 What is that percentage at \(r=2r_s\)? At \(r=8r_s\)? (The default 400-point linear grid happens 
 to land exactly on \(r=2r_s\) and \(r=8r_s\) for <code>--r_max_rs 8</code>; if you 
 change <code>--n_r</code> or <code>--r_max_rs</code>, you will need to interpolate.) 
@@ -476,7 +476,7 @@ State why the two are not equal even though both are "distance from the horizon.
 <div class="exp-num" id="exp9">EXP-5 — intermediate</div>
 <div class="exp-title">Compressing and Stretching Are Locked Together</div>
 <p>Using the <code>tidal</code> CSV for any mass, verify numerically that 
-<code>a_tangential</code> is exactly half of <code>a_radial</code> at every radius. 
+<code>a_tangential_g</code> is exactly half of <code>a_radial_g</code> at every radius. 
 Prove algebraically, from the two formulae in the equations section, that this 
 ratio holds at <em>every</em> radius for <em>every</em> mass, 
 not just as an approximation.</p>
@@ -537,7 +537,7 @@ Separately: confirm that the very first row of the <code>infall</code> CSV is ex
 <div class="exp-num" id="exp12">EXP-8 — intermediate/advanced</div>
 <div class="exp-title">Sudden vs. Gradual Accretion</div>
 <p>Run <code>--mode horizons --M0 5 --M1 10 --duration_rs0 0.5</code> (a near-instantaneous mass jump) and 
-compare the left-panel event-horizon curve with the default <code>--duration_rs0 10</code> run. 
+compare the event-horizon curve with the default <code>--duration_rs0 10</code> run. 
 Does the sudden case still rise smoothly before \(v_1\), or does its shape change qualitatively? 
 <code>--n_steps</code> controls only the output <em>sampling/plot</em> grid, not the underlying 
 geodesic integration (which uses its own adaptive step regardless), so raising it can make a plotted 
@@ -582,8 +582,13 @@ own words why the reported tidal acceleration should no longer be trusted as mor
 <div class="exp-title">Proper Distance Near the Throat and Far Away</div>
 
 <p>Using the <code>embed</code> CSV out to a large <code>--r_max_rs</code> (try 50), 
-fit the excess proper distance \(\Delta=(\)<code>proper_radial_distance_m</code>\()-(r-r_s)\) as a 
-function of \(r/r_s\) at large radius. Do not be surprised by abrupt behavior of \(\Delta\)
+fit the excess proper distance \(\Delta=\ell(r)-(r-r_s)\) as a 
+function of \(r/r_s\) at large radius. 
+
+In the embed CSV, <code>r</code>, <code>z</code> and <code>proper_radial_distance</code> (<i>i.e.</i> \(\ell(r)\)) are in meters;
+<code>r_over_rs</code> is dimensionless. These units are also stated in the first comment.
+
+Do not be surprised by abrupt behavior of \(\Delta\)
 near the horizon. Does \(\Delta\) approach a constant, grow, or shrink as \(r\to\infty\)? 
 Separately, examine the near-horizon behaviour: does your fit, or a direct look at the embedding formula, 
 suggest \(\Delta\) diverges, vanishes, or stays finite as \(r\to r_s^+\)? (Careful: it is the embedding's 
@@ -626,7 +631,13 @@ which would need the least. Justify your answer by performing research on the in
     <h3>Embedding diagram (mode <code>embed</code>)</h3>
     <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
       <tr><td class="pname">--M</td><td class="pdefault">10.0</td><td>\(M_\odot\)</td><td>Black-hole mass, shared by <code>embed</code>, <code>tidal</code> and <code>infall</code>. Any positive value is accepted; masses outside the range of astrophysically known black holes (roughly 2 to 5×10¹⁰ \(M_\odot\)) are flagged, not refused.</td></tr>
-      <tr><td class="pname">--r_max_rs</td><td class="pdefault">8.0</td><td>\(r_s\)</td><td>Outer radius plotted, in units of \(r_s\); must exceed 1. <strong>Shared between <code>embed</code> and <code>tidal</code></strong>, with different upper bounds for each: in <code>embed</code> the bound is 1000 (a picture whose whole point is the near-horizon throat is not usefully drawn much further out than that; try 5-20); in <code>tidal</code>, which is also used to verify the far-field \(1/r^3\) power law (Exercise EXP-8), it is a much looser 1e8, present only to keep the computation finite rather than for any pedagogical reason.</td></tr>
+      <tr><td class="pname">--r_max_rs</td><td class="pdefault">8.0</td><td>\(r_s\)</td>
+	  <td>Outer radius plotted, in units of \(r_s\); must exceed 1. 
+	  <strong>Shared between <code>embed</code> and <code>tidal</code></strong>, 
+	  with different upper bounds for each: in <code>embed</code> the bound is 1000 
+	  (a picture whose whole point is the near-horizon throat is not usefully drawn much further out than that; 
+	  try 5-20); in <code>tidal</code>, 
+	  it is a much looser 1e8, present only to keep the computation finite rather than for any pedagogical reason.</td></tr>
       <tr><td class="pname">--n_r</td><td class="pdefault">400</td><td>—</td><td>Radial points, shared by <code>embed</code> and <code>tidal</code>; from 10 to 200,000.</td></tr>
     </tbody></table>
 
@@ -653,11 +664,9 @@ which would need the least. Justify your answer by performing research on the in
       <tr><td class="pname">--M1</td><td class="pdefault">10.0</td><td>\(M_\odot\)</td><td>Final black-hole mass, after accretion. Must satisfy \(M_1\ge M_0\).</td></tr>
       <tr><td class="pname">--v1_rs0</td><td class="pdefault">5.0</td><td>\(r_{s0}/c\)</td><td>Advanced time at which accretion begins, in units of the initial light-crossing time \(r_{s0}/c\). The advanced-time origin is physically arbitrary, so this may be any finite value, including zero or negative — only <code>--duration_rs0</code> and the two margins below have a physically required positive sign.</td></tr>
       <tr><td class="pname">--duration_rs0</td><td class="pdefault">10.0</td><td>\(r_{s0}/c\)</td><td>Duration of the accretion episode; must be positive.</td></tr>
-      <tr><td class="pname">--v_start_margin_rs0</td><td class="pdefault">25.0</td><td>\(r_{s0}/c\)</td><td>How far before <code>--v1_rs0</code> the displayed run starts; must be positive. This selects <em>which event</em> on the one true event horizon is reported at the left edge of the plot, not a numerical accuracy setting: the event horizon only equals \(r_{s0}\) in the strict \(v\to-\infty\) limit, so every finite margin reports the horizon's genuine, physically nonzero displacement above \(r_{s0}\) at that specific earlier event (smaller for larger margins, since the displacement itself decays exponentially into the static past) — not a truncated estimate of a single fixed number converging as the margin grows (see the algorithm section and Exercise EXP-10).</td></tr>
+      <tr><td class="pname">--v_start_margin_rs0</td><td class="pdefault">25.0</td><td>\(r_{s0}/c\)</td><td>How far before <code>--v1_rs0</code> the displayed run starts; must be positive. This selects <em>which event</em> on the one true event horizon is reported at the left edge of the plot, not a numerical accuracy setting: the event horizon only equals \(r_{s0}\) in the strict \(v\to-\infty\) limit, so every finite margin reports the horizon's genuine, physically nonzero displacement above \(r_{s0}\) at that specific earlier event (smaller for larger margins, since the displacement itself decays exponentially into the static past).</td></tr>
       <tr><td class="pname">--v_end_margin_rs0</td><td class="pdefault">15.0</td><td>\(r_{s0}/c\)</td><td>How far past the end of accretion the integration and the plot extend; must be positive.</td></tr>
       <tr><td class="pname">--n_steps</td><td class="pdefault">6000</td><td>—</td><td>Output-grid <em>sampling/plot</em> resolution in advanced time only (from 200 to 200,000); it does not affect, and cannot be used to improve, the accuracy of the underlying geodesic integration, which uses its own internal adaptive step size regardless of this setting (see Exercise EXP-12).</td></tr>
-      <tr><td class="pname">--bisect_iters</td><td class="pdefault">60</td><td>—</td><td>Bisection iterations for the <strong>secondary, diagnostic</strong> forward-shooting search only (from 10 to 200); the reported event horizon itself is built by backward integration from an exact boundary condition and does not depend on this setting at all (see the algorithm section and Exercise EXP-13).</td></tr>
-      <tr><td class="pname">--n_family</td><td class="pdefault">9</td><td>—</td><td>Number of nearby geodesics drawn around the located event-horizon generator, for the "how a shooting method would find it" panel; 1 (no bracketing family, just the generator itself, presented without the escape/plunge legend) or 3 to 41 (a genuine bracketing family). 2 is rejected: it can be neither.</td></tr>
     </tbody></table>
   </section>
 
