@@ -1,5 +1,34 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>BlackHoleSpacetimeVisualizer 1.5.0 Release Notes</title></head><body>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BlackHoleSpacetimeVisualizer 1.5.2 Release Notes</title>
+<style>body{font:16px/1.65 Georgia,serif;color:#222;background:#f7f3ea;margin:0}main{max-width:1050px;margin:auto;padding:36px 44px;background:white}h1,h2,h3{color:#7b2d00}code,pre{font-family:Consolas,monospace;background:#f0ede4}pre{padding:12px;white-space:pre-wrap}section{margin-top:2em}a{color:#7b2d00}@media(max-width:700px){main{padding:20px}}@media print{main{padding:0}body{background:white}}</style>
+</head><body><main>
+<h1>BlackHoleSpacetimeVisualizer 1.5.2 Release Notes</h1>
+<p><b>Version:</b> 1.5.2; <b>Build:</b> 56579c64e7d1; <b>Date:</b> 2026-10-17 (CDT).</p>
+<h2>Release status</h2>
+<p>Kickoff5 is the candidate submitted by Codex and Tom for a new audit cycle. The four core Python files are unchanged from the submitted 1.5.2 console-fix candidate. The checks below establish the packaged baseline; they do not confer independent-audit approval.</p>
+<h2>Changes since the 1.5.0 baseline</h2>
+<ul>
+<li>The embedding CSV now names its length columns <code>r</code>, <code>z</code> and <code>proper_radial_distance</code>. Its first comment specifies meters for these columns. Column order, units and numerical data are unchanged; <code>r_over_rs</code> and <code>gaussian_curvature_K_per_m2</code> retain their names.</li>
+<li>Every tidal run prints <code>linearization_ratio</code>, including runs below the existing warning threshold.</li>
+<li>The infall summary prints both elapsed times with 17 significant figures. Public console output, command-line help and physics-function docstrings no longer refer to numbered Help exercises.</li>
+<li>Tom consolidated the Help around the four Beats, drawing primarily on the original Reference Guide, and retained eleven exercises. The current page uses MathJax and incorporates the agreed notation, CSV, parameter-table and interpretation corrections. Kickoff5 changes only its version/build stamp.</li>
+<li>The single-panel Vaidya display and primary backward construction introduced in 1.5.0 remain. The student CLI skips the legacy forward diagnostics. No numerical algorithm changes were made for Kickoff5.</li>
+<li>The documentation tests now parse valid attributes in command blocks, require four commands before executing the Beat checks, and compare MathJax delimiters rather than ordinary interval punctuation. The tests continue to require the single canonical Help file.</li>
+<li>The Sample Outputs Guide and all four indexed PNGs were regenerated for this build. The guide records the current CSV names, tidal diagnostic and full-precision elapsed-time output. Its companion figures folder contains the same PNGs and generating commands.</li>
+</ul>
+<h2>Verification</h2>
+<p id="kickoff5-verification">All 154 tests passed in 85.141 seconds in the recorded canonical run from the tests directory, with MPLBACKEND=Agg and RuntimeWarning treated as an error. Validation host: Linux, Python 3.12.14, NumPy 2.3.5 and Matplotlib 3.10.8; Windows/Python 3.14.6 was not exercised. All 153 Help expressions compiled with MathJax 3.2.2. All three current HTML documents passed HTML5 parsing and internal-anchor checks. The four sample figures and representative document sections were visually inspected.</p>
+<p>Run the suite once from <code>GFTGUX-Programs/BlackHoleSpacetimeVisualizer/tests</code>. In Windows PowerShell:</p>
+<pre>$env:MPLBACKEND = "Agg"
+python -W error::RuntimeWarning -m unittest discover -s . -p test_physics_bh.py -v</pre>
+<h2>Scope and remaining review</h2>
+<p>The new audit includes the merged Help, examples and exercises as well as the program. Author-owned wording follow-ups are recorded in the Kickoff5 text document. Tom will make further Help changes with Codex's assistance; Codex will handle code and test changes and maintain these companion documents.</p>
+<p>The model remains idealized: no rotation, charge, material response or realistic accretion disk. Embedding describes a spatial slice, finite-body tides use linearized separation, infall stops outside the horizon, and Vaidya accretion follows a prescribed nondecreasing null-dust mass function.</p>
+<p><code>BUILD_ID</code> covers only <code>physics_bh.py</code>, <code>driver_bh.py</code>, <code>plot_bh.py</code> and <code>main.py</code>. Help, test and companion-document edits do not change it.</p>
+<section id="prior-release-history"><h2>Preserved release history</h2>
+<p>The following prior notes are retained verbatim. Their exercise numbers, file sets, test counts and approval statements apply to those earlier candidates, not to Kickoff5.</p>
+
 <h1>BlackHoleSpacetimeVisualizer 1.5.0 Release Notes</h1>
 <p><b>Version:</b> 1.5.0; <b>Build:</b> bdbc6ec1b770; <b>Date:</b> 2026-10-14 (CDT).</p>
 <h2>Changes</h2><ul>
@@ -79,4 +108,5 @@ do not alter it.</p>
 <ul><li>Intended for education and conceptual exploration rather than research-grade numerical relativity.</li><li>Extreme parameter combinations may encounter computational-domain limits.</li><li>Tidal-force calculations use linearized geodesic-deviation approximations across finite separations.</li><li>Models remain idealized and do not include rotating black holes.</li></ul>
 <h4>Version Identification</h4>
 <p>MODEL_VERSION: 1.4.0 BUILD_ID: 100876a488a0</p>
-</body></html>
+
+</section></main></body></html>
