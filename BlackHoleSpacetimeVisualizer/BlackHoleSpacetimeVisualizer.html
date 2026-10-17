@@ -111,6 +111,9 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 .param-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
 .param-table tr:nth-child(even) td { background: var(--note-bg); }
 .param-table code { font-family: var(--mono); font-size: 0.85em; background: var(--code-bg); padding: 1px 4px; border-radius: 2px; }
+.param-table .pname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+.param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+
 
 .narrow-break { display: block; margin-bottom: 0px; }
 
@@ -130,11 +133,15 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 <div class="page-wrap">
 
 <header>
-<div class="badge">Supplement · Gravity from the Ground Up</div>
+<div class="badge">Gravity from the Ground Up</div>
 <h1><em>BlackHoleSpacetimeVisualizer</em> — Embedding, Tides, Infall and Horizons</h1>
-<p class="sub">A terminal walkthrough in four beats
-<br>Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a> · 
-Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header>
+<div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+        <a href="https://github.com/tomyee3-org/GFTGUX-Documentation" target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+</div>
+</header>
 
 <nav aria-label="Contents"><div class="nav-label">Overview</div>
 
@@ -278,7 +285,8 @@ The following compares tidal accelerations around a 10 solar mass black hole ver
 <p class="small-text">Output: Radial (stretching) and tangential (compressing) tidal acceleration between the two 
 ends of a test rod, vs. radius. 
 In addition, compares the tidal acceleration at the horizon and a "survival radius" across the input list of 
-black-hole masses.</p>
+black-hole masses. The console summary also prints linearization_ratio, the rod length divided 
+by the smallest sampled radius; EXP-9 uses it.</p>
 
 <p>A 10 solar mass hole gives a radial tidal 
 acceleration of \(1.9\times10^7\,g\) at the horizon — solidly lethal — while the supermassive black hole at the 
@@ -348,7 +356,7 @@ at the horizon itself — only this particular coordinate choice is.</p>
 <p>Read the proper time \(\tau\), Schwarzschild time \(t\),
 local speed and outward light's received/emitted frequency ratio. 
 The reason why the two times separate can be seen from the radial equations of motion,
-with \(E=\sqrt{1-r_s/r_0}\). The latter diverges at the horizon
+with \(E=\sqrt{1-r_s/r_0}\). The coordinate-time rate \(dt/d\tau\) diverges at the horizon 
 in Schwarzschild coordinates. The particle's own time stays finite.
 “Local static observer” has meaning only outside the horizon.</p>
 
@@ -495,17 +503,29 @@ not just as an approximation.</p>
 <div class="experiment-card">
 <div class="exp-num" id="exp10">EXP-6 — intermediate</div>
 <div class="exp-title">The Event Horizon's Memory</div>
-<p>Run <code>--mode horizons --M0 5 --M1 10 --v_start_margin_rs0 5</code>, then repeat 
-with 10, 15, 20 and 30, and record <code>r_crit_over_rs0</code> from the printed summary 
-each time. Plot \(\log(r_{\rm crit}/r_{s0}-1)\) against <code>--v_start_margin_rs0</code>. 
-The value \(r_{\rm crit}/r_{s0}-1\) at each margin is 
-the physical displacement of the true event horizon above the static radius \(r_{s0}\) 
-at that specific, earlier moment in advanced time (the event horizon equals \(r_{s0}\) 
-only in the strict \(v\to-\infty\) limit). Is the decay with increasing margin consistent 
-with an exponential? This shows the event horizon's 
-teleological character: the horizon "anticipates" accretion that has not 
-happened yet, arbitrarily far in advance, at an exponentially shrinking but never 
-literally zero displacement.</p>
+
+
+<p>Run <code>--mode horizons --M0 5 --M1 10 --v_start_margin_rs0 5</code>,
+then repeat with 10, 15, 20 and 30. Each time, record the value on the
+printed summary line <code>Event horizon at v_start: r/r_s0 = …</code>;
+call it \(r_{\rm EH}(v_{\rm start})/r_{s0}\). The summary rounds this to
+eight decimal places, which leaves few significant figures at the
+largest margins; for full precision add <code>--csvdir ./data</code> and
+read <code>r_EH_over_rs0</code> in the first data row of the CSV.
+Plot \(\ln\!\left(r_{\rm EH}(v_{\rm start})/r_{s0}-1\right)\) against
+<code>--v_start_margin_rs0</code>. The value
+\(r_{\rm EH}(v_{\rm start})/r_{s0}-1\) at each margin is the physical
+displacement of the true event horizon above the static radius
+\(r_{s0}\) at that specific, earlier moment in advanced time (the event
+horizon equals \(r_{s0}\) only in the strict \(v\to-\infty\) limit). Is
+the decay with increasing margin consistent with an exponential? This
+shows the event horizon's teleological character: the horizon
+"anticipates" accretion that has not happened yet, arbitrarily far in
+advance, at an exponentially shrinking but never literally zero
+displacement.</p>
+
+
+
 </div>
 
 <div class="experiment-card">
@@ -533,7 +553,7 @@ just above \(10^{-5}\)):</p>
 
 <p>As the step size decreases, truncation error initially falls. At sufficiently
    small steps, accumulated floating-point error can become dominant and the
-   error can grow again. Use your CSV results to identify these regimes. 
+   error can grow again. Use your results to identify these regimes. 
    These tests illustrate the limits of the RK4 integrator. 
 </p> 
 
@@ -666,7 +686,12 @@ performing research on the internet.</p>
     <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
       <tr><td class="pname">--r_min_rs</td><td class="pdefault">1.01</td><td>\(r_s\)</td><td>Innermost radius plotted, in units of \(r_s\); must exceed 1.</td></tr>
       <tr><td class="pname">--r_max_rs</td><td class="pdefault">8.0</td><td>\(r_s\)</td><td>Outer radius plotted; see the shared-parameter note under <code>embed</code> above. Up to 1e8 for <code>tidal</code>.</td></tr>
-      <tr><td class="pname">--separation</td><td class="pdefault">1.8</td><td>m</td><td>Proper length of the test rod, e.g. a human height. If <code>--separation</code> is not small compared with the sampled radius, the linearized geodesic-deviation approximation this program uses is no longer reliable, and the printed summary and CSV say so explicitly (see Exercise EXP-9).</td></tr>
+      <tr><td class="pname">--separation</td><td class="pdefault">1.8</td><td>m</td><td>Proper length of the test rod, e.g. a human height. 
+	  If <code>--separation</code> is not small compared with the sampled radius, the linearized geodesic-deviation approximation 
+	  this program uses is no longer reliable, 
+	  and the console "Notes on this run" say so explicitly; 
+      every tidal run also prints <code>linearization_ratio</code> (see Exercise
+      EXP-9).</td></tr>
       <tr><td class="pname">--limit_g</td><td class="pdefault">100.0</td><td>g</td><td>Illustrative tidal-acceleration survival threshold. Deliberately round; not a precise physiological claim.</td></tr>
       <tr><td class="pname">--compare_masses</td><td class="pdefault">None</td><td>\(M_\odot\)</td><td>Comma-separated masses for the cross-mass comparison table and the two extra panels, e.g. <code>10,4.31e6</code>. At most 12 entries.</td></tr>
     </tbody></table>
