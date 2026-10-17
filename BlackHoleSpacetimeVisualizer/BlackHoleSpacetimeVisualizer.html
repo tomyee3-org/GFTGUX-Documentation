@@ -170,7 +170,7 @@ Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFT
   embedding diagram of the curved spatial geometry around the hole; 
   <code>tidal</code> computes the stretching and compressing tidal acceleration a body feels at a given radius, 
   and compares that across black-hole masses; <code>infall</code> follows a test particle dropped from rest 
-  all the way to the horizon, in both its own time and a distant observer's; 
+  to just outside the horizon, in both its own time and a distant observer's; 
   and <code>horizons</code> makes visible a distinction that is usually only stated in words — the difference 
   between the local, instantaneous <em>apparent</em> horizon and the global, teleological <em>event</em> horizon of 
   a black hole that is actively gaining mass.</p>
@@ -223,8 +223,8 @@ gravitational attraction is not part of what the embedding actually shows.</p>
 </div>
 
 <p>The default run (<code>--mode embed</code>) draws 
-Flamm's paraboloid for a ten solar-mass black hole: 
-a Schwarzschild radius of \(29.5\,\mathrm{km}\), y at the horizon.</p>
+Flamm's paraboloid for a ten solar-mass black hole, 
+with Schwarzschild radius \(29.5\,\mathrm{km}\) and throat at \(r=r_s\).</p>
 
 <pre class="narrow-break"><code>python main.py --mode embed --M 10</code></pre>
 <p class = "small-text">Output: The embedding of the equatorial, constant-time Schwarzschild 
@@ -265,10 +265,13 @@ scaling directly rather than take it on faith.</p>
 to each other according to the geodesic deviation equation, governed by the Riemann tensor. 
 For Schwarzschild, in the local orthonormal frame of an observer at radius 
 \(r\) (static or radially infalling — the radial components turn out to be the same for both):</p>
-\[a_{\rm radial} = \frac{2GM}{r^3}\,\delta r \quad(\text{stretching: the two ends pull apart}), \] 
+\[a_{\rm radial} = \frac{2GM}{r^3}\,\delta \ell \quad(\text{stretching: the two ends pull apart}), \] 
 \[a_{\rm tangential} = \frac{GM}{r^3}\,\delta\ell \quad(\text{compressing: the two ends push together,
 each transverse direction}).\]
 </div>
+<p>Radial stretching and transverse compression are magnitudes for a small 
+proper separation along the relevant local direction. At each mass's own
+\(r_s\propto M\), the radial magnitude scales as \(M^{-2}\).</p>
 
 The following compares tidal accelerations around a 10 solar mass black hole versus those around a supermassive black hole:
 <pre class="narrow-break"><code>python main.py --mode tidal --M 10 --compare_masses 10,4.31e6</code></pre>
@@ -282,14 +285,10 @@ acceleration of \(1.9\times10^7\,g\) at the horizon — solidly lethal — while
 centre of the Milky Way, Sgr A* at \(4.31\times10^6\,M_\odot\), manages only about \(10^{-4}\,g\) there: 
 gentle enough that, by this criterion alone, you would not notice crossing its horizon.</p>
 
-<p>Radial stretching and transverse compression are magnitudes; the names
-carry their opposite signs. For small proper separation \(\delta\ell\),
-the local coefficients give \(a_{\rm radial}=2GM\delta\ell/r^3\) and
-\(a_{\rm transverse}=GM\delta\ell/r^3\). At each mass's own
-\(r_s\propto M\), the radial magnitude scales as \(M^{-2}\).</p>
 
 
-<div class="eq-block"><div class="eq-label"><b>Illustrative survival radius:</b>
+
+<div class="eq-block"><div class="eq-label"><b>Illustrative survival radius:</b></div>
   \[r_{\rm crit} = \left(\frac{2GM\,\delta\ell}{a_{\rm limit}}\right)^{1/3}, \qquad a_{\rm limit} = \texttt{limit\_g}\times g.\]
 </div>
 <p>Solving \(a_{\rm radial}=a_{\rm limit}\) for \(r\) gives the radius at which a body of 
@@ -297,7 +296,7 @@ length \(\delta\ell\) first experiences a chosen illustrative tidal-acceleration
 Comparing \(r_{\rm crit}\) with \(r_s\) tells you whether that threshold is reached outside the horizon (the body 
 is destroyed before crossing) or only inside it (the body crosses intact, by this criterion). \(\texttt{limit\_g}\)
 is an illustrative number (set to \(100\,g\) in the plot), 
-not a precise claim of whether a real body survices.</p>
+not a precise claim of whether a real body survives.</p>
 
 <p><em>Experiments that go with this beat:</em> <a href="#exp9">EXP-5</a>, 
 <a href="#exp15">EXP-9</a> in
@@ -308,16 +307,18 @@ not a precise claim of whether a real body survices.</p>
 <section id="b2"><h2>Beat 2 · Infall</h2>
 
 <p>A particle falling into a Schwarzschild black hole experiences nothing pathological at the horizon: 
-its proper time runs smoothly and it crosses in a finite, ordinary interval. A distant observer 
-watching it fall sees something entirely different. The Schwarzschild \(t\) coordinate — which 
-is also the time kept by a clock very far from the hole — takes longer and longer to advance the 
-closer the particle gets to the horizon, formally diverging as the particle approaches it, so that 
-a distant observer never actually sees the crossing happen. The two clocks are not in conflict: 
-they are simply measuring different things, one the particle's own elapsed time, the other a 
-coordinate defined by, and only meaningful to, observers who stay far away. 
-Accompanying the coordinate-time divergence is a genuine, observable effect: 
-light sent outward by the falling particle is progressively redshifted and, in the strict 
-mathematical limit, never quite finishes arriving — which is the precise sense in which an 
+its proper time runs smoothly and it crosses in a finite, ordinary interval. A distant observer
+never actually sees the crossing happen.</p>
+
+<p>Schwarzschild coordinate time \(t\) is normalized to the clock of a static
+observer at infinity. It diverges as the infaller approaches the horizon,
+while the infaller's own elapsed proper time stays finite. Signals emitted
+closer and closer to the horizon reach a distant observer progressively
+later and with lower frequency. Each outward signal emitted at a fixed
+radius outside the horizon can arrive in finite time; the limiting signal
+from the crossing does not escape.</p>
+
+<p>This is the precise sense in which an 
 object falling into a black hole is said to "freeze and fade" as seen from outside, even though 
 nothing freezes from the particle's own point of view.</p>
 
@@ -345,20 +346,28 @@ the particle's own \(\tau\) does not, and nothing in the underlying physics is s
 at the horizon itself — only this particular coordinate choice is.</p>
 
 <p>Read the proper time \(\tau\), Schwarzschild time \(t\),
-local speed and outward light's received/emitted frequency ratio. To
-see why the two times separate, the radial geodesic gives
-\((dr/d\tau)^2=c^2(r_s/r-r_s/r_0)\) but
-\(dt/d\tau=E/(1-r_s/r)\), with
-\(E=\sqrt{1-r_s/r_0}\). The latter diverges at the horizon
+local speed and outward light's received/emitted frequency ratio. 
+The reason why the two times separate can be seen from the radial equations of motion,
+with \(E=\sqrt{1-r_s/r_0}\). The latter diverges at the horizon
 in Schwarzschild coordinates. The particle's own time stays finite.
 “Local static observer” has meaning only outside the horizon.</p>
 
 
 <div class="eq-block"><div class="eq-label"><b>Local speed and redshift:</b></div>
-  \[v_{\rm local}(r) = \frac{1}{E}\sqrt{\frac{r_s}{r}-\frac{r_s}{r_0}}\ \longrightarrow\ 1 \text{ as } r\to r_s, \]
-  \[\frac{\nu_{\rm obs}}{\nu_{\rm emit}} = \sqrt{1-\frac{r_s}{r}}\ \sqrt{\frac{1-v_{\rm local}}{1+v_{\rm local}}}\ \longrightarrow\ 0 \text{ as } r\to r_s.\]
+  \[\beta(r)\equiv\frac{v_{\rm local}(r)}{c}
+    =\frac{1}{E}\sqrt{\frac{r_s}{r}-\frac{r_s}{r_0}}
+    \longrightarrow 1\quad(r\to r_s^+),\]
+  \[\frac{\nu_{\rm obs}}{\nu_{\rm emit}}
+    =\sqrt{1-\frac{r_s}{r}}
+     \sqrt{\frac{1-\beta}{1+\beta}}.\]	
 </div>
-<p>The redshift factor is the product of the ordinary gravitational redshift for a static source at \(r\) and the special-relativistic Doppler factor for that source's local motion relative to a static observer it is passing. For a particle released from rest at infinity (\(E=1\)) this collapses to the well-known closed form \(\nu_{\rm obs}/\nu_{\rm emit}=1-\sqrt{r_s/r}\).</p>
+<p>The redshift factor is the product of the ordinary gravitational redshift for a 
+static source at \(r\) and the special-relativistic Doppler factor for that source's 
+local motion relative to a static observer it is passing. For a particle released 
+from rest at infinity (\(E=1\)) this collapses to the well-known closed form 
+\(\nu_{\rm obs}/\nu_{\rm emit}=1-\sqrt{r_s/r}\).<br>
+Note: In the CSV, \(\beta(r)\) corresponds to the <code>v_local_over_c</code> column.
+</p>
 
 <p><em>Experiments that go with this beat:</em> <a href="#exp3">EXP-2</a>, 
 <a href="#exp11">EXP-7</a> in
@@ -373,10 +382,11 @@ Once the hole is allowed to change — by swallowing matter, or, in principle, b
 evaporating — the two boundaries diverge, 
 and the distinction is one of the more important ideas in modern black-hole physics.</p>
 
-<p>The apparent horizon is defined locally, at a single instant: 
-it is the outermost surface where outward-pointing light rays instantaneously fail 
-to increase their radius. You can find it from the geometry at that moment alone, with 
-no knowledge of the future.</p>
+<p>In this spherically symmetric model, the apparent horizon is the round
+   surface where the outward light-ray expansion vanishes: outgoing radial
+   light instantaneously has \(dr/dv=0.\) Here it lies at \(r_{\rm AH}(v)=2M(v),\) in
+   geometrized units, and can be located without knowing the future mass
+   history.</p>
 
 <p>The event horizon is defined globally: 
 it is the boundary of the set of events from which a light ray can never escape to 
@@ -389,10 +399,9 @@ larger than the apparent horizon throughout the accretion, and it starts rising 
 <em>before</em> the accretion begins.</p>
 
 <div class="eq-block"><div class="eq-label"><b>The ingoing Vaidya line element:</b> (as a solution of the Einstein field equations for infalling null dust)</div>
-<p>To model a hole that gains mass, replace the constant \(M\) in the Schwarzschild 
-metric with a prescribed, non-decreasing function \(M(v)\) of the ingoing null (advanced-time) coordinate \(v\):</p>
+<p>In ingoing advanced coordinates, let the mass depend on \(v\):</p>
 
-  \[ds^2 = -\left(1-\frac{2M(v)}{r}\right)dv^2 + 2\,dv\,dr + r^2d\Omega^2 \qquad (G=c=1 \text{ in this line}).\]
+  \[ds^2 = -\left(1-\frac{2M(v)}{r}\right)dv^2 + 2\,dv\,dr + r^2d\Omega^2 \qquad (G=c=1).\]
 </div>
 <p>This program uses a mass function that ramps linearly from \(M_0\) to \(M_1\) between advanced times \(v_1\) and \(v_2\), with \(v_2-v_1\) set by <code>--duration_rs0</code> in units of \(r_{s0}\), and is constant before and after — a simple, explicit, student-chosen stand-in for an accretion episode, not a result of an accretion-physics calculation.</p>
 <div class="eq-block"><div class="eq-label"><b>Apparent horizon:</b></div>
@@ -452,7 +461,7 @@ does the local infall speed first exceed half the speed of light?</p></div>
 <div class="exp-num" id="exp4">EXP-3 — Introductory</div>
 <div class="exp-title">Two Kinds of Horizon</div>
  <p>Run <code>python main.py --mode horizons --M0 5 --M1 10 --csvdir ./data</code>. 
- Recall the difference beween the apparent horizon and the event 
+ Recall the difference between the apparent horizon and the event 
  horizon. 
  From the CSV, find the first value of \(v/r_{s0}\) at 
  which \(|r_{EH}-r_{AH}|/r_{s0} > 10^{-3}\) — a value at which one could say that
@@ -466,7 +475,7 @@ does the local infall speed first exceed half the speed of light?</p></div>
 <div class="exp-title">Coordinate Distance Is Not Proper Distance</div>
 <p>Using <code>--mode embed --csvdir ./data</code>, compare the <code>proper_radial_distance</code> 
 column \(\ell(r)\) with the naive coordinate difference \(r-r_s\) at a few radii out to 8 \(r_s\). Report the excess 
-as a percentage <em>of the coordinate difference</em>, i.e. \(100\times[\ell(r) -(r-r_s)/(r-r_s)]\). 
+as a percentage <em>of the coordinate difference</em>, i.e. \(100\,\frac{\ell(r)-(r-r_s)}{r-r_s}\). 
 What is that percentage at \(r=2r_s\)? At \(r=8r_s\)? (The default 400-point linear grid happens 
 to land exactly on \(r=2r_s\) and \(r=8r_s\) for <code>--r_max_rs 8</code>; if you 
 change <code>--n_r</code> or <code>--r_max_rs</code>, you will need to interpolate.) 
@@ -506,10 +515,12 @@ literally zero displacement.</p>
 closed-form solution, the same "cycloid" parametrisation used for Newtonian radial 
 (zero-angular-momentum) Kepler infall: with \(\eta\) running from 0 (at \(r=r_0\)) 
 to \(\eta_{\rm stop}=\arccos(2r_{\rm stop}/r_0-1)\),
+
 \[r(\eta)=\tfrac{r_0}{2}(1+\cos\eta), \qquad \tau(\eta)=\sqrt{\tfrac{r_0^3}{8GM}}\,(\eta+\sin\eta).\]
+
 Run <code>--mode infall --M 10 --r0_rs 6</code> 
-(default <code>--r_stop_rs 1.0005</code>) and compare the printed 
-<code>tau_total_ms</code> with \(\tau(\eta_{\rm stop})\) from this formula. 
+(default <code>--r_stop_rs 1.0005</code>) and compare the printed proper time
+<code>tau</code> with \(\tau(\eta_{\rm stop})\) from this formula. 
 You should find agreement to better than one part in \(10^5\) even at the coarsest allowed 
 <code>--step_frac 0.2</code>. Now repeat with <code>--step_frac</code> at 0.1, 0.05, 0.02, 0.01 and 0.005, 
 and plot the relative error on a log scale against <code>--step_frac</code> (also on a log scale). 
@@ -518,21 +529,26 @@ consistent with (though not an exact multiple of) RK4's fourth-order accuracy �
 <code>--step_frac 0.005</code>, where the shrinking RK4 truncation error and the accumulated 
 floating-point round-off from many more, individually tinier steps become comparable in size. 
 Now push further, to <code>--step_frac</code> 0.001, 0.0001 and 0.00002 (near the smallest accepted value, 
-just above \(10^{-5}\)): the relative error does <em>not</em> settle into a floor that it stays at or below 
-forever. It reaches its smallest values (order \(10^{-10}\) to \(10^{-11}\)) somewhere around 
-<code>--step_frac</code> 0.005-0.0002, then climbs measurably back up as <code>--step_frac</code> keeps 
-shrinking — order \(10^{-8}\) to \(10^{-7}\) by the time you reach the smallest accepted values — 
-as accumulated round-off from ever more, ever tinier floating-point steps comes to dominate the 
-(by then already tiny) RK4 truncation error. Confirm this climb-back-out empirically from your own 
-data: it is real, not noise, and it is the actual, honest limiting behaviour of this integrator. 
-The claim that <em>does</em> hold throughout, and is worth confirming directly: across the entire accepted 
-<code>--step_frac</code> range, the relative error never exceeds its own value at the coarsest 
-allowed step size (<code>--step_frac 0.2</code>) — refining <code>--step_frac</code> below about 0.005 
-is never necessary for accuracy here, and can occasionally cost a little of it back, 
-but it never costs enough to violate the one-part-in-\(10^5\) tolerance this exercise opened with. 
-Separately: confirm that the very first row of the <code>infall</code> CSV is exactly 
+just above \(10^{-5}\)):</p>
+
+<p>As the step size decreases, truncation error initially falls. At sufficiently
+   small steps, accumulated floating-point error can become dominant and the
+   error can grow again. Use your CSV results to identify these regimes. 
+   These tests illustrate the limits of the RK4 integrator. 
+</p> 
+
+
+<p>Separately: confirm that the very first row of the <code>infall</code> CSV is exactly 
 \(\tau=0\), \(t=0\), \(r=r_0\) — the actual release event.</p>
+<p>Note: For precise comparison, it is recommended that you use the IAU nominal solar mass parameter
+and the defined speed of light:
+\[ (GM)^N_\odot = 1.3271244 \times 10^{20}\, \mathrm{m^3\,s^{-2}}, \quad c = 299792458 \,\mathrm{m\,s^{-1}}  \qquad \text{(superscript "N" means "nominal")} \]
+</p>
+<p>The exact closed form value of \(\tau\) for this exercise evaluates to \( \tau_{\rm exact} = 2.2048475035379664 \, \mathrm{ms} \)</p>
+
+
 </div>
+
 <div class="experiment-card">
 <div class="exp-num" id="exp12">EXP-8 — intermediate/advanced</div>
 <div class="exp-title">Sudden vs. Gradual Accretion</div>
@@ -542,11 +558,11 @@ Does the sudden case still rise smoothly before \(v_1\), or does its shape chang
 <code>--n_steps</code> controls only the output <em>sampling/plot</em> grid, not the underlying 
 geodesic integration (which uses its own adaptive step regardless), so raising it can make a plotted 
 curve look smoother but cannot itself resolve a genuinely under-integrated feature. 
-The backward integrator's own internal step size is not a setting this program's CLI exposes, 
-so treat what you see here as a question about the <em>physical</em> sharpness of the transition, 
-not about integration resolution.
-Using \(|r_{EH}-r_{AH}|/r_{s0}\ge10^{-3}\) as your quantitative criterion for "measurably distinct" 
-(the complement of the indistinguishability threshold used in EXP-3), what would you expect to happen 
+<code>--n_steps</code> changes the output sampling, not the integration
+  accuracy.
+
+Using \(|r_{EH}-r_{AH}|/r_{s0}\gt10^{-3}\) as your quantitative criterion for "measurably distinct" 
+(the same threshold used in EXP-3), what would you expect to happen 
 to the anticipation lead-time (how far before \(v_1\) the event horizon first becomes distinct 
 from the apparent horizon by that criterion) as the accretion becomes more sudden? 
 Check your prediction against both runs.</p>
@@ -558,7 +574,7 @@ Check your prediction against both runs.</p>
 <p>By hand, derive the Newtonian tidal acceleration between two points separated by \(\delta r\) along the line 
 to a point mass \(M\) at distance \(r\), starting from \(g(r)=GM/r^2\) and a first-order Taylor expansion. 
 Compare your result term-for-term with the program's \(a_{\rm radial}\) formula: the <em>coefficient</em>
-\(2GM/r^3\) agrees exactly, term for term, with the corresponding Schwarzschild curvature component. 
+\(2GM/r^3\) agrees exactly, term for term, with the corresponding relativistic tidal coefficient. 
 Given that agreement, what precisely does general relativity add to this particular calculation? 
 (Consider what it means that the coefficient is asserted to hold arbitrarily close to, and 
 inside, \(r_s\) — a regime where the Newtonian derivation's own assumptions no longer 
@@ -588,8 +604,8 @@ function of \(r/r_s\) at large radius.
 In the embed CSV, <code>r</code>, <code>z</code> and <code>proper_radial_distance</code> (<i>i.e.</i> \(\ell(r)\)) are in meters;
 <code>r_over_rs</code> is dimensionless. These units are also stated in the first comment.
 
-Do not be surprised by abrupt behavior of \(\Delta\)
-near the horizon. Does \(\Delta\) approach a constant, grow, or shrink as \(r\to\infty\)? 
+Coarse radial sampling can make the first step of \(\Delta\) (near the horizon) look abrupt.
+Does \(\Delta\) approach a constant, grow, or shrink as \(r\to\infty\)? 
 Separately, examine the near-horizon behaviour: does your fit, or a direct look at the embedding formula, 
 suggest \(\Delta\) diverges, vanishes, or stays finite as \(r\to r_s^+\)? (Careful: it is the embedding's 
 <em>slope</em> \(dz/dr\) that diverges at the throat, not the proper distance itself, which shrinks to zero 
@@ -604,9 +620,9 @@ embedded surface.</p>
 
 <p>Every real astrophysical black hole is expected to rotate and is therefore better described 
 by the Kerr metric than by Schwarzschild. Read in your textbook how the Kerr event horizon and 
-ergosphere differ from their Schwarzschild counterparts, and identify, specifically, which of this 
-program's four calculations would need the most substantial revision for a rotating hole and 
-which would need the least. Justify your answer by performing research on the internet.</p>
+ergosphere differ from their Schwarzschild counterparts, and identify how each of these 
+program's four calculations would need to be revised. Justify your answer by 
+performing research on the internet.</p>
 </div>
 
 
@@ -630,7 +646,12 @@ which would need the least. Justify your answer by performing research on the in
 
     <h3>Embedding diagram (mode <code>embed</code>)</h3>
     <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
-      <tr><td class="pname">--M</td><td class="pdefault">10.0</td><td>\(M_\odot\)</td><td>Black-hole mass, shared by <code>embed</code>, <code>tidal</code> and <code>infall</code>. Any positive value is accepted; masses outside the range of astrophysically known black holes (roughly 2 to 5×10¹⁰ \(M_\odot\)) are flagged, not refused.</td></tr>
+      <tr><td class="pname">--M</td><td class="pdefault">10.0</td><td>\(M_\odot\)</td><td>Black-hole mass, shared by <code>embed</code>, 
+	  <code>tidal</code> and <code>infall</code>. 
+	  Positive finite mass, within the program's computational bounds
+      \(10^{-38}\le M/M_\odot\le10^{80}\).
+      Values outside the range of astrophysically known black holes (roughly \(2\) to \(5\times10^{10} M_\odot\)) are flagged with a warning.
+	  </td></tr>
       <tr><td class="pname">--r_max_rs</td><td class="pdefault">8.0</td><td>\(r_s\)</td>
 	  <td>Outer radius plotted, in units of \(r_s\); must exceed 1. 
 	  <strong>Shared between <code>embed</code> and <code>tidal</code></strong>, 
@@ -644,8 +665,8 @@ which would need the least. Justify your answer by performing research on the in
     <h3>Tidal acceleration (mode <code>tidal</code>)</h3>
     <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
       <tr><td class="pname">--r_min_rs</td><td class="pdefault">1.01</td><td>\(r_s\)</td><td>Innermost radius plotted, in units of \(r_s\); must exceed 1.</td></tr>
-      <tr><td class="pname">--r_max_rs</td><td class="pdefault">10.0</td><td>\(r_s\)</td><td>Outer radius plotted; see the shared-parameter note under <code>embed</code> above. Up to 1e8 for <code>tidal</code>.</td></tr>
-      <tr><td class="pname">--separation</td><td class="pdefault">1.8</td><td>m</td><td>Proper length of the test rod, e.g. a human height. If <code>--separation</code> is not small compared with the sampled radius, the linearized geodesic-deviation approximation this program uses is no longer reliable, and the printed summary and CSV say so explicitly (see Exercise EXP-15).</td></tr>
+      <tr><td class="pname">--r_max_rs</td><td class="pdefault">8.0</td><td>\(r_s\)</td><td>Outer radius plotted; see the shared-parameter note under <code>embed</code> above. Up to 1e8 for <code>tidal</code>.</td></tr>
+      <tr><td class="pname">--separation</td><td class="pdefault">1.8</td><td>m</td><td>Proper length of the test rod, e.g. a human height. If <code>--separation</code> is not small compared with the sampled radius, the linearized geodesic-deviation approximation this program uses is no longer reliable, and the printed summary and CSV say so explicitly (see Exercise EXP-9).</td></tr>
       <tr><td class="pname">--limit_g</td><td class="pdefault">100.0</td><td>g</td><td>Illustrative tidal-acceleration survival threshold. Deliberately round; not a precise physiological claim.</td></tr>
       <tr><td class="pname">--compare_masses</td><td class="pdefault">None</td><td>\(M_\odot\)</td><td>Comma-separated masses for the cross-mass comparison table and the two extra panels, e.g. <code>10,4.31e6</code>. At most 12 entries.</td></tr>
     </tbody></table>
@@ -666,7 +687,7 @@ which would need the least. Justify your answer by performing research on the in
       <tr><td class="pname">--duration_rs0</td><td class="pdefault">10.0</td><td>\(r_{s0}/c\)</td><td>Duration of the accretion episode; must be positive.</td></tr>
       <tr><td class="pname">--v_start_margin_rs0</td><td class="pdefault">25.0</td><td>\(r_{s0}/c\)</td><td>How far before <code>--v1_rs0</code> the displayed run starts; must be positive. This selects <em>which event</em> on the one true event horizon is reported at the left edge of the plot, not a numerical accuracy setting: the event horizon only equals \(r_{s0}\) in the strict \(v\to-\infty\) limit, so every finite margin reports the horizon's genuine, physically nonzero displacement above \(r_{s0}\) at that specific earlier event (smaller for larger margins, since the displacement itself decays exponentially into the static past).</td></tr>
       <tr><td class="pname">--v_end_margin_rs0</td><td class="pdefault">15.0</td><td>\(r_{s0}/c\)</td><td>How far past the end of accretion the integration and the plot extend; must be positive.</td></tr>
-      <tr><td class="pname">--n_steps</td><td class="pdefault">6000</td><td>—</td><td>Output-grid <em>sampling/plot</em> resolution in advanced time only (from 200 to 200,000); it does not affect, and cannot be used to improve, the accuracy of the underlying geodesic integration, which uses its own internal adaptive step size regardless of this setting (see Exercise EXP-12).</td></tr>
+      <tr><td class="pname">--n_steps</td><td class="pdefault">6000</td><td>—</td><td>Output-grid <em>sampling/plot</em> resolution in advanced time only (from 200 to 200,000); it does not affect, and cannot be used to improve, the accuracy of the underlying geodesic integration, which uses its own internal adaptive step size regardless of this setting (see Exercise EXP-8).</td></tr>
     </tbody></table>
   </section>
 
