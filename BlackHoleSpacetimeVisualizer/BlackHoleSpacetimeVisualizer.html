@@ -163,7 +163,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 <a href="#limits">Domain of validity</a>
 <a href="#license">License</a></nav>
 <main id="content">
-<p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">Version 1.5.2&nbsp;&nbsp;&nbsp;&nbsp;Build 56579c64e7d1</p>
+<p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">Version 1.5.3&nbsp;&nbsp;&nbsp;&nbsp;Build d460bb1a712f</p>
 
 
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
@@ -504,14 +504,10 @@ not just as an approximation.</p>
 <div class="exp-num" id="exp10">EXP-6 — intermediate</div>
 <div class="exp-title">The Event Horizon's Memory</div>
 
-
 <p>Run <code>--mode horizons --M0 5 --M1 10 --v_start_margin_rs0 5</code>,
 then repeat with 10, 15, 20 and 30. Each time, record the value on the
 printed summary line <code>Event horizon at v_start: r/r_s0 = …</code>;
-call it \(r_{\rm EH}(v_{\rm start})/r_{s0}\). The summary rounds this to
-eight decimal places, which leaves few significant figures at the
-largest margins; for full precision add <code>--csvdir ./data</code> and
-read <code>r_EH_over_rs0</code> in the first data row of the CSV.
+call it \(r_{\rm EH}(v_{\rm start})/r_{s0}\). 
 Plot \(\ln\!\left(r_{\rm EH}(v_{\rm start})/r_{s0}-1\right)\) against
 <code>--v_start_margin_rs0</code>. The value
 \(r_{\rm EH}(v_{\rm start})/r_{s0}-1\) at each margin is the physical
@@ -523,7 +519,6 @@ shows the event horizon's teleological character: the horizon
 "anticipates" accretion that has not happened yet, arbitrarily far in
 advance, at an exponentially shrinking but never literally zero
 displacement.</p>
-
 
 
 </div>
@@ -687,11 +682,8 @@ performing research on the internet.</p>
       <tr><td class="pname">--r_min_rs</td><td class="pdefault">1.01</td><td>\(r_s\)</td><td>Innermost radius plotted, in units of \(r_s\); must exceed 1.</td></tr>
       <tr><td class="pname">--r_max_rs</td><td class="pdefault">8.0</td><td>\(r_s\)</td><td>Outer radius plotted; see the shared-parameter note under <code>embed</code> above. Up to 1e8 for <code>tidal</code>.</td></tr>
       <tr><td class="pname">--separation</td><td class="pdefault">1.8</td><td>m</td><td>Proper length of the test rod, e.g. a human height. 
-	  If <code>--separation</code> is not small compared with the sampled radius, the linearized geodesic-deviation approximation 
-	  this program uses is no longer reliable, 
-	  and the console "Notes on this run" say so explicitly; 
-      every tidal run also prints <code>linearization_ratio</code> (see Exercise
-      EXP-9).</td></tr>
+	  If <code>--separation</code> is not small compared with the sampled radius, the linearized geodesic-deviation approximation
+	  this program uses is no longer reliable, and the printed summary and CSV say so explicitly (see Exercise EXP-9).</td></tr>
       <tr><td class="pname">--limit_g</td><td class="pdefault">100.0</td><td>g</td><td>Illustrative tidal-acceleration survival threshold. Deliberately round; not a precise physiological claim.</td></tr>
       <tr><td class="pname">--compare_masses</td><td class="pdefault">None</td><td>\(M_\odot\)</td><td>Comma-separated masses for the cross-mass comparison table and the two extra panels, e.g. <code>10,4.31e6</code>. At most 12 entries.</td></tr>
     </tbody></table>
