@@ -2,21 +2,23 @@
 <h1>BlackHoleSpacetimeVisualizer 1.5.3 Release Notes</h1>
 <p><b>Version:</b> 1.5.3; <b>Build:</b> d460bb1a712f; <b>Date:</b> 2026-10-18 (CDT; documentation revision).</p>
 <h2>Release Status</h2>
-<p>Codex and Tom Response to Audit51 continues Kickoff5. The current code-changing round is 1.5.3; the preceding code-changing round was the 1.5.2 console fix incorporated into Kickoff5. Claude Audit51 recommends HOLD for four non-OK P3 documentation items on 1.5.2. Grok Audit51 accepts the kickoff baseline and requires T1–T3 before finalization. Neither reviewer has yet reviewed this 1.5.3 response. Tom’s 18 October Help revision resolves the remaining P3 precision wording. All four Audit51 P3 findings are addressed in this response; independent confirmation is pending. Optional P4 items remain below. Tom has rebutted P4-8 and retained EXP-1 as an exercise about a common misconception; that editorial disagreement is submitted to the reviewers for reconsideration. Release approval is pending.</p>
+<p>Version 1.5.3 follows the 1.5.2 console-output round and resolves the four Audit51 P3 findings. Claude Audit52 recommends APPROVE for release, and Grok Audit52 accepts 1.5.3 and closes the review cycle; this documentation-only response applies N2–N4 without changing the approved code. Tom confirms the header badge is intentional (N1), and both reviewers have withdrawn P4-8 concerning EXP-1. No P1–P3 defect remains open; the eight earlier P4 wording suggestions are optional, and this package is ready for release.</p>
 <h2>Open Bugs</h2>
-<p>No unresolved P1–P3 defect is identified in this response. RN-BH-1 (P3, Claude P3-2) is resolved: EXP-6 no longer describes eight-decimal output or requires CSV as a precision workaround. The corrected summary label and physical EH displacement remain. Claude and Grok have not yet confirmed these dispositions.</p>
+<p>No unresolved P1–P3 defect is known.</p>
 <h2>Major Improvements in This Release</h2>
 <ul>
 <li>Tidal profile CSV comments now retain <code>linearization_ratio</code>, its warning threshold and every warning from that run. The console places a short linearization warning beside the diagnostic when the threshold is exceeded.</li>
 <li>Horizon starting-radius fields are now <code>r_eh_vstart_over_rs0</code> and, in the legacy diagnostic API, <code>r_eh_vstart_shooting_over_rs0</code>. The former horizon <code>r_crit</code> names are removed; tidal survival-radius names retain their established meaning. Python callers using the old horizon dictionary keys must update them.</li>
 <li>The horizon summary prints its starting radius with 17 significant figures. The numerical trajectory and all sampled array values are unchanged.</li>
 <li>Embedding annotations and the legend no longer obscure the profile ends. Output filename mass tags use six significant figures, preserving small masses instead of labeling them <code>0.00Msun</code>.</li>
+<li>RN-BH-1 (Claude P3-2) is resolved: EXP-6 no longer describes eight-decimal output or requires CSV as a precision workaround.</li>
+<li>Audit52 N2–N4 are corrected: Beat 1 formats the diagnostic identifier and mentions the tidal profile CSV; these notes shorten Release Status and keep resolved defects out of Open Bugs; the Guide fixes its provenance spacing and describes the infall top panels.</li>
 <li>Tom corrected the console-label references, header links, parameter styling and other Help wording in the supplied pre-response. His 18 October revision removes the obsolete EXP-6 precision workaround and restores the statement that both the summary and tidal CSV report unreliable linearization. Further substantive Help changes remain Tom's responsibility.</li>
 <li>The Release Notes follow the seven-section plain-HTML format. The Sample Outputs Guide follows the figure-section layout, corrects the tidal-panel description, and contains four newly generated indexed PNGs from this build.</li>
 </ul>
 <h2>Test Suite Growth</h2>
 <p>1.4.0 Kickoff4: 148 tests; 1.5.0: 152; 1.5.1: 153; 1.5.2: 154; 1.5.3: 157. New regressions cover CSV diagnostics and warnings, unambiguous full-precision horizon output, and identifiable small-mass filenames. The Release Notes structure and preserved-history checks are strengthened.</p>
-<p>The 18 October revision changes documentation only; the four core files, tests, build and sample figures are unchanged. The nine canonical documentation tests were rerun successfully against the revised Help and these notes.</p>
+<p>The Audit52 response changes documentation only; the four core files, tests, build and sample figures are unchanged. The nine canonical documentation tests were rerun successfully against the corrected Help, these notes and the Guide. Claude independently reran all 157 tests for Audit52: 85.142 seconds, no failures or errors, on Linux, Python 3.11.15, NumPy 2.4.4 and Matplotlib 3.10.9. The earlier Codex full-suite result is retained below.</p>
 <p id="validation">All 157 tests passed in 82.561 seconds from the canonical tests directory with verbose reporting, MPLBACKEND=Agg and RuntimeWarning treated as an error. Host: Linux, Python 3.12.14, NumPy 2.3.5, Matplotlib 3.10.8; Windows/Python 3.14.6 was not exercised.</p>
 <p>Run once from <code>GFTGUX-Programs/BlackHoleSpacetimeVisualizer/tests</code>. In Windows PowerShell:</p>
 <p><code>$env:MPLBACKEND = "Agg"</code></p>
