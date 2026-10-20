@@ -1,6 +1,22 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CosmologyExpansionSimulator — Grok style tutorial</title><style>
+<title>CosmologyExpansionSimulator – Help File</title>
+  <!-- MathJax 3 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
+      },
+      loader: { load: ['[tex]/textmacros'] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
+<style>
 *,*::before,*::after{box-sizing:border-box}
 :root{--bg:#fdf5e6;--surface:#fff;--border:#c8bfa0;--accent:#7b2d00;
 --accent2:#a04010;--gold:#b5811a;--text:#1c1c1c;--muted:#5a4a3a;
@@ -72,23 +88,116 @@ main{max-width:none;padding:20px}section{break-inside:avoid}}
 
 /* Keep the version and build line visually separate from boxed callouts. */
 main #version_build { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 0; font-family: inherit; line-height: inherit; }
-</style></head>
+
+
+    .param-table, .out-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin: 1.0rem 0 1.4rem;
+    }
+    .param-table th, .out-table th {
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .out-table th { background: var(--accent2); }
+    .param-table td, .out-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0d8c8;
+      vertical-align: top;
+    }
+    .param-table tr:nth-child(even) td, .out-table tr:nth-child(even) td { background: #faf5ec; }
+    .param-table tr:hover td, .out-table tr:hover td { background: #f3ecdf; }
+    .param-table .pname, .out-table .oname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
+    .param-table .pdefault { font-family: var(--mono); font-size: 0.83rem; }
+</style>
+
+</head>
 <body><a class="skip-link" href="#content">Skip to content</a><div class="page-wrap">
-<header><div class="badge">Supplement · Gravity from the Ground Up</div>
+<header><div class="badge">Gravity from the Ground Up</div>
 <h1><em>CosmologyExpansionSimulator</em> — expansion, age and cosmic fate</h1>
-<p class="sub">Grok style tutorial · Four beats<br>
-Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a>
- · Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header>
-<nav aria-label="Contents"><div class="nav-label">Start</div><a href="#start">Before the first run</a>
-<div class="nav-label">The four beats</div><a href="#b0">Beat 0 · A flat universe</a><a href="#b1">Beat 1 · The age scan</a><a href="#b2">Beat 2 · Four possible histories</a><a href="#b3">Beat 3 · A turnaround</a>
-<div class="nav-label">Keep exploring</div><a href="#experiments">Experiments</a>
-<a href="#parameters">Parameters and outputs</a><a href="#limits">Model limits</a></nav>
-<main id="content"><p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">Version 1.6.0&nbsp;&nbsp;&nbsp;&nbsp;Build 775b2b0ceb21</p>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+       target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+  </div>
+ 
+ 
+ </header>
+<nav aria-label="Contents">
+<div class="nav-label">Overview</div>
+<a href="#description">Description</a>
+<a href="#start">Before the first run</a>
+<div class="nav-label">The four beats</div>
+<a href="#b0">Beat 0 · A flat universe</a>
+<a href="#b1">Beat 1 · The age scan</a>
+<a href="#b2">Beat 2 · Four possible histories</a>
+<a href="#b3">Beat 3 · A turnaround</a>
+
+
+
+<div class="nav-label">Keep exploring</div>
+<a href="#experiments">Experiments</a>
+
+<div class="nav-label">Reference</div>
+
+<a href="#parameters">Parameters</a>
+<a href="#output">Output and Plot Panels</a>
+
+<a href="#limits">Model limits</a>
+</nav>
+<main id="content">
+<p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
+Version 1.6.0&nbsp;&nbsp;&nbsp;&nbsp;Build 775b2b0ceb21
+</p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
-<p><b>Spine:</b> A measured Hubble rate is not an age or a destiny.
-Give the Friedmann equation a content budget, then watch four different
-expansion histories emerge. Run each command before reading below it;
-use the terminal numbers as checkpoints rather than a plot legend.</p><h2 id="start">Before the first run</h2>
+  <!-- ================================================================ -->
+  <section id="description" style="margin-top:-24px" >
+    <h2>Description</h2>
+    <p><strong>CosmologyExpansionSimulator</strong> integrates the Friedmann equation for a homogeneous, isotropic (FLRW) universe filled with matter, radiation, spatial curvature, and a dark-energy fluid, and tracks the resulting scale factor \(a(t)\), Hubble parameter \(H(t)\), fractional energy-density budget \(\Omega_i(a)\), and deceleration parameter \(q(t)\) from deep in the radiation era to a chosen point in the future. It answers, numerically and for any cosmology you specify, the question every introductory cosmology course eventually asks: how old is the universe, and how does the answer depend on what the universe is made of?</p>
+    <p>One program covers three calculations, selected with <code>--mode</code>: a single expansion history (<code>evolve</code>), 
+	an overlay of several named or custom cosmologies with an age comparison (<code>compare</code>), 
+	and a systematic scan of the age of the universe across one cosmological parameter (<code>age</code>) — 
+	reproducing, among other things, the historical "age crisis": 
+	the Einstein-de Sitter model (flat, matter-only, \(\Omega_{m0}=1\)) could be too young for the oldest globular clusters. 
+	A lower matter density makes the universe older either by dropping flatness (an <em>open</em>, low-density, 
+	matter-only universe, no \(\Lambda\) at all, is old enough) or, if flatness is imposed instead, by adding a compensating 
+	dark-energy component to make up the difference. 
+	Either route by itself does not require dark energy — only the flatness-preserving route does, 
+	and only because flatness was assumed going in. What actually made dark energy hard to avoid was a 
+	separate line of evidence — the 1998 discovery, from Type Ia supernovae, that the expansion is <em>accelerating</em>,
+	which no matter-only model, open or flat, can produce. 
+	</p>
+
+    
+    <p><strong>The Cosmological Principle and the FLRW Metric:</strong> On sufficiently large scales the universe looks, 
+	by observation, the same in every direction (isotropic) and from every location (homogeneous). 
+	The unique metric consistent with that symmetry is the Friedmann-Lemaître-Robertson-Walker metric,</p>
+    <div class="eq-block">
+      \[ds^2=-c^2dt^2+a(t)^2\left[\frac{dr^2}{1-kr^2}+r^2\left(d\theta^2+\sin^2\theta\,d\phi^2\right)\right],\]
+    </div>
+    <p>where \(a(t)\) is the dimensionless scale factor (normalised to \(a=1\) today) 
+	nd \(k\in\{-1,0,+1\}\) fixes the spatial geometry: open (hyperbolic), flat (Euclidean), 
+	or closed (spherical). All of the geometry and all of the dynamics are carried by the 
+	single function \(a(t)\); this program's entire job is to compute it.</p>
+
+
+    
+    <div class="note"><strong>Reading this page.</strong> The equations on this page are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; with no connection, the raw \(\LaTeX\) source (e.g. <code>\(a(t)\)</code>) will show as plain text instead of a formula. This has no effect on the program itself, which needs no internet access to run.</div>
+    
+
+  </section>
+
+<h2 id="start">Before the first run</h2>
 <p>Install NumPy and Matplotlib, open a terminal in the program folder and run
 <code>python main.py --version</code>. Check the version and build against the line above.
 Each command below displays a Matplotlib window; <code>--outdir ./figures</code> also
@@ -97,13 +206,96 @@ readout gives the plotted coordinates under your pointer. Read axis labels and
 units before interpreting a slope. Run <code>python main.py --help</code> for
 all options. <code>--csvdir ./data</code> saves numerical data and metadata;
 <code>--no_plot --csvdir ./data</code> runs without a figure.</p>
-<p class="note"><b>Three clocks:</b> <code>H0</code> has units km/s/Mpc,
-<code>1/H0</code> is a time scale, and <code>age today</code> is the computed
-time from a finite-age Big Bang to <code>a=1</code>. A past-eternal model has
-no finite Big-Bang age. Time on the plot is in Gyr; <code>a=1</code> denotes
-today in each model.</p><section id="b0"><h2>Beat 0 · Start flat, then let the components trade places</h2>
+
+
+
+<section id="b0">
+<h2>Beat 0 · Start flat, then let the components trade places</h2>
+
+Substituting the FLRW metric into the Einstein field equations yields three relations for \(a(t)\): the first Friedmann equation, 
+the second (acceleration) Friedmann equation, and a fluid continuity equation. 
+
+<h3>First Friedmann Equation</h3>
+<div class="eq-block">
+\[H^2 = \left(\frac{\dot{a}}{a}\right)^2 = \frac{8\pi G}{3}\rho - \frac{k c^2}{a^2} + \frac{\Lambda c^2}{3}\]
+</div>
+<p>where \(a(t)\) is the scale factor, \(G\) is the gravitational constant, \(c\) is the speed of light, and \(k\) represents spatial curvature. </p>
+
+<p>This program uses the modern dimensionless parameterization of the Friedmann equation which includes separate 
+terms for the contributions of matter density, radiation density, and dark energy density.</p>
+<div class="eq-block">
+  \[\left(\frac{\dot a}{a}\right)^2=H(a)^2=H_0^2\,E(a)^2,\qquad
+    E(a)^2=\Omega_{m0}a^{-3}+\Omega_{r0}a^{-4}+\Omega_{k0}a^{-2}+\Omega_{\rm DE,0}\,g(a).\]
+</div>
+<p>This is the equation the program integrates, written as \(da/dt=aH_0E(a)\). Neither \(G\) nor \(c\) 
+needs to appear: both are absorbed into the definitions of \(H_0\) and the 
+critical density \(\rho_{\rm crit}=3H_0^2/8\pi G\), and every \(\Omega_i\equiv\rho_i/\rho_{\rm crit}\) 
+is dimensionless by construction.</p>
+
+<p><b>Einstein-de Sitter space</b></p>
+
+<p>In 1932, Albert Einstein and Willem de Sitter proposed a simplified model by applying three specific conditions to the general Friedmann equation:
+(a) The universe is spatially flat \(k = 0\); (b) the cosmological constant \(\Lambda\) is zero; (b) the energy density es entirely made up of non-relativistic matter.
+</p>
+
+<p>For decades, the Einstein-de Sitter model served as the standard "textbook" model of 
+cosmology because of its mathematical elegance and 
+because early observational data could not easily distinguish it from other geometries.</p>
+
+<p>However, beginning in the 1970s and especially in the 1980s and 1990s, measurements of the Hubble 
+constant tended to give values around
+\(H_{\rm 0} \approx 70 \, \text{--} \, 100 \, \rm{ km \, s^{−1} \, Mpc^{−1} }\).
+Plugging these into the EdS formula gave ages of only about 6.56 to 56.5 billion years for \( H_{\rm 0} = 100  \)
+and 9.39 to 39.3 billion years for \( H_{\rm 0} = 70  \).</p>
+<p>In contrast, observations of the oldest globular clusters and stellar evolution models often suggested ages of
+12 to 16 billion years. So the universe predicted by the EdS model appeared to be younger than some of the stars inside it.
+That is the historical "age crisis."</p>
+
+We first explore the consequences of the Einstein-de Sitter model:
+<pre>
+# Einstein-de Sitter: flat, matter only -- the historical "age crisis" case
+python main.py --mode evolve --omega_m 1.0 --omega_de 0.0
+</pre>
+
+<p>In the top left plot, we see that the usiverse has been continuously expanding from a singularity, 
+that the rate of expansion has been decelerating (The semi-log plot obscures this fact. Use your
+cursor to read off the scale facter versus time and plot on plain graph paper to see this.), the
+current age of the usiverse is 9.311 Gyr. Early int the universe's histery, the scale factor 
+expanded rapidly, but at late time, the growth becomes extremely sluggish as the matter density dilutes. 
+</p>	
+<p>The Hubble parameter plot tells us that initially, H(t) was immensely huge, but dropped off rapidly over
+the first few billion years. Using the zoom feature of Matplotlib, you can read off today's Hubble 
+constant \(\approx 70\) at the current age of the universe \(\approx 9.3 \, \rm{Gyr} \) </p>
+
+<p>The fractional energy density plot tells us that radiation dominated at the earliest times, but 
+matter has dominated the universe since  \( a \approx 10^{-4} \). The gray horizontal line 
+\( \Omega_k(a) \) stays at zero across the entire timeline, indicating that the universe has been 
+spatially flat throughout its history. </p>
+
+<p>
+The lower right plot uses results from the <strong>Second Friedmann Equation:</strong>
+<div class="eq-block">
+  \[\frac{\ddot a}{a}=-\frac{4\pi G}{3}\sum_i\left(\rho_i+\frac{3P_i}{c^2}\right)
+    \quad\Longrightarrow\quad
+    q(a)\equiv-\frac{\ddot a\,a}{\dot a^2}=\frac12\sum_{i=m,r,{\rm DE}}\Omega_i(a)\big(1+3w_i(a)\big).\]
+</div>
+<p>\(q&gt;0\) is decelerating, \(q&lt;0\) is accelerating. 
+Matter alone gives \(q=1/2\); radiation alone gives \(q=1\); 
+a cosmological constant alone gives \(q=-1\) (de Sitter expansion).</p>
+</p>
+
+
+
+<p>The lower right plot tells us that after a brief spike at the origin, the expansion
+of the universe has been decelerating at a constant rate through outout its history.
+The constant deceleration parameter of \( q = 0.5 \) is the theoretical hallmark
+of a flat, matter-dominated universe. </p>
+
+<p><b>The concordance cosmology</b></p>
+
 <p>Before running, predict which density will dominate at very small
-<code>a</code> and which will dominate far in the future.</p><pre><code>python main.py --mode evolve --H0 67.4 --omega_m 0.315 --outdir ./figures</code></pre>
+<code>a</code> and which will dominate far in the future.</p>
+<pre><code>python main.py --mode evolve --H0 67.4 --omega_m 0.315</code></pre>
 <p>Read the age and both transition redshifts. Follow the radiation,
 matter and dark-energy fractions across the density panel. The printout
 says 13.79 Gyr and marks the deceleration-to-acceleration transition
@@ -149,7 +341,11 @@ curve is undefined at turnaround where <code>H=0</code>.</p>
 <p><span class="tag">ODE / SYMMETRY</span> A true turnaround solves
 <code>E(a)²=0</code>. Reflecting the solution in time changes the
 sign of <code>H</code>. The doubling of turnaround time follows from
-the model's symmetry; the time itself is a numerical estimate.</p></section><h2 id="experiments">Try it yourself · one question per run</h2>
+the model's symmetry; the time itself is a numerical estimate.</p>
+</section>
+
+<section id="experiments">
+<h2 id="experiments">Suggested experiments</h2>
 <ol>
 <li><code>python main.py --mode evolve --omega_m 1 --omega_r 0 --omega_de 0</code>
 — compare the printed age to two thirds of the Hubble time.</li>
@@ -159,7 +355,8 @@ the model's symmetry; the time itself is a numerical estimate.</p></section><h2 
 — does a plotting bound before the turnaround change the model's fate?</li>
 <li><code>python main.py --mode evolve --w0 -1.2 --a_max 60</code>
 — is a Big Rip on the plot, in the summary, or both?</li>
-<li><code>python main.py --mode evolve --omega_m 0 --omega_r 0 --omega_de 1 --a_i 0.01</code>
+<li><code>python main.py --mode evolve --omega_m 0 --omega_r 0 --omega_d
+e 1 --a_i 0.01</code>
 — what appears in the physical age field for this past-eternal case?</li>
 <li><code>python main.py --mode evolve --H0 67.4 --omega_m 0.315 --step_frac 0.0025</code>
 — how much do the printed age and transition redshift move?</li>
@@ -167,16 +364,86 @@ the model's symmetry; the time itself is a numerical estimate.</p></section><h2 
 — evaluate <code>w(a)=w0+wa(1−a)</code> at <code>a=2</code>.
 Is that formula a measured far-future law?</li>
 </ol>
-<h2 id="parameters">Quick reference after the four runs</h2>
-<p><code>evolve</code> plots one history; <code>compare</code> overlays
-named presets; <code>age</code> scans one of <code>omega_m</code>,
-<code>omega_de</code>, <code>w0</code> or <code>H0</code>. Use
-<code>--outdir</code> for PNGs and <code>--csvdir</code> for numerical
-output. <code>--no_plot</code> requires <code>--csvdir</code>.
-<code>--step_frac</code> controls a Hubble-time-scaled RK4 step and
-is not an error tolerance. <code>--a_max</code> and <code>--t_max</code>
-bound evolve and compare runs. <code>--no_force_flat</code> affects
-age scans only. See <code>python main.py --help</code> for valid options.</p>
+</section>
+
+  <!-- ================================================================ -->
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <p>Run <code>python main.py --help</code> for the current command summary, and <code>python main.py --version</code> for the model version, which is also written into every CSV header. Options that do not apply to the selected mode are ignored, and the driver prints a short note if you changed one of them from its default anyway, so a scan option left on by accident during an <code>evolve</code> run does not go unnoticed. Check the printed summary, or the parameter block at the top of the CSV file, to confirm which values a given run actually used.</p>
+
+    <h3>Cosmological parameters (all modes)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--H0</td><td class="pdefault">70.0</td><td>km/s/Mpc</td><td>Hubble constant today. 67.4 (Planck) and about 73 (local distance-ladder measurements) bracket the current "Hubble tension" -- an unresolved discrepancy between two families of inference, not a settled bug in either.</td></tr>
+      <tr><td class="pname">--omega_m</td><td class="pdefault">0.30</td><td>—</td><td>Matter density parameter today, \(\Omega_{m0}\) (baryons plus cold dark matter, lumped together).</td></tr>
+      <tr><td class="pname">--omega_r</td><td class="pdefault">9.24e-5</td><td>—</td><td>Radiation density parameter today, \(\Omega_{r0}\) (photons plus three neutrino species). A representative effective teaching value, not a precise prediction for the paired default \(H_0\) -- the true value depends on \(H_0\), \(T_{\rm CMB}\), \(N_{\rm eff}\), and neutrino-mass treatment. Negligible today, it dominated the universe below about \(a\approx3\times10^{-4}\).</td></tr>
+      <tr><td class="pname">--omega_de</td><td class="pdefault">None (flat)</td><td>—</td><td>Dark-energy density parameter today, \(\Omega_{\rm DE,0}\). Left unset, the program forces a flat universe by setting \(\Omega_{\rm DE,0}=1-\Omega_{m0}-\Omega_{r0}\); give an explicit value to obtain an open or closed model instead.</td></tr>
+      <tr><td class="pname">--w0</td><td class="pdefault">-1.0</td><td>—</td><td>Dark-energy equation of state at \(a=1\) (today). \(-1\) is a cosmological constant; \(&lt;-1\) contributes toward phantom behavior (can lead to a future Big Rip if \(w_a=0\) and no earlier recollapse intervenes); \(&gt;-1/3\) does not by itself accelerate the expansion. If <code>--wa</code> is nonzero, these describe only today, not the whole history -- see EXP-9.</td></tr>
+      <tr><td class="pname">--wa</td><td class="pdefault">0.0</td><td>—</td><td>CPL evolution parameter, \(w(a)=w_0+w_a(1-a)\); 0 means a constant equation of state. Very large \(|w_a|\) (with a wide <code>a_i</code>-to-<code>a_max</code> range) can push \(g(a)\) outside this program's supported policy range (a deliberately conservative cutoff, well inside where float64 itself would actually overflow); such combinations are rejected with a clear error rather than silently overflowing.</td></tr>
+    </tbody></table>
+
+    <h3>Integration control (modes <code>evolve</code>, <code>compare</code>)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--a_i</td><td class="pdefault">1e-8</td><td>—</td><td>Scale factor at which the numerical integration starts, deep in radiation (or matter, or curvature) domination.</td></tr>
+      <tr><td class="pname">--a_max</td><td class="pdefault">5.0</td><td>—</td><td>Stop the forward integration here, unless a recollapse or <code>--t_max</code> intervenes first.</td></tr>
+      <tr><td class="pname">--t_max</td><td class="pdefault">None</td><td>Gyr</td><td>Also stop at this cosmic time if reached before <code>--a_max</code>.</td></tr>
+      <tr><td class="pname">--step_frac</td><td class="pdefault">0.005</td><td>—</td><td>Hubble-time-scaled RK4 step size, \(dt=\)<code>step_frac</code>\(/H(a)\): approximately the fractional change in \(\ln a\) per step. Range \([10^{-6},0.5]\), though very small values may exceed the internal step-count limit for a wide <code>a_i</code>-to-<code>a_max</code> range (the program checks and says so before running).</td></tr>
+      <tr><td class="pname">--continue_collapse</td><td class="pdefault">off</td><td>—</td><td>If the model recollapses, also report the contracting branch, mirrored back down to \(a_i\) (not literally to the \(a=0\) singularity) by the exact time-reversal symmetry of the Friedmann equation (no re-integration).</td></tr>
+    </tbody></table>
+
+    <h3>Mode <code>compare</code></h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--presets</td><td class="pdefault">EdS,lambdaCDM,closed,phantom</td><td>—</td><td>Comma-separated list, at most 12 entries. Choices: <code>EdS</code>, <code>radiation</code>, <code>milne</code>, <code>lambdaCDM</code>, <code>open</code>, <code>closed</code>, <code>phantom</code>, <code>evolving_de</code>, <code>desi_like</code> (illustrative only -- see the DESI note above; not a fit), or <code>custom</code> (the cosmology built from the parameters above).</td></tr>
+    </tbody></table>
+
+    <h3>Mode <code>age</code> (parameter scan)</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--scan_param</td><td class="pdefault">omega_m</td><td>—</td><td>One of <code>omega_m</code>, <code>omega_de</code>, <code>w0</code>, <code>H0</code>; the others are held at the values given above.</td></tr>
+      <tr><td class="pname">--scan_lo</td><td class="pdefault">0.05</td><td>—</td><td>Lowest value of the scanned parameter.</td></tr>
+      <tr><td class="pname">--scan_hi</td><td class="pdefault">1.5</td><td>—</td><td>Highest value of the scanned parameter; must exceed <code>--scan_lo</code>.</td></tr>
+      <tr><td class="pname">--scan_n</td><td class="pdefault">40</td><td>—</td><td>Number of grid points, 3 to 500.</td></tr>
+      <tr><td class="pname">--no_force_flat</td><td class="pdefault">off</td><td>—</td><td>When scanning \(\Omega_{m0}\) or \(\Omega_{\rm DE,0}\), do not compensate the other density to preserve flatness -- let curvature vary implicitly instead. Irrelevant when scanning \(w_0\) or \(H_0\).</td></tr>
+      <tr><td class="pname">--age_ref_gyr</td><td class="pdefault">13.0</td><td>Gyr</td><td>Reference age drawn on the age-scan plot, e.g. the age of the oldest globular clusters.</td></tr>
+    </tbody></table>
+
+    <h3>Mode selection and output</h3>
+    <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
+      <tr><td class="pname">--mode</td><td class="pdefault">evolve</td><td>—</td><td>One of <code>evolve</code>, <code>compare</code>, <code>age</code>.</td></tr>
+      <tr><td class="pname">--outdir</td><td class="pdefault">None</td><td>path</td><td>In addition to displaying the figure on screen, save a timestamped PNG in this folder.</td></tr>
+      <tr><td class="pname">--csvdir</td><td class="pdefault">None</td><td>path</td><td>Also write timestamped CSV data files here; does not affect the screen display and can be combined freely with <code>--outdir</code>.</td></tr>
+      <tr><td class="pname">--no_plot</td><td class="pdefault">off</td><td>—</td><td>Skip the figure entirely; requires <code>--csvdir</code>. Useful for parameter sweeps in a shell loop.</td></tr>
+      <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>PNG resolution, 10 to 1200.</td></tr>
+      <tr><td class="pname">--lw</td><td class="pdefault">1.6</td><td>pt</td><td>Curve line width.</td></tr>
+      <tr><td class="pname">--version</td><td class="pdefault">—</td><td>—</td><td>Print the model version string and a separate 12-character <code>build_id</code>, then exit; every CSV provenance header records both. <code>model_version</code> is a hand-maintained semantic-version string bumped by the developer when behavior changes meaningfully; <code>build_id</code> is instead computed automatically, as a SHA-256 hash (truncated to 12 hex characters) over the exact source text of the four files that define this program's computation and output -- <code>physics_cosmo.py</code>, <code>driver_cosmo.py</code>, <code>main.py</code>, and <code>plot_cosmo.py</code> (this fixed list is the module-level <code>BUILD_ID_COVERS</code> constant in <code>physics_cosmo.py</code>) -- so two copies of the program with the same <code>model_version</code> but any textual difference in those four files, however small, will show different <code>build_id</code>s, while byte-identical copies match even after a change of line-ending convention (CRLF vs. LF) from copying between Windows and Unix. It is computed by reading each file in text mode with universal-newline translation and hashing each file's name, its translated length, and its translated content in sequence, which additionally prevents two different splits of file boundaries from ever hashing to the same value. Use it to confirm that two people, or two runs on different machines, are actually running byte-identical code -- <code>model_version</code> alone cannot detect an uncommitted local edit.</td></tr>
+    </tbody></table>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="output">
+    <h2>Output and Plot Panels</h2>
+    <table class="out-table"><thead><tr><th>Output</th><th>What to Look For</th></tr></thead><tbody>
+      <tr><td class="oname">evolve — \(a(t)\)</td><td>Rapid early expansion compressed near \(t=0\) on this linear time axis, a dashed line marking today, and — for a closed model — a second dash-dot line marking the turnaround. If a model never reaches \(a=1\), no "today" line appears.</td></tr>
+      <tr><td class="oname">evolve — \(H(t)\)</td><td>\(H\) falls by many orders of magnitude from the radiation era to today. Its future behavior depends on which dark-energy case you ran: it flattens toward a constant only for an exact cosmological constant / de Sitter domination (\(w_0=-1\), \(w_a=0\)); for constant \(w_0&gt;-1\) it instead falls toward zero; for phantom (\(w_0&lt;-1\)) it grows without bound toward the Big Rip; for evolving CPL (\(w_a\neq0\)) the future trend can do any of these depending on the parameters. Matter-only (no dark energy) models keep falling.</td></tr>
+      <tr><td class="oname">evolve — \(\Omega_i(a)\)</td><td>For the default/concordance-like model: three eras in sequence — radiation, then matter, then dark energy — with the sum-check line at 1 at every regular row (NaN at an exact turnaround, where every \(\Omega_i\) formally diverges). A pure-radiation, Milne, matter-only, negative-\(\Omega_{\rm DE}\), or recollapsing model will NOT show this three-era sequence; what you see depends on the energy content you actually ran. Every matter-dark-energy equality crossing found (there is almost always exactly one, but see the Algorithm section for the non-monotonic case where there can be more) is marked; compare the first one's scale factor with the algebraic estimate \(a_{\rm eq}=\Omega_{r0}/\Omega_{m0}\) for matter-radiation equality.</td></tr>
+      <tr><td class="oname">evolve — \(q(t)\)</td><td>Starts near \(+1\) (radiation domination), settles near \(+1/2\) (matter domination), crosses zero at the acceleration transition, and approaches \(-1\) if a cosmological constant eventually dominates. For a recollapsing model, \(q\) diverges as the turnaround is approached, since \(H\to0\) while the densities stay finite.</td></tr>
+      <tr><td class="oname">compare — \(a(t)\) overlay</td><td>Each cosmology's history, with a dot marking where it crosses \(a=1\); reading the dots' horizontal positions directly compares their ages.</td></tr>
+      <tr><td class="oname">compare — \(q(t)\) overlay</td><td>The deceleration axis is deliberately clipped (\(-1.6\) to \(3.0\)): a recollapsing model's \(q\) diverges near its turnaround and would otherwise swamp the comparison, which is the point of the panel.</td></tr>
+      <tr><td class="oname">compare — age bar chart</td><td>A direct visual ranking of ages; a cosmology that never reaches \(a=1\) (recollapses first) is drawn hatched at zero height rather than omitted.</td></tr>
+      <tr><td class="oname">compare — \(\Omega_{\rm DE}(a)\) overlay</td><td>Models with no dark energy sit at zero throughout; the <code>phantom</code> and <code>evolving_de</code> presets separate visibly from a cosmological constant only close to and after \(a=1\), which is exactly why distinguishing them observationally is hard.</td></tr>
+      <tr><td class="oname">age — age vs. parameter</td><td>The classic "age crisis" plot: age falls monotonically as \(\Omega_{m0}\) rises (flat case), crossing the reference globular-cluster age near \(\Omega_{m0}\approx0.3\)-\(0.4\) — which is close to, but not identical to, the concordance value, and figuring out why is a good exercise in itself.</td></tr>
+      <tr><td class="oname">age — \(H_0t_0\) vs. parameter</td><td>The dimensionless version of the same plot, with reference lines at the Einstein-de Sitter value \(2/3\) and the Milne value \(1\).</td></tr>
+      <tr><td class="oname">Run summary — evolve</td><td>Printed to the terminal: inputs, derived epochs, which of \(a_{\max}\), \(t_{\max}\), or a genuine turnaround actually stopped the <em>returned trajectory</em> (<code>stop_reason</code> -- e.g. a real turnaround can still be followed by a <code>--t_max</code> stop on the mirrored contracting branch, so <code>stop_reason</code> answers "why did the returned data end here," not "what is this model's ultimate fate"), a separate structured fate summary for phantom (\(w_0&lt;-1\)) models (<code>fate_status</code>: a Big Rip, a certified future recollapse beyond this run, or unresolved), and a &quot;Notes on this run&quot; block whenever the model has been pushed outside typical bounds (extreme curvature, a decelerating "dark energy," an unresolved early-time offset, a t_max stop before reaching \(a=1\), an impending recollapse or Big Rip). For a <code>past_status="past_eternal"</code> model, the "Age today" line explicitly says no finite age exists rather than printing a number, and any additional matter-dark-energy-equality or acceleration-transition crossings beyond the first are listed alongside the primary one. Read it.</td></tr>
+      <tr><td class="oname">Run summary — compare</td><td>A single compact table, one row per cosmology: age (or an explicit past-eternal marker in place of a number), \(H_0t_0\), \(q_0\), the acceleration-transition redshift, and a short fate note ("recollapses", "Big Rip ahead", "future recollapse", "past-eternal (no finite age)", or "fate unresolved") where applicable -- not the full evolve-style block, since it would be repeated once per cosmology. The compare-mode CSV carries the full machine-readable detail behind that note in its own columns (<code>fate_status</code>, <code>past_status</code>, <code>elapsed_ai_to_today_gyr</code>, <code>a_turn</code>, <code>t_turn_gyr</code>, <code>total_lifetime_gyr</code>, <code>big_rip_gyr</code>, <code>big_rip_remaining_gyr</code>, <code>future_turnaround_a</code>, <code>fate_search_limit_a</code>, and <code>stop_reason</code>) rather than only the human-readable note.</td></tr>
+      <tr><td class="oname">Run summary — age</td><td>Scan extrema (oldest/youngest age and where they occur) and a count of how many scan points recollapse within the finite \(a=5\) look-ahead horizon, plus a separate count of how many scanned points are past-eternal (no finite age to include in the extrema at all) -- a single summary of the whole scan, not a per-point evolve-style block.</td></tr>
+      <tr><td class="oname">CSV files</td><td>With <code>--csvdir PATH</code>: the full numerical table, with a commented header recording the model version, the build identifier (see <code>--version</code> above), the run time, and every parameter that mode actually used, plus (in <code>evolve</code> mode) numbered columns for every matter-dark-energy-equality and acceleration-transition crossing found, not just the first. <code>compare</code> mode writes both an age-comparison table and a long-format table of every cosmology's curves.</td></tr>
+      <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>: a timestamped copy of the figure, saved in addition to the on-screen display. Use <code>--no_plot --csvdir PATH</code> for a data-only sweep.</td></tr>
+    </tbody></table>
+  </section>
+
+
+
+
+
+
 <h2 id="limits">Where the model stops</h2>
 <p>The Friedmann equations describe an idealized homogeneous background.
 <code>w(a)=w0+wa(1−a)</code> is a phenomenological dark-energy fit,
