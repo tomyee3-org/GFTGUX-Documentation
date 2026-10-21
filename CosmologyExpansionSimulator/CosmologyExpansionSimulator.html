@@ -138,7 +138,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 <a href="#description">Description</a>
 <a href="#start">Before the first run</a>
 <div class="nav-label">The four beats</div>
-<a href="#b0">Beat 0 · A flat universe</a>
+<a href="#b0">Beat 0 · Evolution</a>
 <a href="#b1">Beat 1 · The age scan</a>
 <a href="#b2">Beat 2 · Four possible histories</a>
 <a href="#b3">Beat 3 · A turnaround</a>
@@ -210,19 +210,23 @@ all options. <code>--csvdir ./data</code> saves numerical data and metadata;
 
 
 <section id="b0">
-<h2>Beat 0 · Start flat, then let the components trade places</h2>
+<h2>Beat 0 · Evolution</h2>
 
 Substituting the FLRW metric into the Einstein field equations yields three relations for \(a(t)\): the first Friedmann equation, 
 the second (acceleration) Friedmann equation, and a fluid continuity equation. 
 
-<h3>First Friedmann Equation</h3>
+<p><b>First Friedmann Equation, Dimensional form</b></p>
 <div class="eq-block">
 \[H^2 = \left(\frac{\dot{a}}{a}\right)^2 = \frac{8\pi G}{3}\rho - \frac{k c^2}{a^2} + \frac{\Lambda c^2}{3}\]
 </div>
 <p>where \(a(t)\) is the scale factor, \(G\) is the gravitational constant, \(c\) is the speed of light, and \(k\) represents spatial curvature. </p>
 
-<p>This program uses the modern dimensionless parameterization of the Friedmann equation which includes separate 
-terms for the contributions of matter density, radiation density, and dark energy density.</p>
+
+<p>Instead of the dimensional form, this program uses the modern dimensionless parameterization of the Friedmann equation which includes separate 
+terms for the contributions of matter density, radiation density, and dark energy density:</p>
+
+<p><b>First Friedmann Equation, Dimensionless Parameterization</b></p>
+
 <div class="eq-block">
   \[\left(\frac{\dot a}{a}\right)^2=H(a)^2=H_0^2\,E(a)^2,\qquad
     E(a)^2=\Omega_{m0}a^{-3}+\Omega_{r0}a^{-4}+\Omega_{k0}a^{-2}+\Omega_{\rm DE,0}\,g(a).\]
@@ -257,8 +261,9 @@ We first explore the consequences of the Einstein-de Sitter model:
 python main.py --mode evolve --omega_m 1.0 --omega_de 0.0
 </pre>
 
-<p>In the top left plot, we see that the usiverse has been continuously expanding from a singularity, 
-that the rate of expansion has been decelerating (The semi-log plot obscures this fact. Use your
+<p>In the Scale-factor evolution plot in the upper left, 
+we see that the usiverse has been continuously expanding from a singularity, 
+but that the rate of expansion has been decelerating (The semi-log plot obscures this fact. Use your
 cursor to read off the scale facter versus time and plot on plain graph paper to see this.), the
 current age of the usiverse is 9.311 Gyr. Early int the universe's histery, the scale factor 
 expanded rapidly, but at late time, the growth becomes extremely sluggish as the matter density dilutes. 
@@ -293,21 +298,57 @@ of a flat, matter-dominated universe. </p>
 
 <p><b>The concordance cosmology</b></p>
 
-<p>Before running, predict which density will dominate at very small
-<code>a</code> and which will dominate far in the future.</p>
-<pre><code>python main.py --mode evolve --H0 67.4 --omega_m 0.315</code></pre>
-<p>Read the age and both transition redshifts. Follow the radiation,
-matter and dark-energy fractions across the density panel. The printout
-says 13.79 Gyr and marks the deceleration-to-acceleration transition
-at <code>z≈0.632</code>; matter–dark-energy equality is later,
-<code>z≈0.296</code>. Which panel explains why these are different events?</p>
-<p><span class="tag">ODE</span> Now earn the equation:
-<code>(H/H0)²=Ωm0/a³+Ωr0/a⁴+Ωk0/a²+ΩDE0 g(a)</code>.
-Here <code>g(a)=1</code> for the default cosmological constant.
-The program sets <code>Ωk0=0</code> when you omit
-<code>--omega_de</code>; explicitly supplying <code>0.685</code> gives
-<code>Ωk0=-9.24e-5</code> because the small default radiation term
-still counts.</p></section><section id="b1"><h2>Beat 1 · An age scan is a conditional claim</h2>
+<p>The flat \(\Lambda\)CDM (Lambda Cold Dark Matter) model is the current standard model of 
+Big Bang cosmology. The model emerged as a consensus interpretation of unexpected 
+observational data that forced physicists to abandon simpler models like 
+Einstein-de Sitter in favor of a universe driven by dark energy.</p>
+<ul>
+<li>Until 1998, the Einstein-de Sitter model was favored due to its theoretical
+simplicity and adaptability to observations consistent with cosmic inflation.</li>
+<li>In 1998, however, two competing teams of researchers stunned the scientific
+community with data showing that the universe's expansion is accelerating, not decelerating.
+Explaining this required a non-zero cosmological constant \( \Lambda .\)</li>
+<li>Multiple independent observations, including datasets collected by the WMAP 
+(Wilkinson Microwave Anisotropy Probe) satellite launched in 2001, combined with 
+large-scale galaxy surveys and CMB balloon experiments, led to a consensus view of
+a spatially flat universe comprised of roughly ~70% dark energy, ~25% cold dark matter, and 
+~5% ordinary matter.</li>
+<li>The European Space Agency's Planck satellite provided high-precision
+mapping of the Cosmic Microwave Background. The Planck 2018 data release reinforced
+\(\Lambda\)CDM  as the current best cosmological model.</li>
+</ul>
+
+<p>In the following, we explore the \(\Lambda\)CDM  model:
+<pre># The concordance cosmology (Planck-2018-like flat LCDM). Omitting
+# --omega_de forces flatness exactly; passing --omega_de 0.685 explicitly
+# here instead would leave a stray Omega_k0 = -9.24e-5 from the default
+# radiation density.
+
+python main.py --mode evolve --H0 67.4 --omega_m 0.315</pre>
+
+
+<p>In the Scale-factor evolution plot, the vertical dashed line marks the present 
+day at \(13.79\text{ Gyr}\) which is significantly older than the \(9.3\text{ Gyr}\)
+predicted by the Einstein-de Sitter model.   
+The text box notes that the universe underwent an acceleration transition at \(z = 0.632\),
+marking when dark energy overtook matter as the main driver of xosmic evolution. Confirm
+this claim by using the zoom feature of Matplotlib to expand the plot between 0 and 2&nbsp;Gyr,
+then plotting scale-factor versus time on plain graph paper. The rate of expansion slows
+down betwen 0 and 0.632&nbsp;Gyr, then speeds back up again. Late in time, past about 10&nbsp;Gyr, 
+the curve actually bends upward, as you can confirm by plotting the graph between 5 and 40 Gyr and \(a\) 
+between 0.4 to 5 on plain graph paper. </p>   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+<p>As with the Einstein-de Sitter model, the Hubble parameter history  in the flat \(\Lambda\)CDM model
+shows a rapid decline from immenmsely high values early in the universe history to its present value
+of about  \(H_0 = 67.4\text{ km s}^{-1}\text{ Mpc}^{-1}\) today. However, unlike the Einstein-de Sitter
+model, this curve flattens out into a nearly constant value 
+rather than continuing to drop toward zero. This is the signature of dark energy, which drives an
+accelerating expansion and maintains a constant Hubble parameter into the distant future.</p> 
+
+
+
+
+</section><section id="b1"><h2>Beat 1 · An age scan is a conditional claim</h2>
 <p>Hold <code>H0</code> fixed. How strongly can the composition change
 the time to reach <code>a=1</code>?</p><pre><code>python main.py --mode age --scan_param omega_m --scan_lo 0.05 --scan_hi 1.5 --scan_n 50 --outdir ./figures</code></pre>
 <p>Read the endpoints in the summary: 20.75 and 8.105 Gyr for
