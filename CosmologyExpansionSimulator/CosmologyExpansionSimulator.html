@@ -261,24 +261,24 @@ We first explore the consequences of the Einstein-de Sitter model:
 python main.py --mode evolve --omega_m 1.0 --omega_de 0.0
 </pre>
 
-<p>In the Scale-factor evolution plot in the upper left, 
+<p>In the <i>Scale-factor evolution</i> panel in the upper left, 
 we see that the usiverse has been continuously expanding from a singularity, 
 but that the rate of expansion has been decelerating (The semi-log plot obscures this fact. Use your
 cursor to read off the scale facter versus time and plot on plain graph paper to see this.), the
 current age of the usiverse is 9.311 Gyr. Early int the universe's histery, the scale factor 
 expanded rapidly, but at late time, the growth becomes extremely sluggish as the matter density dilutes. 
 </p>	
-<p>The Hubble parameter plot tells us that initially, H(t) was immensely huge, but dropped off rapidly over
+<p>The <i>Hubble parameter</i> panel tells us that initially, H(t) was immensely huge, but dropped off rapidly over
 the first few billion years. Using the zoom feature of Matplotlib, you can read off today's Hubble 
 constant \(\approx 70\) at the current age of the universe \(\approx 9.3 \, \rm{Gyr} \) </p>
 
-<p>The fractional energy density plot tells us that radiation dominated at the earliest times, but 
+<p><i>The Fractional energy density</i> panel tells us that radiation dominated at the earliest times, but 
 matter has dominated the universe since  \( a \approx 10^{-4} \). The gray horizontal line 
 \( \Omega_k(a) \) stays at zero across the entire timeline, indicating that the universe has been 
 spatially flat throughout its history. </p>
 
 <p>
-The lower right plot uses results from the <strong>Second Friedmann Equation:</strong>
+The <i>Deceleration \(\to\) acceleration</i> panel plots \(q\) from the <strong>Second Friedmann Equation:</strong>
 <div class="eq-block">
   \[\frac{\ddot a}{a}=-\frac{4\pi G}{3}\sum_i\left(\rho_i+\frac{3P_i}{c^2}\right)
     \quad\Longrightarrow\quad
@@ -289,9 +289,7 @@ Matter alone gives \(q=1/2\); radiation alone gives \(q=1\);
 a cosmological constant alone gives \(q=-1\) (de Sitter expansion).</p>
 </p>
 
-
-
-<p>The lower right plot tells us that after a brief spike at the origin, the expansion
+<p>This panel tells us that after a brief spike at the origin, the expansion
 of the universe has been decelerating at a constant rate through outout its history.
 The constant deceleration parameter of \( q = 0.5 \) is the theoretical hallmark
 of a flat, matter-dominated universe. </p>
@@ -326,8 +324,7 @@ mapping of the Cosmic Microwave Background. The Planck 2018 data release reinfor
 
 python main.py --mode evolve --H0 67.4 --omega_m 0.315</pre>
 
-
-<p>In the Scale-factor evolution plot, the vertical dashed line marks the present 
+<p>In the <i>Scale-factor evolution</i> panel, the vertical dashed line marks the present 
 day at \(13.79\text{ Gyr}\) which is significantly older than the \(9.3\text{ Gyr}\)
 predicted by the Einstein-de Sitter model.   
 The text box notes that the universe underwent an acceleration transition at \(z = 0.632\),
@@ -345,10 +342,101 @@ model, this curve flattens out into a nearly constant value
 rather than continuing to drop toward zero. This is the signature of dark energy, which drives an
 accelerating expansion and maintains a constant Hubble parameter into the distant future.</p> 
 
+<p>The <i>Fractional energy-density content</i> panel shows the changing 
+relative contributions of the universe's different components across cosmic history
+plotted as a function of the scale factor \(a\). Radiation dominates the 
+early universe (\(a \lesssim 10^{-4}\)). As the universe expands past \(a \approx 10^{-4}\), 
+matter takes over, dominating the universe's energy density
+for billions of years until "shortly" before the present day, the crossover occurring 
+at \(a \approx 0.77\), or \(\approx 10 \text{Gyr} \) after the big bang. 
+At late times, dark energy (\(\Omega_{DE} \)) rises sharply to dominate the energy density of the universe. 
+The horizontal dotted line illustrates that the sum of all fractional energy densities equals 
+exactly 1 at every point in cosmic history.</p>   
+
+<p>The <i>Deceleration \(\to\) acceleration</i> panel shows that early in the universe's history, 
+showing that the attractive force of matter caused the expansion to decelerate. Where \(q\) 
+crosses from positive to negative marks where cosmic expansion transitioned from slowing down 
+to speeding up. In the present day, (\(t_0 = 13.8\text{ Gyr}\)), the curve is well below zero, 
+indicating that the universe is currently in a state of accelerated expansion. At late times,
+the curve is predicted to flatten out, approaching \(-1.0\) as a limit, which is the signature
+of a dark energy-dominated universe expanding exponentially.</p>   
+
+<p><b>Speculative alternative: The Big Rip</b></p>
+<p>The "Big Rip" is a hypothetical scenario for the ultimate fate of the universe, 
+driven by a specialized type of dark energy known as phantom energy. 
+Alternative theories have proposed that the cosmological constant is not actually constant 
+but varies with \(a,\) this variability characterized by the <b>parameterized dark energy 
+equation of state:</b>
+</p>
+<div class="eq-block">
+  \[w(a)=w_0+w_a(1-a).\]
+</div>
+<p>In standard \(\Lambda\)CDM cosmology, \(w_0 = -1\) and \(w_a = 0\) (yielding a constant \(w(a) = -1\)), 
+meaning the dark energy density remains constant as the universe expands. 
+In contrast, phantom energy represents a scenario where the equation of state falls 
+below \(-1\) (such as having \(w_0 < -1\)), causing \(w(a) < -1\) across cosmic time and 
+leading to a growing energy density as space expands.</p>
+
+<p>This growing energy density results in a compounding 
+feedback loop where more expansion leads to higher dark energy density, 
+which causes faster expansion. The expansion rate accelerates so aggressively that the scale
+factor reaches infinity in a finite amount of time. Eventually, this runaway expansion 
+overpowers all fundamental forces holding matter together. Everything from galaxy clusters 
+to stars, planets, molecules and even subatomic particles become torn apart.</p>
+
+<p>Current observational data does not support the Big Rip as the likely fate of our universe.
+High-precision data thus far strongly align with the standard flat \(\Lambda\)CDM model, 
+where \(w\) is indistinguishable from \(-1\), predicting that the ultimate fate of the universe
+will be a peaceful "Big Freeze" or "Heat Death" rather than a violent tear. Ultimately, 
+the universe will experience a stable, constant exponential expansion where distant galaxies
+drift out of view.</p>
+
+<p>In the following, we explore a Big Rip scenario:
+<pre># Phantom dark energy: w0 < -1 can lead to a future Big Rip, if no
+# earlier recollapse intervenes first
+python main.py --mode evolve --w0 -1.2 --a_max 1000</pre>
+
+We will not provide a detailed analysis of the output, but you should have sufficient
+skills from our previous explorations to thoroughly understand these plots. 
+</p>
+
+<p><b>Historically important alternative: The recollapsing universe</b></p>
+
+For much of the mid-to-late 20th century (long before dark energy was discovered), most researchers pursued three primary scenarios for the fate of the universe: 
+<ul>
+<li>The Open Universe (\(\Omega_m < 1, k = -1\)): Expands forever at an accelerating/coasting rate.</li>
+<li>The Flat/Critical Universe (\(\Omega_m = 1, k = 0\)): The Einstein-de Sitter model, which expands forever but asymptotically slows to a halt.</li>
+<li>The Closed Universe (\(\Omega_m > 1, k = +1\)): The density of matter is high enough that space is positively curved (spherical) and gravity eventually overpowers the expansion, pulling everything back together into a Big Crunch.</li>
+</ul>
+<p>Other models that were pursued included a cyclic universe where each Big Crunch would bounce into a 
+new Big Bang.</p>
+
+Before precision measurements in the late 1990s showed that the universe is flat and 
+dominated by dark energy, cosmologists actively tried to measure whether 
+\(\Omega_m\) was greater than or less than 1 to determine if our universe
+was destined to suffer this closed, recollapsing fate or expand forever.
+
+<p>Here we explore the consequences of a recollapsing universe:</p>
+<pre># A closed universe that recollapses; mirror the contracting branch back
+# down to a_i (not literally to the a=0 singularity -- see --continue_collapse)
+python main.py --mode evolve --omega_m 1.5 --omega_de 0.0 --continue_collapse</pre>
+
+<p>As with the Big Rip scenario, we will not provide a detailed analysis of the output, 
+but you should have sufficient
+skills from our previous explorations to thoroughly understand <em>most</em>
+of these plots. The exception might be the <i>Fractional energy-density</i> pane, which
+shows peculiar behavior toward the right-hand side.</p>
+<p>What is happening is that the universe expands to a maximum size \(a=3\) and then recollapses. 
+At the turnaround, \(H = 0\). The fractional energy density paramaters are calculated by dividing
+the physical density of a component by the critical density (\(\rho_c \propto H^2\)),
+but sunce  \(H = 0\) at the turnaround point, we have a divide-by-zero situation. On the
+bottom left, you will see the disclaimer "some Omega_i(a) excursions clipped from view
+(full values remain in the returned data/CSV)" resulting from this issue.</p>
+
+</section>
 
 
-
-</section><section id="b1"><h2>Beat 1 · An age scan is a conditional claim</h2>
+<section id="b1"><h2>Beat 1 · An age scan is a conditional claim</h2>
 <p>Hold <code>H0</code> fixed. How strongly can the composition change
 the time to reach <code>a=1</code>?</p><pre><code>python main.py --mode age --scan_param omega_m --scan_lo 0.05 --scan_hi 1.5 --scan_n 50 --outdir ./figures</code></pre>
 <p>Read the endpoints in the summary: 20.75 and 8.105 Gyr for
