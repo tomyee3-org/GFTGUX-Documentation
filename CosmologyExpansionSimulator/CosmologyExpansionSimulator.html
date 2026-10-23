@@ -214,16 +214,22 @@ Version 1.6.0&nbsp;&nbsp;&nbsp;&nbsp;Build 775b2b0ceb21
 	</p>
 
     
-    <p><strong>The Cosmological Principle and the FLRW Metric:</strong> On sufficiently large scales the universe looks, 
-	by observation, the same in every direction (isotropic) and from every location (homogeneous). 
+    <p><strong>The Cosmological Principle and the FLRW Metric:</strong> On sufficiently large scales we model the universe as homogeneous and isotropic, consistent with observations.
+. 
 	The unique metric consistent with that symmetry is the Friedmann-Lemaître-Robertson-Walker metric,</p>
     <div class="eq-block">
-      \[ds^2=-c^2dt^2+a(t)^2\left[\frac{dr^2}{1-kr^2}+r^2\left(d\theta^2+\sin^2\theta\,d\phi^2\right)\right],\]
+      \[ds^2=-c^2dt^2+a(t)^2\left[\frac{dr^2}{1-kr^2}+r^2\left(d\theta^2+\sin^2\theta\,d\phi^2\right)\right].\]
     </div>
-    <p>where \(a(t)\) is the dimensionless scale factor (normalised to \(a=1\) today) 
-	nd \(k\in\{-1,0,+1\}\) fixes the spatial geometry: open (hyperbolic), flat (Euclidean), 
-	or closed (spherical). All of the geometry and all of the dynamics are carried by the 
-	single function \(a(t)\); this program's entire job is to compute it.</p>
+    
+   <p>Here \(a(t)\) is dimensionless and normalized to one today,
+  \(r\) is a comoving radial coordinate with units of length, and
+  \(k\) is a constant with units of inverse length squared.
+  Negative, zero and positive \(k\) describe open, flat and closed
+  spatial geometry, respectively. In this convention,
+  \(\Omega_{k0}=-kc^2/H_0^2\). Symmetry reduces the expansion
+  dynamics to the function \(a(t)\), while \(k\) separately
+  specifies the spatial curvature.</p>
+
 
 
     
@@ -254,11 +260,13 @@ the second (acceleration) Friedmann equation, and a fluid continuity equation.
 <div class="eq-block">
 \[H^2 = \left(\frac{\dot{a}}{a}\right)^2 = \frac{8\pi G}{3}\rho - \frac{k c^2}{a^2} + \frac{\Lambda c^2}{3}\]
 </div>
-<p>where \(a(t)\) is the scale factor, \(G\) is the gravitational constant, \(c\) is the speed of light, and \(k\) represents spatial curvature. </p>
-
+<p>where \(a(t)\) is the scale factor, \(G\) is the gravitational constant, \(c\) is the speed of light, \(k\) represents spatial curvature, and \(\rho\) is the combined baryonic matter, dark matter, and radiation energy density. The cosmological constant contribution is written separately through the \(\Lambda\) term.</p>
 
 <p>Instead of the dimensional form, this program uses the modern dimensionless parameterization of the Friedmann equation which includes separate 
-terms for the contributions of matter density, radiation density, curvature and dark energy density:</p>
+terms for the contributions of matter density, radiation density, curvature and dark energy density.
+
+In the dimensionless formulation, the cosmological constant contribution is absorbed into the dark-energy density parameter \(\Omega_{\rm DE,0}\)​.
+</p>
 
 <p><b>First Friedmann Equation, Dimensionless Parameterization</b></p>
 
@@ -282,7 +290,7 @@ evolves if it isn't a strict cosmological constant.
 <p><b>Einstein-de Sitter space</b></p>
 
 <p>In 1932, Albert Einstein and Willem de Sitter proposed a simplified model by applying three specific conditions to the general Friedmann equation:
-(a) The universe is spatially flat \(k = 0\); (b) the cosmological constant \(\Lambda\) is zero; (b) the energy density es entirely made up of non-relativistic matter.
+(a) The universe is spatially flat \(k = 0\); (b) the cosmological constant \(\Lambda\) is zero; (c) the energy density is entirely made up of non-relativistic matter.
 </p>
 
 <p>For decades, the Einstein-de Sitter model served as the standard "textbook" model of 
@@ -291,24 +299,26 @@ because early observational data could not easily distinguish it from other geom
 
 <p>However, beginning in the 1970s and especially in the 1980s and 1990s, measurements of the Hubble 
 constant tended to give values around
-\(H_{\rm 0} \approx 70 \, \text{--} \, 100 \, \rm{ km \, s^{−1} \, Mpc^{−1} }\).
-Plugging these into the EdS formula gave ages of only about 6.56 to 56.5 billion years for \( H_{\rm 0} = 100  \)
-and 9.39 to 39.3 billion years for \( H_{\rm 0} = 70  \).</p>
-<p>In contrast, observations of the oldest globular clusters and stellar evolution models often suggested ages of
-12 to 16 billion years. So the universe predicted by the EdS model appeared to be younger than some of the stars inside it.
-That is the historical "age crisis."</p>
+\(H_{\rm 0} \approx 70 \, \text{--} \, 100 \, \rm{ km \, s^{−1} \, Mpc^{−1} }\), creating serious issues.
+For example, the Einstein–de&nbsp;Sitter relation
+\(t_0=2/(3H_0)\) gives an age for the universe of about 6.52 Gyr if
+\(H_0=100\ {\rm km\,s^{-1}\,Mpc^{-1}}\), or 9.31 Gyr if
+\(H_0=70\ {\rm km\,s^{-1}\,Mpc^{-1}}\). Such ages could be
+smaller than the estimated ages of the oldest globular clusters:
+the historical age problem.</p>
+
 
 We first explore the consequences of the Einstein-de Sitter model:
 <pre>
 # Einstein-de Sitter: flat, matter only -- the historical "age crisis" case
-python main.py --mode evolve --omega_m 1.0 --omega_de 0.0
+python main.py --mode evolve --omega_m 1 --omega_r 0 --omega_de 0
 </pre>
 
 <p>In the <i>Scale-factor evolution</i> panel in the upper left, 
-we see that the usiverse has been continuously expanding from a singularity, 
+we see that the universe has been continuously expanding from a singularity, 
 but that the rate of expansion has been decelerating (The semi-log plot obscures this fact. Use your
-cursor to read off the scale facter versus time and plot on plain graph paper to see this.), the
-current age of the usiverse is 9.311 Gyr. Early int the universe's histery, the scale factor 
+cursor to read off the scale factor versus time and plot on plain graph paper to see this.), the
+current age of the universe is 9.311 Gyr. Early int the universe's history, the scale factor 
 expanded rapidly, but at late time, the growth becomes extremely sluggish as the matter density dilutes. 
 </p>	
 <p>The <i>Hubble parameter</i> panel tells us that initially, H(t) was immensely huge, but dropped off rapidly over
@@ -316,10 +326,9 @@ the first few billion years. Using the zoom feature of Matplotlib, you can read 
 constant \(\approx 70\) at the current age of the universe \(\approx 9.3 \, \rm{Gyr} \). As time progresses,
 the Hubble parameter steadily drops towards zero. </p>
 
-<p><i>The Fractional energy density</i> panel tells us that radiation dominated at the earliest times, but 
-matter has dominated the universe since  \( a \approx 10^{-4} \). The gray horizontal line 
-\( \Omega_k(a) \) stays at zero across the entire timeline, indicating that the universe has been 
-spatially flat throughout its history. </p>
+<p><i>The Fractional energy density</i> panel tells us that the matter fraction is one throughout this idealized model;
+  radiation and dark energy are absent and spatial curvature is zero.
+ </p>
 
 <p>
 The <i>Deceleration \(\to\) acceleration</i> panel plots \(q\) from the <strong>Second Friedmann Equation:</strong>
@@ -333,10 +342,14 @@ Matter alone gives \(q=1/2\); radiation alone gives \(q=1\);
 a cosmological constant alone gives \(q=-1\) (de Sitter expansion).</p>
 </p>
 
-<p>This panel tells us that after a brief spike at the origin, the expansion
-of the universe has been decelerating at a constant rate through outout its history.
-The constant deceleration parameter of \( q = 0.5 \) is the theoretical hallmark
-of a flat, matter-dominated universe. </p>
+<p>This panel tells us that the deceleration parameter is \(q=1/2\) throughout. 
+   Constant q does not mean constant physical acceleration. Here \(a(t)\propto t^{2/3}\): 
+   the scale factor grows without
+   bound, while its slope \(\dot a\) decreases. The dimensionless
+   deceleration parameter is constant even though \(\ddot a\) is not.</p>
+
+   <p>The constant deceleration parameter of \( q = 0.5 \) is the theoretical hallmark
+   of a flat, matter-dominated universe. </p>
 
 <p><b>The concordance cosmology</b></p>
 
@@ -349,11 +362,17 @@ Einstein-de Sitter in favor of a universe driven by dark energy.</p>
 simplicity and adaptability to observations consistent with cosmic inflation.</li>
 <li>In 1998, however, two competing teams of researchers stunned the scientific
 community with data showing that the universe's expansion is accelerating, not decelerating.
-Explaining this required a non-zero cosmological constant \( \Lambda .\)</li>
+
+Their supernova observations showed that the expansion is accelerating.
+Within General Relativity and the FLRW framework, ordinary matter and
+radiation cannot account for that acceleration. A cosmological constant
+is the simplest explanation, but the program also explores alternative
+dark-energy equations of state.
+</li>
 <li>Multiple independent observations, including datasets collected by the WMAP 
 (Wilkinson Microwave Anisotropy Probe) satellite launched in 2001, combined with 
 large-scale galaxy surveys and CMB balloon experiments, led to a consensus view of
-a spatially flat universe comprised of roughly ~70% dark energy, ~25% cold dark matter, and 
+a spatially flat universe comprised of roughly 70% dark energy, ~25% cold dark matter, and 
 ~5% ordinary matter.</li>
 <li>The European Space Agency's Planck satellite provided high-precision
 mapping of the Cosmic Microwave Background. The Planck 2018 data release reinforced
@@ -368,19 +387,24 @@ mapping of the Cosmic Microwave Background. The Planck 2018 data release reinfor
 
 python main.py --mode evolve --H0 67.4 --omega_m 0.315</pre>
 
-<p>In the <i>Scale-factor evolution</i> panel, the vertical dashed line marks the present 
-day at \(13.79\text{ Gyr}\) which is significantly older than the \(9.3\text{ Gyr}\)
-predicted by the Einstein-de Sitter model.   
-The text box notes that the universe underwent an acceleration transition at \(z = 0.632\),
-marking when dark energy overtook matter as the main driver of cosmic evolution. Confirm
-this claim by using the zoom feature of Matplotlib to expand the plot between 0 and 2&nbsp;Gyr,
-then plotting scale-factor versus time on plain graph paper. The rate of expansion slows
-down betwen 0 and 0.632&nbsp;Gyr, then speeds back up again. Late in time, past about 10&nbsp;Gyr, 
-the curve actually bends upward, as you can confirm by plotting the graph between 5 and 40 Gyr and \(a\) 
-between 0.4 to 5 on plain graph paper. </p>   
+<p>In the <i>Scale-factor evolution</i> panel, the vertical dashed 
+  line marks today at about 13.79 Gyr. The
+  annotation gives an acceleration-transition redshift of
+  \(z\approx0.632\). From the console output, we see that this 
+  transition corresponds to \(a\approx0.613\) and a cosmic
+  time of about 7.69 Gyr. We can verify these from the Matplotlib
+  graph by first zooming in on cosmic time \(0 \le t \le 10\) Gyr with 
+  scale factor \(0 \le a \le 1 \), then cosmic time 
+  \(10 \le t \le 40\) Gyr with scale factor \(0.5 \le a \le 10 \), 
+  and plotting the points that you read on plain graph paper
+  or using a spreadsheet. The expansion decelerates before the
+  transition and accelerates afterward.
+  Matter–dark-energy equality
+  occurs later, at \(a\approx0.772\), or about 10.29 Gyr. These events
+  differ because acceleration depends on pressure as well as density.</p>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 <p>As with the Einstein-de Sitter model, the Hubble parameter history  in the flat \(\Lambda\)CDM model
-shows a rapid decline from immenmsely high values early in the universe history to its present value
+shows a rapid decline from immensely high values early in the universe history to its present value
 of about  \(H_0 = 67.4\text{ km s}^{-1}\text{ Mpc}^{-1}\) today. However, unlike the Einstein-de Sitter
 model, this curve flattens out into a nearly constant value 
 rather than continuing to drop toward zero. This is the signature of dark energy, which drives an
@@ -408,7 +432,7 @@ of a dark energy-dominated universe expanding exponentially.</p>
 <p><b>Speculative alternative: The Big Rip</b></p>
 <p>The "Big Rip" is a hypothetical scenario for the ultimate fate of the universe, 
 driven by a specialized type of dark energy known as phantom energy. 
-Alternative theories have proposed that the cosmological constant is not actually constant 
+Alternative theories have proposed that dark energy need not be a cosmological constant
 but varies with \(a,\) this variability characterized by the <b>parameterized dark energy 
 equation of state:</b>
 </p>
@@ -424,15 +448,16 @@ leading to a growing energy density as space expands.</p>
 <p>This growing energy density results in a compounding 
 feedback loop where more expansion leads to higher dark energy density, 
 which causes faster expansion. The expansion rate accelerates so aggressively that the scale
-factor reaches infinity in a finite amount of time. Eventually, this runaway expansion 
-overpowers all fundamental forces holding matter together. Everything from galaxy clusters 
+factor reaches infinity in a finite amount of time. Extension of some idealized phantom models 
+suggests that this runaway expansion could even overpower all fundamental forces holding matter together,
+so that everything from galaxy clusters 
 to stars, planets, molecules and even subatomic particles become torn apart.</p>
 
 <div class="eq-block"><div class="eq-label">The following formula estimates the time until the Big Rip:</div>
   \[w_0&lt;-1,\ w_a=0:\qquad t_{\rm rip}-t_0\approx\frac{1}{-\tfrac32(1+w_0)\,H_0\sqrt{\Omega_{\rm DE,0}}}.\]
 </div>
 
-<p>\(w_0 < -1\) does not automatically guarantees a Big Rip. Geometry is also important!
+<p>\(w_0 < -1\) does not automatically guarantee a Big Rip. Geometry is also important!
 If a universe is closed (meaning it has a curved, spherical shape 
 where \(\Omega_{k0} < 0\)), gravity can pull everything back together. 
 A closed universe might actually recollapse (a Big Crunch) before phantom 
@@ -441,13 +466,13 @@ knowing \(w_0 < -1\) isn't enough;
 the computer program has to check whether gravity or phantom energy wins the race.</p>
 
 <p>Current observational data does not support the Big Rip as the likely fate of our universe.
-High-precision data thus far strongly align with the standard flat \(\Lambda\)CDM model, 
-where \(w\) is indistinguishable from \(-1\), predicting that the ultimate fate of the universe
+High-precision data thus far align with the standard flat \(\Lambda\)CDM model, 
+where \(w\) is indistinguishable from \(-1\), which would predict that the ultimate fate of the universe
 will be a peaceful "Big Freeze" or "Heat Death" rather than a violent tear. Ultimately, 
-the universe will experience a stable, constant exponential expansion where distant galaxies
+the universe will probably experience a stable, constant exponential expansion where distant galaxies
 drift out of view.</p>
 
-<p>In the following, we explore a Big Rip scenario:
+<p>In the following, we explore a Big Rip scenario. Here wa=0, so \(w(a)=w0=-1.2\) throughout the model:
 <pre># Phantom dark energy: w0 < -1 can lead to a future Big Rip, if no
 # earlier recollapse intervenes first
 python main.py --mode evolve --w0 -1.2 --a_max 1000</pre>
@@ -460,17 +485,21 @@ skills from our previous explorations to thoroughly understand these plots.
 
 For much of the mid-to-late 20th century (long before dark energy was discovered), most researchers pursued three primary scenarios for the fate of the universe: 
 <ul>
-<li>The Open Universe (\(\Omega_m < 1, k = -1\)): Expands forever at an accelerating/coasting rate.</li>
-<li>The Flat/Critical Universe (\(\Omega_m = 1, k = 0\)): The Einstein-de Sitter model, which expands forever but asymptotically slows to a halt.</li>
+<li>The Open Universe (\(\Omega_m < 1, k = -1\)): Expands forever while decelerating, approaching coasting at late times.</li>
+<li>The Flat/Critical Universe (\(\Omega_m = 1, k = 0\)): The Einstein-de Sitter model. Expands forever with \(a(t)\)
+  proportional to \(t^{2/3}\); its expansion rate
+  \(da/dt\) tends toward zero, while \(a\) itself remains unbounded
+.</li>
 <li>The Closed Universe (\(\Omega_m > 1, k = +1\)): The density of matter is high enough that space is positively curved (spherical) and gravity eventually overpowers the expansion, pulling everything back together into a Big Crunch.</li>
 </ul>
 <p>Other models that were pursued included a cyclic universe where each Big Crunch would bounce into a 
 new Big Bang.</p>
 
+<p>These were all \(\Lambda=0,\) matter-only models.
 Before precision measurements in the late 1990s showed that the universe is flat and 
 dominated by dark energy, cosmologists actively tried to measure whether 
 \(\Omega_m\) was greater than or less than 1 to determine if our universe
-was destined to suffer this closed, recollapsing fate or expand forever.
+was destined to suffer this closed, recollapsing fate or expand forever.</p>
 
 <p>Here we explore the consequences of a recollapsing universe:</p>
 <pre># A closed universe that recollapses; mirror the contracting branch back
@@ -480,10 +509,10 @@ python main.py --mode evolve --omega_m 1.5 --omega_de 0.0 --continue_collapse</p
 <p>As with the Big Rip scenario, we will not provide a detailed analysis of the output, 
 but you should have sufficient
 skills from our previous explorations to thoroughly understand <em>most</em>
-of these plots. The exception might be the <i>Fractional energy-density</i> pane, which
+of these plots. The exception might be the <i>Fractional energy-density</i> panel, which
 shows peculiar behavior toward the right-hand side.</p>
 <p>What is happening is that the universe expands to a maximum size \(a=3\) and then recollapses. 
-At the turnaround, \(H = 0\). The fractional energy density paramaters are calculated by dividing
+At the turnaround, \(H = 0\). The fractional energy density parameters are calculated by dividing
 the physical density of a component by the critical density (\(\rho_c \propto H^2\)),
 but since  \(H = 0\) at the turnaround point, we have a divide-by-zero situation. On the
 bottom left, you will see the disclaimer "some Omega_i(a) excursions clipped from view
@@ -552,8 +581,13 @@ as gravity begins dominating and pulling the universe toward its eventual turnar
 <li>Key Metrics: Age = \(14.15\text{ Gyr}\) | \(H_0 t_0 = 0.9757\) | \(q_0 = -0.733\) | \(z_{\text{accel}} = 0.6175\) | Note: Big Rip ahead</li>
 <li>Commentary: This extreme scenario uses phantom dark energy (\(w < -1\)), where dark energy density intensifies as space stretches. 
 It exhibits the most aggressive acceleration today (\(q_0 = -0.733\)) and yields the oldest current age in the group 
-(\(14.15\text{ Gyr}\)) because early deceleration was counterbalanced by runaway later growth. The note "Big Rip ahead" 
-flags its apocalyptic future, where expansion outpaces all local binding forces.</li> 
+(\(14.15\text{ Gyr}\)). The note "Big Rip ahead" 
+flags its apocalyptic future, where expansion outpaces all local binding forces. 
+At fixed present \(H_0\) and density parameters, the phantom model has less
+  dark-energy density in the past than \(\Lambda\)CDM. Its past expansion history
+  therefore gives a slightly larger age today. The future runaway is a
+  separate consequence of continuing the same \(w  \lt -1\) model beyond today.
+</li> 
 </ul>
 </li>
 </ol>
@@ -567,7 +601,7 @@ flags its apocalyptic future, where expansion outpaces all local binding forces.
 
 <section id="b2"><h2>Beat 2 · Historical Age Crisis</h2>
 
-<p>This plots generated by the following command provide a visualization of the historical Einstein-de Sitter (EdS) Age Crisis 
+<p>The plots generated by the following command provide a visualization of the historical Einstein-de Sitter (EdS) Age Crisis 
 and how altering cosmological parameters attempted to resolve it.</p>
 
 <pre>
@@ -601,7 +635,7 @@ Thus: \(t_{\rm stars} > t_{\rm universe}\) which is impossible.</p>
 
 <p><b>An important thing that the plot shows:</b></p> 
 
-<p>Notice where the dashed 13 Gyr line intersects the curve. By eye it occurs around \(\Omega_{m0}\approx 0.33.\) That is 
+<p>Notice where the dashed 13 Gyr line intersects the curve. By eye it occurs around \(\Omega_{m0}\approx 0.34.\) That is 
 extremely interesting because it says:
 <ul>
 <li>For a fixed \(H_0,\) a flat universe reaches an age of roughly 13 Gyr only when the matter density is much smaller 
@@ -610,22 +644,24 @@ than the Einstein-de Sitter value \(\Omega_{m0}=1.\)</li>
 </p>
 
 <p>In other words, if the measured \(H_0\) is kept fixed, reducing the matter density makes the universe older.
-The plot is therefore visually demonstrating why cosmologists became uncomfortable with the \(\Omega_m=1\) model.</p>
+The plot therefore visually demonstrates why cosmologists became uncomfortable with the \(\Omega_m=1\) model.</p>
 
 <p><b>Why \(\Lambda\) helps:</b></p>
 
-<p>The plot imposes \(\Lambda = 1-\Omega_m\) to preserve flatness. As \(\Omega_m\) decreases, \(\Omega_\Lambda\) increases. 
+<p>The plot imposes   \(\Omega_{\Lambda0}=1-\Omega_{m0}-\Omega_{r0}\) to preserve flatness. As \(\Omega_m\) decreases, \(\Omega_\Lambda\) increases. 
 This enables the age to climb dramatically:</p>
-
 <style>th, td { padding: 2px;}</style>
 <table border="1" style="text-align: left; border-collapse: collapse;">
-<tr><th style="width:25%">\(\Omega_m\)</th><th>Age (approx)</th></tr>
-<tr><td>1.5</td><td>8.1 Gyr</td></tr>
-<tr><td>1.0</td><td>9.3 Gyr</td></tr>
-<tr><td>0.5</td><td>11.8 Gyr</td></tr>
-<tr><td>0.3</td><td>13.4 Gyr</td></tr>
-<tr><td>0.1</td><td>18+ Gyr</td></tr>
+<tr><th style="width:25%">\(\Omega_m\)</th><th>Age today(Gyr)</th><th>\(H_0t_0\)</th></tr>
+<tr><td>  1.5</td><td>          8.10497</td><td>               0.580233</td></tr>
+<tr><td>  1.0</td><td>          9.31118</td><td>               0.666586</td></tr>
+<tr><td>  0.5</td><td>         11.60444</td><td>               0.830760</td></tr>
+<tr><td>  0.3</td><td>         13.46127</td><td>               0.963690</td></tr>
+<tr><td>  0.1</td><td>         17.82569</td><td>               1.276138</td></tr>
 </table>
+
+
+
 <br>
 <p>This is essentially the historical solution to the age crisis:
 <ul>
@@ -634,7 +670,7 @@ This enables the age to climb dramatically:</p>
 <li>A universe with roughly \(\Omega_m \approx 0.3, \, \Omega_\Lambda \approx 0.7\)
 achieves \(H_0t_0 \approx 0.96,\)</li>
 </ul>
-which for \(H_0\approx70\) gives an age around 13.8 Gyr.</p>
+which for \(H_0\approx70\) gives an age around 13.4 Gyr.</p>
 
 
 <p>The right-hand plot makes this especially clear: the age crisis was fundamentally a crisis in the value of \(H_0 t_0.\)
@@ -657,18 +693,88 @@ raises \(H_0 t_0\) into the observationally acceptable range.
   <!-- ================================================================ -->
   <section id="experiments">
     <h2>Suggested Experiments</h2>
-    <p>The exercises are divided into a <strong>core sequence</strong>, arranged from reading the output through controlled comparisons to numerical work, and a set of <strong>optional projects</strong> that connect to open questions in cosmology. Two <strong>synthesis</strong> exercises close the set. Nothing here needs anything beyond the program, a spreadsheet or short script, and the printed summary.</p>
+    <p>The exercises are divided into a <strong>core sequence</strong>, arranged from reading the output through controlled comparisons to numerical work, and a set of <strong>optional projects</strong> that connect to open questions in cosmology. Four <strong>synthesis</strong> exercises close the set. Most exercises use the program and a spreadsheet; optional
+  research projects also call for outside sources.</p>
+    
+    <div class="exp-card">
+    <h4>Useful definitions for these exercises:</h4>
+    
+    <p>\[
+    \begin{flalign*}
+      w_i={P_i\over\rho_i c^2},\qquad
+      \rho_{{\rm crit},0}={3H_0^2\over8\pi G},\qquad
+      \Omega_{i0}={\rho_{i0}\over\rho_{{\rm crit},0}}. &&
+    \end{flalign*}
+    \]</p>
+  
+    <p>\[
+    \begin{flalign*}
+      \dot\rho_i+3H\left(\rho_i+{P_i\over c^2}\right)=0,\qquad
+      g(a)=a^{-3(1+w_0+w_a)}\exp[-3w_a(1-a)]. &&
+    \end{flalign*}
+    \]</p>
+    
+  
+    <p>\[
+    \begin{flalign*}
+      \Omega_{k0}=1-\Omega_{m0}-\Omega_{r0}-\Omega_{{\rm DE},0},
+      \qquad z={1\over a}-1. &&
+    \end{flalign*}
+    \]</p>
+
+    <p>\[
+    \begin{flalign*}
+      \Omega_m(a)={\Omega_{m0}a^{-3}\over E(a)^2},\quad
+      \Omega_r(a)={\Omega_{r0}a^{-4}\over E(a)^2},\quad
+      \Omega_k(a)={\Omega_{k0}a^{-2}\over E(a)^2},\quad
+      \Omega_{\rm DE}(a)={\Omega_{{\rm DE},0}g(a)\over E(a)^2}. &&
+    \end{flalign*}
+    \]</p>
+    </div>
+  
+    <div id="numerical_method" class="exp-card">
+    <h4>Numerical method and time origin</h4>
+    <p>The expanding branch uses \(da/dt=aH_0E(a)\), with fourth-order Runge–Kutta
+    steps sized approximately as \(\text{step\_frac}/H(a).\) This is a step-size rule,
+    not an error-controlled adaptive method. The code finds a genuine
+    turnaround from \(E(a)^2=0\) and handles the nearby time integral separately.
+    The forward run ends at the first of <code>a_max, t_max</code> and a turnaround;
+    --continue_collapse adds the mirrored contracting branch, subject to a
+    time limit on the returned data.</p>
+
+    <p>Integration begins at \(a_i>0\). Where a finite Big Bang and a dominant
+    early component can be established, an asymptotic offset estimates the
+    preceding elapsed time. If \(E(a)^2 \approx C a^p\) with \(C \gt 0\), the integral to \(a=0\)
+    converges only for \(p \lt 0\). For a DE-only CPL model, \(p=-3(1+w0+wa)\).
+    A past-eternal model has no finite age from a Big Bang; its elapsed time
+    from \(a_i\) is separately labeled bookkeeping.</p>
+    </div>
 
     <h3>Core sequence · introductory</h3>
     <div class="exp-grid">
 
       <div class="exp-card"><div class="ec-num">EXP-1 · introductory</div><h4>Read the Concordance Universe</h4><p>Run <code>python main.py --mode evolve --H0 67.4 --omega_m 0.315</code> (omit <code>--omega_de</code> so the program forces flatness exactly; passing <code>--omega_de 0.685</code> here would leave a stray \(\Omega_{k0}=-9.24\times10^{-5}\) from the default radiation density). Record the age of the universe, \(q_0\), the matter-radiation and matter-dark-energy equality redshifts, and the acceleration-transition redshift. Which happened more recently: matter-dark-energy equality, or the onset of accelerated expansion? Should those two necessarily coincide, given the formula for \(q(a)\)? For a bonus, derive \(a_{m\Lambda}=(\Omega_{m0}/\Omega_{\Lambda0})^{1/3}\) and \(a_{\rm accel}=(\Omega_{m0}/2\Omega_{\Lambda0})^{1/3}\) for flat matter+\(\Lambda\) with negligible radiation, verify both against the printed values, and explain the factor of two between them.</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-2 · introductory</div><h4>The Historical Age Crisis</h4><p>Run <code>--mode evolve --H0 70 --omega_m 1.0 --omega_de 0.0</code> (Einstein-de Sitter). Record the age. The oldest globular clusters in the Milky Way are reliably dated to roughly 12-13 Gyr. Is this matter-only, flat universe old enough to contain them? This was a real crisis in cosmology before 1998 -- explain, in one sentence using only the formula \(t_0=(2/3)/H_0\), why raising \(H_0\) cannot solve the problem. Now run <code>--mode evolve --H0 70 --omega_m 0.3 --omega_de 0.0</code> (an <em>open</em>, low-density, still matter-only universe -- no \(\Lambda\) at all) and compare its age. This is the historically important point: an open universe alone could relieve the pre-1998 age problem without dark energy. What finally made dark energy hard to avoid was a separate observation (EXP-6), not the age alone.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2 · introductory</div><h4>The Historical Age Crisis</h4><p>Run <code>--mode python main.py --mode evolve --omega_m 1 --omega_r 0 --omega_de 0</code> (Einstein-de Sitter). Record the age. The oldest globular clusters in the Milky Way are reliably dated to roughly 12-13 Gyr. Is this matter-only, flat universe old enough to contain them? This was a real crisis in cosmology before 1998 -- explain, in one sentence using only the formula \(t_0=(2/3)/H_0\), why raising \(H_0\) cannot solve the problem. Now run <code>--mode evolve --H0 70 --omega_m 0.3 --omega_de 0.0</code> (an <em>open</em>, low-density, still matter-only universe -- no \(\Lambda\) at all) and compare its age. This is the historically important point: Dropping flatness can lengthen the age without adding dark energy. The
+      Omega_m0=0.3 example is older than EdS but still younger than the reference
+      cluster ages; lower matter density or a lower H0 can lengthen it further.
+      What finally made dark energy hard to avoid was a separate observation (EXP-6), not the age alone.</p></div>
 
       <div class="exp-card"><div class="ec-num">EXP-3 · introductory</div><h4>Three Eras</h4><p>Run <code>--mode evolve</code> with default (flat, concordance-like) parameters and study the \(\Omega_i(a)\) panel. Identify by eye the radiation era, the matter era, and the dark-energy era. Using the closed-form \(a_{\rm eq}=\Omega_{r0}/\Omega_{m0}\), predict the matter-radiation equality scale factor before checking it against the printed summary.</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-4 · intermediate</div><h4>An Analytic Validation Case (Milne)</h4><p>Run <code>--mode evolve --omega_m 0 --omega_r 0 --omega_de 0</code> (the Milne universe: pure curvature, nothing else). The exact solution is \(a=H_0t\) for <em>all</em> time, where \(H_0\) must first be converted from km/s/Mpc to Gyr\(^{-1}\) (the program does this once, internally; do it yourself by hand here). Using the CSV output, compute the relative error \(|a_{\rm program}(t)-H_0t|/(H_0t)\) at several rows spanning the run; the run starts at a small but nonzero \(t\) set by the early-time offset (there is no literal \(t=0\) row), but skip the first row or two anyway if \(t\) there is so small that ordinary floating-point round-off in \(a_{\rm program}(t)\) dominates the relative error you are trying to measure. Why should this particular cosmology make an unusually clean test of the integrator, and what does it <em>not</em> test (checkpoints, turnaround handling, a nonlinear \(H(a)\))? Separately: Milne's \(a=0\) is flat Minkowski spacetime viewed in an unusual coordinate system, not a curvature singularity (see the Early-Time section) -- state in one sentence, using \(dt/da=1/(aH_0E(a))\) with \(E(a)^2=\Omega_{k0}\) constant, why this model is nonetheless a genuine <em>finite-age</em> Big Bang (a real \(t=0\) exists) despite \(a=0\) not being singular there.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4 · intermediate</div><h4>An Analytic Validation Case (Milne)</h4><p>Run <code>--mode evolve --omega_m 0 --omega_r 0 --omega_de 0</code> (the Milne universe: pure curvature, nothing else). The exact solution is \(a=H_0t\) for <em>all</em> time, where \(H_0\) must first be converted from km/s/Mpc to Gyr\(^{-1}\) (the program does this once, internally; do it yourself by hand here). Using the CSV output, compute the relative error \(|a_{\rm program}(t)-H_0t|/(H_0t)\) at several rows spanning the run; the run starts at a small but nonzero \(t\) set by the early-time offset (there is no literal \(t=0\) row), but skip the first row or two anyway if \(t\) there is so small that ordinary floating-point round-off in \(a_{\rm program}(t)\) dominates the relative error you are trying to measure. 
+      
+      Why does the constant right-hand side \(da/dt=H_0\) make this a clean test?
+      What additional behavior would require a model with nonconstant \(aH(a)\)
+      or a genuine turnaround?
+
+      
+      For Milne, \(\Omega_{k0}=1\), so \(E(a)^2=a^{-2}\) and
+      \(dt/da=1/H_0\). Thus \(t=a/H_0\) when the expanding coordinate
+      patch is assigned \(t=0\) at \(a=0\). That boundary is reached in
+      finite cosmic time, although it is not a curvature singularity of
+      Minkowski spacetime
+.</p></div>
 
     </div>
 
@@ -688,7 +794,7 @@ raises \(H_0 t_0\) into the observationally acceptable range.
 
       <div class="exp-card"><div class="ec-num">EXP-8 · intermediate</div><h4>Reproducing the Age-vs-\(\Omega_m\) Plot</h4><p>Run <code>--mode age --scan_param omega_m --scan_lo 0.05 --scan_hi 1.5 --scan_n 60</code>. A finite grid will almost never land exactly on the \(\Omega_{m0}\) where the age equals your chosen <code>--age_ref_gyr</code> -- find the two adjacent grid rows that bracket it and linearly interpolate between them, then state your result together with the grid spacing as an honest uncertainty. Double <code>--scan_n</code> and see how much the estimate moves. Is your interpolated value closer to the historical assumption \(\Omega_m=1\) or to the modern concordance value \(\Omega_m\approx0.3\)? (For the specific historical question of whether a flat, positive-\(\Lambda\) universe is needed at all, restricting the scan to \(\Omega_{m0}\le1\) keeps the comparison to the flat-\(\Lambda\)-vs-\(\Lambda=0\) family discussed in EXP-2.)</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-9 · intermediate</div><h4>Evolving Dark Energy, Phantom, and the Cosmological Constant</h4><p>Run <code>--mode compare --presets lambdaCDM,evolving_de,phantom,desi_like</code>. All four share the same \(H_0\) and \(\Omega_{m0}\); only \(w_0\) and \(w_a\) differ, so any difference you see is attributable to the dark-energy sector alone. Compare their ages, their \(q_0\), and their \(\Omega_{\rm DE}(a)\) curves. Find the scale factor at which \(|\Omega_{\rm DE,evolving\_de}(a)-\Omega_{\rm DE,\Lambda CDM}(a)|\) first exceeds, say, 1% of \(\Omega_{\rm DE,\Lambda CDM}(a)\) (a concrete threshold, not "visibly"), and use that to say how recent an epoch you would need to observe precisely to tell the two apart. Caution: despite its name, <code>evolving_de</code> (\(w_0=-0.8\), \(w_a=0.3\)) is not pure quintessence over the whole range this program can show you -- using \(w(a)=w_0+w_a(1-a)\), verify for yourself that it crosses \(w=-1\) at \(a=5/3\) (since \(dw/da=-w_a\ne0\), it genuinely crosses rather than merely touching); describe it as quintessence-like for \(a\lesssim5/3\) and phantom-like beyond, both squarely within \(a\ge1\) (future) CPL extrapolation, not "three regimes from today onward." Separately, using \(w(a)=w_0+w_a(1-a)\), explain why <code>desi_like</code> (\(w_0=-0.7,\ w_a=-1.0\)) moves in the <em>opposite</em> direction into the past from <code>evolving_de</code> -- this is the sign distinction behind the DESI note above.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-9 · intermediate</div><h4>Evolving Dark Energy, Phantom, and the Cosmological Constant</h4><p>Run <code>--mode compare --presets lambdaCDM,evolving_de,phantom,desi_like</code>. All four share the same \(H_0\) and \(\Omega_{m0}\); only \(w_0\) and \(w_a\) differ, so any difference you see is attributable to the dark-energy sector alone. Compare their ages, their \(q_0\), and their \(\Omega_{\rm DE}(a)\) curves. Find the scale factor at which \(|\Omega_{\rm DE,evolving\_de}(a)-\Omega_{\rm DE,\Lambda CDM}(a)|\) first exceeds, say, 1% of \(\Omega_{\rm DE,\Lambda CDM}(a)\) (a concrete threshold, not "visibly"), and use that to say how recent an epoch you would need to observe precisely to tell the two apart. Caution: despite its name, <code>evolving_de</code> (\(w_0=-0.8\), \(w_a=0.3\)) is not pure quintessence over the whole range this program can show you -- using \(w(a)=w_0+w_a(1-a)\), verify for yourself that it crosses \(w=-1\) at \(a=5/3\) (since \(dw/da=-w_a\ne0\), it genuinely crosses rather than merely touching); describe it as quintessence-like for \(a\lesssim5/3\) and phantom-like beyond, both squarely within \(a\ge1\) (future) CPL extrapolation, not "three regimes from today onward." Separately, using \(w(a)=w_0+w_a(1-a)\), explain why <code>desi_like</code> (\(w_0=-0.7,\ w_a=-1.0\)) moves in the <em>opposite</em> direction into the past from <code>evolving_de</code>.</p></div>
 
       <div class="exp-card"><div class="ec-num">EXP-10 · intermediate</div><h4>The Flatness Problem, Quantitatively</h4><p>Run <code>--mode evolve</code> with \(\Omega_{m0}=0.3\), \(\Omega_{\rm de}=0.6999\) (so \(\Omega_{k0}=1-0.3-9.24\times10^{-5}-0.6999\approx7.6\times10^{-6}\), already tiny). With the default \(\Omega_{r0}=9.24\times10^{-5}\), matter-radiation equality is at \(a_{\rm eq}=\Omega_{r0}/\Omega_{m0}\approx3.08\times10^{-4}\), so both \(a=10^{-6}\) and \(a=10^{-8}\) lie in the <em>radiation</em>-dominated era, not the matter-dominated one. Using the CSV output, find the rows nearest \(a=10^{-2}\) (matter-dominated), \(a=10^{-6}\), and \(a=10^{-8}\) (both radiation-dominated) and read off \(\Omega_k(a)\) at each. With the default \(a_i=10^{-8}\), \(a=10^{-8}\) is exactly the first row of the CSV; \(a=10^{-6}\) and \(a=10^{-2}\) will not generally land on the grid exactly -- use the nearest row, or interpolate, and say which you did. By what factor does \(|\Omega_k|\) shrink for each factor of 100 decrease in \(a\)? State the scaling as a power law at each pair of points, and explain from the \(a^{-2}\) (curvature) vs. \(a^{-3}\) (matter) vs. \(a^{-4}\) (radiation) scalings in \(E(a)^2\) why it is \(\Omega_k(a)\propto a\) between \(a=10^{-2}\) and matter-radiation equality, but \(\Omega_k(a)\propto a^2\) between \(a=10^{-6}\) and \(a=10^{-8}\), deep in the radiation era.</p></div>
 
@@ -701,7 +807,7 @@ raises \(H_0 t_0\) into the observationally acceptable range.
 
       <div class="exp-card"><div class="ec-num">EXP-12 · intermediate/advanced</div><h4>A Universe That Recollapses</h4><p>Run <code>--mode evolve --omega_m 1.5 --omega_de 0.0 --continue_collapse</code>. Record \(a_{\rm turn}\), \(t_{\rm turn}\), and the total lifetime. First derive \(a_{\rm turn}\) algebraically by setting \(E(a)^2=0\) with only matter and curvature (neglecting the tiny radiation term, so your hand value will be <em>approximately</em>, not exactly, 3) and compare with the program's value, which does include that small radiation term. Then explain, using only the fact that \(E(a)^2\) depends on \(a\) but never on the sign of \(\dot a\), why the total lifetime must be exactly twice the time to turnaround -- with no need to re-integrate the contracting half. Note that the mirrored data in the CSV run back down only to \(a_i\), not to \(a=0\); the quoted total-lifetime figure extrapolates the missing interval near each end through the analytic early-time offset, not through additional integrated points. For a convergence check, repeat at a few values of <code>--a_i</code> and <code>--step_frac</code> and see how much \(t_{\rm turn}\) moves.</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-13 · intermediate/advanced</div><h4>Racing Toward a Big Rip</h4><p>Run <code>--mode evolve --w0 -1.2 --wa 0 --a_max 60</code> (the Big Rip formula used here assumes \(w_a=0\); leaving <code>--wa</code> at its default already satisfies this, but say so explicitly) and record the reported Big Rip time. Using the closed-form estimate in the help file's equations section, compute your own estimate by hand from \(H_0\), \(\Omega_{\rm DE,0}\), and \(w_0\), and compare -- being careful to distinguish the reported <em>absolute</em> cosmic time \(t_{\rm rip}\) from the <em>time remaining</em> \(t_{\rm rip}-t_0\) you compute by hand from the formula. Then repeat for \(w_0=-1.05\) and \(w_0=-1.5\): how sensitively does the time to the Big Rip depend on how far \(w_0\) sits below \(-1\)? Finally, run \(w_0=-1.0\) exactly and confirm the program reports no Big Rip at all -- explain why an infinitesimal change in \(w_0\) at the boundary produces a qualitative change in the universe's fate, and note that this whole estimate is a late-time, dark-energy-dominated approximation, not valid while matter, radiation, or curvature still contribute.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-13 · intermediate/advanced</div><h4>Racing Toward a Big Rip</h4><p>Run <code>--mode evolve --w0 -1.2 --wa 0 --a_max 60</code> (the Big Rip formula used here assumes \(w_a=0\); leaving <code>--wa</code> at its default already satisfies this, but say so explicitly) and record the reported Big Rip time. Compute your own estimate by hand from \(H_0\), \(\Omega_{\rm DE,0}\), and \(w_0\), and compare -- being careful to distinguish the reported <em>absolute</em> cosmic time \(t_{\rm rip}\) from the <em>time remaining</em> \(t_{\rm rip}-t_0\) you compute by hand from the formula. Then repeat for \(w_0=-1.05\) and \(w_0=-1.5\): how sensitively does the time to the Big Rip depend on how far \(w_0\) sits below \(-1\)? Finally, run \(w_0=-1.0\) exactly and confirm the program reports no Big Rip at all -- explain why an infinitesimal change in \(w_0\) at the boundary produces a qualitative change in the universe's fate, and note that this whole estimate is a late-time, dark-energy-dominated approximation, not valid while matter, radiation, or curvature still contribute.</p></div>
 
       <div class="exp-card"><div class="ec-num">EXP-14 · advanced</div><h4>Numerical Convergence</h4><p>Repeat the concordance run with <code>--step_frac 0.05, 0.02, 0.01, 0.005, 0.001</code> and record the age of the universe to six significant figures each time (0.05 is coarse enough to show visibly non-asymptotic behavior -- include it anyway, as a lesson in what "not yet converged" looks like). Demonstrate convergence, quantify the residual spread at the finest setting relative to a very fine reference run (e.g. <code>step_frac=1e-4</code>), and estimate the empirical order of convergence from how the error scales as <code>step_frac</code> is halved. Then repeat for the closed-universe turnaround in EXP-12. This is <em>not</em> the same convergence question as the ordinary trajectory: \(a_{\rm turn}\) is found by algebraic bisection (converges to bisection tolerance, essentially independent of <code>step_frac</code>), while \(t_{\rm turn}\) additionally depends on the RK4-integrated time accumulated <em>before</em> the handoff to that root-finder plus a separate Gauss-Legendre quadrature -- so ask separately how \(a_{\rm turn}\) and \(t_{\rm turn}\) each behave as <code>step_frac</code> is refined, rather than expecting one single RK4 convergence order to describe both.</p></div>
 
@@ -718,9 +824,12 @@ raises \(H_0 t_0\) into the observationally acceptable range.
 
       <div class="exp-card"><div class="ec-num">EXP-17b · advanced (dated, outside-program extension)</div><h4>The Hubble Tension</h4><p>Using EXP-17a's scaling result, note that this program's Friedmann-equation machinery has no mechanism that prefers one \(H_0\) over another -- changing <code>--H0</code> here is not itself a resolution of anything. As a separately sourced, dated research extension (check for updates beyond 2026), briefly research outside this program what the "Hubble tension" between Planck-inferred and local distance-ladder \(H_0\) values currently stands at, and identify one physical effect a genuine resolution would need to leave imprinted on \(H(a)\) at some epoch -- e.g. an early-universe modification (visible before recombination) versus a late-time one (visible in this program's \(H(a)\) at low \(a\)).</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-17c · advanced (numerical-methods project)</div><h4>Stop-Event Ordering</h4><p>Using the closed-universe model of EXP-12 (\(\Omega_{m0}=1.5\), \(\Omega_{\rm DE,0}=0\)), first run it to completion to find its \(a_{\rm turn}\) and \(t_{\rm turn}\). Then run it four more times, choosing <code>--a_max</code> once at 99% and once at 101% of \(a_{\rm turn}\), and separately choosing <code>--t_max</code> once at 99% and once at 101% of \(t_{\rm turn}\) (using a generous <code>--a_max</code> for the <code>--t_max</code> runs so it does not interfere) -- offsets this size are comfortably beyond the razor-thin knife-edge range (within roughly the precision of the internal bisection) where the reported label can go either way (see the Algorithm section), so each of these four runs has one unambiguous correct prediction. Before running each, predict from the help file's stopping-precedence rule which of \(a_{\max}\), \(t_{\max}\), or the turnaround should stop the run, and check the printed "Run stopped because" line against your prediction. This directly exercises the event-ordering logic described in the Algorithm section above.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-17c · advanced (numerical-methods project)</div><h4>Stop-Event Ordering</h4><p>Using the closed-universe model of EXP-12 (\(\Omega_{m0}=1.5\), \(\Omega_{\rm DE,0}=0\)), first run it to completion to find its \(a_{\rm turn}\) and \(t_{\rm turn}\). Then run it four more times using different conditions. For these four stopping tests, omit --continue_collapse so that the first
+      turnaround ends the returned trajectory. Test the mirrored contracting
+      branch separately if you wish: Try choosing <code>--a_max</code> once at 99% and once at 101% of \(a_{\rm turn}\), and separately choosing <code>--t_max</code> once at 99% and once at 101% of \(t_{\rm turn}\) (using a generous <code>--a_max</code> for the <code>--t_max</code> runs so it does not interfere) -- offsets this size are comfortably beyond the razor-thin knife-edge range (within roughly the precision of the internal bisection) where the reported label can go either way (see the <a href="#numerical_method">Numerical method and time origin</a> section, so each of these four runs has one unambiguous correct prediction. Before running each, predict from the help file's stopping-precedence rule which of \(a_{\max}\), \(t_{\max}\), or the turnaround should stop the run, and check the printed "Run stopped because" line against your prediction. This directly exercises the event-ordering logic described in the <a href="#numerical_method">Numerical method and time origin</a> section above.</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-17d · advanced (numerical-methods project)</div><h4>The Closed-Matter-Only Universe, Exactly</h4><p>The flat matter-only case has a closed form (\(a\propto t^{2/3}\)), but so does the <em>closed</em> matter-only case (\(\Omega_{r0}=\Omega_{\rm DE,0}=0\), \(\Omega_{m0}&gt;1\)): it is the classic cycloid, \(a(\eta)=\tfrac{\Omega_{m0}}{2(\Omega_{m0}-1)}(1-\cos\eta)\), \(H_0t(\eta)=\tfrac{\Omega_{m0}}{2(\Omega_{m0}-1)^{3/2}}(\eta-\sin\eta)\), parametrized by the development angle \(\eta\in[0,2\pi]\) (\(\eta=\pi\) is turnaround). Derive this yourself from \(E(a)^2=\Omega_{m0}a^{-3}+(1-\Omega_{m0})a^{-2}\), or look up the standard derivation, and implement it (a short script, or even a spreadsheet) to compute \(a_{\rm turn}\) and \(t_{\rm turn}\) for \(\Omega_{m0}=2\) directly from these closed-form expressions, with no numerical integration at all. Compare against this program's <code>--omega_m 2 --omega_de 0</code> output. Then repeat EXP-17c's experiment using this exact solution as the reference instead of the program's own first run: place <code>--a_max</code> and <code>--t_max</code> progressively closer to the exact \(a_{\rm turn}\)/\(t_{\rm turn}\) (say, at 90%, 99%, 99.9%, and 99.99% of the exact value) and track how the program's reported stopping time and scale factor converge to the exact cycloid values as the boundary approaches the singularity. This is the most demanding test of the event-ordering and turnaround machinery in the program, because it checks it against an independent solution with no integration error of its own, not just against the program's own self-consistency.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-17d · advanced (numerical-methods project)</div><h4>The Closed-Matter-Only Universe, Exactly</h4><p>The flat matter-only case has a closed form (\(a\propto t^{2/3}\)), but so does the <em>closed</em> matter-only case (\(\Omega_{r0}=\Omega_{\rm DE,0}=0\), \(\Omega_{m0}&gt;1\)): it is the classic cycloid, \(a(\eta)=\tfrac{\Omega_{m0}}{2(\Omega_{m0}-1)}(1-\cos\eta)\), \(H_0t(\eta)=\tfrac{\Omega_{m0}}{2(\Omega_{m0}-1)^{3/2}}(\eta-\sin\eta)\), parametrized by the development angle \(\eta\in[0,2\pi]\) (\(\eta=\pi\) is turnaround). Derive this yourself from \(E(a)^2=\Omega_{m0}a^{-3}+(1-\Omega_{m0})a^{-2}\), or look up the standard derivation, and implement it (a short script, or even a spreadsheet) to compute \(a_{\rm turn}\) and \(t_{\rm turn}\) for \(\Omega_{m0}=2\) directly from these closed-form expressions, with no numerical integration at all. Compare against this program's <code>python main.py --mode evolve --omega_m 2 --omega_r 0 --omega_de 0</code> output. Then repeat EXP-17c's experiment using this exact solution as the reference instead of the program's own first run: place <code>--a_max</code> and <code>--t_max</code> progressively closer to the exact \(a_{\rm turn}\)/\(t_{\rm turn}\) (say, at 90%, 99%, 99.9%, and 99.99% of the exact value) and track how the program's reported stopping time and scale factor converge to the exact cycloid values s the boundary approaches
+      the turnaround. This is the most demanding test of the event-ordering and turnaround machinery in the program, because it checks it against an independent solution with no integration error of its own, not just against the program's own self-consistency.</p></div>
 
     </div>
 
@@ -733,7 +842,7 @@ raises \(H_0 t_0\) into the observationally acceptable range.
 
       <div class="exp-card"><div class="ec-num">EXP-20 · synthesis</div><h4>Map the Model's Domain of Validity</h4><p>Pick one major phenomenon this program omits entirely -- structure formation, recombination and the cosmic microwave background, Big Bang nucleosynthesis, cosmic inflation, or quantum gravity at \(a\to0\) -- and, for that one phenomenon only, list: which new state variables it would require beyond \(a(t)\), which new equations or data it would need, and specifically why \(H(a)\) alone (this program's entire computational core) is insufficient to capture it. This is meant to be a focused case study, not a ranking of "hardest" or an estimate of code size.</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-21 · synthesis</div><h4>Connected to Zero, but Never Born: Past-Eternal Models</h4><p>Run <code>--mode evolve --omega_m 0 --omega_r 0 --omega_de 1 --w0 -1 --wa 0</code> (flat de Sitter: pure cosmological constant, nothing else) and confirm the program reports <code>past_status="past_eternal"</code> and leaves <code>age_today_gyr</code> unset, while still printing a labelled <code>elapsed_ai_to_today_gyr</code>. Using \(dt/da=1/(aH_0E(a))\) and \(E(a)^2=\Omega_{\Lambda0}=1\) exactly (no \(a\)-dependence at all for this model), derive by hand that \(t(a)-t(a_i)=H_0^{-1}\ln(a/a_i)\), and confirm this diverges as \(a_i\to0\) -- which is exactly why no finite age can be assigned. Then run a flat phantom-only model (e.g. <code>--omega_m 0 --omega_r 0 --omega_de 1 --w0 -1.3 --wa 0</code>) and confirm it is <em>also</em> reported as past-eternal despite \(w_0\neq-1\); using the leading-order exponent \(p=-3(1+w_0+w_a)\) from the Early-Time section above, show algebraically why any flat, matter/radiation/curvature-free model with \(w_0+w_a\leq-1\) shares this same past-eternal property, not just the exact \(w=-1\) case. Finally, contrast both against an ordinary matter-containing model (any preset with \(\Omega_{m0}&gt;0\)): confirm it reports <code>past_status="finite_big_bang"</code> and a real <code>age_today_gyr</code>, and explain in one sentence, from the \(p&lt;0\) convergence criterion, why adding even a trace of matter or radiation to either de Sitter or phantom model above would restore a finite age.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-21 · synthesis</div><h4>Connected to Zero, but Never Born: Past-Eternal Models</h4><p>Run <code>--mode evolve --omega_m 0 --omega_r 0 --omega_de 1 --w0 -1 --wa 0</code> (flat de Sitter: pure cosmological constant, nothing else) and confirm the program reports <code>past_status="past_eternal"</code> and leaves <code>age_today_gyr</code> unset, while still printing a labelled <code>elapsed_ai_to_today_gyr</code>. Using \(dt/da=1/(aH_0E(a))\) and \(E(a)^2=\Omega_{\Lambda0}=1\) exactly (no \(a\)-dependence at all for this model), derive by hand that \(t(a)-t(a_i)=H_0^{-1}\ln(a/a_i)\), and confirm this diverges as \(a_i\to0\) -- which is exactly why no finite age can be assigned. Then run a flat phantom-only model (e.g. <code>--omega_m 0 --omega_r 0 --omega_de 1 --w0 -1.3 --wa 0</code>) and confirm it is <em>also</em> reported as past-eternal despite \(w_0\neq-1\); using the leading-order exponent \(p=-3(1+w_0+w_a)\), show algebraically why any flat, matter/radiation/curvature-free model with \(w_0+w_a\leq-1\) shares this same past-eternal property, not just the exact \(w=-1\) case. Finally, contrast both against an ordinary matter-containing model (any preset with \(\Omega_{m0}&gt;0\)): confirm it reports <code>past_status="finite_big_bang"</code> and a real <code>age_today_gyr</code>, and explain in one sentence, from the \(p&lt;0\) convergence criterion, why adding even a trace of matter or radiation to either de Sitter or phantom model above would restore a finite age.</p></div>
 
     </div>
   </section>
@@ -765,7 +874,7 @@ raises \(H_0 t_0\) into the observationally acceptable range.
 
     <h3>Mode <code>compare</code></h3>
     <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
-      <tr><td class="pname">--presets</td><td class="pdefault">EdS,lambdaCDM,closed,phantom</td><td>—</td><td>Comma-separated list, at most 12 entries. Choices: <code>EdS</code>, <code>radiation</code>, <code>milne</code>, <code>lambdaCDM</code>, <code>open</code>, <code>closed</code>, <code>phantom</code>, <code>evolving_de</code>, <code>desi_like</code> (illustrative only -- see the DESI note above; not a fit), or <code>custom</code> (the cosmology built from the parameters above).</td></tr>
+      <tr><td class="pname">--presets</td><td class="pdefault">EdS,lambdaCDM,closed,phantom</td><td>—</td><td>Comma-separated list, at most 12 entries. Choices: <code>EdS</code>, <code>radiation</code>, <code>milne</code>, <code>lambdaCDM</code>, <code>open</code>, <code>closed</code>, <code>phantom</code>, <code>evolving_de</code>, <code>desi_like</code> (illustrative only; not a fit), or <code>custom</code> (the cosmology built from the parameters above).</td></tr>
     </tbody></table>
 
     <h3>Mode <code>age</code> (parameter scan)</h3>
@@ -786,7 +895,11 @@ raises \(H_0 t_0\) into the observationally acceptable range.
       <tr><td class="pname">--no_plot</td><td class="pdefault">off</td><td>—</td><td>Skip the figure entirely; requires <code>--csvdir</code>. Useful for parameter sweeps in a shell loop.</td></tr>
       <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>dpi</td><td>PNG resolution, 10 to 1200.</td></tr>
       <tr><td class="pname">--lw</td><td class="pdefault">1.6</td><td>pt</td><td>Curve line width.</td></tr>
-      <tr><td class="pname">--version</td><td class="pdefault">—</td><td>—</td><td>Print the model version string and a separate 12-character <code>build_id</code>, then exit; every CSV provenance header records both. <code>model_version</code> is a hand-maintained semantic-version string bumped by the developer when behavior changes meaningfully; <code>build_id</code> is instead computed automatically, as a SHA-256 hash (truncated to 12 hex characters) over the exact source text of the four files that define this program's computation and output -- <code>physics_cosmo.py</code>, <code>driver_cosmo.py</code>, <code>main.py</code>, and <code>plot_cosmo.py</code> (this fixed list is the module-level <code>BUILD_ID_COVERS</code> constant in <code>physics_cosmo.py</code>) -- so two copies of the program with the same <code>model_version</code> but any textual difference in those four files, however small, will show different <code>build_id</code>s, while byte-identical copies match even after a change of line-ending convention (CRLF vs. LF) from copying between Windows and Unix. It is computed by reading each file in text mode with universal-newline translation and hashing each file's name, its translated length, and its translated content in sequence, which additionally prevents two different splits of file boundaries from ever hashing to the same value. Use it to confirm that two people, or two runs on different machines, are actually running byte-identical code -- <code>model_version</code> alone cannot detect an uncommitted local edit.</td></tr>
+      <tr><td class="pname">--version</td><td class="pdefault">—</td><td>—</td><td>Print the version and a 12-character build identifier. The identifier hashes the four core Python files after line-ending
+      normalization; documentation and tests are excluded.” Keep the longer
+      hashing details in developer documentation. The hash is a practical
+      content identifier, not a mathematical guarantee against every collision.
+</td></tr>
     </tbody></table>
   </section>
 
@@ -804,10 +917,13 @@ raises \(H_0 t_0\) into the observationally acceptable range.
       <tr><td class="oname">compare — \(\Omega_{\rm DE}(a)\) overlay</td><td>Models with no dark energy sit at zero throughout; the <code>phantom</code> and <code>evolving_de</code> presets separate visibly from a cosmological constant only close to and after \(a=1\), which is exactly why distinguishing them observationally is hard.</td></tr>
       <tr><td class="oname">age — age vs. parameter</td><td>The classic "age crisis" plot: age falls monotonically as \(\Omega_{m0}\) rises (flat case), crossing the reference globular-cluster age near \(\Omega_{m0}\approx0.3\)-\(0.4\) — which is close to, but not identical to, the concordance value, and figuring out why is a good exercise in itself.</td></tr>
       <tr><td class="oname">age — \(H_0t_0\) vs. parameter</td><td>The dimensionless version of the same plot, with reference lines at the Einstein-de Sitter value \(2/3\) and the Milne value \(1\).</td></tr>
-      <tr><td class="oname">Run summary — evolve</td><td>Printed to the terminal: inputs, derived epochs, which of \(a_{\max}\), \(t_{\max}\), or a genuine turnaround actually stopped the <em>returned trajectory</em> (<code>stop_reason</code> -- e.g. a real turnaround can still be followed by a <code>--t_max</code> stop on the mirrored contracting branch, so <code>stop_reason</code> answers "why did the returned data end here," not "what is this model's ultimate fate"), a separate structured fate summary for phantom (\(w_0&lt;-1\)) models (<code>fate_status</code>: a Big Rip, a certified future recollapse beyond this run, or unresolved), and a &quot;Notes on this run&quot; block whenever the model has been pushed outside typical bounds (extreme curvature, a decelerating "dark energy," an unresolved early-time offset, a t_max stop before reaching \(a=1\), an impending recollapse or Big Rip). For a <code>past_status="past_eternal"</code> model, the "Age today" line explicitly says no finite age exists rather than printing a number, and any additional matter-dark-energy-equality or acceleration-transition crossings beyond the first are listed alongside the primary one. Read it.</td></tr>
+      <tr><td class="oname">Run summary — evolve</td><td>Printed to the terminal: inputs, derived epochs, which of \(a_{\max}\), \(t_{\max}\), or a genuine turnaround actually stopped the <em>returned trajectory</em> (<code>"Run stopped because"</code> -- e.g. a real turnaround can still be followed by a <code>--t_max</code> stop on the mirrored contracting branch, so <code>  "Run stopped because"</code> answers "why did the returned data end here," not "what is this model's ultimate fate"), a separate structured fate summary for phantom (\(w_0&lt;-1\)) models (<code>fate_status</code>: a Big Rip, a certified future recollapse beyond this run, or unresolved), and a &quot;Notes on this run&quot; block whenever the model has been pushed outside typical bounds (extreme curvature, a decelerating "dark energy," an unresolved early-time offset, a t_max stop before reaching \(a=1\), an impending recollapse or Big Rip). For a <code>past_status="past_eternal"</code> model, the "Age today" line explicitly says no finite age exists rather than printing a number, and any additional matter-dark-energy-equality or acceleration-transition crossings beyond the first are listed alongside the primary one. Read it.</td></tr>
       <tr><td class="oname">Run summary — compare</td><td>A single compact table, one row per cosmology: age (or an explicit past-eternal marker in place of a number), \(H_0t_0\), \(q_0\), the acceleration-transition redshift, and a short fate note ("recollapses", "Big Rip ahead", "future recollapse", "past-eternal (no finite age)", or "fate unresolved") where applicable -- not the full evolve-style block, since it would be repeated once per cosmology. The compare-mode CSV carries the full machine-readable detail behind that note in its own columns (<code>fate_status</code>, <code>past_status</code>, <code>elapsed_ai_to_today_gyr</code>, <code>a_turn</code>, <code>t_turn_gyr</code>, <code>total_lifetime_gyr</code>, <code>big_rip_gyr</code>, <code>big_rip_remaining_gyr</code>, <code>future_turnaround_a</code>, <code>fate_search_limit_a</code>, and <code>stop_reason</code>) rather than only the human-readable note.</td></tr>
       <tr><td class="oname">Run summary — age</td><td>Scan extrema (oldest/youngest age and where they occur) and a count of how many scan points recollapse within the finite \(a=5\) look-ahead horizon, plus a separate count of how many scanned points are past-eternal (no finite age to include in the extrema at all) -- a single summary of the whole scan, not a per-point evolve-style block.</td></tr>
-      <tr><td class="oname">CSV files</td><td>With <code>--csvdir PATH</code>: the full numerical table, with a commented header recording the model version, the build identifier (see <code>--version</code> above), the run time, and every parameter that mode actually used, plus (in <code>evolve</code> mode) numbered columns for every matter-dark-energy-equality and acceleration-transition crossing found, not just the first. <code>compare</code> mode writes both an age-comparison table and a long-format table of every cosmology's curves.</td></tr>
+      <tr><td class="oname">CSV files</td><td>With <code>--csvdir PATH</code>: the full numerical table, with a commented header recording the model version, the build identifier (see <code>--version</code> above), the run time, and every parameter that mode actually used, plus (in <code>evolve</code> mode) the following columns for the first matter-dark-energy-equality and acceleration-transition crossing found:<code>t_Gyr, a, z, H_km_s_Mpc, Omega_m, Omega_r, Omega_k, Omega_DE, q, w_DE</code>. 
+      Additional crossings are numbered comment-header metadata fields, generated only when more than one crossing is found. 
+      
+      <code>compare</code> mode writes both an age-comparison table and a long-format table of every cosmology's curves.</td></tr>
       <tr><td class="oname">PNG file</td><td>With <code>--outdir PATH</code>: a timestamped copy of the figure, saved in addition to the on-screen display. Use <code>--no_plot --csvdir PATH</code> for a data-only sweep.</td></tr>
     </tbody></table>
   </section>
