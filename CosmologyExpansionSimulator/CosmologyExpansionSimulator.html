@@ -270,8 +270,7 @@ the second (acceleration) Friedmann equation, and a fluid continuity equation.
 <p>where \(a(t)\) is the scale factor, \(G\) is the gravitational constant, \(c\) is the speed of light, 
   \(k\) represents spatial curvature, and \(\rho\) is the combined mass-equivalent density 
   of baryonic matter, dark matter and radiation (energy density divided by \(c^2\)). The
-  cosmological-constant contribution is written separately through the \(\Lambda\) term.
-.</p>
+  cosmological-constant contribution is written separately through the \(\Lambda\) term.</p>
 
 <p>Instead of the dimensional form, this program uses the modern dimensionless parameterization of the Friedmann equation which includes separate 
 terms for the contributions of matter density, radiation density, curvature and dark energy density.
@@ -373,8 +372,6 @@ Einstein-de Sitter in favor of a universe driven by dark energy.</p>
 simplicity and adaptability to observations consistent with cosmic inflation.</li>
 <li>That year, however, two competing teams of researchers stunned the scientific
 community with data showing that the universe's expansion is accelerating, not decelerating.
-
-Their supernova observations showed that the expansion is accelerating.
 Within General Relativity and the FLRW framework, ordinary matter and
 radiation cannot account for that acceleration. A cosmological constant
 is the simplest explanation, but the program also explores alternative
@@ -401,9 +398,12 @@ python main.py --mode evolve --H0 67.4 --omega_m 0.315</pre>
 <p>In the <i>Scale-factor evolution</i> panel, the vertical dashed 
   line marks today at about 13.79 Gyr. The
   annotation gives an acceleration-transition redshift of
-  \(z\approx0.632\). From the console output, we see that this 
-  transition corresponds to \(a\approx0.613\) and a cosmic
-  time of about 7.69 Gyr. We can verify these from the Matplotlib
+  \(z\approx0.632\). 
+  
+  The console gives \(a\approx0.613\) for this transition; reading
+  the sampled trajectory places it at a cosmic time of about 7.69 Gyr.
+  
+  We can verify these from the Matplotlib
   graph by first zooming in on cosmic time \(0 \le t \le 10\) Gyr with 
   scale factor \(0.1 \le a \le 1 \), then cosmic time 
   \(10 \le t \le 40\) Gyr with scale factor \(0.5 \le a \le 10 \), 
@@ -484,13 +484,22 @@ remains a positive cosmological constant, the expansion approaches an
 exponential form and distant galaxies eventually drift out of view.</p>
 
 
-<p>In the following, we explore a Big Rip scenario. Here \(w_a=0\), so \(w(a)=w0=-1.2\) throughout the model:
-</p><pre># Phantom dark energy: \(w_0\) &lt; -1 can lead to a future Big Rip, if no
+<p>In the following, we explore a Big Rip scenario. Here \(w_a=0\), so \(w(a)=w_0=-1.2\) throughout the model:
+</p><pre># Phantom dark energy: w0 &lt; -1 can lead to a future Big Rip, if no
 # earlier recollapse intervenes first
 python main.py --mode evolve --w0 -1.2 --a_max 1000</pre>
 
-We will not provide a detailed analysis of the output, but you should have sufficient
-skills from our previous explorations to thoroughly understand these plots. 
+      <p>The solid curve ends at the requested \(a_{\max}\), marked by a
+      dot. The dashed curve continues the same Friedmann model for display,
+      and the dotted red line marks its finite-time limit as \(a\to\infty\).
+      The CSV still ends at \(a_{\max}\). The plotted time can differ from
+      the console's DE-only estimate because the continuation retains the
+      other components. Omit <code>--t_max</code> to enable this display:
+      supplying any explicit <code>--t_max</code> disables the continuation,
+      even if that time lies beyond the predicted Rip.</p>
+
+<p>We will not provide a detailed analysis of the output, but you should have sufficient
+skills from our previous explorations to thoroughly understand these plots.</p>
 
 
 <p><b>Historically important alternative: The recollapsing universe</b></p>
@@ -775,7 +784,7 @@ raises \(H_0 t_0\) into the observationally acceptable range.
     as a power. In the dark-energy-only CPL model,
     \(p=-3(1+w_0+w_a)\) is the leading exponent as \(a\to0\).
     
-    For a DE-only CPL model, \(p=-3(1+w0+wa)\).
+
     A past-eternal model has no finite age from a Big Bang; its elapsed time
     from \(a_i\) is separately labeled bookkeeping.</p>
     </div>
@@ -805,8 +814,7 @@ raises \(H_0 t_0\) into the observationally acceptable range.
       How can that be consistent with Milne's \(a=0\) being a boundary of
       the expanding coordinate patch of Minkowski spacetime, rather than
       a curvature singularity?
-
-.</p></div>
+      </p></div>
 
     </div>
 
@@ -836,7 +844,13 @@ raises \(H_0 t_0\) into the observationally acceptable range.
   it does not calculate the precision required of a real survey.
 
       
-      Caution: despite its name, <code>evolving_de</code> (\(w_0=-0.8\), \(w_a=0.3\)) is not pure quintessence over the whole range this program can show you -- using \(w(a)=w_0+w_a(1-a)\), verify for yourself that it crosses \(w=-1\) at \(a=5/3\) (since \(dw/da=-w_a\ne0\), it genuinely crosses rather than merely touching); describe it as quintessence-like for \(a\lesssim5/3\) and phantom-like beyond, both squarely within \(a\ge1\) (future) CPL extrapolation, not "three regimes from today onward." Separately, using \(w(a)=w_0+w_a(1-a)\), explain why <code>desi_like</code> (\(w_0=-0.7,\ w_a=-1.0\)) moves in the <em>opposite</em> direction into the past from <code>evolving_de</code>.</p></div>
+      Caution: despite its name, <code>evolving_de</code> (\(w_0=-0.8\), \(w_a=0.3\)) is not pure quintessence over the whole range this program can show you -- using \(w(a)=w_0+w_a(1-a)\), verify for yourself that it crosses \(w=-1\) at \(a=5/3\) (since \(dw/da=-w_a\ne0\), it genuinely crosses rather than merely touching). 
+      
+      In the future interval \(1\le a<5/3\), the model is quintessence-like;
+      at \(a=5/3\) it crosses \(w=-1\), and beyond that it is phantom-like.
+
+      
+      Separately, using \(w(a)=w_0+w_a(1-a)\), explain why <code>desi_like</code> (\(w_0=-0.7,\ w_a=-1.0\)) moves in the <em>opposite</em> direction into the past from <code>evolving_de</code>.</p></div>
     
 <div class="exp-card">
   <div class="ec-num">EXP-10 · intermediate</div>
@@ -862,19 +876,22 @@ raises \(H_0 t_0\) into the observationally acceptable range.
 
       <div class="exp-card"><div class="ec-num">EXP-12 · intermediate/advanced</div><h4>A Universe That Recollapses</h4><p>Run <code>--mode evolve --omega_m 1.5 --omega_de 0.0 --continue_collapse</code>. Record \(a_{\rm turn}\), \(t_{\rm turn}\), and the total lifetime. First derive \(a_{\rm turn}\) algebraically by setting \(E(a)^2=0\) with only matter and curvature (neglecting the tiny radiation term, so your hand value will be <em>approximately</em>, not exactly, 3) and compare with the program's value, which does include that small radiation term. Then explain, using only the fact that \(E(a)^2\) depends on \(a\) but never on the sign of \(\dot a\), why the total lifetime must be exactly twice the time to turnaround -- with no need to re-integrate the contracting half. Note that the mirrored data in the CSV run back down only to \(a_i\), not to \(a=0\); the quoted total-lifetime figure extrapolates the missing interval near each end through the analytic early-time offset, not through additional integrated points. For a convergence check, repeat at a few values of <code>--a_i</code> and <code>--step_frac</code> and see how much \(t_{\rm turn}\) moves.</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-13 · intermediate/advanced</div><h4>Racing Toward a Big Rip</h4>
-      <p>Run <code>--mode evolve --w0 -1.2 --wa 0 --a_max 60</code> (the Big Rip formula used here assumes \(w_a=0\); leaving <code>--wa</code> at its default already satisfies this, but say so explicitly) and record the reported Big Rip time.</p>
-
-      <p>The solid curve ends at the requested \(a_{\max}\), marked by a
-      dot. The dashed curve continues the same Friedmann model for display,
-      and the dotted red line marks its finite-time limit as \(a\to\infty\).
-      The CSV still ends at \(a_{\max}\). The plotted time can differ from
-      the console's DE-only estimate because the continuation retains the
-      other components. Omit <code>--t_max</code> to enable this display:
-      supplying any explicit <code>--t_max</code> disables the continuation,
-      even if that time lies beyond the predicted Rip.</p>
-      
-      Compute your own estimate by hand from \(H_0\), \(\Omega_{\rm DE,0}\), and \(w_0\), and compare -- being careful to distinguish the reported <em>absolute</em> cosmic time \(t_{\rm rip}\) from the <em>time remaining</em> \(t_{\rm rip}-t_0\) you compute by hand from the formula. Then repeat for \(w_0=-1.05\) and \(w_0=-1.5\): how sensitively does the time to the Big Rip depend on how far \(w_0\) sits below \(-1\)? Finally, run \(w_0=-1.0\) exactly and confirm the program reports no Big Rip at all -- explain why an infinitesimal change in \(w_0\) at the boundary produces a qualitative change in the universe's fate, and note that this whole estimate is a late-time, dark-energy-dominated approximation, not valid while matter, radiation, or curvature still contribute.</div>
+  <div class="exp-card">
+    <div class="ec-num">EXP-13 · intermediate/advanced</div>
+    <h4>Racing Toward a Big Rip</h4>
+    <p>Run <code>python main.py --mode evolve --w0 -1.2 --wa 0 --a_max 60</code>.
+    Record the console's <code>DE-only Big Rip estimate</code>, including
+    both its absolute cosmic time and its stated time remaining from today.
+    Use the formula in Beat 0 to calculate the time remaining by hand, and
+    compare it with the console's time remaining. The plot's full-model
+    limit is a separate calculation; do not use it for this comparison.</p>
+    <p>Repeat for \(w_0=-1.05\) and \(w_0=-1.5\), keeping \(w_a=0\).
+    How sensitively does the remaining time depend on how far \(w_0\)
+    lies below \(-1\)? Finally, run \(w_0=-1\) and explain why the
+    model no longer has a finite-time Big Rip. State the assumptions behind
+    the hand estimate: a constant equation of state and a future dominated
+    by dark energy.</p>
+  </div>
 
       <div class="exp-card"><div class="ec-num">EXP-14 · advanced</div><h4>Numerical Convergence</h4>
       <p>Repeat the concordance run with \(H_0=67.4\) and
@@ -903,11 +920,16 @@ raises \(H_0 t_0\) into the observationally acceptable range.
       \(|w_a|\ge0.02\), that reproduces the concordance cosmology's age
       to within 0.1% and \(q_0\) to within 0.01, holding its other
       parameters fixed.
+      
+      At fixed present densities, \(q_0\) depends on \(w_0\), but not on
+      \(w_a\), because \(w(1)=w_0\). First choose \(w_0\) close enough
+      to match \(q_0\), then adjust \(w_a\) to match the age.
+      
       Now compare the two models' \(\Omega_{\rm DE}(a)\) curves at \(a=0.3\) (a past epoch actually reachable by real surveys) and at \(a=3\) (a CPL extrapolation into the future, not a prediction -- CPL has no guarantee of remaining valid that far from \(a=1\); label it as such). This near-degeneracy -- similar today, different in the past -- is exactly why real dark-energy surveys need data spanning a wide range of redshift, not just a single-epoch measurement, to break it.</p></div>
 
       <div class="exp-card"><div class="ec-num">EXP-17a · intermediate</div><h4>\(H_0\) Scaling</h4><p>Holding every dimensionless density and \(w(a)\) fixed, run the concordance cosmology at a few different values of \(H_0\) (e.g. 60, 67.4, 70, 73). Show that the dimensionless product \(H_0t_0\) stays fixed while \(t_0\) itself scales as \(1/H_0\) -- derive why this must be true directly from the Friedmann equation before checking it numerically.</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-17b · advanced (dated, outside-program extension)</div><h4>The Hubble Tension</h4><p>Using EXP-17a's scaling result, note that this program's Friedmann-equation machinery has no mechanism that prefers one \(H_0\) over another -- changing <code>--H0</code> here is not itself a resolution of anything. As a separately sourced, dated research extension (check for updates beyond 2026), briefly research outside this program what the "Hubble tension" between Planck-inferred and local distance-ladder \(H_0\) values currently stands at, and identify one physical effect a genuine resolution would need to leave imprinted on \(H(a)\) at some epoch -- e.g. an early-universe modification (visible before recombination) versus a late-time one (visible in this program's \(H(a)\) at low redshift, or a near one.).</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-17b · advanced (dated, outside-program extension)</div><h4>The Hubble Tension</h4><p>Using EXP-17a's scaling result, note that this program's Friedmann-equation machinery has no mechanism that prefers one \(H_0\) over another -- changing <code>--H0</code> here is not itself a resolution of anything. As a separately sourced, dated research extension (check for updates beyond 2026), briefly research outside this program what the "Hubble tension" between Planck-inferred and local distance-ladder \(H_0\) values currently stands at, and identify one physical effect a genuine resolution would need to leave imprinted on \(H(a)\) at some epoch -- e.g. an early-universe modification (visible before recombination) versus a late-time one (visible in this program's \(H(a)\) at low redshift, or \(a\) near one).</p></div>
 
       <div class="exp-card"><div class="ec-num">EXP-17c · advanced (numerical-methods project)</div><h4>Stop-Event Ordering</h4><p>Using the closed-universe model of EXP-12 (\(\Omega_{m0}=1.5\), \(\Omega_{\rm DE,0}=0\)), first run it to completion to find its \(a_{\rm turn}\) and \(t_{\rm turn}\). Then run it four more times using different conditions. For these four stopping tests, omit --continue_collapse so that the first
       turnaround ends the returned trajectory. Test the mirrored contracting
@@ -927,7 +949,31 @@ raises \(H_0 t_0\) into the observationally acceptable range.
 
       <div class="exp-card"><div class="ec-num">EXP-20 · synthesis</div><h4>Map the Model's Domain of Validity</h4><p>Pick one major phenomenon this program omits entirely -- structure formation, recombination and the cosmic microwave background, Big Bang nucleosynthesis, cosmic inflation, or quantum gravity at \(a\to0\) -- and, for that one phenomenon only, list: which new state variables it would require beyond \(a(t)\), which new equations or data it would need, and specifically why \(H(a)\) alone (this program's entire computational core) is insufficient to capture it. This is meant to be a focused case study, not a ranking of "hardest" or an estimate of code size.</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-21 · synthesis</div><h4>Connected to Zero, but Never Born: Past-Eternal Models</h4><p>Run <code>--mode evolve --omega_m 0 --omega_r 0 --omega_de 1 --w0 -1 --wa 0</code> (flat de Sitter: pure cosmological constant, nothing else) and confirm the program reports <code>past_status="past_eternal"</code> and leaves <code>age_today_gyr</code> unset, while still printing a labelled <code>elapsed_ai_to_today_gyr</code>. Using \(dt/da=1/(aH_0E(a))\) and \(E(a)^2=\Omega_{\Lambda0}=1\) exactly (no \(a\)-dependence at all for this model), derive by hand that \(t(a)-t(a_i)=H_0^{-1}\ln(a/a_i)\), and confirm this diverges as \(a_i\to0\) -- which is exactly why no finite age can be assigned. Then run a flat phantom-only model (e.g. <code>--omega_m 0 --omega_r 0 --omega_de 1 --w0 -1.3 --wa 0</code>) and confirm it is <em>also</em> reported as past-eternal despite \(w_0\neq-1\); using the leading-order exponent \(p=-3(1+w_0+w_a)\), show algebraically why any flat, matter/radiation/curvature-free model with \(w_0+w_a\leq-1\) shares this same past-eternal property, not just the exact \(w=-1\) case. Finally, contrast both against an ordinary matter-containing model (any preset with \(\Omega_{m0}&gt;0\)): confirm it reports <code>past_status="finite_big_bang"</code> and a real <code>age_today_gyr</code>, and explain in one sentence, from the \(p&lt;0\) convergence criterion, why adding even a trace of matter or radiation to either de Sitter or phantom model above would restore a finite age.</p></div>
+   <div class="exp-card">
+    <div class="ec-num">EXP-21 · synthesis</div>
+    <h4>Connected to Zero, but Never Born: Past-Eternal Models</h4>
+    <p>Run <code>python main.py --mode evolve --omega_m 0 --omega_r 0 --omega_de 1 --w0 -1 --wa 0</code>.
+    This is flat de Sitter expansion. Check that the <code>Age today</code>
+    line says <code>UNDEFINED</code> and <code>PAST-ETERNAL</code>, while
+    <code>Elapsed a_i -&gt; today</code> reports a finite interval.</p>
+    <p>For this model, \(E(a)=1\). Integrate
+    \(dt/da=1/(aH_0)\) from \(a_i\) to \(a=1\), and compare the result
+    with the printed elapsed interval, using the printed Hubble time.
+    Repeat with <code>--a_i 1e-6</code>. Why does the elapsed interval change,
+    while the model still has no finite Big-Bang age? What happens as
+    \(a_i\to0\)?</p>
+    <p>Next repeat the original run with <code>--w0 -1.3</code>.
+    Confirm that the phantom-only model is also labeled past-eternal.
+    Using the <a href="#numerical_method">early-time convergence criterion</a>
+    and \(p=-3(1+w_0+w_a)\), explain why a flat, dark-energy-only CPL
+    model has this property when \(w_0+w_a\le-1\).</p>
+    <p>Finally, run <code>python main.py --mode evolve</code> with the
+    default matter-containing model. Confirm that <code>Age today</code>
+    now contains a finite number. Explain why adding even a trace of matter
+    or radiation to either pure-dark-energy model above restores a finite
+    age: which component determines the leading power as \(a\to0\)?</p>
+  </div>
+
 
     </div>
   </section>
@@ -951,8 +997,22 @@ raises \(H_0 t_0\) into the observationally acceptable range.
     <h3>Integration control (modes <code>evolve</code>, <code>compare</code>)</h3>
     <table class="param-table"><thead><tr><th>Parameter</th><th>Default</th><th>Units</th><th>Description</th></tr></thead><tbody>
       <tr><td class="pname">--a_i</td><td class="pdefault">1e-8</td><td>—</td><td>Scale factor at which the numerical integration starts, deep in radiation (or matter, or curvature) domination.</td></tr>
-      <tr><td class="pname">--a_max</td><td class="pdefault">5.0</td><td>—</td><td>Stop the forward integration here, unless a recollapse or <code>--t_max</code> intervenes first.</td></tr>
-      <tr><td class="pname">--t_max</td><td class="pdefault">None</td><td>Gyr</td><td>Also stop at this cosmic time if reached before <code>--a_max</code>.</td></tr>
+      <tr><td class="pname">--a_max</td><td class="pdefault">5.0</td><td>—</td>
+      <td>Stop the forward numerical integration at this scale factor unless a
+      turnaround or <code>--t_max</code> intervenes first. The CSV ends with
+      the returned numerical trajectory. For a supported constant-\(w\)
+      Big Rip model with no explicit <code>--t_max</code>, the plot can add a
+      dashed display continuation beyond this bound.
+      </td></tr>
+      
+      <tr><td class="pname">--t_max</td><td class="pdefault">None</td><td>Gyr</td>
+      <td>Stop the returned trajectory at this time if reached before its other
+      stopping conditions. For finite-age models this is cosmic time in Gyr;
+      for past-eternal models the clock starts at \(a_i\). Supplying any
+      explicit <code>--t_max</code> also disables the Big Rip display
+      continuation, even if that time lies beyond the predicted Rip.
+      </td></tr>
+      
       <tr><td class="pname">--step_frac</td><td class="pdefault">0.005</td><td>—</td><td>Hubble-time-scaled RK4 step size, \(dt=\)<code>step_frac</code>\(/H(a)\): approximately the fractional change in \(\ln a\) per step. Range \([10^{-6},0.5]\), though very small values may exceed the internal step-count limit for a wide <code>a_i</code>-to-<code>a_max</code> range (the program checks and says so before running).</td></tr>
       <tr><td class="pname">--continue_collapse</td><td class="pdefault">off</td><td>—</td><td>If the model recollapses, also report the contracting branch, mirrored back down to \(a_i\) (not literally to the \(a=0\) singularity) by the exact time-reversal symmetry of the Friedmann equation (no re-integration).</td></tr>
     </tbody></table>
@@ -990,7 +1050,16 @@ raises \(H_0 t_0\) into the observationally acceptable range.
   <section id="output">
     <h2>Output and Plot Panels</h2>
     <table class="out-table"><thead><tr><th>Output</th><th>What to Look For</th></tr></thead><tbody>
-      <tr><td class="oname">evolve — \(a(t)\)</td><td>Rapid early expansion compressed near \(t=0\) on this linear time axis, a dashed line marking today, and — for a closed model — a second dash-dot line marking the turnaround. If a model never reaches \(a=1\), no "today" line appears.</td></tr>
+      <tr><td class="oname">evolve — \(a(t)\)</td>
+      <td>The scale-factor history, with rapid early evolution compressed near
+      the start of the linear time axis. A dashed line marks today when a
+      finite age is available; a dash-dot line marks a closed model's
+      turnaround. For a supported constant-\(w\) Big Rip model, a dashed
+      curve can continue beyond the numerical endpoint toward a dotted red
+      finite-time limit. This display continuation adds no CSV samples and
+      is disabled by any explicit <code>--t_max</code>.
+      </td></tr>
+
       <tr><td class="oname">evolve — \(H(t)\)</td><td>\(H\) falls by many orders of magnitude from the radiation era to today. Its future behavior depends on which dark-energy case you ran: it flattens toward a constant only for an exact cosmological constant / de Sitter domination (\(w_0=-1\), \(w_a=0\)); for constant \(w_0&gt;-1\) it instead falls toward zero; for phantom (\(w_0&lt;-1\)) it grows without bound toward the Big Rip; for evolving CPL (\(w_a\neq0\)) the future trend can do any of these depending on the parameters. Matter-only (no dark energy) models keep falling.</td></tr>
       <tr><td class="oname">evolve — \(\Omega_i(a)\)</td><td>For the default/concordance-like model: three eras in sequence — radiation, then matter, then dark energy — with the sum-check line at 1 at every regular row (NaN at an exact turnaround, where every \(\Omega_i\) formally diverges). A pure-radiation, Milne, matter-only, negative-\(\Omega_{\rm DE}\), or recollapsing model will NOT show this three-era sequence; what you see depends on the energy content you actually ran. Every detected matter–dark-energy equality crossing is marked; an
       evolving dark-energy model can have more than one. Separately, matter–radiation equality occurs at
@@ -998,7 +1067,12 @@ raises \(H_0 t_0\) into the observationally acceptable range.
       <tr><td class="oname">evolve — \(q(t)\)</td><td>Starts near \(+1\) (radiation domination), settles near \(+1/2\) (matter domination), crosses zero at the acceleration transition, and approaches \(-1\) if a cosmological constant eventually dominates. For a recollapsing model, \(q\) diverges as the turnaround is approached, since \(H\to0\) while the densities stay finite.</td></tr>
       <tr><td class="oname">compare — \(a(t)\) overlay</td><td>Each cosmology's history, with a dot marking where it crosses \(a=1\); reading the dots' horizontal positions directly compares their ages.</td></tr>
       <tr><td class="oname">compare — \(q(t)\) overlay</td><td>The deceleration axis is deliberately clipped (\(-1.6\) to \(3.0\)): a recollapsing model's \(q\) diverges near its turnaround and would otherwise swamp the comparison, which is the point of the panel.</td></tr>
-      <tr><td class="oname">compare — age bar chart</td><td>A direct visual ranking of ages; a cosmology that never reaches \(a=1\) (recollapses first) is drawn hatched at zero height rather than omitted.</td></tr>
+      <tr><td class="oname">compare — age bar chart</td>
+      <td>A ranking of finite ages. A cross at the baseline with a reason label
+      replaces an unavailable age: a past-eternal model has no finite age,
+      while a run ending before \(a=1\) has not reached today. The cross
+      does not represent an age of zero.
+      </td></tr>
       <tr><td class="oname">compare — \(\Omega_{\rm DE}(a)\) overlay</td><td>Models with no dark energy sit at zero throughout; the <code>phantom</code> and <code>evolving_de</code> presets separate visibly from a cosmological constant only close to and after \(a=1\), which is exactly why distinguishing them observationally is hard.</td></tr>
       <tr><td class="oname">age — age vs. parameter</td><td>The classic "age crisis" plot: age falls monotonically as \(\Omega_{m0}\) rises (flat case), crossing the reference globular-cluster age near \(\Omega_{m0}\approx0.3\)-\(0.4\) — which is close to, but not identical to, the concordance value, and figuring out why is a good exercise in itself.</td></tr>
       <tr><td class="oname">age — \(H_0t_0\) vs. parameter</td><td>The dimensionless version of the same plot, with reference lines at the Einstein-de Sitter value \(2/3\) and the Milne value \(1\).</td></tr>
