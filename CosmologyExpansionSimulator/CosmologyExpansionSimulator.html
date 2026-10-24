@@ -532,12 +532,9 @@ but you should have sufficient
 skills from our previous explorations to thoroughly understand <em>most</em>
 of these plots. The exception might be the <i>Fractional energy-density</i> panel, which
 shows peculiar behavior toward the right-hand side.</p>
-<p>What is happening is that the universe expands to a maximum size \(a=3\) and then recollapses. 
-At the turnaround, \(H = 0\). The fractional energy density parameters are calculated by dividing
-the physical density of a component by the critical density (\(\rho_c \propto H^2\)),
-but since  \(H = 0\) at the turnaround point, we have a divide-by-zero situation. On the
-bottom left, you will see the disclaimer "some Omega_i(a) excursions clipped from view
-(full values remain in the returned data/CSV)" resulting from this issue.</p>
+<p>
+The “fractions” shown here need not lie between zero and one: today, \(\Omega_m=1.5\) and \(\Omega_k\approx-0.5\), while their sum, including radiation, remains one. As the turnaround at \(a\approx3\) approaches, the critical density, proportional to \(H^2\), tends to zero. The normalized matter and curvature terms therefore grow without bound in opposite directions, although the physical densities remain finite. The plot clips these curves well before turnaround; the small radiation contribution becomes visible as the narrow orange spike. At turnaround itself, the normalized quantities are undefined. Because the horizontal axis is \(a\), contraction retraces the same curves.
+</p>
 
 </section>
 
@@ -667,10 +664,14 @@ than the Einstein-de Sitter value \(\Omega_{m0}=1.\)</li>
 <p>In other words, if the measured \(H_0\) is kept fixed, reducing the matter density makes the universe older.
 The plot therefore visually demonstrates why cosmologists became uncomfortable with the \(\Omega_m=1\) model.</p>
 
+<p>
+At the high-density end of this flat scan, \(\Omega_{\Lambda0}=1-\Omega_{m0}-\Omega_{r0}\) becomes negative. The orange triangles mark models that reach today’s size but subsequently recollapse within the scan’s \(a\le5\) search range. Flatness alone therefore does not determine their fate.
+</p>
+
 <p><b>Why \(\Lambda\) helps:</b></p>
 
 <p>The plot imposes   \(\Omega_{\Lambda0}=1-\Omega_{m0}-\Omega_{r0}\) to preserve flatness. As \(\Omega_m\) decreases, \(\Omega_\Lambda\) increases. 
-This enables the age to climb dramatically:</p>
+This enables the age to climb dramatically. The values following come from separate evolutions at \(H_0=70\), with default radiation and flatness imposed; the selected matter densities are not the plotted scan’s grid points:</p>
 
 <table class="age-checkpoints" border="1" style="text-align: left; border-collapse: collapse;">
 <tr><th style="width:25%">\(\Omega_m\)</th><th>Age today(Gyr)</th><th>\(H_0t_0\)</th></tr>
@@ -801,7 +802,18 @@ raises \(H_0 t_0\) into the observationally acceptable range.
 
       <div class="exp-card"><div class="ec-num">EXP-3 · introductory</div><h4>Three Eras</h4><p>Run <code>--mode evolve</code> with default (flat, concordance-like) parameters and study the \(\Omega_i(a)\) panel. Identify by eye the radiation era, the matter era, and the dark-energy era. Using the closed-form \(a_{\rm eq}=\Omega_{r0}/\Omega_{m0}\), predict the matter-radiation equality scale factor before checking it against the printed summary.</p></div>
 
-      <div class="exp-card"><div class="ec-num">EXP-4 · intermediate</div><h4>An Analytic Validation Case (Milne)</h4><p>Run <code>--mode evolve --omega_m 0 --omega_r 0 --omega_de 0</code> (the Milne universe: pure curvature, nothing else). The exact solution is \(a=H_0t\) for <em>all</em> time, where \(H_0\) must first be converted from km/s/Mpc to Gyr\(^{-1}\) (the program does this once, internally; do it yourself by hand here). Using the CSV output, compute the relative error \(|a_{\rm program}(t)-H_0t|/(H_0t)\) at several rows spanning the run; the run starts at a small but nonzero \(t\) set by the early-time offset (there is no literal \(t=0\) row), but skip the first row or two anyway if \(t\) there is so small that ordinary floating-point round-off in \(a_{\rm program}(t)\) dominates the relative error you are trying to measure. 
+      <div class="exp-card"><div class="ec-num">EXP-4 · intermediate</div><h4>An Analytic Validation Case (Milne)</h4><p>Run <code>--mode evolve --omega_m 0 --omega_r 0 --omega_de 0</code> (the Milne universe: pure curvature, nothing else). The exact solution is \(a=H_0t\) for <em>all</em> time, where \(H_0\) must first be converted from km/s/Mpc to Gyr\(^{-1}\) (the program does this once, internally; do it yourself by hand here). 
+      
+      To compare at the level of the integration error, use the
+      program's own constants: 
+      \(1\ \mathrm{Mpc} = 3.08567758149×10^{22}\  \mathrm{m} \) (exactly) and
+      \(1\ \mathrm{Gyr} = 10^9\ \mathrm{Julian\ years} = 3.15576\times 10^{16}\ \mathrm{s}\) (exactly),
+      so that \(H_0 = 70\ \mathrm{km/s/Mpc} = 0.0715898515532304\ \mathrm{Gyr}^{-1}\).
+      With rounder constants your 'error' would measure your unit conversion, not the
+      integrator. Alternatively, for Milne \(t_0 = 1/H_0\) exactly, so the
+      printed 17-digit 'Age today' is itself \(1/H_0\) in Gyr.
+      
+      Using the CSV output, compute the relative error \(|a_{\rm program}(t)-H_0t|/(H_0t)\) at several rows spanning the run; the run starts at a small but nonzero \(t\) set by the early-time offset (there is no literal \(t=0\) row), but skip the first row or two anyway if \(t\) there is so small that ordinary floating-point round-off in \(a_{\rm program}(t)\) dominates the relative error you are trying to measure. 
       
       Why does the constant right-hand side \(da/dt=H_0\) make this a clean test?
       What additional behavior would require a model with nonconstant \(aH(a)\)
@@ -917,7 +929,7 @@ raises \(H_0 t_0\) into the observationally acceptable range.
       <div class="exp-card"><div class="ec-num">EXP-16 · advanced</div><h4>The Dark-Energy Degeneracy Problem</h4>
       
       <p>Find a pair \((w_0,w_a)\) distinct from \((-1,0)\), with
-      \(|w_a|\ge0.02\), that reproduces the concordance cosmology's age
+      \(|w_a|\ge0.05\), that reproduces the concordance cosmology's age
       to within 0.1% and \(q_0\) to within 0.01, holding its other
       parameters fixed.
       

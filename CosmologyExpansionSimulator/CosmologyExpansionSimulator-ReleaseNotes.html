@@ -1,19 +1,82 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>CosmologyExpansionSimulator 1.6.3 Release Notes</title></head><body>
 <h1>CosmologyExpansionSimulator 1.6.3 Release Notes</h1>
+<p><b>Version:</b> 1.6.3<br><b>Build:</b> b694888f168a<br><b>Date:</b> 2026-10-24<br><b>Round:</b> Codex and Tom Response to Audit51</p>
+<h2>Release Status</h2><p>Submitted for Audit52 verification. Grok Audit51
+recommends ACCEPT; Claude Audit51 recommends HOLD for two NON-OK P3
+instructional findings. This response corrects both, addresses P3-4 and P3-5,
+and corrects the Guide's P4-12 wording. Tom retains the independent interpretation
+task discussed in P3-3. Code is unchanged from the reviewed 1.6.3 candidate;
+the latest code-changing rounds remain 1.6.2 and 1.6.3. The response has not
+yet received the reviewers' new recommendations.</p>
+<h2>Open Bugs</h2><ul><li><b>CLAUDE-P3-3 — P3, OK — Claude Audit51 P3-3:</b>
+The reviewer recommends more explanation of the Big Rip and recollapse panels;
+Tom deliberately leaves their remaining interpretation to students.
+<br><b>Reproduction:</b> Run the Beat 0 Big Rip or recollapse example; the
+Help asks students to apply earlier material, while the reviewer recommends
+explicit discussion of the H minimum, q limits/spike and signed H axis.</li></ul>
+<p>The two NON-OK findings, P3-1 and P3-2, are submitted as corrected,
+pending reviewer confirmation. P3-4 and P3-5 are also addressed.</p>
+<h2>Major Improvements in This Release</h2><ul>
+<li>The recollapse explanation now distinguishes continuously growing
+normalized density terms, clipping, the radiation spike, undefined values
+at turnaround and retracing on the scale-factor axis.</li>
+<li>The Milne exercise supplies the program's conversion constants and a
+matching high-precision H0 value, with the printed Milne age as an alternative
+Hubble-time reference.</li>
+<li>Beat 2 explains negative-cosmological-constant scan members, the orange
+recollapse markers and the origin of the independently evaluated table rows.</li>
+<li>EXP-16 requires absolute wa of at least 0.05, preventing the unchanged
+w0=-1 cases from satisfying the age tolerance. Students determine the
+compensating parameter changes themselves.</li>
+<li>The Guide removes process prose and correctly attributes age-scan
+flatness to the default force_flat behavior and --no_force_flat control.</li>
+</ul><h2>Test Suite Growth</h2><p>No tests added or changed: 107 remain.
+The complete Kickoff5 suite passed on Codex's host and independently on
+Claude's host. For this documentation-only response, all six canonical
+Help/Guide/Release Notes checks pass from the tests folder. All 473 Help
+MathJax expressions compile, and all three current HTML documents have no
+HTML5 parse notices, duplicate IDs or missing internal targets. Targeted
+Milne and degeneracy checks reproduce the revised exercise conditions.</p>
+<h2>Known Limitations</h2><p>FLRW background model only; future extrapolations
+remain conditional. Numerical/crossing-search bounds and the age scan's a=5
+recollapse horizon apply. Code, CSV schemas and all figure pixels are unchanged.</p>
+<h2>Known Minor Maintenance Items</h2><ul>
+<li>Claude P4-1–4: optional figure-reading routes, the radiation-era boundary,
+equality-line descriptions and comparison endpoint explanations.</li>
+<li>Claude P4-5–7: CSV precision wording, the checkpoint definition and
+small-step runtime guidance.</li>
+<li>Claude P4-8–11: historical wording, the constant-w qualification,
+table typography and acronym expansion.</li>
+<li>Claude P4-13–14: the stop-label legend, negative-zero formatting and
+reviewer provenance in docstrings are deferred to a later code round.</li>
+<li>Claude P4-15: optional analytic confirmation of the closed-but-eternal
+example. Grok W1–W2: optional CSV-file naming and equivalent formula notation.</li>
+<li>Existing extreme-parameter RuntimeWarnings and the earlier optional
+empty-finite-H plotting guard remain disclosed.</li></ul>
+<h2>Version Identification</h2><p>Version 1.6.3, build <code>b694888f168a</code>.
+Core source and tests are byte-identical to Kickoff5; documentation changes do
+not change the four-module build hash. Codex verification: Linux/Python 3.12.14,
+NumPy 2.3.5, Matplotlib 3.10.8. Claude's independent suite used Linux/Python
+3.11.15, NumPy 2.4.4, Matplotlib 3.10.9. Windows/Python 3.14 is unverified.</p>
+<h3>Earlier Kickoff5 and pre-kickoff records</h3><p>The following records
+retain their original status, findings and provenance. The response status
+above is current; historical readiness statements are not approval of this response.</p>
+
+<h3>CosmologyExpansionSimulator 1.6.3 Release Notes</h3>
 <p><b>Version:</b> 1.6.3<br><b>Build:</b> b694888f168a<br><b>Date:</b> 2026-10-24<br><b>Round:</b> Codex and Tom Kickoff5</p>
-<h2>Release Status</h2><p>Ready for independent Kickoff5 review. Codex's
+<h4>Release Status</h4><p>Ready for independent Kickoff5 review. Codex's
 pre-kickoff review items are closed in this candidate; the previous Help-edit
 HOLD is lifted. Claude and Grok have not yet reviewed Kickoff5. Their earlier
 Audit41 approval applies to 1.6.0, not to this candidate. Code is unchanged
 from the 24 October 1.6.3 response; the two latest code rounds are 1.6.2
 (precision and presentation) and 1.6.3 (past-eternal warning wording).</p>
-<h2>Open Bugs</h2><p>No unresolved P1–P3 findings from Codex's pre-kickoff
+<h4>Open Bugs</h4><p>No unresolved P1–P3 findings from Codex's pre-kickoff
 review remain. DOC-01 through DOC-13 are closed, including the latest
 concordance-time attribution, console-based past-eternal exercise, Big Rip
 reference entries and unavailable-age chart description. This is a request
 for independent audit, not a claim that the new audit cycle has approved it.</p>
-<h2>Major Improvements in This Release</h2><ul>
+<h4>Major Improvements in This Release</h4><ul>
 <li>A single canonical Help combines the retained Reference Guide material
 with three Beats, six worked commands and 24 experiment cards, counting
 EXP-17a–d separately. Equations, model assumptions, numerical checkpoints
@@ -28,35 +91,35 @@ past-eternal from unreached-present age markers. Numerical results are unchanged
 equation-of-state inequality. No calculation, classification or CSV schema changed.</li>
 <li>All four sample figures were regenerated from the frozen build. The Help,
 Guide and current notes share its version/build; historical records remain intact.</li>
-</ul><h2>Test Suite Growth</h2><p>1.6.0: 98 tests; 1.6.1: 102; 1.6.2: 106;
+</ul><h4>Test Suite Growth</h4><p>1.6.0: 98 tests; 1.6.1: 102; 1.6.2: 106;
 1.6.3/Kickoff5: 107. All 107 pass from the tests folder with
 <code>python -m unittest discover -v</code>. All six worked commands run
 successfully, all 464 Help MathJax expressions compile, and all three current
 HTML documents have no HTML5 parse notices or broken internal links.</p>
-<h2>Known Limitations</h2><p>FLRW background evolution only; far-future
+<h4>Known Limitations</h4><p>FLRW background evolution only; far-future
 dark-energy behavior is conditional on the model. Finite-precision integration,
 finite crossing searches and the age scan's a=5 recollapse horizon remain.</p>
-<h2>Known Minor Maintenance Items</h2><p>Existing extreme-parameter tests can
+<h4>Known Minor Maintenance Items</h4><p>Existing extreme-parameter tests can
 emit NumPy RuntimeWarnings. The previously recorded optional empty-finite-H
 plotting guard remains a maintenance observation, not a demonstrated valid-run defect.</p>
-<h2>Version Identification</h2><p>Version 1.6.3, build <code>b694888f168a</code>.
+<h4>Version Identification</h4><p>Version 1.6.3, build <code>b694888f168a</code>.
 The identifier hashes normalized text of <code>physics_cosmo.py</code>,
 <code>driver_cosmo.py</code>, <code>main.py</code> and <code>plot_cosmo.py</code>;
 documentation and tests are excluded. Verification: Linux/Python 3.12.14,
 NumPy 2.3.5, Matplotlib 3.10.8; Windows/Python 3.14 has not been verified here.</p>
-<h3>Pre-kickoff 24 October record</h3><p>The following earlier status and
+<h5>Pre-kickoff 24 October record</h5><p>The following earlier status and
 open-item lists describe the working drafts at their own dates. Their HOLD
 and unresolved-item statements are superseded by the current status above.
 The history is retained pending the new audit cycle.</p>
 
-<h3>CosmologyExpansionSimulator 1.6.3 Release Notes</h3>
+<h5>CosmologyExpansionSimulator 1.6.3 Release Notes</h5>
 <p><b>Version:</b> 1.6.3<br><b>Build:</b> b694888f168a<br><b>Date:</b> 2026-10-24</p>
-<h4>Release Status</h4><p>Pre-Kickoff5 continuation, not an approved release.
+<h6>Release Status</h6><p>Pre-Kickoff5 continuation, not an approved release.
 The latest code rounds are 1.6.2 (console precision and fate/chart presentation)
 and 1.6.3 (past-eternal warning wording). Codex recommends HOLD for the remaining
 author-owned Help edits below. Claude and Grok have not reviewed these rounds.
 The complete 23 October note and its earlier history are retained below.</p>
-<h4>Open Bugs</h4><ul>
+<h6>Open Bugs</h6><ul>
 <li><b>DOC-01 — P3 — Codex A1:</b> The concordance paragraph attributes the
 acceleration time to console output.<br><b>Reproduction:</b> Run the Beat 0
 concordance command; the console reports a and z, while Help says it reports
@@ -74,7 +137,7 @@ example and relevant reference cells describe that behavior and its two estimate
 superseded hatched unavailable-age display.<br><b>Reproduction:</b> Compare a
 past-eternal custom model with lambdaCDM; observed chart has a labeled cross;
 expected Help describes a cross and distinguishes unavailable-age reasons.</li>
-</ul><h4>Major Improvements in This Release</h4><ul>
+</ul><h6>Major Improvements in This Release</h6><ul>
 <li>1.6.3 removes the misleading finite-Big-Bang/lower-bound warning from
 past-eternal runs and states that their numerical clocks start at a_i.
 It corrects the early-time dark-energy wording to w0+wa at or below -1.
@@ -85,23 +148,23 @@ values, separate Model fate output and reason labels for unavailable age bars.</
 cleanup removes HTML5 parse notices and confines age-table padding to that table.
 Its single-column exercise layout and visible wording are preserved.</li>
 <li>All four Guide figures were regenerated from this build.</li>
-</ul><h4>Test Suite Growth</h4><p>1.6.2: 106 tests. 1.6.3: 107 tests,
+</ul><h6>Test Suite Growth</h6><p>1.6.2: 106 tests. 1.6.3: 107 tests,
 including a regression for past-eternal warnings in de Sitter, phantom-only
 and pre-present truncated runs. All pass from the tests folder using
 <code>python -m unittest discover -v</code>. All six worked commands execute
 successfully; all 464 Help MathJax expressions compile without errors.</p>
-<h4>Known Limitations</h4><p>FLRW background model only. Dark-energy futures
+<h6>Known Limitations</h6><p>FLRW background model only. Dark-energy futures
 are conditional extrapolations; finite precision, finite crossing searches
 and the age scan's finite a=5 recollapse horizon remain.</p>
-<h4>Known Minor Maintenance Items</h4><p>Existing extreme-parameter tests
+<h6>Known Minor Maintenance Items</h6><p>Existing extreme-parameter tests
 emit NumPy RuntimeWarnings. The Help retains a few editorial leftovers listed
 in the 24 October clarification, including duplicate method/supernova wording.</p>
-<h4>Version Identification</h4><p>Version 1.6.3, build <code>b694888f168a</code>.
+<h6>Version Identification</h6><p>Version 1.6.3, build <code>b694888f168a</code>.
 The build hashes normalized text of the four core Python modules; documentation
 and tests are excluded. Checked on Linux/Python 3.12.14, NumPy 2.3.5 and
 Matplotlib 3.10.8; Windows/Python 3.14 was not checked here.</p>
-<h5>Earlier 1.6.2 release-note record</h5>
-<h5>CosmologyExpansionSimulator 1.6.2 Release Notes</h5>
+<h6>Earlier 1.6.2 release-note record</h6>
+<h6>CosmologyExpansionSimulator 1.6.2 Release Notes</h6>
 <p><b>Version:</b> 1.6.2<br><b>Build:</b> 1d9e28b48e15<br><b>Date:</b> 2026-10-23</p>
 <h6>Release Status</h6><p>Pre-Kickoff5 continuation, not an approved release.
 This note covers the 1.6.1 Big Rip display round and the 1.6.2 presentation/test
