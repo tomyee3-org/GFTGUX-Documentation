@@ -1,13 +1,65 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>CosmologyExpansionSimulator 1.6.2 Release Notes</title></head><body>
-<h1>CosmologyExpansionSimulator 1.6.2 Release Notes</h1>
-<p><b>Version:</b> 1.6.2<br><b>Build:</b> 1d9e28b48e15<br><b>Date:</b> 2026-10-23</p>
+<title>CosmologyExpansionSimulator 1.6.3 Release Notes</title></head><body>
+<h1>CosmologyExpansionSimulator 1.6.3 Release Notes</h1>
+<p><b>Version:</b> 1.6.3<br><b>Build:</b> b694888f168a<br><b>Date:</b> 2026-10-24</p>
 <h2>Release Status</h2><p>Pre-Kickoff5 continuation, not an approved release.
+The latest code rounds are 1.6.2 (console precision and fate/chart presentation)
+and 1.6.3 (past-eternal warning wording). Codex recommends HOLD for the remaining
+author-owned Help edits below. Claude and Grok have not reviewed these rounds.
+The complete 23 October note and its earlier history are retained below.</p>
+<h2>Open Bugs</h2><ul>
+<li><b>DOC-01 — P3 — Codex A1:</b> The concordance paragraph attributes the
+acceleration time to console output.<br><b>Reproduction:</b> Run the Beat 0
+concordance command; the console reports a and z, while Help says it reports
+7.69 Gyr; expected: identify that time as read from the trajectory.</li>
+<li><b>DOC-10 — P3 — Codex B9:</b> EXP-21 still asks for machine field names
+as if they were console headings.<br><b>Reproduction:</b> Run its de Sitter
+command; observed headings are Age today and Elapsed a_i -&gt; today;
+expected: instructions use those labels or explicitly request CSV metadata.</li>
+<li><b>DOC-11 — P3 — Codex B10:</b> The Big Rip explanation is only in EXP-13,
+and the primary worked example and parameter/output cells remain incomplete.
+<br><b>Reproduction:</b> Run the Beat 0 example with and without --t_max 100;
+observed: only the first has a display continuation; expected: the primary
+example and relevant reference cells describe that behavior and its two estimates.</li>
+<li><b>DOC-13 — P3 — Codex D2:</b> The age-chart reference still promises the
+superseded hatched unavailable-age display.<br><b>Reproduction:</b> Compare a
+past-eternal custom model with lambdaCDM; observed chart has a labeled cross;
+expected Help describes a cross and distinguishes unavailable-age reasons.</li>
+</ul><h2>Major Improvements in This Release</h2><ul>
+<li>1.6.3 removes the misleading finite-Big-Bang/lower-bound warning from
+past-eternal runs and states that their numerical clocks start at a_i.
+It corrects the early-time dark-energy wording to w0+wa at or below -1.
+No numerical calculation, classification, printed number or CSV schema changed.</li>
+<li>1.6.2 improvements are retained: 17-digit computed evolve ages/turnaround
+values, separate Model fate output and reason labels for unavailable age bars.</li>
+<li>The latest author Help revisions are incorporated; mechanical markup
+cleanup removes HTML5 parse notices and confines age-table padding to that table.
+Its single-column exercise layout and visible wording are preserved.</li>
+<li>All four Guide figures were regenerated from this build.</li>
+</ul><h2>Test Suite Growth</h2><p>1.6.2: 106 tests. 1.6.3: 107 tests,
+including a regression for past-eternal warnings in de Sitter, phantom-only
+and pre-present truncated runs. All pass from the tests folder using
+<code>python -m unittest discover -v</code>. All six worked commands execute
+successfully; all 464 Help MathJax expressions compile without errors.</p>
+<h2>Known Limitations</h2><p>FLRW background model only. Dark-energy futures
+are conditional extrapolations; finite precision, finite crossing searches
+and the age scan's finite a=5 recollapse horizon remain.</p>
+<h2>Known Minor Maintenance Items</h2><p>Existing extreme-parameter tests
+emit NumPy RuntimeWarnings. The Help retains a few editorial leftovers listed
+in the 24 October clarification, including duplicate method/supernova wording.</p>
+<h2>Version Identification</h2><p>Version 1.6.3, build <code>b694888f168a</code>.
+The build hashes normalized text of the four core Python modules; documentation
+and tests are excluded. Checked on Linux/Python 3.12.14, NumPy 2.3.5 and
+Matplotlib 3.10.8; Windows/Python 3.14 was not checked here.</p>
+<h3>Earlier 1.6.2 release-note record</h3>
+<h3>CosmologyExpansionSimulator 1.6.2 Release Notes</h3>
+<p><b>Version:</b> 1.6.2<br><b>Build:</b> 1d9e28b48e15<br><b>Date:</b> 2026-10-23</p>
+<h4>Release Status</h4><p>Pre-Kickoff5 continuation, not an approved release.
 This note covers the 1.6.1 Big Rip display round and the 1.6.2 presentation/test
 round. Codex recommends HOLD for completion of the author-owned Help corrections
 listed below. Claude and Grok have not audited these rounds. Claude Audit41's
 APPROVE applies to the earlier 1.6.0 candidate, whose complete note is retained below.</p>
-<h2>Open Bugs</h2><p>These P3 documentation findings remain in the supplied draft
+<h4>Open Bugs</h4><p>These P3 documentation findings remain in the supplied draft
 Help. IDs refer to Codex's 22 October review and 23 October response; the code
 and companion-document follow-ups are completed in this candidate.</p><ul><li><b>DOC-01 — P3 — Codex A1/A3:</b> The revised concordance paragraph attributes a cosmic event time to console output that reports only scale factor and redshift, and the EdS age still uses the radiation-containing value.<br><b>Reproduction:</b> Run the two Beat 0 commands; Help gives console time 7.69 Gyr and EdS age 9.311 Gyr; expected: identify the sampled-trajectory source of the time and EdS age approximately 9.3123 Gyr.</li>
 <li><b>DOC-02 — P3 — Codex A4/A5:</b> The dimensional equation calls rho an energy density although its coefficients require mass-equivalent density, and the historical curvature labels retain dimensionless k values.<br><b>Reproduction:</b> Compare the dimensional equation and metric convention with the historical open/closed list; observed: energy-density units and k=-1,+1; expected: mass-equivalent density and signs k&lt;0,k&gt;0.</li>
@@ -22,7 +74,7 @@ and companion-document follow-ups are completed in this candidate.</p><ul><li><b
 <li><b>DOC-11 — P3 — Codex B10:</b> The Help does not yet explain the dashed Big Rip continuation and its different time estimate, or the effect of explicitly supplying --t_max.<br><b>Reproduction:</b> Run the Beat 0 Big Rip example, then add --t_max 100; observed: continuation only in the first plot; expected: Help describes this display rule and distinguishes the full-model limit from the DE-only estimate.</li>
 <li><b>DOC-12 — P3 — Codex C1/C2:</b> The Output reference retains an absent Algorithm section and calls the ten time-series columns first-crossing columns.<br><b>Reproduction:</b> Read Output/Omega_i and Output/CSV files; observed: absent prose target and mislabeled columns; expected: correct method reference and separate trajectory columns from comment-header crossing metadata.</li>
 <li><b>DOC-13 — P3 — Codex D2/C3:</b> The Help Output rows still describe the superseded hatched unavailable-age display and do not name the new Model fate console label.<br><b>Reproduction:</b> Compare Output reference with this build; observed: Help says hatched at zero and uses fate_status for console wording; expected: crosses with reason labels and Model fate when classified.</li>
-</ul><h2>Major Improvements in This Release</h2><ul>
+</ul><h4>Major Improvements in This Release</h4><ul>
 <li>1.6.1: constant-w Big Rip figures continue the full Friedmann model toward
 its finite-time limit after the requested scale-factor bound, with a dashed
 display curve and limit marker. CSV data remain bounded by the requested run;
@@ -37,36 +89,36 @@ did not reach the present epoch.</li>
 <li>Tests accommodate the single merged Help's three Beats and six worked
 commands. The Guide uses current examples in Beat order, with a supplementary
 Big Rip figure illustrating the new display.</li></ul>
-<h2>Test Suite Growth</h2><p>1.6.0: 98 tests. 1.6.1: 102 tests, including
+<h4>Test Suite Growth</h4><p>1.6.0: 98 tests. 1.6.1: 102 tests, including
 four Big Rip plotting regressions. 1.6.2: 106 tests, including four new
 console/chart regressions and revised existing Help/Guide checks. All 106 pass
 under <code>python -m unittest discover -s tests -q</code> with the sibling
 documentation folder present. All six worked commands also execute successfully.
 Program-only checkouts skip the six documentation checks when Help is absent.</p>
-<h2>Known Limitations</h2><p>FLRW background calculation only; no perturbations
+<h4>Known Limitations</h4><p>FLRW background calculation only; no perturbations
 or physical dark-energy theory. CPL extrapolation and Big Rip estimates are
 conditional model calculations; finite precision, finite crossing searches and
 the age scan's finite a=5 recollapse horizon apply.</p>
-<h2>Known Minor Maintenance Items</h2><p>Existing extreme-parameter tests can
+<h4>Known Minor Maintenance Items</h4><p>Existing extreme-parameter tests can
 emit NumPy RuntimeWarnings. The draft Help still needs the author edits and
 proofreading detailed in the accompanying response, including conservation
 assumptions, exercise phrasing and observational qualifications.</p>
-<h2>Version Identification</h2><p>Version 1.6.2, build <code>1d9e28b48e15</code>.
+<h4>Version Identification</h4><p>Version 1.6.2, build <code>1d9e28b48e15</code>.
 The build identifies normalized text of <code>physics_cosmo.py</code>,
 <code>driver_cosmo.py</code>, <code>main.py</code> and <code>plot_cosmo.py</code>.
 Documentation and tests are excluded. Verification host: Python 3.12.14,
 NumPy 2.3.5, Matplotlib 3.10.8, Linux; not a Windows/Python 3.14 verification.</p>
-<h3>Earlier 1.6.0 release-note record</h3>
-<h3>CosmologyExpansionSimulator 1.6.0 Release Notes</h3>
+<h5>Earlier 1.6.0 release-note record</h5>
+<h5>CosmologyExpansionSimulator 1.6.0 Release Notes</h5>
 <p><b>Version:</b> 1.6.0<br><b>Build:</b> 775b2b0ceb21<br><b>Date:</b> 2026-09-27</p>
-<h4>Release Status</h4><p>Claude Audit41 independently reviewed the
+<h6>Release Status</h6><p>Claude Audit41 independently reviewed the
 Kickoff4 candidate and recommends APPROVE. The prior 1.5.0 numerical
 release had independent Audit 7–9 review; Claude verified both current
 tutorial styles, the 1.6.0 plotting adjustment, all four regenerated
 sample figures, and the complete 98-test suite.</p>
-<h4>Open Bugs</h4><p>Claude Audit41 found no P1–P3 defects. No such
+<h6>Open Bugs</h6><p>Claude Audit41 found no P1–P3 defects. No such
 defects are open in this approved candidate.</p>
-<h4>Major Improvements in This Release</h4><ul>
+<h6>Major Improvements in This Release</h6><ul>
 <li>Preserved the previous Reference Guide byte-for-byte as
 <code>CosmologyExpansionSimulator-original.html</code>, separate from both new tutorial Helps.</li>
 <li>Added Extended-style worked-laboratory and Short-style terminal-script
@@ -81,14 +133,14 @@ the distinction between a displayed bound and an eventual fate.</li>
 <li>Made the signed Hubble-axis tick labels legible around turnaround in
 contracting-branch figures; this visible plotting change bumps the minor
 model version to 1.6.0.</li></ul>
-<h4>Test Suite Growth</h4><p>Previous build: 91 physics and integration
+<h6>Test Suite Growth</h6><p>Previous build: 91 physics and integration
 tests, all passed under <code>python -m unittest tests.test_physics_cosmo -q</code>.
 Kickoff4: 98 tests (91 existing plus 6 paired-help/guide contract tests
 and one contracting-axis readability regression),
 all passing under the same command with both current Helps under the sibling Documentation
 repository. Program-only layouts skip the document checks when neither
 Help is present; a layout with only one current Help fails those checks.</p>
-<h4>Known Limitations</h4><ul>
+<h6>Known Limitations</h6><ul>
 <li>FLRW perfect-fluid background only; no density perturbations, galaxy
 formation, or dark-energy microphysics.</li>
 <li>The CPL equation of state is a phenomenological ansatz and its
@@ -96,7 +148,7 @@ far-future extrapolation is not a physical prediction.</li>
 <li>Age-scan recollapse flags search only through <code>a=5</code>;
 arbitrarily close epoch crossings may escape finite numerical scans.
 Integration and root finding have finite precision and bounds.</li></ul>
-<h4>Known Minor Maintenance Items</h4><ul>
+<h6>Known Minor Maintenance Items</h6><ul>
 <li>Some extreme-parameter pathways can emit NumPy RuntimeWarnings
 even when the final input rejection or classification is correct.
 The current documentation and test work does not change this numerical
@@ -104,13 +156,13 @@ policy; investigate with a captured reproducer in a later code round.</li>
 <li>Claude Audit41 suggested an optional defensive guard for an empty
 finite-H array in the plotting tick calculation; the reviewed integration
 path cannot produce an identically zero H trajectory.</li>
-</ul><h4>Version Identification</h4><p>Version 1.6.0, build
+</ul><h6>Version Identification</h6><p>Version 1.6.0, build
 <code>775b2b0ceb21</code>. The build hashes only
 <code>physics_cosmo.py</code>, <code>driver_cosmo.py</code>,
 <code>main.py</code>, and <code>plot_cosmo.py</code>. Tutorial,
 guide, test and release-note edits do not change it.</p>
-<h4>Earlier 1.5.0 release-note record</h4><p>The following August
+<h6>Earlier 1.5.0 release-note record</h6><p>The following August
 record is retained because development resumed before a final release
-decision. Its dates and build refer to that earlier note.</p><h5>Release Status</h5><p>Version 1.5.0 has undergone multiple independent review rounds involving Codex, Copilot, Gemini, and Claude responses. Major numerical and physics-correctness issues identified during earlier audits were corrected before this release.</p><h5>Major Improvements Since 1.3.x</h5><ul><li>Contracting-branch endpoint handling corrected.</li><li>Big-Bang connectivity certification strengthened.</li><li>Corrected CPL asymptotic coefficient treatment.</li><li>Added past-eternal model classification.</li><li>Added structured fate reporting and crossing tracking.</li><li>Added BUILD_ID provenance support.</li><li>Expanded regression suite to 91 tests.</li></ul><h5>Known Limitations</h5><ul><li>Extreme CPL parameter choices may exceed representability policies.</li><li>Some extreme-parameter tests may still emit RuntimeWarning messages even when final classification is correct.</li><li>Crossing detection uses practical sign-change scanning and may not resolve arbitrarily close crossings.</li><li>The simulator is intended for education and exploration rather than precision cosmological parameter estimation.</li></ul><h5>Audit Summary</h5><ul><li>Audit 7: Contracting-branch endpoint and provenance improvements verified.</li><li>Audit 8: Big-Bang connectivity and CPL asymptotic fixes verified.</li><li>Audit 9: Past-eternal classification, build-ID, and new regression coverage verified; one RuntimeWarning cleanup item remains.</li></ul><h5>Version Identification</h5><p>This release corresponds to Version 1.5.0 and Build 9ef1e60257d3.</p><h5>Detailed Audit Records</h5><p>Detailed Audit 7–9 reports and responses are distributed separately from these release notes.</p>
+decision. Its dates and build refer to that earlier note.</p><h6>Release Status</h6><p>Version 1.5.0 has undergone multiple independent review rounds involving Codex, Copilot, Gemini, and Claude responses. Major numerical and physics-correctness issues identified during earlier audits were corrected before this release.</p><h6>Major Improvements Since 1.3.x</h6><ul><li>Contracting-branch endpoint handling corrected.</li><li>Big-Bang connectivity certification strengthened.</li><li>Corrected CPL asymptotic coefficient treatment.</li><li>Added past-eternal model classification.</li><li>Added structured fate reporting and crossing tracking.</li><li>Added BUILD_ID provenance support.</li><li>Expanded regression suite to 91 tests.</li></ul><h6>Known Limitations</h6><ul><li>Extreme CPL parameter choices may exceed representability policies.</li><li>Some extreme-parameter tests may still emit RuntimeWarning messages even when final classification is correct.</li><li>Crossing detection uses practical sign-change scanning and may not resolve arbitrarily close crossings.</li><li>The simulator is intended for education and exploration rather than precision cosmological parameter estimation.</li></ul><h6>Audit Summary</h6><ul><li>Audit 7: Contracting-branch endpoint and provenance improvements verified.</li><li>Audit 8: Big-Bang connectivity and CPL asymptotic fixes verified.</li><li>Audit 9: Past-eternal classification, build-ID, and new regression coverage verified; one RuntimeWarning cleanup item remains.</li></ul><h6>Version Identification</h6><p>This release corresponds to Version 1.5.0 and Build 9ef1e60257d3.</p><h6>Detailed Audit Records</h6><p>Detailed Audit 7–9 reports and responses are distributed separately from these release notes.</p>
 
 </body></html>

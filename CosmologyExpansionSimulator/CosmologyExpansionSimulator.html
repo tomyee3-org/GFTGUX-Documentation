@@ -151,6 +151,8 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
       margin: 0;
     }
 
+
+.age-checkpoints th, .age-checkpoints td { padding: 2px; }
 </style>
 
 </head>
@@ -192,7 +194,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 </nav>
 <main id="content">
 <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-Version 1.6.2&nbsp;&nbsp;&nbsp;&nbsp;Build 1d9e28b48e15
+Version 1.6.3&nbsp;&nbsp;&nbsp;&nbsp;Build b694888f168a
 </p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
   <!-- ================================================================ -->
@@ -341,7 +343,7 @@ the Hubble parameter steadily drops towards zero. </p>
 
 <p>
 The <i>Deceleration \(\to\) acceleration</i> panel plots \(q\) from the <strong>Second Friedmann Equation:</strong>
-<div class="eq-block">
+</p><div class="eq-block">
   \[\frac{\ddot a}{a}=-\frac{4\pi G}{3}\sum_i\left(\rho_i+\frac{3P_i}{c^2}\right)
     \quad\Longrightarrow\quad
     q(a)\equiv-\frac{\ddot a\,a}{\dot a^2}=\frac12\sum_{i=m,r,{\rm DE}}\Omega_i(a)\big(1+3w_i(a)\big).\]
@@ -349,7 +351,7 @@ The <i>Deceleration \(\to\) acceleration</i> panel plots \(q\) from the <strong>
 <p>\(q&gt;0\) is decelerating, \(q&lt;0\) is accelerating. 
 Matter alone gives \(q=1/2\); radiation alone gives \(q=1\); 
 a cosmological constant alone gives \(q=-1\) (de Sitter expansion).</p>
-</p>
+
 
 <p>This panel tells us that the deceleration parameter is \(q=1/2\) throughout. 
    Constant q does not mean constant physical acceleration. Here \(a(t)\propto t^{2/3}\): 
@@ -389,7 +391,7 @@ mapping of the Cosmic Microwave Background. The Planck 2018 data release reinfor
 </ul>
 
 <p>In the following, we explore the \(\Lambda\)CDM  model:
-<pre># The concordance cosmology (Planck-2018-like flat LCDM). Omitting
+</p><pre># The concordance cosmology (Planck-2018-like flat LCDM). Omitting
 # --omega_de forces flatness exactly; passing --omega_de 0.685 explicitly
 # here instead would leave a stray Omega_k0 = -9.24e-5 from the default
 # radiation density.
@@ -451,7 +453,7 @@ equation of state:</b>
 <p>In standard \(\Lambda\)CDM cosmology, \(w_0 = -1\) and \(w_a = 0\), yielding a constant \(w(a) = -1\), 
 meaning the dark energy density remains constant as the universe expands. 
 In contrast, phantom energy represents a scenario where the equation of state falls 
-below \(-1\) (such as having \(w_0 < -1\)), causing \(w(a) < -1\) across cosmic time and 
+below \(-1\) (such as having \(w_0 &lt; -1\)), causing \(w(a) &lt; -1\) across cosmic time and 
 leading to a growing energy density as space expands.</p>
 
 <p>This growing energy density results in a compounding 
@@ -466,12 +468,12 @@ to stars, planets, molecules and even subatomic particles become torn apart.</p>
   \[w_0&lt;-1,\ w_a=0:\qquad t_{\rm rip}-t_0\approx\frac{1}{-\tfrac32(1+w_0)\,H_0\sqrt{\Omega_{\rm DE,0}}}.\]
 </div>
 
-<p>\(w_0 < -1\) does not automatically guarantee a Big Rip. Geometry is also important!
+<p>\(w_0 &lt; -1\) does not automatically guarantee a Big Rip. Geometry is also important!
 If a universe is closed (meaning it has a curved, spherical shape 
-where \(\Omega_{k0} < 0\)), gravity can pull everything back together. 
+where \(\Omega_{k0} &lt; 0\)), gravity can pull everything back together. 
 A closed universe might actually recollapse (a Big Crunch) before phantom 
 energy has time to grow strong enough to rip it apart. Because of this, just 
-knowing \(w_0 < -1\) isn't enough; 
+knowing \(w_0 &lt; -1\) isn't enough; 
 the computer program has to check whether gravity or phantom energy wins the race.</p>
 
 <p>Current observations do not establish a Big Rip as the fate of our
@@ -483,19 +485,19 @@ exponential form and distant galaxies eventually drift out of view.</p>
 
 
 <p>In the following, we explore a Big Rip scenario. Here \(w_a=0\), so \(w(a)=w0=-1.2\) throughout the model:
-<pre># Phantom dark energy: \(w_0\) < -1 can lead to a future Big Rip, if no
+</p><pre># Phantom dark energy: \(w_0\) &lt; -1 can lead to a future Big Rip, if no
 # earlier recollapse intervenes first
 python main.py --mode evolve --w0 -1.2 --a_max 1000</pre>
 
 We will not provide a detailed analysis of the output, but you should have sufficient
 skills from our previous explorations to thoroughly understand these plots. 
-</p>
+
 
 <p><b>Historically important alternative: The recollapsing universe</b></p>
 
 For much of the mid-to-late 20th century (long before dark energy was discovered), most researchers pursued three primary scenarios for the fate of the universe: 
 <ul>
-<li>The Open Universe (\(\Omega_m < 1, k \lt 0\)): Expands forever while decelerating, approaching coasting at late times.</li>
+<li>The Open Universe (\(\Omega_m &lt; 1, k \lt 0\)): Expands forever while decelerating, approaching coasting at late times.</li>
 <li>The Flat/Critical Universe (\(\Omega_m = 1, k = 0\)): The Einstein-de Sitter model. Expands forever with \(a(t)\)
   proportional to \(t^{2/3}\); its expansion rate
   \(da/dt\) tends toward zero, while \(a\) itself remains unbounded
@@ -541,7 +543,7 @@ python main.py --mode compare --presets EdS,lambdaCDM,open,closed,phantom
 </pre>
 
 <p>
-<ol>
+</p><ol>
 <li><b>EdS (Einstein-de Sitter Model)</b>
 <ul>
 <li>Key Metrics: Age = \(9.31\text{ Gyr}\) | \(H_0 t_0 = 0.6667\) | \(q_0 = 0.5\) | \(z_{\text{accel}} = \text{n/a}\)</li>
@@ -568,7 +570,7 @@ around \(a \sim 1\).</li>
 <ul>
 
 <li>Key Metrics: Age = \(11.29\text{ Gyr}\) | \(H_0 t_0 = 0.8085\) | \(q_0 = 0.15\) | \(z_{\text{accel}} = \text{n/a}\)</li>
-<li>Commentary: This scenario represents a low-matter universe with negative spatial curvature (\(\Omega_m < 1\)) 
+<li>Commentary: This scenario represents a low-matter universe with negative spatial curvature (\(\Omega_m &lt; 1\)) 
 and no dark energy. While it expands forever without recollapsing, its expansion is still decelerating 
 today (\(q_0 = 0.15 > 0\)), though much less aggressively than the Einstein-de Sitter model. Its age sits 
 comfortably between EdS and \(\Lambda\)CDM at roughly \(11.3\text{ Gyr}\).</li> 
@@ -589,7 +591,7 @@ as gravity begins dominating and pulling the universe toward its eventual turnar
 <li><b>Phantom (Phantom Energy Model)</b>
 <ul>
 <li>Key Metrics: Age = \(14.15\text{ Gyr}\) | \(H_0 t_0 = 0.9757\) | \(q_0 = -0.733\) | \(z_{\text{accel}} = 0.6175\) | Note: Big Rip ahead</li>
-<li>Commentary: This extreme scenario uses phantom dark energy (\(w < -1\)), where dark energy density intensifies as space stretches. 
+<li>Commentary: This extreme scenario uses phantom dark energy (\(w &lt; -1\)), where dark energy density intensifies as space stretches. 
 It exhibits the most aggressive acceleration today (\(q_0 = -0.733\)) and yields the oldest current age in the group 
 (\(14.15\text{ Gyr}\)). The note "Big Rip ahead" 
 flags its apocalyptic future, where expansion outpaces all local binding forces. 
@@ -602,7 +604,7 @@ At fixed present \(H_0\) and density parameters, the phantom model has less
 </li>
 </ol>
 
-</p>
+
 </section>
 
 
@@ -624,11 +626,11 @@ python main.py --mode age --scan_param omega_m --scan_lo 0.05 --scan_hi 1.5
 <p>The program scans flat universes (\(\Omega_k=0\)) while varying \(\Omega_{m0}\). 
 The left panel shows the age of the universe today, and the right panel shows the dimensionless quantity \(H_0 t_0 .\)
 Two horizontal reference lines are drawn on the right: 
-<ul>
+</p><ul>
 <li>\(H_0 t_0 = 1\) (the Milne empty universe)</li>
 <li>\(H_0 t_0 = \frac23\) (the Einstein-de Sitter universe)</li>
 </ul>
-The curve passes almost exactly through \(H_0t_0=2/3\) at \(\Omega_{m0}=1,\) which is exactly what it should do.</p>
+The curve passes almost exactly through \(H_0t_0=2/3\) at \(\Omega_{m0}=1,\) which is exactly what it should do.
 
 <p><b>Connecting this to the historical age crisis:</b></p>
 
@@ -647,11 +649,11 @@ Thus: \(t_{\rm stars} > t_{\rm universe}\) which is impossible.</p>
 
 <p>Notice where the dashed 13 Gyr line intersects the curve. By eye it occurs around \(\Omega_{m0}\approx 0.34.\) That is 
 extremely interesting because it says:
-<ul>
+</p><ul>
 <li>For a fixed \(H_0,\) a flat universe reaches an age of roughly 13 Gyr only when the matter density is much smaller 
 than the Einstein-de Sitter value \(\Omega_{m0}=1.\)</li>
 </ul>
-</p>
+
 
 <p>In other words, if the measured \(H_0\) is kept fixed, reducing the matter density makes the universe older.
 The plot therefore visually demonstrates why cosmologists became uncomfortable with the \(\Omega_m=1\) model.</p>
@@ -660,8 +662,8 @@ The plot therefore visually demonstrates why cosmologists became uncomfortable w
 
 <p>The plot imposes   \(\Omega_{\Lambda0}=1-\Omega_{m0}-\Omega_{r0}\) to preserve flatness. As \(\Omega_m\) decreases, \(\Omega_\Lambda\) increases. 
 This enables the age to climb dramatically:</p>
-<style>th, td { padding: 2px;}</style>
-<table border="1" style="text-align: left; border-collapse: collapse;">
+
+<table class="age-checkpoints" border="1" style="text-align: left; border-collapse: collapse;">
 <tr><th style="width:25%">\(\Omega_m\)</th><th>Age today(Gyr)</th><th>\(H_0t_0\)</th></tr>
 <tr><td>  1.5</td><td>          8.10497</td><td>               0.580233</td></tr>
 <tr><td>  1.0</td><td>          9.31118</td><td>               0.666586</td></tr>
@@ -674,17 +676,17 @@ This enables the age to climb dramatically:</p>
 
 <br>
 <p>This is essentially the historical solution to the age crisis:
-<ul>
+</p><ul>
 <li>Einstein-de Sitter \(\Omega_m=1,\Lambda=0)\) gives too small an age.</li>
 <li>Introducing a cosmological constant increases \(H_0 t_0.\)</li>
 <li>A universe with roughly \(\Omega_m \approx 0.3, \, \Omega_\Lambda \approx 0.7\)
 achieves \(H_0t_0 \approx 0.96,\)</li>
 </ul>
-which for \(H_0\approx70\) gives an age around 13.4 Gyr.</p>
+which for \(H_0\approx70\) gives an age around 13.4 Gyr.
 
 
 <p>The right-hand plot makes this especially clear: the age crisis was fundamentally a crisis in the value of \(H_0 t_0.\)
-<ul>
+</p><ul>
 <li>Einstein-de Sitter is fixed at \(H_0 t_0=\frac23.\)</li>
 <li>The observed universe is much closer to \(H_0 t_0\approx0.95-1.\)</li>
 </ul>
@@ -768,7 +770,7 @@ raises \(H_0 t_0\) into the observationally acceptable range.
     {dt\over da}\approx {1\over H_0\sqrt C}\,a^{-1-p/2}.
     \]
     The integral from zero to a positive scale factor is finite only when
-    the power of \(a\) exceeds \(-1\), which here means \(p<0\).
+    the power of \(a\) exceeds \(-1\), which here means \(p&lt;0\).
     At \(p=0\) it diverges logarithmically; for \(p>0\) it diverges
     as a power. In the dark-energy-only CPL model,
     \(p=-3(1+w_0+w_a)\) is the leading exponent as \(a\to0\).
@@ -872,7 +874,7 @@ raises \(H_0 t_0\) into the observationally acceptable range.
       supplying any explicit <code>--t_max</code> disables the continuation,
       even if that time lies beyond the predicted Rip.</p>
       
-      Compute your own estimate by hand from \(H_0\), \(\Omega_{\rm DE,0}\), and \(w_0\), and compare -- being careful to distinguish the reported <em>absolute</em> cosmic time \(t_{\rm rip}\) from the <em>time remaining</em> \(t_{\rm rip}-t_0\) you compute by hand from the formula. Then repeat for \(w_0=-1.05\) and \(w_0=-1.5\): how sensitively does the time to the Big Rip depend on how far \(w_0\) sits below \(-1\)? Finally, run \(w_0=-1.0\) exactly and confirm the program reports no Big Rip at all -- explain why an infinitesimal change in \(w_0\) at the boundary produces a qualitative change in the universe's fate, and note that this whole estimate is a late-time, dark-energy-dominated approximation, not valid while matter, radiation, or curvature still contribute.</p></div>
+      Compute your own estimate by hand from \(H_0\), \(\Omega_{\rm DE,0}\), and \(w_0\), and compare -- being careful to distinguish the reported <em>absolute</em> cosmic time \(t_{\rm rip}\) from the <em>time remaining</em> \(t_{\rm rip}-t_0\) you compute by hand from the formula. Then repeat for \(w_0=-1.05\) and \(w_0=-1.5\): how sensitively does the time to the Big Rip depend on how far \(w_0\) sits below \(-1\)? Finally, run \(w_0=-1.0\) exactly and confirm the program reports no Big Rip at all -- explain why an infinitesimal change in \(w_0\) at the boundary produces a qualitative change in the universe's fate, and note that this whole estimate is a late-time, dark-energy-dominated approximation, not valid while matter, radiation, or curvature still contribute.</div>
 
       <div class="exp-card"><div class="ec-num">EXP-14 · advanced</div><h4>Numerical Convergence</h4>
       <p>Repeat the concordance run with \(H_0=67.4\) and
