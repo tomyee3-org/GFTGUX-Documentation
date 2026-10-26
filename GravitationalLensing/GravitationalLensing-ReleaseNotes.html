@@ -3,9 +3,9 @@
 <h1>GravitationalLensing 1.3.0 Release Notes</h1>
 <p><b>Version:</b> 1.3.0; <b>Build:</b> e30d2c36ae1a; <b>Date:</b> 2026-10-26.</p>
 <h2>Release Status</h2>
-<p>This Pre-Kickoff7 response implements the code findings from Codex's 2026-10-26 review and Tom's annotated response. The preceding 1.2.0 round standardized the zero source defaults. The current Help contains Tom's merged revisions plus the code-dependent caption updates; the source-coordinate and cosmological-distance wording in the response text remains for Tom's consideration. Codex's review is not an independent release approval, and Claude's older Audit41 APPROVE recommendation applies to 1.1.0.</p>
+<p>Kickoff7 submits version 1.3.0 for independent scientific, numerical and instructional audit. Tom's final source-coordinate, vector-notation and cosmological-distance explanations are now incorporated in the canonical Help. The four core files and build are unchanged from the completed Pre-Kickoff7 code response. The preceding 1.2.0 round standardized zero source defaults; 1.3.0 fixed the singular-centre displays, rotated ray slice, near-alignment magnifications and save-plus-display behavior. No Kickoff7 auditor recommendation has yet been received; Claude's historical Audit41 APPROVE recommendation applied to 1.1.0.</p>
 <h2>Open Bugs</h2>
-<p>No P1–P3 issue from Codex's identified code findings remains open after these fixes. The merged Help and the code changes await the planned independent audit; no release approval is claimed.</p>
+<p>No unresolved P1–P3 finding is known from the completed pre-kickoff review and fix work. The final merged Help and current code are submitted for independent audit; release approval is pending.</p>
 <h2>Major Improvements in This Release</h2>
 <ul>
 <li><code>--outdir</code> now saves PNG/provenance files in addition to the normal figure display. Agg still suppresses windows. Both source coordinates retain their uniform zero defaults.</li>
@@ -13,7 +13,7 @@
 <li>The convergence map masks its singular centre and uses valid values for logarithmic normalization. It no longer raises the outer kappa values to an artificial floor.</li>
 <li>The critical-mode ray slice follows the full source offset, including nonzero <code>--beta_x</code>. Its labels and provenance describe the rotated slice, and the left title identifies an Einstein circle rather than an additional luminous ring.</li>
 <li>Ideal point-source magnifications use a normalized-source expression that remains finite for the tested tiny nonzero offset of 1e-18 arcsec. The standard classroom values still round to the same numbers.</li>
-<li>The source marker legend identifies the model coordinate. Tom's Help revisions and accepted alignment wording are preserved; all eight sample figures were regenerated from this build with matching indexed PNGs.</li>
+<li>The source marker legend identifies the model coordinate. The final Help distinguishes source coordinates from observed image directions, explains cosmological distance measures, preserves explicit vector labels and gives consistent finite-source and caustic investigations. All eight sample figures match this build and their companion indexed PNGs.</li>
 </ul>
 <h2>Test Suite Growth</h2>
 <p>Version 1.2.0 contained 65 tests; 1.3.0 contains 75. All completed: 74 passed and one skipped because the optional Python 3.10 interpreter is absent. From <code>GFTGUX-Programs/GravitationalLensing/tests/</code>, run <code>python -W error::RuntimeWarning -m unittest test_physics_gl -v</code> with <code>MPLBACKEND=Agg</code>. Added coverage checks the singular centre, preserved kappa samples, source-aligned ray geometry, save-plus-display dispatch, saved files before a mocked display call, tiny-offset metadata, safer fold examples, and the advanced caustic mapping. All 33 documented command forms ran successfully under Agg. Native Windows GUI operation was not tested here.</p>
@@ -25,7 +25,7 @@
 <h2>Known Minor Maintenance Items</h2>
 <ul>
 <li>Some options accepted by the shared CLI do not apply to every mode. <code>--interactive</code> is retained for existing commands; display is now already the normal behavior.</li>
-<li>Tom is still considering the source-coordinate and distance explanations supplied with this response. The optional Python 3.10 check requires that interpreter.</li>
+<li>The optional Python 3.10 check requires that interpreter. Native Windows GUI operation remains unverified on the Linux check host.</li>
 </ul>
 <h2>Version Identification</h2>
 <p><b>MODEL_VERSION:</b> 1.3.0; <b>BUILD_ID:</b> e30d2c36ae1a. Only LF-normalized <code>physics_gl.py</code>, <code>driver_gl.py</code>, <code>main.py</code> and <code>plot_gl.py</code> enter the framed SHA-256 build hash. Documentation and tests are excluded.</p>
