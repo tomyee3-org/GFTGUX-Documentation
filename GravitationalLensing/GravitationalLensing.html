@@ -495,7 +495,7 @@ python main.py --mode rays --beta_x 0 --beta_y 0.35</pre>
     <p>Run the command to explore these trajectories yourself:</p>
     <pre>python main.py --mode rays --beta_x 0 --beta_y 0.35</pre>
 
-    <p>Both panels trace rays <em>forward</em> from a single source (\(\boldsymbol\beta\)) at \(x = 0\) toward an observer at \(x = 2\), with a point-mass lens situated at \(x = 1\). Because gravity is purely attractive, every trajectory experiences a single sharp kink toward the lens:</p>
+    <p>Both panels trace rays <em>forward</em> from a single source (\(\boldsymbol\beta\)) at \(x = 0\) toward an observer at \(x = 2\), with a point-mass lens situated at \(x = 1\). The drawings distinguish the on-axis and off-axis cases:</p>
     <ul>
         <li><strong>Top Panel (On-Axis):</strong> The source lies on the optical axis,
         the line joining the lens centre and observer. The two red paths are a slice
@@ -556,7 +556,14 @@ python main.py --mode rays --beta_x 0 --beta_y 0.35</pre>
 
   <p><strong>Implementation Notes:</strong> A \(10^{12}\,M_\odot\) lens halfway to a source at 2&nbsp;Gpc yields \(\theta_E \approx 2''\). These distances are illustrative choices selected to keep Einstein radii conveniently sized in arcseconds; they do not represent a true cosmological model.</p>
 
-  <p>Vector \(\boldsymbol{\beta}\) represents the true angular position of the source; vector \(\boldsymbol{\theta}\) is the observed angular position of an image; and vector \(\boldsymbol{\alpha}(\boldsymbol{\theta})\) is the reduced deflection angle. Constants \(G\) and \(c\) use SI units, mass is specified via <code>--logM</code> as \(\log_{10}(M/M_\odot)\), and the compact-source width is fixed at \(0.08''\). When you increase <code>--logM</code>, the program automatically expands the field of view so the resulting ring is never clipped.</p>
+ <p>In the model, vector \(\boldsymbol\beta\) specifies the source's position in the
+source plane, while vector \(\boldsymbol\theta\) specifies an image's observed
+arrival direction. The reduced deflection
+\(\boldsymbol\alpha(\boldsymbol\theta)\) relates these coordinates through
+the lens equation. Constants \(G\) and \(c\) use SI units; mass is specified
+via <code>--logM</code> as \(\log_{10}(M/M_\odot)\), and the compact-source
+width is fixed at \(0.08''\). When you increase <code>--logM</code>, the
+program automatically expands the field of view to contain the Einstein circle.</p>
   
   <p>The colour represents surface brightness: light received per unit angular
   area. The program maps each image-plane sample back to the source and assigns
@@ -568,9 +575,23 @@ python main.py --mode rays --beta_x 0 --beta_y 0.35</pre>
   values when comparing separate windows, since each image is scaled
   automatically.</p>
   
-  <p>\(D_{ls}\), \(D_l\), and \(D_s\) are the angular-diameter distances from lens to source, observer to lens, and observer to source, respectively. For objects in ordinary Euclidean space, these would be ordinary distances obeying a simple linear sum (\(D_s = D_l + D_{ls}\)). However, on cosmological scales, spacetime expands while light travels toward us. Consequently, standard Euclidean geometry breaks down, and multiple distinct definitions of distance arise—such as comoving distance, proper distance, luminosity distance, and angular-diameter distance.</p>
+  <p>On cosmological scales, the universe expands while light travels toward
+us. Distances inferred from angular size and from brightness therefore need
+not agree: angular size relates an object's physical size when the light was
+emitted to its observed angle, while brightness also depends on the redshift
+of the photons and the slower rate at which they arrive. Proper distance
+specifies separation at a chosen cosmic time; comoving distance factors out
+the overall expansion.</p>
 
-  <p>The angular-diameter distance \(D_A\) is defined as an object's physical transverse size divided by its observed angular size in radians (\(D_A = L / \theta\)), and a simple additive relationship does not generally hold between \(D_l\), \(D_{ls}\), and \(D_s\).</p>
+<p>The lens equation uses angular-diameter distances, defined by
+\(D_A=L_\perp/\theta\), where \(L_\perp\) is physical transverse size and
+\(\theta\) is angular size in radians. Here \(D_l\), \(D_s\), and
+\(D_{ls}\) run from observer to lens, observer to source, and lens to source.
+They do not generally obey \(D_s=D_l+D_{ls}\), even in a spatially flat
+cosmology. This program uses the fixed illustration values
+\(D_l=1\,\mathrm{Gpc}\), \(D_s=2\,\mathrm{Gpc}\), and
+\(D_{ls}=1\,\mathrm{Gpc}\); it does not calculate distances from redshifts.</p>
+
   
     <p><em>Experiments that go with this beat:</em> <a href="#exp2">EXP-2</a> and <a href="#exp8">EXP-8</a> in <a href="#experiments">Suggested Experiments</a>.</p>  
 </section>
@@ -582,8 +603,16 @@ python main.py --mode rays --beta_x 0 --beta_y 0.35</pre>
 
 <pre>python main.py --mode point --beta_x 1.0 --beta_y 0.0</pre>
 
-<p>The two resulting images appear at \(+2.579''\) and \(-1.579''\) along the source direction. The white cross at \(+1.0''\) marks the source's position on the source plane—where the object would reside if space were flat and empty of gravitating mass. Crucially, this is a geometric reference coordinate rather than a spot you'll see a photon coming from: no light ray travels straight from that cross to the observer. Instead, light leaves the source in two different directions, gets deflected by the mass, and arrives at your telescope as the two visible images. (If you save the figure using <code>--outdir</code>, analytic point-source image positions and signed magnifications, rounded for output,
-are written to a provenance file.)</p>
+<p>The two images appear at \(+2.579''\) and \(-1.579''\) along the source
+ direction. The white cross at \(+1.0''\) marks the source coordinate
+ \(\beta\) supplied to the model, plotted on the same angular scale as the
+ images. It is a reference for the lens mapping, not another direction from
+ which the observer receives the source's light. The bright images show the
+ arrival directions of two different light paths from the same physical
+ source. Saving with <code>--outdir</code> records the analytic point-source
+ image positions and signed magnifications, rounded for output, in the
+ matching provenance file.</p>
+
 
 <p>For an off-axis source, let \(\beta\) be its total angular offset from
   the lens. Measured along the source-lens direction, the two signed image
