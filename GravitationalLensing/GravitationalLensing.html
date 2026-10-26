@@ -404,7 +404,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
   <div class="nav-label">Overview</div>
   <a href="#description">Description</a>
   <a href="#modes">Seven Modes in Eight Beats</a>
-  <a href="#beats">How to read this page</a>
+  <a href="#setup">Before the first run</a>
   <div class="nav-label">Beats</div>
   <a href="#beat0">0 · Raytraced views</a>
   <a href="#beat1">1 · Play with a point mass</a>
@@ -426,7 +426,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 </nav>
 <main>
   <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">
-    Version 1.1.0&nbsp;&nbsp;&nbsp;&nbsp;Build 3d4a4bec1859
+    Version 1.2.0&nbsp;&nbsp;&nbsp;&nbsp;Build 6e3701cf4641
   </p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
 
@@ -459,8 +459,8 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
     <h2>Before the first run</h2>
     <p>Unpack the program zip so you have a folder named <code>GravitationalLensing</code> that contains <code>main.py</code>. Open a terminal in that folder. You need <strong>Python 3.10 or newer</strong> with NumPy and Matplotlib. If you do not already have that environment, follow the project-wide <a href="https://github.com/tomyee3-org/GFTGUX-Documentation" target="_blank"><em>GFTGUX Python Setup Guide</em></a> (the link is the documentation repository root so you can download the whole tree with the green <strong>Code</strong> button, without a GitHub account). On Linux, do not install packages into a system Python. Then:</p>
 <pre>python main.py --version
-python main.py --mode rays</pre>
-    <p>Every command on this page assumes that working directory. Even values of <code>--n_pix</code> are rounded up to the next odd number so a pixel sits on the optical axis.</p>
+python main.py --mode rays --beta_x 0 --beta_y 0.35</pre>
+    <p>Every command on this page assumes that working directory. Both <code>--beta_x</code> and <code>--beta_y</code> default to zero in every mode; any nonzero source position must be specified explicitly. Even values of <code>--n_pix</code> are rounded up to the next odd number so a pixel sits on the optical axis.</p>
   </section>
 
   <section id="modes">
@@ -469,7 +469,7 @@ python main.py --mode rays</pre>
       <thead><tr><th>Mode</th><th>Beat</th><th>What you see</th></tr></thead>
       <tbody>
         <tr><td class="mname">rays</td><td>0</td><td>Side-view cartoon: on-axis Einstein cone versus off-axis double.</td></tr>
-        <tr><td class="mname">point</td><td>1–2</td><td>Compact Gaussian through a point mass. Default source is already off-axis.</td></tr>
+        <tr><td class="mname">point</td><td>1–2</td><td>Compact Gaussian through a point mass. The default source is centered; specify a nonzero source position to see a double.</td></tr>
         <tr><td class="mname">blob</td><td>3</td><td>The same lens, now lighting an extended elliptical galaxy.</td></tr>
         <tr><td class="mname">critical</td><td>4</td><td>Image plane, source plane (caustic = a point), and a side-view of the rays that form it.</td></tr>
         <tr><td class="mname">shear</td><td>5</td><td>SIS + shear. Count images as you move the source across the diamond.</td></tr>
@@ -484,7 +484,7 @@ python main.py --mode rays</pre>
     <p>Unlike a glass lens—which bends light most strongly near its rim—a point-mass gravitational lens does the exact opposite: rays that skim close to the mass suffer extreme deflection, while rays passing far out are barely nudged. Furthermore, an astronomical observer does not sit at a camera-lens focal plane; instead, we only receive those specific light rays whose bending happens to land precisely on our line of sight.</p>
 
     <p>Run the command to explore these trajectories yourself:
-    <pre>python main.py --mode rays</pre></p>
+    <pre>python main.py --mode rays --beta_x 0 --beta_y 0.35</pre></p>
 
     <p>Both panels trace rays <em>forward</em> from a single source (\(\boldsymbol\beta\)) at \(x = 0\) toward an observer at \(x = 2\), with a point-mass lens situated at \(x = 1\). Because gravity is purely attractive, every trajectory experiences a single sharp kink toward the lens:</p>
     <ul>
@@ -492,7 +492,7 @@ python main.py --mode rays</pre>
         <li><strong>Bottom Panel (Off-Axis):</strong> When the source is shifted off-axis (\(\boldsymbol\beta_y > 0\)), circular symmetry breaks. The focusing condition is met by exactly two distinct rays—one passing outside the ring, one inside—resulting in two separate images on opposite sides of the lens.</li>
     </ul>
 
-    <p>Distances in these plots are schematic (\(D_l = D_{ls} = 1\), \(D_s = 2\)), so the vertical axis represents angles in radians (with a default \(10^{12}\,M_\odot\) lens yielding \(\theta_E \sim 10^{-5}\)). The lower panel utilizes the signed value of <code>--beta_y</code> (positive above the optical axis, negative below).</p>
+    <p>Distances in these plots are schematic (\(D_l = D_{ls} = 1\), \(D_s = 2\)), so the vertical axis represents angles in radians (with a default \(10^{12}\,M_\odot\) lens yielding \(\theta_E \sim 10^{-5}\)). The lower panel utilizes the signed value of <code>--beta_y</code> (positive above the optical axis, negative below). The command above sets it to 0.35 arcsec; if you omit that option, both panels show an on-axis source. This side view does not use <code>--beta_x</code>.</p>
 
     <p>The core concept that the rest of this module makes quantitative is simple: <strong>an observer does not see a lens like a camera sees an object.</strong> We see whatever directions happen to satisfy the lens equation. Everything from a perfect Einstein ring to a complex four-image quad is simply a different geometric manifestation of that single equation at work.</p>
     
@@ -503,7 +503,7 @@ python main.py --mode rays</pre>
   <h2>Beat 1 · Play with a point mass</h2>
 
   <p>Let's translate our geometric setup into an image on the sky. First, place the source slightly off-axis to break symmetry and produce two distinct image arcs rather than a ring:</p>
-<pre>python main.py --mode point --logM 12.0 --beta_x 0.5</pre>
+<pre>python main.py --mode point --logM 12.0 --beta_x 0.5 --beta_y 0</pre>
 
   <p>Next, center the source precisely on-axis to see what appears:</p>
 <pre>python main.py --mode point --logM 12.0 --beta_x 0.0 --beta_y 0.0</pre>
@@ -575,7 +575,7 @@ python main.py --mode rays</pre>
 python main.py --mode blob --beta_x 0.15 --beta_y 0.0 --r_eff 0.25
 python main.py --mode blob --beta_x 0.15 --beta_y 0.8 --r_eff 0.20 --q 0.60 --phi 30.0</pre>
  
-<p>When the extended source is centered on-axis, it no longer forms two isolated dots, but instead smears out into a <strong>thick ring</strong>. This happens because every azimuth of the galaxy's light satisfies the on-axis lens equation simultaneously, with the near and far edges mapping to slightly different radii. Shift the source off-axis, however, and that ring breaks into two opposing arcs—literally the same geometry as the lower panel of <code>--mode rays</code>, but now rendered as a false-color photograph of an extended object rather than a sketch of individual rays.</p>
+<p>When the extended source is centered on-axis, it no longer forms two isolated dots, but instead smears out into a <strong>thick ring</strong>. This happens because every azimuth of the galaxy's light satisfies the on-axis lens equation simultaneously, with the near and far edges mapping to slightly different radii. Shift the source off-axis, however, and that ring breaks into two opposing arcs—literally the same geometry as the lower panel of the Beat 0 ray comparison, but now rendered as a false-color photograph of an extended object rather than a sketch of individual rays.</p>
 
 <p>For a pure point-mass lens, the source plane has only one distinguished point: the origin. A source placed directly on it becomes a ring; a source anywhere else becomes two images. The set of points in the source plane where the lens mapping changes its multiplicity is called the <em>caustic curve</em>—which, for this point mass, is only a single point at the origin.</p>
 
@@ -613,8 +613,8 @@ python main.py --mode blob --beta_x 0.15 --beta_y 0.8 --r_eff 0.20 --q 0.60 --ph
 
   <p>Mode <code>critical</code> displays a three-panel dashboard simultaneously: the false-color image plane with the critical curve overplotted, the source plane marking the caustic as a star at the origin, and a side-view ray trace. This side view is our familiar thin-lens unwrapping from Beat 0 (not a full Schwarzschild geodesic), where red rays reach the observer and blue rays miss. Note that because this diagram is a 2D slice through a 3D geometry, motion in \(\beta_x\) points into or out of the page—use <code>--beta_y</code> to shift the source position vertically[cite: 8, 9].</p>
 
-<pre>python main.py --mode critical
-python main.py --mode critical --beta_y 0.4</pre>
+<pre>python main.py --mode critical --beta_x 0 --beta_y 0
+python main.py --mode critical --beta_y 0.4 --beta_x 0</pre>
 
   <div class="note"><strong>Leave the mass alone for this beat.</strong> Changing <code>--logM</code> only resizes a self-similar circle; the default mass is already ideal for the figure. The coordinate that changes what you see is the source position, represented in the side view by <code>--beta_y</code>.</div>
   
@@ -764,7 +764,7 @@ python main.py --mode critical --beta_y 0.4</pre>
 
     <h3>Introductory</h3>
     <div>
-      <div class="exp-card"><div class="ec-num" id="exp1">EXP-1</div><h4>Two Panels, One Kink</h4><p>Run <code>--mode rays</code>. In one sentence for each panel, say what changed about the <em>observer's</em> rays between the on-axis and off-axis cases, being careful not to describe it as something that changed about the lens.</p></div>
+      <div class="exp-card"><div class="ec-num" id="exp1">EXP-1</div><h4>Two Panels, One Kink</h4><p>Run <code>--mode rays --beta_x 0 --beta_y 0.35</code>. In one sentence for each panel, say what changed about the <em>observer's</em> rays between the on-axis and off-axis cases, being careful not to describe it as something that changed about the lens.</p></div>
 
       <div class="exp-card"><div class="ec-num"id="exp2">EXP-2</div><h4>Two, Always</h4><p>Keep <code>--beta_x 0.5</code> and run 
 	  <code>--mode point</code> at three different <code>--beta_y</code> values, including zero. 
@@ -773,20 +773,20 @@ python main.py --mode critical --beta_y 0.4</pre>
 	  Add <code>--outdir ./figures</code> to each run so it saves a matching <code>.provenance.txt</code> beside the PNG. 
 	  Compare these signed distances <em>along the source-lens line</em> with the sidecar values; they are not generally the horizontal coordinate \(\theta_x\). Explain why a nonzero source offset gives exactly two point-source images.</p></div>
 
-      <div class="exp-card"><div class="ec-num" id="exp3">EXP-3</div><h4>A Ring Has No Preferred Direction</h4><p>Run <code>--mode blob --beta_x 0 --beta_y 0</code>, then <code>--mode blob --beta_y 0.8 --r_eff 0.20</code>. Describe in words what "the caustic is a single point" implies about the first image, and what it implies about how abruptly the ring breaks into two arcs as the source moves off that point by even a small amount.</p></div>
+      <div class="exp-card"><div class="ec-num" id="exp3">EXP-3</div><h4>A Ring Has No Preferred Direction</h4><p>Run <code>--mode blob --beta_x 0 --beta_y 0</code>, then <code>--mode blob --beta_y 0.8 --r_eff 0.20 --beta_x 0.15</code>. Describe in words what "the caustic is a single point" implies about the first image, and what it implies about how abruptly the ring breaks into two arcs as the source moves off that point by even a small amount.</p></div>
       
-      <div class="exp-card"><div class="ec-num" id="exp4">EXP-4</div><h4>Two Planes, Never Confused</h4><p>Run <code>--mode critical</code>. Point to the critical curve and say which plane it lives in; point to the caustic and say which plane <em>it</em> lives in. Then explain why an observer can point a telescope at the first but never directly at the second.</p></div>
+      <div class="exp-card"><div class="ec-num" id="exp4">EXP-4</div><h4>Two Planes, Never Confused</h4><p>Run <code>--mode critical --beta_x 0 --beta_y 0</code>. Point to the critical curve and say which plane it lives in; point to the caustic and say which plane <em>it</em> lives in. Then explain why an observer can point a telescope at the first but never directly at the second.</p></div>
     </div>
 
     <h3>Intermediate</h3>
     <div>
       <div class="exp-card"><div class="ec-num" id="exp5">EXP-5</div><h4>Crossing the Diamond</h4><p>Reproduce Beat 5's four <code>shear</code> commands and record the image count each time. Then find, by trial, a fifth source position that crosses from 2 images to 4 by moving only <code>--beta_y</code> at fixed <code>--beta_x 0.4</code>, and identify which boundary (fold or pseudo-caustic) you crossed.</p></div>
  
-      <div class="exp-card"><div class="ec-num" id="exp6">EXP-6</div><h4>An Arc Is a Local Measurement</h4><p>Compare <code>--mode arcs --beta_x 0.18 --beta_y 0.30 --r_eff 0.14</code> (a source straddling a diagonal fold) with <code>--mode arcs --beta_x 0.55 --r_eff 0.14</code> (a source straddling the short-axis cusp at \(\beta_x\approx0.519\) arcsec). Describe the bright arcs you can actually see, and explain why a fold creates a nearby image pair whereas a cusp crowds three images. A finite Gaussian may merge that group into one patch at this grid resolution; use the Beat 5 caustic panel to locate each boundary.</p></div>
+      <div class="exp-card"><div class="ec-num" id="exp6">EXP-6</div><h4>An Arc Is a Local Measurement</h4><p>Compare <code>--mode arcs --beta_x 0.18 --beta_y 0.30 --r_eff 0.14</code> (a source straddling a diagonal fold) with <code>--mode arcs --beta_x 0.55 --r_eff 0.14 --beta_y 0</code> (a source straddling the short-axis cusp at \(\beta_x\approx0.519\) arcsec). Describe the bright arcs you can actually see, and explain why a fold creates a nearby image pair whereas a cusp crowds three images. A finite Gaussian may merge that group into one patch at this grid resolution; use the Beat 5 caustic panel to locate each boundary.</p></div>
       
       <div class="exp-card"><div class="ec-num" id="exp7">EXP-7</div><h4>Convergence at the Ring</h4><p>Run <code>--mode kappa</code> at two different <code>--sigma_v</code> values and confirm the Einstein radius scales as \(\sigma_v^2\), using the closed-form SIS formula. Then explain, from \(\kappa=\theta_E/(2|\theta|)\), why \(\kappa=1/2\) at \(|\theta|=\theta_E\) for <em>any</em> value of \(\sigma_v\) — the coincidence that <code>kappa</code> mode exists to make visible.</p></div>
       
-      <div class="exp-card"><div class="ec-num" id="exp8">EXP-8</div><h4>Magnification Adds Up</h4><p>Run <code>python main.py --mode point --outdir ./figures</code> and read the signed ideal magnifications from its saved <code>.provenance.txt</code> file: +2.564097 and −1.564097. Repeat with <code>python main.py --mode point --beta_x 1.0 --beta_y 0 --outdir ./figures</code>: +1.599603 and −0.599603. In each run, confirm \(\mu_++\mu_-=|\mu_+|-|\mu_-|=1\). The algebra can be checked without a hidden trick: put \(u=\beta/\theta_E>0\); substituting the Beat 1 image radii into \(\mu=1/[1-(\theta_E/|\theta|)^4]\) gives \(\mu_\pm=\tfrac12\pm(u^2+2)/(2u\sqrt{u^2+4})\). Add the two expressions and show which terms cancel. This identity is not asserted for every circular lens profile.</p></div>
+      <div class="exp-card"><div class="ec-num" id="exp8">EXP-8</div><h4>Magnification Adds Up</h4><p>Run <code>python main.py --mode point --beta_x 0.5 --beta_y 0 --outdir ./figures</code> and read the signed ideal magnifications from its saved <code>.provenance.txt</code> file: +2.564097 and −1.564097. Repeat with <code>python main.py --mode point --beta_x 1.0 --beta_y 0 --outdir ./figures</code>: +1.599603 and −0.599603. In each run, confirm \(\mu_++\mu_-=|\mu_+|-|\mu_-|=1\). The algebra can be checked without a hidden trick: put \(u=\beta/\theta_E>0\); substituting the Beat 1 image radii into \(\mu=1/[1-(\theta_E/|\theta|)^4]\) gives \(\mu_\pm=\tfrac12\pm(u^2+2)/(2u\sqrt{u^2+4})\). Add the two expressions and show which terms cancel. This identity is not asserted for every circular lens profile.</p></div>
     </div>
 
     <h3>Advanced</h3>
@@ -809,7 +809,7 @@ python main.py --mode critical --beta_y 0.4</pre>
       <thead><tr><th>Flag</th><th>Default</th><th>Meaning</th></tr></thead>
       <tbody>
         <tr><td class="pname">--mode</td><td class="pdefault">point</td><td>rays, point, blob, critical, shear, arcs, kappa</td></tr>
-        <tr><td class="pname">--beta_x, --beta_y</td><td class="pdefault">mode-dependent</td><td>unlensed source position [arcsec]. Mode <code>point</code> defaults to (0.50, 0.00) so the first frame is a double.</td></tr>
+        <tr><td class="pname">--beta_x, --beta_y</td><td class="pdefault">0, 0</td><td>unlensed source position [arcsec], with the same zero defaults in every mode. In <code>rays</code>, only <code>--beta_y</code> sets the lower-panel source height; <code>--beta_x</code> is unused. Neither coordinate affects <code>kappa</code>.</td></tr>
         <tr><td class="pname">--logM</td><td class="pdefault">12</td><td>\(\log_{10}(M/M_\odot)\) for point-mass modes</td></tr>
         <tr><td class="pname">--sigma_v</td><td class="pdefault">300</td><td>SIS velocity dispersion [km/s]. In kappa mode a value so small that theta_E spans fewer than four grid intervals is rejected.</td></tr>
         <tr><td class="pname">--gamma</td><td class="pdefault">0.25</td><td>external shear; this program restricts \(\lvert\gamma\rvert&lt;1/3\) so the diamond stays inside the pseudo-caustic</td></tr>
