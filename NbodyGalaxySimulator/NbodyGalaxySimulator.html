@@ -1,6 +1,24 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NbodyGalaxySimulator — Four-run terminal lab</title>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NbodyGalaxySimulator — Help File</title>
+  <!-- MathJax 3 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath:  [['\\(','\\)']],
+        displayMath: [['\\[','\\]']],
+        tags: 'ams',
+        packages: {'[+]': ['textmacros']}
+      },
+      loader: { load: ['[tex]/textmacros'] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+          id="MathJax-script" async></script>
 <style>
     /* ── Reset & custom properties ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -352,93 +370,464 @@
     .cred-table tr:nth-child(even) td { background: #faf5ec; }
     .cred-table .cname { font-family: var(--mono); font-size: 0.85rem; color: var(--accent2); font-weight: 700; }
   
-.beat {margin:1.4rem 0;padding:.5rem 1.2rem 1rem;border-left:5px solid var(--gold);background:#fffaf0}
-.beat pre {white-space:pre-wrap;overflow-wrap:anywhere}
-/* Keep the version and build line visually separate from boxed callouts. */
-main #version_build { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 0; font-family: inherit; line-height: inherit; }
-</style></head><body>
-<div class="page-wrap"><header><div class="badge">Supplement · Gravity from the Ground Up</div>
-<h1><em>NbodyGalaxySimulator</em> · four runs, one gravitational question</h1>
-<p class="sub">A directed terminal laboratory · Cluster, galaxy and chaos<br>
-Source Code: <a href="https://github.com/tomyee3-org/GFTGUX-Programs">GFTGUX-Programs</a>
- · Documentation: <a href="https://github.com/tomyee3-org/GFTGUX-Documentation">GFTGUX-Documentation</a></p></header>
-<nav aria-label="Contents"><div class="nav-label">Get started</div><a href="#setup">Setup</a>
-<div class="nav-label">Four beats</div><a href="#beat0">Beat 0 · The quiet baseline</a><a href="#beat1">Beat 1 · Lower softening, watch the tail</a><a href="#beat2">Beat 2 · A sphere collapses, overshoots, settles?</a><a href="#beat3">Beat 3 · Two nearby histories part company</a><div class="nav-label">Afterward</div>
-<a href="#experiments">Controlled questions</a><a href="#equations">Governing Equations</a>
-<a href="#algorithm">Algorithm and flags</a><a href="#validity">Domain of Validity</a>
-<a href="#related">Attribution</a></nav><main>
+.beat {margin:1.4rem 0;padding:.5rem 1.2rem 1rem;background:#fffaf0}
+.beat pre {white-space:pre-wrap;overflow-wrap:anywhere} 
+
+</style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+  <div class="badge">Gravity from the Ground Up</div>
+  <h1><em>NbodyGalaxySimulator</em> &mdash; Force Softening and Hierarchical Force Approximation</h1>
+  <div class="sub">
+    Source Code:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Programs" target="_blank" rel="noopener noreferrer">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+    Documentation:
+    <a href="https://github.com/tomyee3-org/GFTGUX-Documentation" target="_blank" rel="noopener noreferrer">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+  </div>
+</header>
+<nav id="sidebar">
+<div class="nav-label">Overview</div>
+<a href="#description">Description</a>
+<a href="#setup">Setup</a>
+<div class="nav-label">Beats</div>
+<a href="#beat0">0 · Plummer Softening</a>
+<a href="#beat1">1 · Stochastic Variance</a>
+<a href="#beat2">2 · Barnes & Hut</a>
+
+<a href="#beat3">3 · Relaxation and Rebound</a>
+<div class="nav-label">Experiments</div>
+<a href="#experiments">Suggested Experiments</a>
+<div class="nav-label">Reference</div>
+<a href="#parameters">Parameters</a>
+<a href="#limits">Calculational Limits</a>
+<a href="#validity">Domain of Validity</a>
+<a href="#related">Attribution</a>
+</nav>
+<main>
 <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">Version 1.0.1&nbsp;&nbsp;&nbsp;&nbsp;Build 5dc0f45efa6c</p>
-<p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
-<section id="setup"><h2>Before the first command</h2>
+<p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. 
+Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
+  <!-- ================================================================ -->
+  <section id="description">
+    <h2>Description</h2>
+    <p><strong>NbodyGalaxySimulator</strong> is a standalone gravitational N-body program built around Plummer-softened gravity and a Barnes&ndash;Hut 
+	octree (Barnes &amp; Hut 1986, <em>Nature</em> 324, 446). It teaches methods that let a simulation move beyond a handful of exactly integrated bodies to hundreds or thousands of mutually 
+	interacting ones: <strong>force softening</strong>, which regularizes the otherwise-singular point-mass force at 
+	close range, and <strong>hierarchical force approximation</strong>, which, typically, for a reasonably well-distributed 
+	tree and a nonzero opening angle, reduces the cost of computing every body's force from every other body from \(O(N^2)\) 
+	to \(O(N\log N)\) by treating a distant clump of bodies as a single point mass.</p>
+
+    <div class="note"><strong>Reading this page.</strong> The equations on this page are rendered by MathJax, loaded from a public CDN, so an internet connection is needed to see them typeset; with no connection, the raw \(\LaTeX\) source (e.g. <code>\(a(t)\)</code>) will show as plain text instead of a formula. This has no effect on the program itself, which needs no internet access to run.</div>
+
+
+  </section>
+<section id="setup">
+<h2>Setup</h2>
 <p>Use Python 3.10 or later with NumPy and Matplotlib. Run from the directory
 containing <code>main.py</code>. The program assumes you have already tried
 the project’s <i>Multiple</i> program. Each command displays a Matplotlib
 figure and saves a timestamped PNG and provenance sidecar in
-<code>./figures</code>. <code>python main.py --version</code> reports the
-build above; <code>python main.py --help</code> lists the flags.
-The same four runs and current-build figures are in the SampleOutputs Guide.</p>
-<p><b>Working question:</b> How do softening, the choice of initial state,
-and close initial conditions change what you can infer from a plot?</p></section>
-<section id="beat0" class="beat"><h3>Beat 0 · The quiet baseline</h3><p>Run first, then read the cluster's final instantaneously-unbound count and the near-escape time series. Does a quiet default plot prove significant two-body relaxation?</p><pre><code>python main.py --mode cluster --seed 7 --outdir ./figures</code></pre><p>For seed 7 the half-mass radius changes only about 1.286 → 1.302 pc, and the final unbound count is zero. The default <code>ε≈0.2471 pc</code> softens hard encounters; this <i>quiet</i> run cannot certify a relaxation-driven evaporation rate. The printed count is instantaneous, never cumulative.</p></section><section id="beat1" class="beat"><h3>Beat 1 · Lower softening, watch the tail</h3><p>What changes if you weaken softening and give the cluster a longer run?</p><pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.0338 --steps_per_crossing 150 --n_relax 40 --seed 0 --outdir ./figures</code></pre><p>Watch the 90%-mass radius, near-escape fraction, instantaneously unbound count, and energy drift. Seed 0 ends with one of 60 bodies instantaneously unbound, a 3.33% near-escape tail and about 0.33% maximum sampled energy drift. Those values belong to this seed and these settings; repeat several seeds before generalizing.</p></section><section id="beat2" class="beat"><h3>Beat 2 · A sphere collapses, overshoots, settles?</h3><p>Before you inspect the plot, name two histories you need in addition to a single final <code>Q≈1</code>.</p><pre><code>python main.py --mode galaxy --seed 3 --outdir ./figures</code></pre><p>The half-mass radius falls from about 162.6 to a sampled 18.5 pc minimum near 55.6 Myr, then rebounds. The virial ratio peaks above one and later becomes quieter. This seed passes the program's dense-step late-window check, evidence consistent with a quasi-equilibrium remnant. The 90%-mass shell still expands: the check does not establish equilibrium for all outer material. <code>Q=2T/|W_vir|</code>, where <code>W_vir</code> is the softened force term, not the potential energy.</p></section><section id="beat3" class="beat"><h3>Beat 3 · Two nearby histories part company</h3><p>Guess whether two individually well-integrated trajectories must stay close to each other.</p><pre><code>python main.py --mode chaos --seed 1 --perturbation_seed 1 --outdir ./figures</code></pre><p>The separation can climb roughly exponentially over one chosen window and saturate at the cluster scale. Compare the terminal fit slope, the number of fitted snapshots and the energy drift. Set <em>both</em> <code>--seed</code> and <code>--perturbation_seed</code> to reproduce this particular figure; the latter defaults to unseeded. The reported Lyapunov time is a finite-time heuristic, not a universal asymptotic value.</p></section><section id="experiments"><h2>After the four runs · controlled questions</h2><ol>
-<li>Return to Beat 0: a final zero count is one snapshot, not a historical
-escape census. With <code>--csvdir ./data</code>, where in the time series
-can you check whether a body was ever instantaneously unbound?</li>
-<li>Repeat Beat 1 with <code>--seed 1</code>, <code>--seed 2</code> and
-<code>--seed 3</code>, holding every other flag fixed. Do the final counts
-agree? This is a four-seed sample, not a universal evaporation fraction.</li>
-<li>Hold <code>--n_bodies 60</code>, <code>--seed 0</code>, and the Beat 1
-duration/step fixed; vary only <code>--softening_pc</code>. Compare the
-near-escape tail and maximum sampled energy drift before assigning cause.</li>
-<li>For Beat 2, run <code>python main.py --mode galaxy --seed 3
---virial_ratio_init 0.4 --outdir ./figures</code>. A warm initial sphere
-does not automatically qualify for a <em>cold-collapse</em> verdict.
-Inspect the shape of <code>Q(t)</code> and the radius history.</li>
-<li>Rerun Beat 3 with both seeds unchanged but
-<code>--relative_perturbation 1e-9</code>. Does the finite-time fitted
-growth rate remain within run-to-run scatter? Never infer a formal
-Lyapunov exponent from one selected fit window.</li>
-<li>Choose a small cluster and compare <code>--method direct</code> with
-<code>--method tree --theta 0.5</code>, holding its seed, timestep and
-softening fixed. At <code>--theta 0</code> the tree descends fully;
-do not promise a speedup at every N or distribution.</li>
-<li>For a resolution comparison across <code>--n_bodies</code>, pass
-one fixed <code>--softening_pc</code> explicitly: its default scales as
-<code>0.98 a N^-0.26</code>. For each setting, use several seeds. Compare
-the shift between median outcomes with the <em>larger</em> within-setting
-range (maximum minus minimum). A shift comparable to scatter is
-inconclusive, not proof of convergence; a clearly larger shift shows
-resolution or softening sensitivity.</li>
-</ol></section>
-<section id="equations"><h2>Governing Equations · after the observations</h2>
-<p><b>Derived Newtonian force with prescribed softening:</b>
-<code>aᵢ = −Σⱼ≠ᵢ Gmⱼ(rᵢ−rⱼ)/(|rᵢ−rⱼ|²+ε²)^(3/2)</code>.
-The Barnes–Hut monopole approximation replaces distant groups by their
-center of mass; <code>θ</code> controls opening. <code>W_vir=Σ rᵢ·Fᵢ</code>
-is the softened scalar-virial force term and generally differs from
-potential energy <code>U</code>. A leapfrog kick–drift–kick step advances
-the positions and velocities; reducing the timestep tests numerical
-accuracy, not whether the chosen physical model is complete.</p></section>
-<section id="algorithm"><h2>Algorithm and quick reference</h2>
-<p><code>--mode</code> selects <code>cluster</code>, <code>galaxy</code>
-or <code>chaos</code>.
-<code>--n_bodies</code> and <code>--total_mass_msun</code> set the particle
-system; <code>--scale_radius_pc</code> applies to cluster/chaos,
-<code>--radius_pc</code> to galaxy. <code>--n_relax</code> and
-<code>--steps_per_crossing</code> control cluster duration and step;
-<code>--n_freefall</code>, <code>--steps_per_freefall</code>,
-<code>--virial_ratio_init</code> serve galaxy; <code>--n_cross</code>,
-<code>--relative_perturbation</code> and <code>--perturbation_seed</code>
-serve chaos. <code>--softening_pc</code>, <code>--theta</code>,
-<code>--method</code>, <code>--seed</code>, <code>--target_snapshots</code>,
-<code>--outdir</code>, <code>--csvdir</code>, <code>--no_plot</code>,
-<code>--dpi</code> and <code>--lw</code> are described by
-<code>python main.py --help</code>. <code>--no_plot</code> requires
-<code>--csvdir</code>. A PNG saved with <code>--outdir</code> has a
-provenance sidecar; CSV files include version/build metadata.</p>
-<p>The tree's usual <code>O(N log N)</code> advantage requires a reasonably
-distributed tree and nonzero opening angle. A degenerate distribution or
-<code>θ=0</code> can approach <code>O(N²)</code>. Direct summation is an
-accuracy comparator, not a guarantee of shorter runtime.</p></section>
+<code>./figures</code>. Running <code>python main.py --help</code> 
+provides basic information about the input parameters.</p>
+
+<section id="beat0">
+<h2>Beat 0 · Plummer Softening</h2>
+The point-mass Newtonian force, \(F \propto 1/r^2\), diverges as two bodies approach each other. Program <i>Multiple</i> handles 
+this by raising an explicit error the instant two bodies coincide, because with an adaptive, accurate integrator a genuine 
+close encounter should simply be resolved in fine timestep detail, not glossed over. That approach does not extend to hundreds 
+of bodies on a fixed timestep: a single close pair would demand an enormously smaller timestep than every other body needs, 
+and <i>Multiple</i>'s per-run predictor-corrector accuracy targets do not exist here at all &mdash; the leapfrog scheme used by this program
+uses one fixed timestep for every body, for the whole run.</p>
+
+    <div class="eq-block">
+      <div class="eq-label">Softened Newtonian gravity</div>
+      \[ \vec{a}_i \;=\; G \sum_{j \ne i} \frac{m_j \,(\vec{x}_j - \vec{x}_i)}{\left(|\vec{x}_j-\vec{x}_i|^2 + \epsilon^2\right)^{3/2}} \]
+      <p style="margin-top:8px; font-size:0.88rem;">\(\epsilon\) is the (fixed) softening length. \(\epsilon \to 0\) recovers the exact point-mass law used by Multiple.</p>
+    </div>
+
+<p>This has a direct physical reading: a simulation particle here rarely represents one literal star (or one dark-matter particle); 
+it stands in for a much larger aggregate, smeared over some finite size, and \(\epsilon\) is a reasonable proxy for that size. 
+It also has a purely numerical reading: it caps the maximum force two bodies can exert on each other, which keeps a fixed-timestep
+integrator stable through what would otherwise be arbitrarily close encounters. Both readings matter here, and they pull in the 
+same direction for choosing \(\epsilon\) &mdash; but that same suppression of close encounters also suppresses two-body relaxation 
+itself, distorting the process that <code>cluster</code> mode is trying to show.</p>
+</b> </p>
+
+
+<p>Compare the outputs of these two runs. The first is nearly unsoftened, while the second uses a 
+published recommended value.</p>
+<pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc  0.0001 --seed 7 --n_relax 50 --outdir ./figures</code></pre>
+<pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc  0.2471 --seed 7 --n_relax 50 --outdir ./figures</code></pre>
+
+<p><b>Energy conservation</b></p>
+<p>In the barely softened run (\(\epsilon = 0.0001\text{ pc}\)), energy conservation breaks down severely with a
+total energy drift of 217.23% over the course of the run, the energy being lost in steps as bodies escape. 
+Without softening, close two-body encounters generate
+extreme gravitational forces that exceed the resolving capacity of the fixed time step (\(\Delta t = 0.011676\text{ Myr}\)).</p>
+<p>With default softening,  (\(\epsilon = 0.2471\text{ pc}\)), the energy drift drops to 0.155%. Softening bounds the maximum 
+gravitational force during close encounters, preventing spurious numerical acceleration 
+and maintaining integration accuracy over 50 relaxation times (\(64.16\text{ Myr}\)).</p>
+
+
+<p><b>Virial Equilibrium & Structural Evolution</b></p>
+<p>The virial theorem is an important relation between the long-term average internal kinetic energy \(\langle T \rangle \) 
+and potential energy \( \langle U \rangle \) of a system of particles bound by conservative forces. 
+For gravitational forces, \( 2 \langle T \rangle =  \langle U \rangle  .\) </p>
+
+<p>Because of softening, we use  \(W_{\rm vir} \equiv \sum_i \vec{r}_i\cdot\vec{F}_i ,\) the 
+the virial (force-weighted) sum rather than the softened potential energy \(U.\) \(W_{\rm vir}\) and \(U\) 
+coincide only in the unsoftened limit \(\epsilon\to 0\).
+ </p>
+
+<p>With barely softened Newtonian gravity, 
+spurious energy computations resulting from encounters approaching distances less than the 
+integration step size push the cluster wildly out of equilibrium, 
+increasing the virial ratio from \(2T/\vert{}W\vert{} = 1.0\) to \(10.19\). The cluster expands dramatically: 
+the half-mass radius grows from \(1.302\text{ pc}\) to \(8.028\text{ pc}\), and the \(90\%\) Lagrangian 
+radius reaches over \(80\text{ pc}\). </p>  
+<p> With default softening, 
+The cluster remains bound and quasi-static near virial equilibrium throughout the run. (The \(2T/\vert{}W\vert{}\) 
+ratio fluctuates closely around 1.0, ending at 0.8255). The half-mass radius undergoes minimal expansion from 
+\(1.302\text{ pc}\) to \(1.671\text{ pc}\).   
+
+<p><b>Stellar Escapes (Unbound Fraction)</b></p>
+<p>In the barely softened computation, 17 out of 60 stars become instantaneously unbound by the end of the simulation. 
+However, because of energy non-conservation issues, many of these "ejections" are likely to be
+numerical integration errors rather than pure physical two-body relaxation.</p>   
+<p>With default softening, no bodies become unbound. While softening enforces numerical stability, 
+softening suppresses genuine two-body scattering that would be expected to result in physical escapes 
+in small systems.</p> 
+
+<p><b>Trade-offs</b></p>
+<p>The default softening parameter provides numerical stability and long-term
+energy conservation, but at the cost of suppressing close physical two-body interactions.</p> 
+
+</section>
+
+<section id="beat1">
+<h2>Beat 1 · Stochastic Variance</h2>
+<p>Consider the outputs of the following two simulation runs, the only difference being between the starting seeds:</p>
+<pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.0338 --steps_per_crossing 150 --n_relax 40 --seed 0 --outdir ./figures</code></pre>
+<pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.0338 --steps_per_crossing 150 --n_relax 40 --seed 2 --outdir ./figures</code></pre>
+
+<p><b>Chaotic Dynamics (High Sensitivity to Initial Conditions)</b></p>
+<p>Comparing these two runs, which differ only in the random seed, yields several key conclusions about stochasticity and chaotic dynamics in small star clusters:</p>
+<p>Seed 0: The cluster remains fully bound over \(58.69\text{ Myr}\), with the half-mass radius expanding modestly 
+from \(1.424\text{ pc}\) to \(1.638\text{ pc}\) and the \(90\%\) Lagrangian radius reaching \(\approx 7\text{ pc}\).</p>
+<p>Seed 2: Two stars (\(3.33\%\))  become instantaneously unbound by the end of the run, pushing the half-mass radius out 
+to \(1.978\text{ pc}\) and the \(90\%\) Lagrangian radius up to \(\approx 11\text{ pc}\).</p>
+<p>This is because N-body gravitational systems are fundamentally chaotic (sensitive to initial stellar positions and velocities).</p>
+<p><b>Good Numerical Stability and Convergence</b></p>
+<p>Energy Conservation: Both runs exhibit well-controlled maximum sampled energy drift \( (0.569\%), \) 
+indicating that steps_per_crossing = 150 with \(\epsilon = 0.0338\text{ pc}\) provides robust numerical integration</p>
+<p>Virial Equilibrium: Both clusters stay centered around virial equilibrium (\(2T/\vert{}W\vert{} \approx 1.0\)) 
+over  \( \approx 1.05\text{ Myr} ,\) despite fluctuations due to the small \(N\).</p>
+<p>In the <b>Beat 0</b> setup with default softening (\(\epsilon = 0.2471\text{ pc}\)), close interactions 
+were overly smoothed out. By reducing softening to\(\epsilon = 0.0338\text{ pc}\) and decreasing the 
+timestep (steps_per_crossing = 150), the simulation can capture physical two-body scattering events 
+leading to <em>bona fide</em> stellar ejections while maintaining integration fidelity.</p>
+
+<p><b>Key Takeaway</b></p>
+<p>Single N-body realizations of small clusters carry high stochastic variance. To draw 
+statistically valid conclusions about escape rates or core collapse timescales at 
+reduced softening, you should run an ensemble of random seeds and average the results across runs.</p>
+
+</section>
+
+<section id="beat2">
+<h2>Beat 2 · Barnes & Hut</h2>
+
+<p><b>Beats 0 through 8</b> of <i>Multiple</i> compute every body's acceleration by summing the 
+exact Newtonian contribution from every other body: for \(N\) bodies that is \(N(N-1)/2\) pairwise
+terms, so the cost grows as \(O(N^2)\). Doubling \(N\) quadruples the work. That is entirely 
+practical for the handful of bodies in a planetary or few-star encounter, which is exactly 
+<i>Multiple</i>'s domain in its early beats, but it becomes 
+prohibitive well before \(N\) reaches even a few thousand. A star cluster with \(10^5\)&ndash;\(10^6\) 
+stars, or a galaxy with far more, is simply out of reach of direct summation on any one machine.</p>
+
+<p>Barnes &amp; Hut (1986) noticed that a distant clump of bodies barely needs to be resolved
+individually: to good approximation, its combined gravitational pull can be replaced by a single
+point mass at its center of mass. Organizing the bodies into a spatial tree (an octree in three 
+dimensions) and applying that approximation wherever it is accurate enough reduces the cost 
+to, typically, \(O(N\log N)\) for a reasonably well-distributed tree and a nonzero opening 
+angle &mdash; not a worst-case guarantee, since a degenerate distribution of near-coincident 
+bodies or an opening angle of zero can approach the direct method's \(O(N^2)\) cost 
+instead (this program's own tree explicitly handles that case). This is the central algorithmic
+idea of this program; its price is an approximate rather than exact force.</p>
+
+Here is how the method works and why it is so effective for large-scale gravitational dynamics:
+<ol>
+<li><b>Spatial Decomposition (Tree Construction)</b><br>
+	Instead of calculating the force between every single pair of bodies, 
+	Barnes & Hut groups distant particles together spatially using a hierarchical tree structure:
+	<ul>
+		<li>Quadtree (2D) or Octree (3D): 
+		The simulation space containing all bodies is enclosed within a root square (or cube) bounding box.</li>
+		<li>Recursive Subdivision: This box is recursively divided into 4 equal quadrants (in 2D) or 8 equal octants (in 3D) 
+		until every sub-box contains at most one particle (or is empty).</li>
+		<li>Mass Aggregation: As the tree is built, every internal node (box) calculates and stores the total 
+		mass and the center of mass of all particles contained within its sub-tree.</li>
+	</ul>
+</li>
+<li><b>The Opening Criterion (\(\theta\))</b><br>
+	When computing the net gravitational force acting on a specific body, 
+	the algorithm traverses the tree from the root node downward, deciding whether a distant group of stars 
+	can be treated as a single composite mass or if it needs to be resolved individually:
+	<ul>
+		<li>For any given tree node (box), the algorithm evaluates the opening criterion:
+		\[\frac{s}{d} \lt \theta \]
+		where:
+			<ul>
+				<li>\(s\) is the physical width (side length) of the box.</li>
+				<li>\(d\) is the distance from the target body to the center of mass of that box.</li>
+				<li>\(\theta\) is the dimensionless opening angle (set to 0.50 in your simulator runs).</li>
+			</ul>
+		</li>
+	</ul>
+</li>
+<li><b>Force Evaluation Rules</b><br>
+	During the tree traversal for each body:
+	<ul>
+	<li>If the criterion is met (\(s/d < \theta\)): The box is treated as "far enough away." 
+	The entire cluster of stars inside that box is approximated as a single point mass located at the 
+	box's center of mass, and a single force calculation is performed.</li>
+	<li>If the criterion is NOT met (\(s/d \ge \theta\)): The box is too close, meaning individual 
+	substructures within it could introduce significant force errors. The algorithm "opens" the box 
+	and recursively evaluates its child sub-boxes.</li>
+</ul>
+</li>
+<li><b>Key Advantages in Simulations</b>
+	<ul>
+	<li>Speedup (\(O(N \log N)\)): For \(N\) particles, direct summation requires evaluating \(N(N-1)/2\) pairs. 
+	The tree traversal reduces this to roughly \(N \log N\) operations, making simulations of thousands 
+	to millions of stars computationally practical.
+	<li>Tunable Accuracy (theta):
+		<ul>
+			<li>A smaller \(\theta\) (e.g., \(0.2\)) forces the tree to open more boxes, 
+			increasing accuracy and approaching direct summation at higher computational cost.
+			<li>A larger \(\theta\) (e.g., \(0.8\) or \(1.0\)) speeds up the calculation further by approximating more 
+			distant groups, but increases force errors and can introduce artificial momentum drift. 
+			The default \(\theta = 0.50\) provides an optimal balance between speed and precision for stellar dynamics.</li>
+		</ul>
+	</ul>
+</li>
+</ol>
+
+
+
+
+
+
+</section>
+
+<section id="beat3">
+    <h2>Beat 3 · Violent relaxation and cold collapse</h2>
+    <p>A self-gravitating system released far from equilibrium &mdash; the <code>galaxy</code> mode's cold, uniform sphere is the
+	classic case &mdash; does not settle down through the slow, encounter-by-encounter process above. 
+	Instead, while the overall mass distribution is still changing rapidly (during the collapse and the violent 
+	oscillations that follow it), the gravitational potential itself fluctuates on a dynamical timescale, 
+	and those fluctuations exchange energy between bodies far faster than individual two-body encounters could. 
+	Lynden-Bell (1967) named this <strong>violent relaxation</strong> and argued it explains why collisionless 
+	self-gravitating systems (galaxies, above all) reach a quasi-equilibrium, centrally concentrated state so much faster 
+	than their two-body relaxation time would allow. Direct numerical experiments of exactly this cold-collapse 
+	scenario (van Albada 1982, and many since) show the relaxation is generically incomplete in the sense that the 
+	remnant is not a smooth, isotropic equilibrium model: it carries an extended, non-Maxwellian halo of loosely bound bodies 
+	flung out during the collapse, and a density profile only qualitatively like a real galaxy's. That does not mean its 
+	virial ratio must sit visibly below 1 &mdash; in this program's own runs the remnant's virial ratio oscillates in a band close to 1 
+	(see the virial theorem note below and Suggested Experiments), consistent with a system that is virialized on average
+	while still relaxing in detail.</p>
+
+	<p>Consider the following scenario:</p>
+	<pre><code>python main.py --mode galaxy --seed 3 --outdir ./figures</code></pre>
+<p>The console output and set of figures illustrate a classic galaxy-formation cold collapse 
+(gravitational collapse of an unvirialized, nearly motionless gas/star cloud) simulated using an \(N\)-body 
+Barnes-Hut tree algorithm (\(N = 300\) bodies, total mass \(10^6\text{ M}_\odot\)).</p>
+<p>Here is a breakdown of what is happening physically and numerically throughout the run:</p>
+
+<ol>
+	<li><b>Initial State: The Cold Sphere (\(t = 0\text{ Myr}\))</b>
+		<ul>
+			<li>Setup: 300 bodies are distributed uniformly across an 
+			initial radius of \(200\text{ pc}\) with a virial ratio of \(2T/\vert{}W\vert{} = 0.000\) (completely cold, meaning 
+			particles start virtually stationary with no thermal or kinetic support against gravity).</li>   
+			<li>Free-Fall Time: The global free-fall time scale for this system is \(t_{\text{ff}} = 46.84\text{ Myr}\), and the 
+			simulation runs for \(8 \times t_{\text{ff}}\) (\(374.7\text{ Myr}\) total).</li>
+		</ul>
+	</li>   
+
+	<li><b>Gravitational Collapse and Deepest Collapse (\(t \approx 55.6\text{ Myr}\))</b>
+		<ul>
+			<li>The Crash: Lacking kinetic energy, gravity pulls all particles inward toward the center.
+			<li>Minimum Radius: The half-mass radius plummets dramatically from an initial \(162.6\text{ pc}\) down to a 
+			minimum core size of \(18.54\text{ pc}\) at \(t = 55.6\text{ Myr}\) (roughly one free-fall time).</li>   
+			<li>Virial Spike: As particles rush through the center and overshoot, kinetic energy spikes violently. 
+			The virial ratio reaches a transient peak of \(2T/\vert{}W\vert{} = 5.55\) (deepest collapse panel), 
+			indicating a heavily over-energized, outward-bounding system.</li> 
+		</ul>
+	</li>  
+
+	<li><b>Violent Relaxation and Rebound</b>
+		<ul>
+			<li>Lynden-Bell's Mechanism: As the fluctuating, rapidly changing 
+			gravitational potential rattles the system, stars rapidly exchange energy in a process known as 
+			violent relaxation (Lynden-Bell 1967).</li>   
+			<li>Oscillation & Remnant Formation: The system rebounds from its central compression, re-expanding 
+			to settle into a quasi-equilibrium remnant. By the end of the run (\(374.7\text{ Myr}\)), 
+			the half-mass radius stabilizes at around \(169.3\text{ pc}\).</li>   
+			<li>Quasi-Equilibrium (\(Q_{\text{final}} \approx 0.95\)): Over the final 20% of the simulation, 
+			the virial ratio hovers around a mean value of \(0.913\) (ending at \(0.9525\)), which is close 
+			to the virial-balance condition (\(2T/\vert{}W\vert{} = 1\)).</li>  
+		</ul>
+	</li>
+
+	<li><b>Numerical Health</b>
+		<ul>
+			<li>Energy Conservation: The maximum sampled energy drift is tightly constrained 
+			to \(1.697\%\) over the entire \(374.7\text{ Myr}\) run, verifying that the Barnes-Hut tree 
+			integration (\(\theta = 0.50\)) and Athanassoula optimal softening (\(\epsilon = 44.48\text{ pc}\)) 
+			maintained high numerical stability.</li>  
+		</ul>
+	</li> 	
+</ol>
+
+<section id="beat3">
+<h2>Beat 3 · Relaxation and Rebound</h2>
+
+
+
+
+
+</section>
+
+
+
+
+<section id="beat4">
+<p>Guess whether two individually well-integrated trajectories must stay close to each other.</p><pre><code>python main.py --mode chaos --seed 1 --perturbation_seed 1 --outdir ./figures</code></pre><p>The separation can climb roughly exponentially over one chosen window and saturate at the cluster scale. Compare the terminal fit slope, the number of fitted snapshots and the energy drift. Set <em>both</em> <code>--seed</code> and <code>--perturbation_seed</code> to reproduce this particular figure; the latter defaults to unseeded. The reported Lyapunov time is a finite-time heuristic, not a universal asymptotic value.</p></section>
+</section>
+  <!-- ================================================================ -->
+  <section id="experiments">
+    <h2>Suggested Experiments</h2>
+    <p>Most exercises below can be done with the CLI and the printed/plotted/CSV output alone. A few of the intermediate-to-advanced ones (marked accordingly) additionally call a <code>physics_nbg</code> function directly from a short Python snippet, or time a run via <code>driver_nbg.run()</code> instead of the CLI &mdash; this is called out explicitly where it happens, and none of it requires reading or modifying the program's own source. Difficulty labels are relative to this program, not to the course as a whole.</p>
+
+    <h3>Core sequence &middot; introductory</h3>
+    <div>
+      <div class="exp-card"><div class="ec-num">EXP-1 &middot; introductory</div><h4>Does a Default Cluster Actually Relax?</h4><p>Run <code>python main.py --mode cluster --seed 0</code>. Read the Lagrangian radii <code>r10</code> and <code>r90</code> at the start and end from the printed summary or the Lagrangian-radii panel, and note <code>n_unbound</code> and the near-escape tail. Two-body relaxation is supposed to drive a self-gravitating system's core to contract while its outskirts expand as stars exchange energy &mdash; but at this program's default softening, a short default run often shows only a small, non-monotonic change in both radii (sometimes even the "wrong" direction relative to that textbook story), because the default softening actively suppresses the close encounters that drive relaxation (see Physical Background) and because the initial virial-balance rescale itself produces a brief readjustment transient that is NOT relaxation. Repeat with <code>--seed 1</code> and <code>--seed 2</code>: is any core-contracts/outskirts-expand pattern consistent across seeds, or is it dominated by run-to-run scatter? Now try Experiment 11's reduced-softening setup and compare &mdash; that is where this program's relaxation signal actually becomes reliably visible.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-2 &middot; introductory</div><h4>A Cold Sphere Collapses</h4><p>Run <code>python main.py --mode galaxy</code>. From the printed summary, note the initial virial ratio, the virial ratio at the deepest collapse, and the final virial ratio (the summary prints all three). Those three numbers alone can tell you whether the run was monotonic or not (e.g. whether the deepest-collapse value is far from both the initial and final ones) but three points cannot by themselves show a genuine repeated oscillation &mdash; predict, from just those three numbers, whether \(2T/|W_{\rm vir}|\) looks like it settled at a single value or is still moving by the end of the run, THEN look at the plotted virial-ratio panel (see Output) to see its actual behavior across every recorded snapshot. Does the plotted curve end at exactly 1, the value corresponding to exact scalar virial balance, or does it keep oscillating in a band around 1 for as long as the run lasts? Read the virial theorem note in <a href="#background">Physical Background</a> &mdash; including its caveat that scalar balance is not, by itself, proof of a settled dynamical equilibrium &mdash; to see why a settled oscillation near 1, not a single converged number, is the expected signature here.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-3 &middot; introductory</div><h4>How Fast Do Nearby Orbits Diverge?</h4><p>Run <code>python main.py --mode chaos</code>. If the divergence panel's title reports a fitted Lyapunov time (or the terminal summary shows one), express it as a multiple of the initial crossing time; Miller (1964) and later studies put this ratio at a few crossing times for self-gravitating N-body systems &mdash; is your result in that range? Run it again (no <code>--seed</code>) and see whether the estimate is stable from realization to realization. This program's fit is a heuristic, permissive-but-imperfect gate (see Governing Equations), so some runs will legitimately report no fit at all &mdash; if that happens, look at the plotted divergence curve directly: does it still show a stretch of roughly straight-line growth on the logarithmic axis, even though the automated check didn't confirm it? Either outcome (a numeric answer, or a documented non-result with a visual read of the curve) is an acceptable result for this exercise.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-4 &middot; introductory</div><h4>Meet the Two Force Methods</h4><p>Run the same cluster twice, once with <code>--method tree</code> and once with <code>--method direct</code>, using a fixed <code>--seed</code> so both start identically. Compare final energy, final virial ratio and the Lagrangian radii. They will not be pixel-identical &mdash; the tree only approximates the force &mdash; but they should tell a consistent physical story. If they disagreed wildly, what would that tell you about \(\theta\)?</p></div>
+    </div>
+
+    <h3>Core sequence &middot; introductory to intermediate</h3>
+    <div>
+      <div class="exp-card"><div class="ec-num">EXP-5 &middot; introductory/intermediate &middot; pilot-study caveat</div><h4>Does Normalizing by the N/ln N Formula Collapse the Curves?</h4><p>Run <code>--mode cluster</code> with <code>--n_bodies</code> set to 60, 120, 250 and 500, holding <code>--total_mass_msun</code> and <code>--scale_radius_pc</code> fixed at their defaults, fixing <code>--seed 0</code> at every N, and giving each the same <code>--n_relax</code>. Because this program's physical run length is itself <code>n_relax</code> times the N-dependent NOMINAL relaxation time (see <a href="#equations">Governing Equations</a>, which scales roughly as \(N/\ln N\)), fixing <code>n_relax</code> already makes each run's physical duration and step count scale by roughly that same \(N/\ln N\) factor &mdash; a much longer run for N=500 than for N=60. This means the experiment CANNOT be used to ask whether the raw amount of relaxation grows with N in absolute terms: that comparison is exactly what fixing <code>n_relax</code> normalizes away by construction. What it CAN ask is a different, still useful question: does the amount of core contraction/outskirt expansion you observe come out roughly comparable across all four N values, despite their very different absolute run lengths? If the relaxation-time formula is doing real work capturing how relaxation scales with N, comparable outcomes across N at fixed <code>n_relax</code> is exactly what you would expect; a result that instead varies wildly and systematically with N (after accounting for run-to-run scatter) would suggest the formula is not fully capturing this discrete, softened system's actual behavior. Two things confound a clean reading and should be kept in mind rather than treated as noise: this program's default softening changes with N (\(\epsilon_{\rm opt}\propto N^{-0.26}\)), so the close-encounter physics is not held fixed across your four runs; and a single seed per N cannot separate a genuine N-dependence from that one realization's own sampling scatter (repeat at least one N value with a second seed to get a feel for the scatter's size). Treat this as a qualitative pilot check of whether the formula's normalization is self-consistent, not a clean quantitative verification of the \(N/\ln N\) scaling itself.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-6 &middot; introductory/intermediate</div><h4>Crossing and Free-Fall Time Scaling</h4><p>Using <code>--mode galaxy</code>, halve <code>--radius_pc</code> from its default and separately double <code>--total_mass_msun</code>, in two separate runs, keeping everything else fixed. Read the initial free-fall time from the terminal summary in each case. The free-fall time for a uniform sphere scales as \(t_{\rm ff}\propto\rho^{-1/2}\propto (R^3/M)^{1/2}\): predict the two new free-fall times before running, then check.</p></div>
+    </div>
+
+    <h3>Core sequence &middot; intermediate</h3>
+    <div>
+      <div class="exp-card"><div class="ec-num">EXP-7 &middot; intermediate</div><h4>Cold, Warm and Hot Collapse</h4><p>Run <code>--mode galaxy</code> with <code>--virial_ratio_init</code> set to 0.0 (the cold default), 1.0 (started in exact instantaneous scalar virial balance, in this program's \(2T/|W_{\rm vir}|\) convention) and 3.0 (strongly supervirial). Compare the three: does the 1.0 run collapse at all, or does it show only a modest early readjustment before settling? Does the 3.0 run's half-mass radius ever come back down, or does it generally keep expanding in this setup? (\(Q_0=2\) is the familiar unbound threshold only for a homogeneous, unsoftened \(1/r\) potential where \(W_{\rm vir}=U\) exactly; with this program's softening, \(Q_0\) based on \(W_{\rm vir}\) does not by itself fix the sign of the total energy \(E=T+U\) &mdash; if you want to say a run is actually unbound rather than merely strongly supervirial, compute \(E\) from the CSV and check its sign directly.) For the cold and warm cases, compare how far the final virial ratio overshoots or undershoots 1, and connect what you see to why colder initial conditions are described as producing more &ldquo;violent&rdquo; relaxation. Note that Q0=1 being in scalar virial balance at \(t=0\) is a global energy-scale statement, not a guarantee of zero evolution (see The Virial Theorem in <a href="#background">Physical Background</a>) &mdash; a small amount of early readjustment in the 1.0 run is expected and is not itself evidence of two-body relaxation.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-8 &middot; intermediate &middot; uses the Python API</div><h4>Reproduce the Opening-Angle Accuracy Table</h4><p>This one needs a short Python snippet, not just the CLI: raw per-body accelerations are not part of the CLI/plot/CSV output. Call <code>physics_nbg.plummer_sphere()</code> to get an initial configuration (100&ndash;300 bodies is enough, fixed <code>seed</code>), then call <code>compute_accelerations_direct()</code> and <code>compute_accelerations_tree()</code> on it directly at several values of <code>theta</code> (0, 0.3, 0.5, 0.8, 1.0). For each body \(i\), compute the relative force error \(|\vec a_{{\rm tree},i} - \vec a_{{\rm direct},i}| / |\vec a_{{\rm direct},i}|\); the table's &ldquo;median&rdquo; and &ldquo;maximum&rdquo; columns are, respectively, the median and the maximum of that one per-body quantity taken over all \(N\) bodies (not an RMS, and not averaged over multiple realizations, though you are free to repeat at several seeds and compare). Reproduce (or refute, with your own numbers in hand) the illustrative table in <a href="#algorithm">Algorithm</a>. Confirm explicitly that \(\theta=0\) reproduces direct summation to machine precision &mdash; if it does not, something is wrong with your comparison, not the program.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-9 &middot; intermediate &middot; uses the Python API</div><h4>Is the Tree Actually Faster?</h4><p>Time isolated force evaluations, not full runs: a full <code>cluster</code> run's step count itself grows with N (through the default relaxation-time run length), which would confound N-scaling with run-length scaling. Instead, build one fixed initial configuration per N (100, 300, 1000, 3000 bodies) with <code>physics_nbg.plummer_sphere()</code>, then time a fixed number of repeated calls (a few dozen, with one untimed warm-up call first) to <code>compute_accelerations_tree()</code> and separately to <code>compute_accelerations_direct()</code> on that same configuration, using Python's <code>time</code> module. Plot wall-clock time per force evaluation against N for both methods on log&ndash;log axes. Where, if anywhere, does the tree overtake direct summation on your machine? Compare your crossover (or lack of one) against the claim in <a href="#algorithm">Algorithm</a>, and explain in your own words why an \(O(N\log N)\) algorithm can lose a wall-clock race to an \(O(N^2)\) one at practical sizes.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-10 &middot; intermediate &middot; uses the Python API</div><h4>Momentum Conservation, Tree Versus Direct</h4><p>Call <code>physics_nbg.run_cluster()</code> directly (rather than through the CLI) with <code>method="direct"</code> and again with <code>method="tree"</code> (fixed <code>seed</code>), so you can keep the returned position/velocity arrays in hand; the CLI's CSV output does not include per-body vectors. From those arrays compute total momentum \(\sum_i m_i \vec v_i\) at the start and end of each run, normalized by \(M\langle |\vec v|\rangle\). Confirm direct summation conserves it to machine precision and the tree does not. Does the tree's momentum drift grow if you increase \(\theta\) toward 1.0? Relate what you find to the pairwise-symmetry argument in <a href="#algorithm">Algorithm</a>.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-11 &middot; intermediate &middot; uses the Python API</div><h4>Softening Is Hiding Your Unbound Bodies</h4><p>Run the default cluster and note <code>n_unbound</code> (instantaneously positive-energy bodies) at the end &mdash; it is very often zero. Now rerun with <code>--softening_pc</code> set well below the Athanassoula-et-al.-optimal default, a finer <code>--steps_per_crossing</code> (this is required for stability once softening shrinks), and a longer <code>--n_relax</code>, e.g. <code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.0338 --steps_per_crossing 150 --n_relax 40 --seed 0</code>. Treat this as a starting point to try, not a guaranteed outcome: this is a chaotic calculation, and how many instantaneously-unbound bodies it ends with (out of 60) varies by seed, including seeds that end with none at all &mdash; do not expect every seed to show a nonzero count. Run the same command across several seeds and report the FRACTION of seeds that show at least one instantaneously-unbound body, and discuss why that fraction is not 100% even at this lowered softening. For stronger evidence that a flagged body is genuinely escaping (rather than briefly crossing back and forth), you need per-body identity across snapshots, which the CLI/CSV output does not carry &mdash; call the Python API directly instead:</p><pre>import numpy as np
+import physics_nbg as phys
+r = phys.run_cluster(n_bodies=60, total_mass_msun=1e3, scale_radius_pc=1.0,
+                      softening_pc=0.0338, steps_per_crossing=150,
+                      n_relax=40, seed=0)
+n_snap = len(r["t"])
+for k in range(max(n_snap - 5, 0), n_snap):    # the last 5 stored snapshots
+    pos, vel, m = r["positions"][k], r["velocities"][k], r["masses"]
+    e = phys.specific_energies(pos, vel, m, r["softening"])
+    com = phys.center_of_mass(pos, m)
+    com_vel = phys.center_of_mass_velocity(vel, m)
+    rel_pos = pos - com                        # center-relative position (m)
+    rel_vel = vel - com_vel                    # center-relative velocity (m/s):
+                                                # dr/dt needs velocity measured
+                                                # in the SAME frame as the
+                                                # radius, or a bulk cluster
+                                                # drift alone (which changes no
+                                                # distance between bodies) would
+                                                # masquerade as inward/outward
+                                                # motion
+    radius_m = np.linalg.norm(rel_pos, axis=1)
+    with np.errstate(invalid="ignore"):
+        v_radial_m_s = np.divide(
+            np.einsum("ij,ij-&gt;i", rel_pos, rel_vel), radius_m,
+            out=np.full_like(radius_m, np.nan), where=radius_m &gt; 0)
+    radius_pc = radius_m / phys.PC                        # r/v arrays are SI;
+    v_radial_pc_myr = v_radial_m_s * phys.MYR / phys.PC   # convert to match
+                                                            # the printed labels
+    for i in np.nonzero(e &gt; 0)[0]:
+        print(f"snapshot {k}  body {i}  e={e[i]:.3e}  "
+              f"r={radius_pc[i]:.4g} pc  v_r={v_radial_pc_myr[i]:.4g} pc/Myr")</pre><p>and check whether the same body ID reappears across every one of those five snapshots with a growing radius and a positive radial velocity at every snapshot &mdash; not merely at the one moment it was first flagged, and not just once or twice (<code>v_r</code> itself need not keep growing; it only needs to stay positive for the radius to keep increasing). A body whose radius keeps increasing and whose <code>v_r</code> stays positive at every one of those snapshots is showing stronger evidence of a persistent escape, not proof of one &mdash; five snapshots is still a short window against the evolving potential this Help file describes elsewhere; one that shows up once, or whose radius stalls or turns back over, or whose <code>v_r</code> sign flips, is more likely a body that is only briefly, instantaneously unbound before falling back in. Explain, physically, why the softening length that best approximates the smooth gravitational field of the cluster is not the softening length that best reproduces the close two-body encounters responsible for real evaporation &mdash; these are different goals, and this program's default optimizes for the first one.</p></div>
+    </div>
+
+    <h3>Core sequence &middot; intermediate to advanced</h3>
+    <div>
+      <div class="exp-card"><div class="ec-num">EXP-12 &middot; intermediate/advanced</div><h4>Chaos Doesn't Care How Small the Nudge Is</h4><p>Run <code>--mode chaos</code> with <code>--relative_perturbation</code> set to 1e-4, 1e-6, 1e-8, 1e-10 and 1e-12. For the main comparison, fix BOTH <code>--seed</code> (so the underlying cluster is the same each time) AND <code>--perturbation_seed</code> (so only the perturbation's magnitude changes between runs, not its random direction) &mdash; record the fitted Lyapunov time for each, noting any run that reports no fit at all (see Governing Equations for why that can happen even for genuinely chaotic data) rather than treating it as a failed run. As an optional follow-up, repeat with <code>--perturbation_seed</code> left unfixed (several draws per perturbation size) to see how much run-to-run scatter the direction of the initial offset alone contributes. The defining feature of exponential (chaotic) sensitivity is that the growth <em>rate</em> should not depend on how small the initial separation was, only how long it takes to grow to a fixed macroscopic size. Is that what you find? What happens to the estimate when the perturbation is so small that numerical roundoff, not the deliberate offset, dominates the initial separation?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-13 &middot; intermediate/advanced &middot; pilot-study caveat</div><h4>Does the Relaxation-Time Formula Actually Predict Anything?</h4><p>Run <code>--mode cluster</code> at two different <code>--n_bodies</code> (say 80 and 400), each at two or three different seeds, for the same number of NOMINAL relaxation times (fix <code>--n_relax</code>), and measure the fractional growth of <code>r50</code> over the run in each case. The formula in <a href="#equations">Governing Equations</a> is explicitly an order-of-magnitude, UNSOFTENED estimate (it drops factors of order unity in the Coulomb logarithm and says nothing about this program's own softening, which suppresses the true relaxation rate below that nominal estimate by an N-dependent amount, since default softening itself changes with N). Report a range across your seeds at each N, not a single number, before comparing the two N values &mdash; is any difference between the two \(r_{50}\) growth rates larger than the seed-to-seed scatter at a single N? Either answer is useful &mdash; say which, and why an order-of-magnitude, unsoftened formula does or does not deserve to be taken further than that as a prediction for this softened, discrete system.</p></div>
+    </div>
+
+    <h3>Optional projects &middot; advanced</h3>
+    <div>
+      <div class="exp-card"><div class="ec-num">EXP-14 &middot; advanced</div><h4>Timestep Convergence: Direct Versus Tree</h4><p>Run <code>--mode galaxy --method direct</code> at <code>--steps_per_freefall</code> of 40, 80 (default) and 160, holding everything else (including <code>--seed</code>) fixed, and record the maximum SAMPLED relative energy drift (reported in the energy-panel title, evaluated only at stored snapshots, not every integration step) at each resolution. You should see it fall by roughly a factor of 4 with each doubling of resolution &mdash; the expected second-order convergence of the leapfrog scheme when the force itself is exact. Now repeat the same three runs with <code>--method tree</code> (default \(\theta\)). Does the drift improve the same way? It should not: the tree's fixed opening-angle force-approximation error does not shrink as \(\Delta t\) shrinks, so past a certain resolution the energy error is dominated by \(\theta\), not by the timestep, and refining \(\Delta t\) further buys you little or nothing. Read <a href="#algorithm">Algorithm</a> and say, in your own words, what this implies about choosing \(\theta\) versus \(\Delta t\) when tuning a tree-code run for accuracy.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-15 &middot; advanced &middot; uses the Python API</div><h4>Push the Size Limit</h4><p>Extend Experiment 9's isolated force-evaluation timing (not full CLI runs, for the same fixed-step-count reason) to the largest <code>n_bodies</code> your machine can finish in a reasonable time (try working up toward <code>MAX_BODIES</code> = 5,000, but watch your runtime as you go). Does the tree ever clearly win at the sizes you can actually test? What does that say about the practical difference between an algorithm's asymptotic complexity and the complexity that matters for a program of this scale and implementation?</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-16 &middot; advanced &middot; uses the Python API</div><h4>Design Your Own Diagnostic</h4><p>The program tracks Lagrangian radii, virial ratio, energy, instantaneous-unboundedness counts, and position-space divergence &mdash; but not everything. Using <code>--csvdir</code> to get the raw time series, or by calling <code>physics_nbg</code> functions directly on the arrays returned by <code>run_cluster</code>/<code>run_galaxy</code>, implement one diagnostic of your own choosing: for example, a density-profile power-law slope at fixed radius over time, a measure of departure from spherical symmetry, or total angular momentum conservation (formally zero for these initial conditions, but not exactly zero numerically &mdash; how far from zero, and why?). State clearly what physical question your diagnostic answers that the built-in ones do not.</p></div>
+      <div class="exp-card"><div class="ec-num">EXP-17 &middot; advanced &middot; multi-seed</div><h4>Which Remnant Features Survive Changing N and Softening?</h4><p>Galaxy mode's particles are a scaled-down stand-in for a much larger real system (see <code>run_galaxy()</code>'s docstring and Physical Background), so any apparent feature of the collapsed remnant &mdash; a particular final half-mass radius, a specific late-time virial-ratio oscillation amplitude, a visible density concentration &mdash; needs to survive a resolution check before you trust it as physics rather than as a numerical artifact of this particular N, softening, or realization. A single run per N is not enough to show that: a shared <code>--seed</code> does not produce matched realizations across different N (the initial-condition sampler draws a different amount of random state at each N), so one run per N confounds genuine resolution trends with ordinary seed-to-seed scatter, exactly the pitfall EXP-13 warns about for cluster mode.</p><p><strong>Part A &mdash; N convergence.</strong> Run <code>--mode galaxy</code> at <code>--n_bodies</code> of 100, 300 (default) and 1000, using several different seeds at EACH N (e.g. 4-5 seeds per N). Do NOT simply leave softening at its default for all three: this program's default softening is itself a function of N (<code>epsilon = 0.98 * scale_radius * N^-0.26</code>, printed in every run's summary as <code>Softening</code>), so leaving it unset changes N and softening together, and any difference you see could be caused by either one. To make this an N-ONLY comparison, run once at N=300 first, read its default softening value off the summary, and then pass that SAME number explicitly via <code>--softening_pc</code> at N=100 and N=1000 as well, so every run in this part shares one fixed physical softening length. (Deliberately varying N and its default softening together instead is a legitimate but DIFFERENT experiment &mdash; a joint N/epsilon refinement path, not an N-only resolution test &mdash; and should be labeled as such if you choose to run it.) For each N, collect the final half-mass radius and the late-time virial-ratio range across your seeds, and report each group's spread as its RANGE (maximum minus minimum across your 4-5 seeds at that N) &mdash; a specific, easy-to-compute number, not an unspecified "spread." Also report each group's "typical value" as its MEDIAN across those same seeds at that N (not the mean, which one outlier seed can shift more than a sample this small should tolerate) &mdash; every "typical value" mentioned in this exercise means the median specifically. Comparing detection to convergence is the whole point of this exercise, so keep the two questions separate: the two N's being compared each have their OWN within-N range, and these two ranges can differ, so use one deterministic rule rather than picking whichever range you like &mdash; an ABSOLUTE DIFFERENCE BETWEEN MEDIANS FROM ONE N TO THE NEXT that is clearly LARGER than BOTH within-N ranges (equivalently, larger than the MAXIMUM of the two) is real evidence that this feature genuinely DEPENDS on resolution at these N &mdash; report it, and note that it is evidence AGAINST having converged, not for it (unless you can also show that change shrinking further as N grows, which this exercise's three N values alone are too few to establish). When the between-N change instead stays comparable to (not clearly larger than) the larger of the two within-N ranges, that does NOT prove the feature has converged &mdash; four or five seeds only estimate the true scatter roughly, and a real but moderate resolution dependence can easily hide inside that much noise. Call that outcome INCONCLUSIVE, or "no N-dependence detected at this resolution and seed count," rather than "survives" or "behaves as converged."</p><p><strong>Part B &mdash; softening sensitivity.</strong> Separately, holding N and the scale radius fixed at their defaults, repeat the same multi-seed comparison at the Athanassoula-et-al.-optimal softening for N=300 (printed in the summary) and at roughly half and roughly double that same numeric value, again passed explicitly via <code>--softening_pc</code> at all three settings. Report each group's spread and typical value the same way as Part A (the range across seeds at that softening, and the median across those same seeds). Apply the same logic as Part A, not its mirror image, and the same deterministic rule: an absolute difference between medians from one softening setting to the next that is clearly larger than BOTH within-softening seed-to-seed ranges (equivalently, larger than their maximum) demonstrates real softening SENSITIVITY (evidence against this feature being robust to your softening choice) &mdash; report it. A between-softening change that stays comparable to the larger of the two within-softening ranges is, again, INCONCLUSIVE at this seed count, not proof of robustness. Keep this axis separate from Part A &mdash; do not change N and softening in the same run, or you will not know which one caused any difference you see.</p><p>Across both parts, resist reading "I didn't detect a difference" as "there is no difference": with only 4-5 seeds per setting, a range-based comparison has real power to catch a LARGE dependence and comparatively little power to rule out a moderate one. A demonstrated, clearly-larger-than-range change is trustworthy evidence of a real dependence on N, softening, or realization, and should be read as not-yet-converged (or genuinely softening-sensitive) physics rather than as noise. An inconclusive comparison is exactly that &mdash; inconclusive, at most weak support for treating a feature as resolution-independent, not a demonstration of convergence or robustness; strengthening it takes more seeds, more N/softening values, or a trend of shrinking differences toward a stable limit, not a bigger claim from the same four or five runs. This is the same kind of resolution question Experiment 5 asks for cluster mode, applied to the collapse remnant instead of the relaxation rate.</p></div>
+    </div>
+
+    <h3>Synthesis</h3>
+    <div>
+      <div class="exp-card"><div class="ec-num">EXP-18 &middot; synthesis</div><h4>Where Does &ldquo;Collisionless&rdquo; Stop Being True?</h4><p>Galaxy-formation theory usually treats a galaxy as a <em>collisionless</em> system: stars feel the smooth mean gravitational field of everyone else, and individual close encounters are negligible over a Hubble time (this is what the relaxation time in <a href="#background">Physical Background</a> quantifies). Yet the <code>cluster</code> mode's whole point is to show two-body relaxation acting within an achievable run length, and Experiment 11 showed you can dial evaporation in or out with the softening length alone. Using what you found in Experiments 1, 7, 11 and 13, write a short (half-page) argument, in your own words and citing your own numbers from this program, for why real star clusters (\(N\sim10^3\)&ndash;\(10^6\), many relaxation times over a Hubble time) are collisional systems while real galaxies (\(N\sim10^{10}\)&ndash;\(10^{11}\) stars, one relaxation time vastly exceeding the age of the Universe) are, to very good approximation, not.</p></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <section id="parameters">
+    <h2>Parameters</h2>
+    <table class="param-table"><thead><tr><th>Flag</th><th>Default</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td class="pname">--mode</td><td class="pdefault">cluster</td><td>Which calculation to run: <code>cluster</code>, <code>galaxy</code>, or <code>chaos</code>.</td></tr>
+      <tr><td class="pname">--n_bodies</td><td class="pdefault">200 / 300 / 40</td><td>Number of simulation particles (mode-dependent default). Hard limits: 3&ndash;5,000. Every particle carries the same mass.</td></tr>
+      <tr><td class="pname">--total_mass_msun</td><td class="pdefault">1e3 / 1e6</td><td>Total mass in solar masses (mode-dependent default; <code>chaos</code> shares <code>cluster</code>'s default).</td></tr>
+      <tr><td class="pname">--scale_radius_pc</td><td class="pdefault">1.0</td><td>Plummer scale radius, parsecs (<code>cluster</code>/<code>chaos</code> modes).</td></tr>
+      <tr><td class="pname">--n_relax</td><td class="pdefault">5.0</td><td>Run length as a multiple of the initial two-body relaxation time (<code>cluster</code>).</td></tr>
+      <tr><td class="pname">--steps_per_crossing</td><td class="pdefault">60 (cluster) / 50 (chaos)</td><td>Timesteps per initial crossing time.</td></tr>
+      <tr><td class="pname">--radius_pc</td><td class="pdefault">200.0</td><td>Initial uniform-sphere radius, parsecs (<code>galaxy</code>).</td></tr>
+      <tr><td class="pname">--virial_ratio_init</td><td class="pdefault">0.0</td><td>Initial \(2T/|W_{\rm vir}|\) for the uniform sphere; 0 = perfectly cold, 1.0 = exact instantaneous scalar virial balance (see The Virial Theorem). Values above 10 are refused (see below).</td></tr>
+      <tr><td class="pname">--n_freefall</td><td class="pdefault">8.0</td><td>Run length as a multiple of the initial free-fall time (<code>galaxy</code>).</td></tr>
+      <tr><td class="pname">--steps_per_freefall</td><td class="pdefault">80</td><td>Timesteps per initial free-fall time.</td></tr>
+      <tr><td class="pname">--relative_perturbation</td><td class="pdefault">1e-8</td><td>Initial relative position offset between the two <code>chaos</code>-mode realizations (as a fraction of their common RMS radius).</td></tr>
+      <tr><td class="pname">--n_cross</td><td class="pdefault">120.0</td><td>Run length as a multiple of the initial crossing time (<code>chaos</code>); deliberately much larger than <code>cluster</code>/<code>galaxy</code>'s multiples, since showing clean exponential growth typically needs tens to a hundred-plus crossing times.</td></tr>
+      <tr><td class="pname">--perturbation_seed</td><td class="pdefault">unseeded</td><td>Random seed for the position offset in <code>chaos</code> mode.</td></tr>
+      <tr><td class="pname">--softening_pc</td><td class="pdefault">Athanassoula et al. (2000) scaling</td><td>Plummer softening length, parsecs. Must be strictly positive.</td></tr>
+      <tr><td class="pname">--theta</td><td class="pdefault">0.5</td><td>Barnes-Hut opening angle, accepted in [0, 2]; negative values are refused. 0 forces an exact full-tree descent.</td></tr>
+      <tr><td class="pname">--method</td><td class="pdefault">tree (cluster, galaxy) / direct (chaos)</td><td><code>tree</code> or <code>direct</code> force evaluation. <code>chaos</code> defaults to <code>direct</code> because its two realizations must be integrated with a conservative force law evaluated with exact pair antisymmetry for the measured divergence to reflect genuine dynamical chaos rather than tree-approximation noise; the leapfrog integrator's symplectic long-term-stability argument is likewise only established here for <code>direct</code> (see The Virial Theorem and Algorithm sections for what the numerical trajectory itself does and does not conserve exactly).</td></tr>
+      <tr><td class="pname">--target_snapshots</td><td class="pdefault">150&ndash;200</td><td>Approximate number of recorded snapshots; the actual number can differ slightly so that the true final step is always included.</td></tr>
+      <tr><td class="pname">--seed</td><td class="pdefault">unseeded</td><td>Random seed for the initial-condition sampler; set it for a reproducible realization.</td></tr>
+      <tr><td class="pname">--outdir</td><td class="pdefault">none</td><td>Also save a timestamped PNG (with a <code>.provenance.txt</code> sidecar) in this directory; the figure is still displayed.</td></tr>
+      <tr><td class="pname">--csvdir</td><td class="pdefault">none</td><td>Also write a timestamped, provenance-commented CSV diagnostics file in this directory.</td></tr>
+      <tr><td class="pname">--no_plot</td><td class="pdefault">false</td><td>Skip the figure entirely; requires <code>--csvdir</code> (<code>--outdir</code> alone controls only the PNG that <code>--no_plot</code> skips, so a run with <code>--no_plot</code> and no <code>--csvdir</code> would produce no output at all, and this is refused).</td></tr>
+      <tr><td class="pname">--dpi</td><td class="pdefault">150</td><td>PNG resolution, accepted in [10, 1200].</td></tr>
+      <tr><td class="pname">--lw</td><td class="pdefault">1.6</td><td>Curve line width, points.</td></tr>
+    </tbody></table>
+  </section>
+
+
+<section id="limits">
+    <h3>Calculational Limits</h3>
+    <table class="cred-table"><thead><tr><th>Calculation</th><th>Status</th><th>Read it as</th></tr></thead><tbody>
+      <tr><td class="cname">gravity (both methods)</td><td>the exact softened Newtonian force law, integrated by a standard second-order symplectic (leapfrog) scheme</td><td>quantitatively correct up to the timestep's own truncation error and (tree only) the opening-angle approximation error</td></tr>
+      <tr><td class="cname">cluster &mdash; relaxation</td><td>real N-body dynamics of this discrete, softened model; the relaxation TIME formula quoted for context is a nominal, UNSOFTENED order-of-magnitude scaling, not a precise prediction for the softened system actually integrated</td><td>a genuine simulation result, but at default parameters it is often dominated by a brief initial readjustment toward the rescaled virial balance rather than by two-body relaxation, which the default softening actively suppresses; the half-mass radius and near-escape tail can stay flat, or even move opposite the textbook core-contracts/outskirts-expand direction, on any single default run (see EXP-1, EXP-11 and Domain of Validity for a setup that isolates relaxation more cleanly)</td></tr>
+      <tr><td class="cname">galaxy &mdash; collapse</td><td>real N-body dynamics of this discrete, softened model; classic, reproducible numerical experiment</td><td>quantitative for THIS N and these initial conditions; the collapse, bounce and settling into a remnant with virial ratio <i>Q</i> oscillating near 1 is the qualitative outcome the literature (van Albada 1982) describes as violent relaxation &mdash; a run settling far from <i>Q</i>&nbsp;=&nbsp;1 more often flags a resolution or run-length problem than a genuine physical departure from equilibrium (see Domain of Validity)</td></tr>
+      <tr><td class="cname">chaos &mdash; Lyapunov time</td><td>real N-body dynamics of this discrete, softened model; the exponential-fit window and its accept/reject decision are chosen automatically from the data by a heuristic, not a formal statistical test (see Governing Equations)</td><td>when a fit is reported, treat it as the program's finite-time estimate for this particular realization, not a certified measurement &mdash; this heuristic is a useful discriminator between clearly chaotic and clearly non-chaotic behavior, with expected factor-of-a-few scatter between random seeds consistent with the literature (Goodman, Heggie &amp; Hut 1993), but it does not have a known false-positive or false-negative rate across the full space of possible inputs; a run reporting no fit is not necessarily non-chaotic &mdash; the heuristic can and does miss some genuinely chaotic runs (see the note printed with that run and Suggested Experiments EXP-3)</td></tr>
+    </tbody></table>
+</section>
+
+
+
 <section id="validity"><h2>Domain of Validity</h2>
 <p>This is a pure-Python equal-mass, softened Newtonian particle model for
 teaching; there is no gas, radiation, external tide, cosmological expansion,
@@ -456,10 +845,23 @@ of magnitude can escape the numerical safeguards; ordinary solar-mass and
 parsec-scale experiments stay inside the intended regime. Default cluster
 softening inhibits close encounters, so it cannot by itself establish a
 physical evaporation timescale.</p></section>
-<section id="related"><h2>Related programs and attribution</h2>
-<p><i>Multiple</i>'s direct-summation few-body gravity is a prerequisite.
-NbodyGalaxySimulator is an original supplemental Python investigation for
-Schutz's <i>Gravity from the Ground Up</i>, CC BY-NC-SA 4.0.</p>
-</section>
-<footer>NbodyGalaxySimulator · Version 1.0.1 · Build 5dc0f45efa6c</footer>
-</main></div></body></html>
+
+  <!-- ================================================================ -->
+  <section id="license">
+    <h2>License</h2>
+    <p>NbodyGalaxySimulator is an original supplemental Python investigation proposed for use with Bernard Schutz's <em>Gravity from the Ground Up</em>. It is distributed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
+  </section>
+
+<footer>
+  <em>Gravity from the Ground Up</em> &middot; 
+  Bernard Schutz © 2003 (Cambridge University Press) &middot;
+  Python programs © 2024&ndash;2026 Thomas Yee &middot;
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a> &middot;
+</footer>
+
+
+
+</main>
+</div>
+</body>
+</html>
