@@ -312,6 +312,31 @@
     }
     .def-table .pname { font-family: var(--mono); font-size: 0.83rem; color: var(--accent2); }
 	
+	.simp-table
+	{
+	  border-collapse: collapse;
+	  font-size: 0.875rem;
+	  margin: 1.0rem 0 1.4rem;
+	}
+    .simp-table th,td {
+      padding: 0px 4px;
+    }		
+	
+	.bordered-table
+	{
+	  border: 1px solid black;
+	  border-collapse: collapse;
+	  font-size: 0.875rem;
+	  margin: 1.0rem 0 1.4rem;
+	}
+    .bordered-table th,td {
+	  border: 1px solid black;
+	  border-collapse: collapse;
+      padding: 0px 4px;
+    }		
+
+
+	
 	
     .exp-grid {
       display: grid;
@@ -512,6 +537,17 @@ or outward motion, and one value near 1 does not establish equilibrium.</p>
 <p>Position panels can use different
 axis limits, and final panels can clip distant outliers to keep the bulk
 visible. A particle disappearing off a panel is not deleted from the run.</p>
+
+
+<p><b>Integration Method</b></p>
+<p>The program uses a fixed global kick-drift-kick leapfrog step: update
+velocities for half a step, positions for a full step, then velocities
+for the remaining half-step. More steps per crossing/free-fall time
+mean a smaller timestep. Smaller timesteps reduce integration error;
+smaller theta reduces tree-force error. Neither change removes errors
+caused by the chosen particle number or softening.</p>
+
+
 </section>
 
 <section id="beat0">
@@ -540,20 +576,20 @@ itself, distorting the process that <code>cluster</code> mode is trying to show.
 In the context of N-body simulations of collisionless stellar systems (such as star 
 clusters and galaxies), Athanassoula, Fady, Lambert & Bosma (2000) provided an
 empirically derived Plummer softening length recommendation intended to minimize force errors and artificial 
-relaxation caused by the discrete representation of a smooth mass distribution, where \(\alpha\)
+relaxation caused by the discrete representation of a smooth mass distribution, where \(a\)
 is the Plummer scale radius and \(N\) is the number of particles used in the simulation:
 
 <div class="eq-block">
 <div class="eq-label">Athanassoula et al. (2000) recommended softening</div>
   \[ \epsilon_{\rm opt} = 0.98\, a\, N^{-0.26} \]
 </div>
-
-
+<p><small><b>Note:</b> The Athanassoula <i>et al.</i> recommended parameter should not be considered a a universal optimum 
+for collisional clusters or the uniform-sphere model. </small></p>
 
 <p><b>Unsoftened <i>versus</i> Softened Comparison</b></p>
 
 <p>Compare the outputs of these two runs. The first is nearly unsoftened. If, for the second run,
-we simply omitted the <code>--softening_pc</code> parameter, the program would automatically compute the parameter
+we simply omitted the <code>--softening_pc</code> parameter, the program would automatically compute the recommended parameter
 using the formula above, but we have included the value explicitly:
 </p>
 <pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc  0.0001 --seed 7 --n_relax 50 --outdir ./figures</code></pre>
@@ -571,10 +607,13 @@ Close encounters whose duration is too short to be resolved by the
 fixed timestep produce inaccurate trajectories. On the other hand, Athanassoula recommended softening 
 (\(\epsilon = 0.3380\text{ pc}\)) 
 smooths the potential and makes close encounters easier to resolve with a fixed timestep.
-As a result, the energy drift drops to 0.237%. 
+As a result, the energy drift drops to 0.237%. In these examples, 217.23% and 0.237% are the 
+maximum sampled absolute fractional energy changes. Because the initial energy is negative, 
+a negative plotted fractional change 
+means that the energy has increased. The quoted maxima are not necessarily the final values.</li>
 
-The continuous time-series plots reveal that because of small \(N\) stochasticity,
-instantaneous metrics may experience pronounced fluctuations, but the system 
+<li>The continuous time-series plots reveal that because of small \(N\) stochasticity,
+the instantaneous metrics of the softened run may experience pronounced fluctuations, but the system 
 as a whole remains on average in stable dynamical equilibrium.</li>
 
 <li>With \(\epsilon = 0.0001\text{ pc}\), 
@@ -583,9 +622,8 @@ integration step size push the cluster wildly out of equilibrium,
 increasing the virial ratio from \(2T/\vert{}W\vert{} = 1.0\) to \(10.19\). The cluster expands dramatically: 
 the half-mass radius grows from \(1.302\text{ pc}\) to \(8.028\text{ pc}\), and the \(90\%\) Lagrangian 
 radius reaches over \(80\text{ pc}\). 
-With recommended softening, the cluster remains bound and quasi-static near virial equilibrium throughout the run. (The \(2T/\vert{}W\vert{}\) 
-ratio fluctuates moderately around 1.0, ending at 0.9939). The half-mass radius undergoes minimal expansion from 
-\(1.302\text{ pc}\) to \(1.451\text{ pc}.\)</li>    
+Softening makes close encounters easier to resolve, but accuracy
+still depends on the timestep and force approximation.</li>    
 
 <li>With \(\epsilon = 0.0001\text{ pc}\), 17 out of 60 stars become instantaneously unbound by the end of the simulation. 
 However, because of energy non-conservation issues, many of these "ejections" are likely to be
@@ -610,13 +648,15 @@ energy conservation, but at the cost of suppressing close physical two-body inte
 <pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.0338 --steps_per_crossing 150 --n_relax 40 --seed 0 --outdir ./figures</code></pre>
 <pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.0338 --steps_per_crossing 150 --n_relax 40 --seed 2 --outdir ./figures</code></pre>
 
-<p><b>High Sensitivity to Initial Conditions</b></p>
+<p><b>Different Realizations of the Same Model</b></p>
 <p>These runs illustrate variation between independently sampled clusters.
   A different seed changes the initial realization, including its sampled
   half-mass radius. The timestep and duration are then recomputed from that
   realization’s initial timescales. Compare histories in crossing-time or
-  nominal-relaxation-time units as well as in Myr.
-</p>
+  nominal-relaxation-time units as well as in Myr.</p>
+<p>Indeed, even if the initial conditions differ by only an arbitrarily small amount,  
+two simulated clusters will diverge <em>exponentially</em> in phase space, rather than the
+separation growing only linearly over time: these systems exhibit <em>chaotic</em> behavior (See Beat 4).</p>
 
 <p><b>Key Takeaway</b></p>
 <p>Single N-body realizations of small clusters carry high stochastic variance. To draw 
@@ -696,8 +736,9 @@ Here is how the method works and why it is so effective for large-scale gravitat
 <li><b>Key Advantages in Simulations</b>
 	<ul>
 	    <li>Speedup (\(O(N \log N)\)): For \(N\) particles, direct summation requires evaluating \(N(N-1)/2\) pairs. 
-	    The tree traversal reduces this to roughly \(N \log N\) operations, making simulations of thousands 
-	    to millions of stars computationally practical.
+	    The tree traversal reduces this to roughly \(N \log N\) operations, enabling much larger simulations in optimized codes; 
+		this teaching implementation caps \(N\) at 5,000.</li>
+
 	    <li>Tunable Accuracy (theta):
 			<ul>
 				<li>A smaller \(\theta\) (e.g., \(0.2\)) forces the tree to open more boxes, 
@@ -718,7 +759,7 @@ Here is how the method works and why it is so effective for large-scale gravitat
     <h3>Force accuracy versus &theta;</h3>
     <p>Because the tree replaces exact per-body sums with a monopole approximation for distant clumps, its force differs from the exact (direct-summation) 
 	value by an amount that grows with &theta;. Measuring this directly (a Plummer sphere, comparing <code>compute_accelerations_tree</code> 
-	against <code>compute_accelerations_direct</code> at fixed default softening) across 20 independent seeds at <code>--n_bodies 200</code> gives these 
+	against <code>compute_accelerations_direct</code> at fixed default softening) across seeds 0&ndash;19 at <code>--n_bodies 200</code> gives these 
 	cross-seed RANGES (not single-run point values). A relative force error of 0.004 means 0.4%, not 0.004%:</p>
     <table class="out-table"><thead><tr><th>&theta;</th><th>Median relative force error, range across seeds</th><th>Maximum relative force error, range across seeds</th></tr></thead><tbody>
       <tr><td>0.0</td><td>0 (exact, to machine precision)</td><td>0</td></tr>
@@ -734,6 +775,9 @@ Here is how the method works and why it is so effective for large-scale gravitat
 	because it forces the walk to the leaves for every body. 
 	</p>
 
+	<p>As is the case with forces, the sums of momenta in the tree approximation also differ from their exact (direct-summation)
+	values and for the same reasons. We explore momentum drift in EXP-10.
+	</p>
 
  <p><em>Experiments that go with this beat:</em> <a href="#exp8">EXP-8</a>, <a href="#exp9">EXP-9</a>, <a href="#exp10">EXP-10</a>, <a href="#exp15">EXP-15</a> in <a href="#experiments">Suggested Experiments</a>.</p>
 
@@ -760,7 +804,7 @@ Here is how the method works and why it is so effective for large-scale gravitat
 	<p>Consider the following scenario:</p>
 	<pre><code>python main.py --mode galaxy --seed 3 --outdir ./figures</code></pre>
 <p>The console output and set of figures illustrate a classic galaxy-formation cold collapse 
-(gravitational collapse of an unvirialized, nearly motionless gas/star cloud) simulated using an \(N\)-body 
+(gravitational collapse of a cloud of initially stationary gravitating particles) simulated using an \(N\)-body 
 Barnes-Hut tree algorithm (\(N = 300\) bodies, total mass \(10^6\text{ M}_\odot\)).</p>
 <p>Here is a breakdown of what is happening physically and numerically throughout the run:</p>
 
@@ -779,10 +823,10 @@ Barnes-Hut tree algorithm (\(N = 300\) bodies, total mass \(10^6\text{ M}_\odot\
 		<ul>
 			<li>The Crash: Lacking kinetic energy, gravity pulls all particles inward toward the center.
 			<li>Minimum Radius: The half-mass radius plummets dramatically from an initial \(162.6\text{ pc}\) down to a 
-			minimum core size of \(18.54\text{ pc}\) at \(t = 55.6\text{ Myr}\) (roughly one free-fall time).</li>   
+			minimum half-mass radius of \(18.54\text{ pc}\) at \(t = 55.6\text{ Myr}\) (roughly one free-fall time).</li>   
 			<li>Virial Spike: As particles rush through the center and overshoot, kinetic energy spikes violently. 
 			The virial ratio reaches a transient peak of \(2T/\vert{}W\vert{} = 5.55\) (deepest collapse panel), 
-			indicating a heavily over-energized, outward-bounding system.</li> 
+			consistent with a heavily over-energized, outward-bounding system.</li> 
 		</ul>
 	</li>  
 
@@ -802,10 +846,10 @@ Barnes-Hut tree algorithm (\(N = 300\) bodies, total mass \(10^6\text{ M}_\odot\
 
 	<li><b>Numerical Health</b>
 		<ul>
-			<li>Energy Conservation: The maximum sampled energy drift is tightly constrained 
-			to \(1.697\%\) over the entire \(374.7\text{ Myr}\) run, verifying that the Barnes-Hut tree 
-			integration (\(\theta = 0.50\)) and Athanassoula optimal softening (\(\epsilon = 44.48\text{ pc}\)) 
-			maintained high numerical stability.</li>  
+			<li>Energy Conservation: The inner remnant changes more slowly after rebound, 
+			while the outer mass radii continue evolving. A virial ratio near 1 describes 
+			approximate scalar balance, not complete equilibrium. The maximum sampled energy error is 1.697%; 
+			timestep and opening-angle comparisons are needed to judge its effect.</li>  
 		</ul>
 	</li> 	
 </ol>
@@ -834,20 +878,26 @@ time (\(t_{\text{Lyap}}\)) and quantifying the chaotic divergence of trajectorie
 </div>
 <ul>
 	<li><b>Two Neighboring Realizations (\(A\) and \(B\)):</b> To compute a finite-time Lyapunov exponent empirically, 
-	the simulation must be run twice from slightly different initial conditions (e.g., perturbing a 
-	single star's position by a tiny offset \(\Delta_0\), or using two different random seeds/perturbations). 
-	Here, \(\vec{x}_{A,i}(t)\) and \(\vec{x}_{B,i}(t)\) represent the position vector of body \(i\) in run \(A\) 
-	and run \(B\) at time \(t.\)</li>
+	the program compares results of integrating the initial realization versus integrating
+	a copy of the initial realization where every position has been perturbed by a
+	minute amount given by <code>relative_perturbation</code>, leaving the velocities unchanged. 
+	The program's <code>position_space_divergence</code> function calculates the separation between 
+	periodic snapshots of the two evolving realizations after first removing any coherent 
+	center-of-mass translation between the two realizations.  
 
-	<li><b>Mean Root-Square Separation \(\Delta(t)\):</b> The equation measures the root-mean-square (RMS) spatial distance 
-	between corresponding bodies across the two runs averaged over all \(N\) bodies.</li>
+	<li><b>Root Mean-Square Separation:</b> The separation measured by the program is
+	the root-mean-square (RMS) spatial distance 
+	between corresponding bodies across the two runs averaged over all \(N\) bodies, and is
+	normalized to the initial RMS radius.</li>
 
 	<li><b>Exponential Divergence (\(e^{\lambda t}\)):</b> In a chaotic dynamical system, small initial perturbations do not remain small; 
 	they grow exponentially at a rate governed by the Lyapunov exponent \(\lambda.\)</li>
 
 	<li><b>Lyapunov Time (\(t_{\text{Lyap}} = 1/\lambda\)):</b> This represents the characteristic e-folding timescale 
 	over which the system loses memory of its initial conditions—effectively marking the horizon beyond 
-	which individual particle trajectories become unpredictable.</li>
+	which individual particle trajectories become unpredictable. This is not not a fixed prediction horizon. 
+	Separation saturation does not demonstrate completely randomized particles, entirely uncorrelated
+	trajectories, nor identical later macroscopic properties.</li>
 
 	<li><b>"Heuristic" Caveat:</b> The simulator labels this as a heuristic fit because true Lyapunov exponents 
 	require rigorous tangent-space integration (computing shadow trajectories and periodic renormalization) 
@@ -884,10 +934,14 @@ to ensure high force precision.
 			relative to each other).</li>
 		</ul>
 
-	<li><b>Bottom-Left Panel (Energy Conservation):</b> Both realizations show pristine energy 
-	conservation, with a maximum sampled energy drift of just \(0.003\%\), 
-	confirming that the divergence is physical (due to chaos) rather than 
-	numerical (due to integration errors).</li>   
+	<li><b>Bottom-Left Panel (Energy Conservation):</b> 
+	The small maximum sampled energy drift of just \(0.003\%\) is reassuring, but does not by 
+	itself establish the accuracy of chaotic trajectories; <i>i.e.</i> it does not prove
+	that the divergence is physical (due to chaos) rather than 
+	numerical (due to integration errors). Rigorous demonstration requires approaches such as the tangent-space
+	integration method mentioned above.
+
+	</li>   
 
 	<li><b>Bottom-Right Panel (Final Separation Distribution):</b> A histogram showing the 
 	spatial separation of individual bodies between realizations A and B at the end of the run.</li>   
@@ -925,8 +979,10 @@ using the exponential divergence equation:
 	Taking the natural logarithm of the total growth factor:
 		\[\ln\left(\frac{\Delta_{\text{final}}}{\Delta_0}\right) = \ln\left(\frac{2.382}{2.716 \times 10^{-8}}\right) = \ln(8.77 \times 10^7) \approx 18.29 \text{ total e-folds}\]
 	The linear fit captures the active exponential growth phase (\(16.43\) e-folds) before the 
-	curve levels off into saturation. This confirms that the program's regression fit 
-	properly isolates the exponential divergence regime before boundary saturation limits further growth. 
+	curve levels off into saturation. This reciprocal calculation provides a consistency 
+	check that the program's regression fit 
+	isolates the exponential divergence regime before boundary saturation limits further growth, 
+	but it does not replace rigorous methods of computation.
 </ol>
   <p><em>Experiments that go with this beat:</em> <a href="#exp2">EXP-2</a>, <a href="#exp3">EXP-3</a>, <a href="#exp12">EXP-12</a> in <a href="#experiments">Suggested Experiments</a>.</p>
 </section>
@@ -944,6 +1000,58 @@ above the local escape speed and leave for good: this is <strong>evaporation</st
 The characteristic timescale for this diffusive process, the two-body relaxation time, is given 
 below; for an isolated system without a tidal boundary, full evaporation of a Plummer-like cluster 
 is a slow process, of order a hundred or more relaxation times (Ambartsumian 1938; Spitzer 1987).</p>
+
+<p>
+Depending on the number of logical processors available on your personal computer (Windows users may check
+the Task Manager on the performance tab), run four or more instances of the following code in separate command windows,
+choosing a different <code>--seed</code> value for each instance: 
+<pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.3380 --steps_per_crossing 200 ^
+--n_relax 100 --seed SEED --outdir ./figures --csvdir ./data
+</code></pre>
+Likewise, run four or more instances of the following code in separate command windows, choosing a 
+different <code>--seed</code> value for each instance: 
+<pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.0338 --steps_per_crossing 2000 ^
+--n_relax 100 --seed SEED --outdir ./figures --csvdir ./data
+</code></pre>
+The second set of commands uses a softening distance 0.1 times that of the first set of commands, which explicitly
+inputs the Athanassoula <i>et al.</i> recommended value rather than allows the program to compute it automatically;
+to maintain integration accuracy, the timesteps were correspondingly decreased by a factor of 10.
+</p>
+<p>
+The output CSV files document the input parameters (both explicitly entered and assumed defaults),
+the console output, and detailed snapshot values of the relevant calculated values that were 
+graphed in the output PNG files.
+As mentioned in Beat 0, with recommended softening, it is likely that you will witness no evaporating particles
+in the first set of runs since the default softening tends to suppress genuine two-body scattering 
+that would be expected to result in physical escapes in small systems. On the other hand, with 
+a softening distance 0.1 times that of the recommended, then despite the use of ten-fold decreased timesteps,
+it is likely that you will witness ejections. Here are the results of one set of trials:
+<table class="simp-table">
+<tr><td>Bodies </td><td>60 (each 16.667 Msun)</td></tr>
+<tr><td>Total mass </td><td>1000  Msun</td></tr>
+<tr><td>Plummer scale a </td><td> 1 pc</td></tr>
+<tr><td>Softening </td><td>0.0338  pc</td></tr>
+<tr><td>Force method </td><td>tree  (theta = 0.50) </td></tr>
+</table>
+
+<table class="bordered-table">
+<tr><th>Console Output</th><th>Seed 1</th><th>Seed 2</th><th>Seed 3</th><th>Seed 4</th> </tr>
+<tr><td>Timestep </td><td>374.78 yr</td><td>373.80 yr</td><td>335.03 yr</td><td>417.54 yr</td></tr>
+<tr><td>Crossing time \(t_0\) </td><td>  0.7496  Myr</td><td>0.7476  Myr</td><td>0.6701  Myr</td><td>0.8351  Myr</td></tr>
+<tr><td>Relaxation time \(t_0\) </td><td> 1.373  Myr</td><td>1.369  Myr</td><td>1.227  Myr</td><td>1.530  Myr</td></tr>
+<tr><td>Total time run (\(100 \times t_{\rm relax} \))</td><td> 137.3  Myr  </td><td>136.9  Myr</td><td>122.7  Myr </td><td>153.0  Myr </td></tr>
+
+<tr><td>Half-mass radius</td><td>1.362 -> 5.091  pc</td><td>1.36 -> 3.971  pc</td><td>1.264 -> 5.412  pc</td><td>1.464 -> 4.230  pc</td></tr>
+<tr><td>Virial ratio</td><td>1.0000 -> 0.8481</td><td>1.0000 -> 1.0316</td><td>1.0000 -> 0.8740</td><td>1.0000 -> 0.9494</td></tr>
+<tr><td>Unbound (instant.)</td><td>0 -> 7  of 60 (11.67%)</td><td>0 -> 7  of 60 (11.67%)</td><td>0 -> 8  of 60 (13.33%) </td><td>0 -> 3  of 60 (5.00%)</td></tr>
+<tr><td>Near-escape tail</td><td>1.67%</td><td>5.00% </td><td>3.33% </td><td> 1.67%</td></tr>
+<tr><td>Max sampled energy drift</td><td>1.038%</td><td>0.776%</td><td>0.839%</td><td>1.712%</td></tr>
+</table>
+</p>
+
+<p>Consider how you would determine whether the escapes that you observe are real or are the 
+result of numerical error. What might be the limit with softening removed altogether, infinite
+integration accuracy, and infinite simulation time?</p>
 
  <p><em>Experiments that go with this beat:</em> <a href="#exp11">EXP-11</a>, <a href="#exp18">EXP-18</a> in <a href="#experiments">Suggested Experiments</a>.</p>
 </section>
@@ -969,16 +1077,6 @@ is a slow process, of order a hundred or more relaxation times (Ambartsumian 193
     </tbody> 
 	</table>	
 	
-	</div>
-	
-	<div class="exp-card">
-   <p id="integration">The program uses a fixed global kick-drift-kick leapfrog step: update
-   velocities for half a step, positions for a full step, then velocities
-   for the remaining half-step. More steps per crossing/free-fall time
-   mean a smaller timestep. Smaller timesteps reduce integration error;
-   smaller theta reduces tree-force error. Neither change removes errors
-   caused by the chosen particle number or softening.</p>
-
 	</div>
 
     <h3>Core sequence &middot; introductory</h3>
