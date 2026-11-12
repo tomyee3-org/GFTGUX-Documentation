@@ -318,7 +318,7 @@
 	  font-size: 0.875rem;
 	  margin: 1.0rem 0 1.4rem;
 	}
-    .simp-table th,td {
+    .simp-table th, .simp-table td {
       padding: 0px 4px;
     }		
 	
@@ -329,7 +329,7 @@
 	  font-size: 0.875rem;
 	  margin: 1.0rem 0 1.4rem;
 	}
-    .bordered-table th,td {
+    .bordered-table th, .bordered-table td {
 	  border: 1px solid black;
 	  border-collapse: collapse;
       padding: 0px 4px;
@@ -412,7 +412,7 @@
       .page-wrap { grid-template-columns: 1fr; }
       nav { position: static; height: auto; }
       main { padding: 24px 20px 48px; }
-      .param-table, .out-table, .def-table, .cred-table { display: block; overflow-x: auto; max-width: 100%; }
+      .param-table, .out-table, .def-table, .cred-table, .simp-table, .bordered-table { display: block; overflow-x: auto; max-width: 100%; }
       h1, code { overflow-wrap: anywhere; }
       mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
       header { padding: 20px 20px 16px; }
@@ -1017,8 +1017,7 @@ using the exponential divergence equation:
 
 	The selected fit covers \(16.43\) e-folds. For comparison,
     calculate the total initial-to-final growth, including the part
-    outside the selected interval:
-:   
+    outside the selected interval:   
 	<ul>
 		<li>Initial separation (\(\Delta_0\)): \(2.716 \times 10^{-8}\text{ pc}\)</li>   
 		<li>Final saturation separation (\(\Delta_{\text{final}}\)): \(\approx 2.382\text{ pc}\)</li>   
@@ -1051,16 +1050,16 @@ is a slow process, on the order of a hundred or more relaxation times (Ambartsum
 <p>
 Depending on the number of logical processors available on your personal computer (Windows users may check
 the Task Manager on the performance tab), run four or more instances of the following code in separate command windows,
-choosing a different <code>--seed</code> value for each instance: 
+choosing a different <code>--seed</code> value for each instance:</p>
 <pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.3380 --steps_per_crossing 200 ^
 --n_relax 100 --seed SEED --outdir ./figures --csvdir ./data
 </code></pre>
-Likewise, run four or more instances of the following code in separate command windows, choosing a 
-different <code>--seed</code> value for each instance: 
+<p>Likewise, run four or more instances of the following code in separate command windows, choosing a 
+different <code>--seed</code> value for each instance:</p>
 <pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.0338 --steps_per_crossing 2000 ^
 --n_relax 100 --seed SEED --outdir ./figures --csvdir ./data
 </code></pre>
-The second set of commands uses a softening distance 0.1 times that of the first set of commands, which had explicitly
+<p>The second set of commands uses a softening distance 0.1 times that of the first set of commands, which had explicitly
 input the Athanassoula <i>et al.</i> recommended value rather than allowed the program to compute it automatically;
 to maintain integration accuracy, the timesteps for this second set of commands are correspondingly decreased 
 by a factor of 10.
@@ -1079,7 +1078,7 @@ especially in short runs.</p>
 
 <p>On the other hand, with the long runs used here,
 a softening distance 0.1 times that of the Athanassoula <i>et al.</i> recommended value, and ten-fold decreased timesteps,
-you will generally witness ejections. Here are the results of one set of trials:
+you will generally witness ejections. Here are the results of one set of trials:</p>
 <table class="simp-table">
 <tr><td>Bodies </td><td>60 (each 16.667 Msun)</td></tr>
 <tr><td>Total mass </td><td>1000  Msun</td></tr>
@@ -1101,7 +1100,6 @@ you will generally witness ejections. Here are the results of one set of trials:
 <tr><td>Near-escape tail</td><td>1.67%</td><td>5.00% </td><td>3.33% </td><td> 1.67%</td></tr>
 <tr><td>Max sampled energy drift</td><td>1.038%</td><td>0.776%</td><td>0.839%</td><td>1.712%</td></tr>
 </table>
-</p>
 
 <p>Consider how you would determine whether the escapes that you observe are real or are the 
 result of numerical error. The 3 to 8 final positive-energy 
@@ -1199,7 +1197,7 @@ until the EXP-11 persistence check is made.
       <p>For each of the three runs, read <code>energy_J</code> in the first CSV data row
       (<code>t_Myr = 0</code>). Is it negative or positive? This tests
       whether the initial system is energetically bound as a whole;
-      it does not count the particles that will eventually escape.
+      it does not count the particles that will eventually escape.</p>
 
 	  <ul>	  
 	    <li>Negative energy_J: the isolated system cannot disperse entirely to infinity
@@ -1207,10 +1205,10 @@ until the EXP-11 persistence check is made.
   		<li>Positive energy_J: the system is not energetically bound as a whole. This
     	does not imply that every particle escapes; a bound remnant may remain.</li>
   		<li>Zero energy_J: the marginal case.</li>
-		The potential has its zero at infinite separation. The initial row answers
+		</ul>
+      <p>The potential has its zero at infinite separation. The initial row answers
 	    what the chosen initial state was; the energy-error diagnostic checks how
         well the numerical evolution preserves its energy. 	 
-      </ul>
  	  </p><br>
 
 	  <p>For the cold and warm cases, compare how far the final virial ratio overshoots or undershoots 1, and connect what 
@@ -1319,6 +1317,7 @@ for k in range(max(n_snap - 5, 0), n_snap):    # the last 5 stored snapshots
 	  State clearly what physical question your diagnostic answers that the built-in ones do not.</p></div>
      
 
+    </div>
     <h3>Synthesis</h3>
     <div>
       <div class="exp-card"><div class="ec-num" id="exp18">EXP-18 &middot; synthesis</div><h4>Where Does &ldquo;Collisionless&rdquo; Stop Being True?</h4>
@@ -1386,6 +1385,7 @@ for k in range(max(n_snap - 5, 0), n_snap):    # the last 5 stored snapshots
     <p>Position panels use a shared axis-scaling rule: if a small number of bodies have been flung far from the bulk of the mass (common after a close encounter, and especially in <code>galaxy</code> mode's collapse), the axes are framed around the 95th-percentile radius rather than the true maximum, so the bulk of the system remains legible while outliers are still plotted, just possibly near the edge or clipped. This is a display choice only; no data is altered or discarded.</p>
 
     <h3>CSV columns</h3>
+    <p>The CSV, PNG and provenance sidecar for a saved run share the same run-start timestamp and identifying suffix, including when the files are saved in different directories. After its provenance comments, the CSV includes a copy of the console summary headed <code># Console summary:</code>. The data header and snapshot rows follow.</p>
     <p>All three modes write one row per recorded snapshot, with a provenance comment header (mode, parameters, <code>BUILD_ID</code>) prepended as <code>#</code>-prefixed lines before the column header row &mdash; the same convention as <em>StellarEvolutionTracks</em>' CSV output. Units are mixed and named explicitly per column, not a single system: times and lengths (columns ending <code>_Myr</code>/<code>_pc</code>) are in the astronomer-friendly units used throughout this program's display and printed output, while energies (columns ending <code>_J</code>) are in SI joules, matching the internal unit convention used throughout <code>physics_nbg.py</code>; see the column-by-column notes below.</p>
     <table class="out-table"><thead><tr><th>Mode</th><th>Columns</th></tr></thead><tbody>
       <tr><td class="pname">cluster</td><td><code>t_Myr, r10_pc, r25_pc, r50_pc, r75_pc, r90_pc, virial_ratio, n_unbound, high_velocity_fraction, kinetic_J, kinetic_com_J, potential_J, virial_work_J, energy_J</code></td></tr>
