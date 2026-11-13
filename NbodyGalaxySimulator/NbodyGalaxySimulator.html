@@ -625,10 +625,13 @@ for collisional clusters or the uniform-sphere model. </small></p>
 we simply omitted the <code>--softening_pc</code> parameter, the program would automatically compute the recommended parameter
 using the formula above, but we have instead included the rounded value 0.3380 pc explicitly:</p>
 <pre class="narrow-break"><code>python main.py --mode cluster --n_bodies 60 --softening_pc  0.0001 --seed 7 --n_relax 50 --outdir ./figures</code></pre>
-<div class="narrow-break small-text">The values quoted below for this command are from Windows 11
-  [Python/NumPy versions]. On Linux the same command gives a 278%
-  drift, Q = 10.58, r50 = 8.06 pc and 12 of 60 unbound; this nearly
-  unsoftened run is chaotic and sensitive to floating-point details.</div>
+<div class="narrow-break small-text">The discussion below uses a run recorded on Windows 11 with Python 3.14.6, Numpy 2.5.0. 
+   The Linux run
+   reproduced in the Sample Outputs Guide gave a maximum sampled energy
+   error of 278.212%, a final Q of 10.5780, a final half-mass radius of
+   8.064 pc, and 12 of 60 instantaneously unbound bodies. Both runs fail
+   energy conservation badly; their exact endpoints are not reliable
+   predictions of physical escape.</div>
 
 <pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc  0.3380 --seed 7 --n_relax 50 --outdir ./figures</code></pre>
 
@@ -839,9 +842,14 @@ Here is how the method works and why it is so effective for large-scale gravitat
 	self-gravitating systems (galaxies, above all) reach a quasi-equilibrium, centrally concentrated state so much faster 
 	than their two-body relaxation time would allow. Direct numerical experiments of exactly this cold-collapse 
 	scenario (van Albada 1982, and many since) show the relaxation is generically incomplete in the sense that the 
-	remnant is not a smooth, isotropic (<i>i.e.</i>the same in every direction) equilibrium model: unlike a thermal speed distribution, 
-	it carries an extended halo of loosely bound bodies 
-	flung out during the collapse, and a density profile only qualitatively like a real galaxy's. That does not mean its 
+	remnant is not a smooth, isotropic (<i>i.e.</i> the same in every direction) equilibrium model: 
+	
+    The collapse can leave a concentrated component and an extended halo
+    of loosely bound bodies. The velocity distribution need not be the
+    same in every direction or follow the thermal distribution familiar
+    from a gas.</p>
+
+	<p>That does not mean its 
 	virial ratio must sit visibly below 1 &mdash; in this program's own runs the remnant's virial ratio oscillates in a band close to 1 
 	(see Reading the diagnostics and Suggested Experiments), consistent with a system that is virialized on average
 	while still relaxing in detail.</p>
@@ -872,12 +880,13 @@ Barnes-Hut tree algorithm (\(N = 300\) bodies, total mass \(10^6\text{ M}_\odot\
 			minimum half-mass radius of \(18.54\text{ pc}\) at \(t = 55.6\text{ Myr}\) (roughly one free-fall time).</li>  
 			 
 			<li>Virial Spike: 
-			The plotted virial ratio peaks at 5.55. Part of that peak is
-			kinetic energy: \(2T/|U|,\) which you can compute from the CSV columns
-			<code>kinetic_com_J</code> and <code>potential_J</code>, peaking near 1.4. The rest arises
-			because, once the sphere is smaller than the softening length, the
-			softened virial term \(W_{\rm vir}\) becomes much smaller than \(U\) (about a
-			quarter of it here).</li>
+            At deepest collapse, the CSV gives \(2T/|U|\) approximately 1.43 and
+            \(|W_{\rm vir}|/|U|\) approximately 0.258, producing the plotted \(Q\) approximately
+            5.55. The large peak therefore reflects both the increased kinetic
+            energy and the much smaller softened virial term. Here the <code>half-mass
+            radius</code>, 18.54 pc, is below the <code>softening</code> length, 44.48 pc.
+
+			</li>
 
 		</ul>
 	</li>  
@@ -893,7 +902,7 @@ Barnes-Hut tree algorithm (\(N = 300\) bodies, total mass \(10^6\text{ M}_\odot\
 			  centre of mass of all 300 bodies, so after the clumps separate,
 			  r50, r75 and r90 track their separation rather than the size of
 			  either clump.</li>
-			<li>Quasi-Equilibrium (\(Q_{\text{final}} \approx 0.95\)): Over the final 20% of the simulation, 
+			<li>Late-time global virial ratio: Over the final 20% of the simulation, 
 			the virial ratio hovers around a mean value of \(0.913\) (ending at \(0.9525\)), which is close 
 			to the virial-balance condition (\(2T/\vert{}W\vert{} = 1\)).</li>  
 		</ul>
@@ -1089,11 +1098,17 @@ different <code>--seed</code> value for each instance:</p>
 <pre class="narrow-break"><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.0338 --steps_per_crossing 2000 ^
 --n_relax 100 --seed SEED --outdir ./figures --csvdir ./data
 </code></pre>
-<div class="narrow-break small-text">Each run in this second set takes about 10 times as long as the
-  first set. On a typical laptop, allow one to two hours per run, and
-  do not start more simultaneous runs than your computer has
-  processor cores. The program prints nothing until the run ends. Optionally, you may add <code>--no_plot</code> for the batch runs to avoid leaving several
-  windows open; the CSV still records everything.
+<div class="narrow-break small-text">
+
+   The second set requests about ten times as many integration steps as
+   the first. One independently tested run took about 71 minutes; your
+   hardware and competing jobs will affect the time. Try one run before
+   launching several, and avoid starting more simultaneous runs than
+   your computer can comfortably handle. There is no progress output
+   during integration. Optionally, you may add <code>--no_plot</code>
+   to avoid leaving several windows open; using this option, no figure is drawn or saved;
+   but the CSV still records the run summary and sampled diagnostics.
+
 </div>
 
 
@@ -1128,8 +1143,8 @@ you will generally witness ejections. Here are the results of one set of trials:
 <table class="bordered-table no-marging-bottom">
 <tr><th>Console Output</th><th>Seed 1</th><th>Seed 2</th><th>Seed 3</th><th>Seed 4</th> </tr>
 <tr><td>Timestep </td><td>374.78 yr</td><td>373.80 yr</td><td>335.03 yr</td><td>417.54 yr</td></tr>
-<tr><td>Crossing time \(t_0\) </td><td>  0.7496  Myr</td><td>0.7476  Myr</td><td>0.6701  Myr</td><td>0.8351  Myr</td></tr>
-<tr><td>Relaxation time \(t_0\) </td><td> 1.373  Myr</td><td>1.369  Myr</td><td>1.227  Myr</td><td>1.530  Myr</td></tr>
+<tr><td>Initial crossing time</td><td>  0.7496  Myr</td><td>0.7476  Myr</td><td>0.6701  Myr</td><td>0.8351  Myr</td></tr>
+<tr><td>Initial nominal relaxation time</td><td> 1.373  Myr</td><td>1.369  Myr</td><td>1.227  Myr</td><td>1.530  Myr</td></tr>
 <tr><td>Total time run (\(100 \times t_{\rm relax} \))</td><td> 137.3  Myr  </td><td>136.9  Myr</td><td>122.7  Myr </td><td>153.0  Myr </td></tr>
 
 <tr><td>Half-mass radius</td><td>1.362 -> 5.091  pc</td><td>1.36 -> 3.971  pc</td><td>1.264 -> 5.412  pc</td><td>1.464 -> 4.230  pc</td></tr>
@@ -1138,7 +1153,7 @@ you will generally witness ejections. Here are the results of one set of trials:
 <tr><td>Near-escape tail</td><td>1.67%</td><td>5.00% </td><td>3.33% </td><td> 1.67%</td></tr>
 <tr><td>Max sampled energy drift</td><td>1.038%</td><td>0.776%</td><td>0.839%</td><td>1.712%</td></tr>
 </table>
-<div class="narrow-break small-text">The values quoted above are from Windows 11 [Python/NumPy versions]. Users of other platforms
+<div class="narrow-break small-text">The values quoted above are from runs recorded on Windows 11 with Python 3.14.6, Numpy 2.5.0. Users of other platforms
 may get different results, since the reduced softening run is chaotic and sensitive to floating point details. 
 </div>
 
@@ -1197,21 +1212,29 @@ until the EXP-11 persistence check is made.
 	  <p>Read the virial theorem note in <a href="#reading">Reading the diagnostics</a> &mdash; 
 	  including its caveat that scalar balance is not, by itself, proof of a settled dynamical equilibrium &mdash; 
 	  to see why a settled oscillation near 1, not a single converged number, is the expected signature here.</p></div>
+	  
       <div class="exp-card"><div class="ec-num" id="exp3">EXP-3 &middot; introductory</div>
-	  <h4>How Fast Do Nearby Orbits Diverge?</h4><p>Run <code>python main.py --mode chaos</code>. If the divergence panel's title reports a fitted Lyapunov time 
-	  (or the terminal summary shows one), express it as a multiple of the initial crossing time. 
+	  <h4>How Fast Do Nearby Orbits Diverge?</h4>
 	  
-  Express it as a multiple of the printed crossing time. Then repeat
-  with <code>--softening_pc 0.1 --steps_per_crossing 200</code> and with
-  <code>--softening_pc 0.03 --steps_per_crossing 500</code>. How does the
-  divergence curve change? (The automatic fit may decline these runs;
-  read the curve directly.) Compare with the literature value of about
-  one tenth of a conventional crossing time for unsoftened systems,
-  remembering that this program's crossing time is defined
-  differently.</p><br>
-
+	  <p>Run <code>python main.py --mode chaos --seed 1 --perturbation_seed 1</code>. If a
+	  Lyapunov time is reported, express it as a multiple of the printed
+	  crossing time. Keeping both seeds fixed, repeat with
+	  <code>--softening_pc 0.1 --steps_per_crossing 200</code>, then with
+	  <code>--softening_pc 0.03 --steps_per_crossing 500</code>. How does the divergence
+	  curve change? The automatic fit may decline these runs; compare the
+	  slopes visually rather than requiring a fitted number. These are
+	  comparisons within this softened model, not a numerical reproduction
+	  of the unsoftened literature benchmark.</p><br>
 	  
-	  <p>Run it again (no <code>--seed</code>) and see whether the estimate is stable from realization to realization. This program's fit is a heuristic, permissive-but-imperfect gate (see the fit limitations in Domain of Validity), so some runs will legitimately report no fit at all &mdash; if that happens, look at the plotted divergence curve directly: does it still show a stretch of roughly straight-line growth on the logarithmic axis, even though the automated check didn't confirm it? Either outcome (a numeric answer, or a documented non-result with a visual read of the curve) is an acceptable result for this exercise.</p></div>
+	  <p>As a separate comparison, omit --seed while keeping the other settings fixed
+	  and see whether the estimate is stable from realization to realization. 
+	  This program's fit is a heuristic, permissive-but-imperfect gate (see the fit limitations in Domain of Validity), 
+	  so some runs will legitimately report no fit at all &mdash; 
+	  if that happens, look at the plotted divergence curve directly: does it still show a stretch of roughly
+	  straight-line growth on the logarithmic axis, even though the automated check didn't confirm it? 
+	  Either outcome (a numeric answer, or a documented non-result with a visual read of the curve) is an acceptable 
+	  result for this exercise.</p></div>
+	  
       <div class="exp-card"><div class="ec-num" id="exp4">EXP-4 &middot; introductory</div><h4>Meet the Two Force Methods</h4>
 	  <p>Run the same cluster twice, once with <code>--method tree</code> and once with <code>--method direct</code>, 
 	  using a fixed <code>--seed</code> so both start identically. Compare final energy, final virial ratio and the Lagrangian radii. 
@@ -1268,7 +1291,8 @@ until the EXP-11 persistence check is made.
         well the numerical evolution preserves its energy. 	 
  	  </p><br>
 
-      <p>Repeat with <code>--softening_pc 10 --steps_per_freefall 640 --method direct</code> and compare the peak \(Q.\)</p><br>
+      <p>As an optional follow-up, repeat the \(Q_0 = 0\) run with 
+	  <code>--softening_pc 10 --steps_per_freefall 640 --method direct</code> and compare the peak \(Q.\)</p><br>
 
 	  <p>For the cold and warm cases, compare how far the final virial ratio overshoots or undershoots 1, and connect what 
 	  you see to why colder initial conditions are described as producing more &ldquo;violent&rdquo; relaxation. 
@@ -1351,8 +1375,7 @@ for k in range(max(n_snap - 5, 0), n_snap):    # the last 5 stored snapshots
 	  
       <p>Now repeat at the same resolutions with the tree method and fixed
       theta. 
-	  Does the energy error decrease similarly, level off, or even grow? (Each step
-      adds a small non-conservative tree-force error.)
+	  Does the energy error decrease similarly, level off, or even grow? 
 	  A fixed opening angle can eventually limit the benefit
       of reducing the timestep. These three resolutions need not reach
       that limit, and fourfold improvement is not guaranteed in either
@@ -1459,13 +1482,13 @@ for k in range(max(n_snap - 5, 0), n_snap):    # the last 5 stored snapshots
 
     <h3>CSV columns</h3>
     <p>The CSV, PNG and provenance sidecar for a saved run share the same run-start timestamp and identifying suffix, including when the files are saved in different directories. After its provenance comments, the CSV includes a copy of the console summary headed <code># Console summary:</code>. The data header and snapshot rows follow.</p>
-    <p>All three modes write one row per recorded snapshot, with a provenance comment header (mode, parameters, <code>BUILD_ID</code>) prepended as <code>#</code>-prefixed lines before the column header row &mdash; the same convention as <em>StellarEvolutionTracks</em>' CSV output. Units are mixed and named explicitly per column, not a single system: times and lengths (columns ending <code>_Myr</code>/<code>_pc</code>) are in the astronomer-friendly units used throughout this program's display and printed output, while energies (columns ending <code>_J</code>) are in SI joules, matching the internal unit convention used throughout <code>physics_nbg.py</code>; see the column-by-column notes below.</p>
+    <p>All three modes write one row per recorded snapshot, with a provenance comment header (mode, parameters, <code>BUILD_ID</code>) prepended as <code>#</code>-prefixed lines before the column header row. Units are mixed and named explicitly per column, not a single system: times and lengths (columns ending <code>_Myr</code>/<code>_pc</code>) are in the astronomer-friendly units used throughout this program's display and printed output, while energies (columns ending <code>_J</code>) are in SI joules, matching the internal unit convention used throughout <code>physics_nbg.py</code>; see the column-by-column notes below.</p>
     <table class="out-table"><thead><tr><th>Mode</th><th>Columns</th></tr></thead><tbody>
       <tr><td class="pname">cluster</td><td><code>t_Myr, r10_pc, r25_pc, r50_pc, r75_pc, r90_pc, virial_ratio, n_unbound, high_velocity_fraction, kinetic_J, kinetic_com_J, potential_J, virial_work_J, energy_J</code></td></tr>
       <tr><td class="pname">galaxy</td><td><code>t_Myr, r10_pc, r25_pc, r50_pc, r75_pc, r90_pc, virial_ratio, kinetic_J, kinetic_com_J, potential_J, virial_work_J, energy_J</code></td></tr>
       <tr><td class="pname">chaos</td><td><code>t_Myr, divergence_pc, energy_a_J, energy_b_J</code></td></tr>
     </tbody></table>
-    <p>Energies are reported in joules (SI), matching the internal unit convention used throughout <code>physics_nbg.py</code>; every length quantity is converted to parsecs for readability. <code>potential_J</code> is the softened potential energy \(U\), used for the total-energy conservation check; <code>virial_work_J</code> is the separate virial (force-weighted) sum \(W_{\rm vir}\) used to compute <code>virial_ratio</code> &mdash; see Reading the diagnostics above for why these two are not the same quantity. There are likewise two distinct kinetic-energy columns: <code>kinetic_J</code> is the raw, lab-frame total kinetic energy (so that <code>energy_J = kinetic_J + potential_J</code> exactly, matching the quantity the integrator conserves), while <code>kinetic_com_J</code> is the system's internal kinetic energy, measured relative to its own instantaneous center-of-mass velocity; <code>virial_ratio</code> is computed from <code>kinetic_com_J</code>, not <code>kinetic_J</code> &mdash; i.e. <code>virial_ratio</code> \(\approx\) <code>2*kinetic_com_J/abs(virial_work_J)</code> &mdash; so that a uniform bulk velocity applied to the whole system (which changes <code>kinetic_J</code> but has nothing to do with internal virial balance) leaves the reported virial ratio unchanged. <code>n_unbound</code> is an integer count using the instantaneous unboundedness criterion (specific energy &gt; 0 relative to the system, evaluated at that snapshot regardless of the body's current radial motion &mdash; see Domain of Validity); <code>high_velocity_fraction</code> is a fraction in [0, 1].</p>
+    <p>Energies are reported in joules (SI), matching the internal unit convention used throughout <code>physics_nbg.py</code>; every length quantity is converted to parsecs for readability. <code>potential_J</code> is the softened potential energy \(U\), used for the total-energy conservation check; <code>virial_work_J</code> is the separate virial (force-weighted) sum \(W_{\rm vir}\) used to compute <code>virial_ratio</code> &mdash; see Reading the diagnostics above for why these two are not the same quantity. There are likewise two distinct kinetic-energy columns: <code>kinetic_J</code> is the raw, lab-frame total kinetic energy (so that <code>energy_J = kinetic_J + potential_J</code> exactly, matching the quantity the integrator conserves), while <code>kinetic_com_J</code> is the system's internal kinetic energy, measured relative to its own instantaneous center-of-mass velocity; <code>virial_ratio</code> is computed from <code>kinetic_com_J</code>, not <code>kinetic_J</code> &mdash; <i>i.e.</i> <code>virial_ratio</code> \(\approx\) <code>2*kinetic_com_J/abs(virial_work_J)</code> &mdash; so that a uniform bulk velocity applied to the whole system (which changes <code>kinetic_J</code> but has nothing to do with internal virial balance) leaves the reported virial ratio unchanged. <code>n_unbound</code> is an integer count using the instantaneous unboundedness criterion (specific energy &gt; 0 relative to the system, evaluated at that snapshot regardless of the body's current radial motion &mdash; see Domain of Validity); <code>high_velocity_fraction</code> is a fraction in [0, 1].</p>
   </section>
 
 
@@ -1477,7 +1500,15 @@ for k in range(max(n_snap - 5, 0), n_snap):    # the last 5 stored snapshots
 	  <code>tree</code> approximates that force.</td><td>quantitatively correct up to the timestep's own truncation error and (tree only) 
 	  the opening-angle approximation error</td></tr>
       <tr><td class="cname">cluster &mdash; relaxation</td><td>real N-body dynamics of this discrete, softened model; the relaxation TIME formula quoted for context is a nominal, UNSOFTENED order-of-magnitude scaling, not a precise prediction for the softened system actually integrated</td><td>a genuine simulation result, but at default parameters it is often dominated by a brief initial readjustment toward the rescaled virial balance rather than by two-body relaxation, which the default softening actively suppresses; the half-mass radius and near-escape tail can stay flat, or even move opposite the textbook core-contracts/outskirts-expand direction, on any single default run (see EXP-1, EXP-11 and Domain of Validity for a setup that isolates relaxation more cleanly)</td></tr>
-      <tr><td class="cname">galaxy &mdash; collapse</td><td>real N-body dynamics of this discrete, softened model; classic, reproducible numerical experiment</td><td>quantitative for THIS N and these initial conditions; the collapse, bounce and settling into a remnant with virial ratio <i>Q</i> oscillating near 1 is the qualitative outcome the literature (van Albada 1982) describes as violent relaxation &mdash; a run settling far from <i>Q</i>&nbsp;=&nbsp;1 more often flags a resolution or run-length problem than a genuine physical departure from equilibrium (see Domain of Validity)</td></tr>
+      <tr><td class="cname">galaxy &mdash; collapse</td>
+	  <td>real N-body dynamics of this discrete, softened model; classic, reproducible numerical experiment</td>
+	  <td>
+	   This softened, finite-N model illustrates collapse, rebound and rapid
+	   redistribution of energy. Its final structure depends on the initial
+	   realization, softening and resolution. The worked seed produces two
+	   clumps. A global virial ratio near one does not establish equilibrium
+	   of the whole system or of either clump.
+	  </td></tr>
       <tr><td class="cname">chaos &mdash; Lyapunov time</td><td>real N-body dynamics of this discrete, softened model; the exponential-fit window and its accept/reject decision 
 	  are chosen automatically from the data by a heuristic, not a formal statistical test (see the fit limitations in Domain of Validity)</td>
 	  <td>when a fit is reported, treat it as the program's finite-time estimate for this particular realization, not a certified measurement &mdash; this heuristic 

@@ -2,27 +2,59 @@
 <h1>NbodyGalaxySimulator 1.0.4 Release Notes</h1>
 <p><b>Version:</b> 1.0.4<br><b>Build:</b> 3e54985aab06<br><b>Date:</b> 2026-11-13</p>
 <h2>Release Status</h2>
-<p>Audit51 preparation in progress. Claude and Grok placed the November 12 Kickoff5 candidate on HOLD. This working package implements the code and release-document items assigned to Codex in Tom's response and includes Tom's revised Help. Several Help edits remain listed in the accompanying review. This is not a completed Response-to-Audit51 submission or an approved release.</p>
+<p>Response to Claude's and Grok's Audit51 of Kickoff5, prepared by Codex and Tom. The reported findings have been addressed or explicitly dispositioned in the accompanying response. This candidate is ready for Audit52; independent acceptance is pending. Neither auditor's earlier HOLD is represented as approval. The executable is unchanged from the November 13 working build 1.0.4.</p>
 <h2>Open Bugs</h2>
-<p>The revised Help addresses the main Audit51 findings, but further editing is needed before re-audit: the two Windows provenance placeholders, EXP-3's matched-seed/comparison instructions, Beat 3's remaining equilibrium wording and the galaxy Calculational Limits row, the repeated timescale labels, and small scientific/editorial clarifications. See NbodyGalaxySimulator-Review-20261113.txt for exact suggestions. Audit52 acceptance remains pending.</p>
+<p>No known unresolved release-blocking finding remains from Audit51 after the changes and review recorded in the response. Audit52 may identify additional issues. The console's advanced equilibrium terminology remains a non-blocking maintenance item.</p>
 <h2>Major Improvements in This Release</h2><ul>
+<li>Corrected the attribution of unsoftened Lyapunov times. The few-crossing-time demonstration is identified as a softened-model result. EXP-3 fixes both seeds for its softening comparison and no longer asks students to match incompatible literature time units.</li>
+<li>Beat 3 explains the default 44.48 pc softening, the distinct potential-energy and virial-work contributions to the Q=5.55 peak, and the two-clump final configuration. The late-time heading and Calculational Limits row no longer identify global virial balance with full equilibrium.</li>
+<li>Windows Beat 0 and Beat 5 observations are explicitly labelled with Tom's supplied Python 3.14.6 and NumPy 2.5.0 environment. The Guide separately identifies its Linux runs. Both nearly unsoftened Beat 0 examples fail energy conservation; neither endpoint is offered as a reliable physical escape prediction.</li>
+<li>EXP-7 includes Q0=2 and names its optional cold follow-up. EXP-1 uses actual CSV radius columns, EXP-14 permits non-monotonic tree error, missing exercise links are restored, timescale labels are distinguished, and the runtime note distinguishes CSV diagnostics from saved figures.</li>
+<li>Lagrangian curves use distinct darker colours and line styles, with the half-mass curve emphasized. Galaxy step-ceiling and snapshot-storage errors name usable CLI remedies. Force evaluation, integration, sampling and diagnostics are unchanged.</li>
+<li>The renamed SampleOutputs/NbodyGalaxySimulator-SampleOutputs_Guide.html includes six figures freshly generated earlier on November 13 from this exact executable build. Its softened-virial, clump and environment notes agree with the current Help. Those same-build figures and raw records are retained without repeating unchanged integrations for this final packaging pass.</li></ul>
+<h2>Test Suite Growth</h2>
+<p>The canonical suite contains 296 methods (from 295 at Kickoff5). The additional regression checks CLI remedies before integration. Document contracts follow the simplified settled-note wording and renamed Guide; the history sweep excludes encoded image payloads so random image bytes cannot masquerade as visible review text. The complete canonical suite passed all 296 tests with no failures, errors or skips in 884.527 seconds on Linux with Python 3.12.14, NumPy 2.3.5 and Matplotlib 3.10.8, with the final Help, Guide and Release Notes present. Python 3.10 syntax checks passed; a native Python 3.10 runtime was not tested in this response pass.</p>
+<p>From the program directory run <code>python -m unittest discover -s tests -p test_physics_nbg.py -v</code>. The full suite is run once in its canonical layout; flattened-layout discovery is a short smoke check.</p>
+<h2>Known Limitations</h2><ul>
+<li>This equal-mass, softened Newtonian teaching model has fixed global steps and an optional tree monopole approximation; it is not a converged model of a particular physical cluster or galaxy.</li>
+<li>Softening changes close encounters, relaxation and divergence. Nominal initial relaxation times do not directly measure softened relaxation. Global virial balance and a finite-window settling check do not establish complete equilibrium.</li>
+<li>Long-run endpoints can depend on the numerical environment. The cause of the Windows/Linux difference was not isolated to the operating system. The nearly unsoftened Beat 0 counterexample is numerically unreliable on both recorded environments.</li>
+<li>The complete reduced-softening Beat 5 four-seed Windows ensemble was not regenerated here. The Guide's larger-softening long run was regenerated with this build; the original Windows observations remain labelled as supplied.</li>
+<li>The optional EXP-7 follow-up changes softening, method and timestep together. It asks for comparison without claiming that softening alone caused the difference.</li>
+<li>Delivered Help equations use the MathJax CDN. No checkpoint/resume or integration progress display was added. Python 3.10 grammar compatibility is checked separately from native runtime testing.</li></ul>
+<h2>Known Minor Maintenance Items</h2><ul>
+<li>The console's advanced equilibrium terminology and its reference to documented 'modest' bounds are retained for later wording cleanup (Claude P4-4/P4-5). This response does not claim those console phrases were changed.</li>
+<li>Tom retains defined terms such as S-shaped (logistic-like), heavy-tailed, and inline punctuation inside math delimiters. Table-style uniformity is deferred; the formerly ambiguous initial crossing/relaxation labels are corrected.</li>
+<li>The chaos-fit calibration and settling tolerances do not have verified statistical performance over all possible accepted inputs.</li></ul>
+<h2>Version Identification</h2>
+<p>MODEL_VERSION 1.0.4; BUILD_ID <code>3e54985aab06</code>. The identifier covers physics_nbg.py, driver_nbg.py, main.py and plot_nbg.py after newline normalization. The current core files are byte-identical to the reviewed November 13 working build. Text and test changes do not change that identifier.</p>
+<h3>Retained history, including the superseded November 13 working status</h3>
+<p>The records below describe their respective earlier artifacts. Working-copy references to remaining edits and pending checks are historical; the current record above supersedes those statements. Historical wording is preserved, with headings demoted.</p>
+
+<h3>NbodyGalaxySimulator 1.0.4 Release Notes</h3>
+<p><b>Version:</b> 1.0.4<br><b>Build:</b> 3e54985aab06<br><b>Date:</b> 2026-11-13</p>
+<h4>Release Status</h4>
+<p>Audit51 preparation in progress. Claude and Grok placed the November 12 Kickoff5 candidate on HOLD. This working package implements the code and release-document items assigned to Codex in Tom's response and includes Tom's revised Help. Several Help edits remain listed in the accompanying review. This is not a completed Response-to-Audit51 submission or an approved release.</p>
+<h4>Open Bugs</h4>
+<p>The revised Help addresses the main Audit51 findings, but further editing is needed before re-audit: the two Windows provenance placeholders, EXP-3's matched-seed/comparison instructions, Beat 3's remaining equilibrium wording and the galaxy Calculational Limits row, the repeated timescale labels, and small scientific/editorial clarifications. See NbodyGalaxySimulator-Review-20261113.txt for exact suggestions. Audit52 acceptance remains pending.</p>
+<h4>Major Improvements in This Release</h4><ul>
 <li>Lagrangian radius curves have distinct darker colours and varied line styles; the half-mass curve is thicker.</li>
 <li>The galaxy step-ceiling error names the relevant duration and resolution options, preserving the 400,000-step limit. Snapshot-storage errors distinguish the CLI's --target_snapshots from the API's snapshot_stride. Force evaluation, time integration, initial conditions and diagnostics are unchanged.</li>
 <li>Tom's Help revisions distinguish softened chaos from the unsoftened literature benchmark, explain the softened virial spike and separated clumps, add the Q0=2 exercise case, and label Windows observations.</li>
 <li>The renamed <code>SampleOutputs/NbodyGalaxySimulator-SampleOutputs_Guide.html</code> explains the final clump and both platforms' recorded examples. All six figures are regenerated with this build. The four-seed Windows ensemble is retained as supplied, not replaced with Linux endpoints.</li></ul>
-<h2>Test Suite Growth</h2>
+<h4>Test Suite Growth</h4>
 <p>The suite now has 296 methods (from 295). One regression checks that CLI ceiling and memory errors offer usable CLI options before integration. Document contracts follow the simplified settled-note wording and renamed Guide. The affected CLI, plot, output, integration-guard, metadata and document checks passed 105 tests in 12.542 seconds with no skips. After the regenerated Guide was installed, all 22 Help/document checks passed again. The complete 296-method suite was not rerun for these presentation/message changes. The preceding 1.0.3 full-suite results remain historical, not results for this build.</p>
-<h2>Known Limitations</h2><ul>
+<h4>Known Limitations</h4><ul>
 <li>This is an equal-mass, softened Newtonian teaching model with fixed global steps and an optional tree-force approximation, not a quantitatively converged model of a particular galaxy or star cluster.</li>
 <li>Default softening suppresses close encounters; nominal relaxation times do not directly measure the softened system's relaxation. Global virial balance and finite-window settling do not prove full equilibrium.</li>
 <li>The nearly unsoftened Beat 0 comparison fails energy conservation on both recorded environments. Its late-time endpoints are not reliable physical escape predictions. The Help labels its Windows values; the Guide labels its independently recorded Linux values. The precise cause of the environment difference was not isolated.</li>
 <li>The Help still contains [Python/NumPy versions] placeholders for Tom to replace or remove. Long-run endpoints can depend on the numerical environment; no assertion of operating-system-only causation is made.</li>
 <li>The Help's Windows Beat 5 reduced-softening ensemble has not been independently regenerated in full for this pass. Current Guide examples cover the larger-softening long run.</li>
 <li>MathJax still requires CDN access in the delivered Help. No checkpoint/resume or progress display was added.</li></ul>
-<h2>Known Minor Maintenance Items</h2><ul>
+<h4>Known Minor Maintenance Items</h4><ul>
 <li>Tom deliberately retains explanatory terminology such as S-shaped (logistic-like) and heavy-tailed with a gloss; table-style standardization is deferred. The console's advanced equilibrium terminology is unchanged, as noted in the response.</li>
 <li>Help grammar, duplicate instructions and ambiguous optional comparisons remain tracked in the accompanying review. Earlier release-note wording below describes historical artifacts.</li></ul>
-<h2>Version Identification</h2>
+<h4>Version Identification</h4>
 <p>MODEL_VERSION 1.0.4; BUILD_ID <code>3e54985aab06</code>. The identifier covers the four core source modules after newline normalization; documentation and test edits do not change it.</p>
 <h3>Retained release-note history</h3>
 <p>The preceding records follow with their wording intact and heading levels demoted. They do not assert approval of this working build.</p>
@@ -240,6 +272,7 @@ test counts and recommendations refer to that earlier artifact.</p>
 
 <h3>Version Identification</h3>
 <p>MODEL_VERSION: 1.0.1<br>BUILD_ID: fda9adf9e39a</p>
+
 
 
 </body></html>
