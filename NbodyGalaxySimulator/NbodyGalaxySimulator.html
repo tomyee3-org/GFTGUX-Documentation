@@ -115,7 +115,7 @@
       font-size: 13px;
       color: var(--muted);
       text-decoration: none;
-      padding: 5px 18px 5px 22px;
+      padding: 1px 18px 1px 22px;
       border-left: 3px solid transparent;
       transition: border-color .15s, color .15s, background .15s;
     }
@@ -435,7 +435,7 @@
 .beat pre {white-space:pre-wrap;overflow-wrap:anywhere} 
 
 .narrow-break { display: block; margin-bottom: 0px; }
-.no-marging-bottom{ margin-bottom: 0px; }
+.no-margin-bottom{ margin-bottom: 0px; }
 .small-text {
     font-size: 11px;        /* Small font size */
     line-height: 1.1;       /* Narrow line spacing (relative to font size) */
@@ -474,8 +474,11 @@
 <div class="nav-label">Reference</div>
 <a href="#parameters">Parameters</a>
 <a href="#output">Output and Plot Panels</a>
+<a href="#figure-panels">&nbsp;&bull;&nbsp;Figure panels</a>
+<a href="#csv-columns">&nbsp;&bull;&nbsp;CSV columns</a>
 <a href="#limits">Calculational Limits</a>
 <a href="#validity">Domain of Validity</a>
+
 <a href="#references">References</a>
 </nav>
 <main>
@@ -624,17 +627,18 @@ for collisional clusters or the uniform-sphere model. </small></p>
 <p>Compare the outputs of these two runs. The first is nearly unsoftened. If, for the second run,
 we simply omitted the <code>--softening_pc</code> parameter, the program would automatically compute the recommended parameter
 using the formula above, but we have instead included the rounded value 0.3380 pc explicitly:</p>
-<pre class="narrow-break"><code>python main.py --mode cluster --n_bodies 60 --softening_pc  0.0001 --seed 7 --n_relax 50 --outdir ./figures</code></pre>
-<div class="narrow-break small-text">The discussion below uses a run recorded on Windows 11 with Python 3.14.6, Numpy 2.5.0. 
+<pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc  0.0001 --seed 7 --n_relax 50 --outdir ./figures</code></pre>
+
+
+<pre class="narrow-break"><code>python main.py --mode cluster --n_bodies 60 --softening_pc  0.3380 --seed 7 --n_relax 50 --outdir ./figures</code></pre>
+<div class="narrow-break small-text">The discussion below uses runs recorded on Windows 11 with Python 3.14.6, NumPy 2.5.0. 
    The Linux run
    reproduced in the Sample Outputs Guide gave a maximum sampled energy
    error of 278.212%, a final Q of 10.5780, a final half-mass radius of
-   8.064 pc, and 12 of 60 instantaneously unbound bodies. Both runs fail
-   energy conservation badly; their exact endpoints are not reliable
+   8.064 pc, and 12 of 60 instantaneously unbound bodies. Both the Windows and Linux recordings of the nearly unsoftened run fail
+   energy conservation badly; their endpoints are not reliable
    predictions of physical escape.</div>
-
-<pre><code>python main.py --mode cluster --n_bodies 60 --softening_pc  0.3380 --seed 7 --n_relax 50 --outdir ./figures</code></pre>
-
+   
 <ul>
 <li>Because of the sensitivity of the simulations to the particulars of your runtime environment, it is possible that the 
 details of your run outputs may differ from the results described below. (See Beats 1 and 4 on Stochastic Variance and Chaos.)
@@ -845,8 +849,7 @@ Here is how the method works and why it is so effective for large-scale gravitat
 	remnant is not a smooth, isotropic (<i>i.e.</i> the same in every direction) equilibrium model: 
 	
     The collapse can leave a concentrated component and an extended halo
-    of loosely bound bodies. The velocity distribution need not be the
-    same in every direction or follow the thermal distribution familiar
+    of loosely bound bodies. The velocity distribution need not follow the thermal distribution familiar
     from a gas.</p>
 
 	<p>That does not mean its 
@@ -856,11 +859,11 @@ Here is how the method works and why it is so effective for large-scale gravitat
 
 	<p>Consider the following scenario:</p>
 	<pre><code>python main.py --mode galaxy --seed 3 --outdir ./figures --csvdir ./data</code></pre>
-<p>The console output and set of figures illustrate a classic galaxy-formation cold collapse 
+<p>The console output, the set of figures, and the CSV output illustrate a classic galaxy-formation cold collapse 
 (gravitational collapse of a cloud of initially stationary gravitating particles) simulated using an \(N\)-body 
-Barnes-Hut tree algorithm (\(N = 300\) bodies, total mass \(10^6\text{ M}_\odot\)).</p>
-<p>Here is a breakdown of what is happening physically and numerically throughout the run:</p>
-
+Barnes-Hut tree algorithm (\(N = 300\) bodies, total mass \(10^6\text{ M}_\odot\)).</p> 
+<p class="no-margin-bottom">Here is a breakdown of what is happening physically and numerically throughout the run:</p>
+<div class="small-text">See <a href="#csv-columns">CSV columns</a> to identify the columns used to compute the various ratios in the following discussion.</div>
 <ol>
 	<li><b>Initial State: The Cold Sphere (\(t = 0\text{ Myr}\))</b>
 		<ul>
@@ -880,7 +883,7 @@ Barnes-Hut tree algorithm (\(N = 300\) bodies, total mass \(10^6\text{ M}_\odot\
 			minimum half-mass radius of \(18.54\text{ pc}\) at \(t = 55.6\text{ Myr}\) (roughly one free-fall time).</li>  
 			 
 			<li>Virial Spike: 
-            At deepest collapse, the CSV gives \(2T/|U|\) approximately 1.43 and
+            At deepest collapse, ratios computed from the CSV give \(2T/|U|\) approximately 1.43 and
             \(|W_{\rm vir}|/|U|\) approximately 0.258, producing the plotted \(Q\) approximately
             5.55. The large peak therefore reflects both the increased kinetic
             energy and the much smaller softened virial term. Here the <code>half-mass
@@ -1091,7 +1094,7 @@ choosing a different <code>--seed</code> value for each instance:</p>
 <pre class="narrow-break"><code>python main.py --mode cluster --n_bodies 60 --softening_pc 0.3380 --steps_per_crossing 200 ^
 --n_relax 100 --seed SEED --outdir ./figures --csvdir ./data
 </code></pre>
-<div class="narrow-break small-text">(MacOS and Linux users: Replace ^ with the \ line continuation symbol)</div>
+<div class="narrow-break small-text">(macOS and Linux users: Replace ^ with the \ line continuation symbol)</div>
 
 <p>Likewise, run four or more instances of the following code in separate command windows, choosing a 
 different <code>--seed</code> value for each instance:</p>
@@ -1140,7 +1143,7 @@ you will generally witness ejections. Here are the results of one set of trials:
 <tr><td>Force method </td><td>tree  (theta = 0.50) </td></tr>
 </table>
 
-<table class="bordered-table no-marging-bottom">
+<table class="bordered-table no-margin-bottom">
 <tr><th>Console Output</th><th>Seed 1</th><th>Seed 2</th><th>Seed 3</th><th>Seed 4</th> </tr>
 <tr><td>Timestep </td><td>374.78 yr</td><td>373.80 yr</td><td>335.03 yr</td><td>417.54 yr</td></tr>
 <tr><td>Initial crossing time</td><td>  0.7496  Myr</td><td>0.7476  Myr</td><td>0.6701  Myr</td><td>0.8351  Myr</td></tr>
@@ -1153,7 +1156,7 @@ you will generally witness ejections. Here are the results of one set of trials:
 <tr><td>Near-escape tail</td><td>1.67%</td><td>5.00% </td><td>3.33% </td><td> 1.67%</td></tr>
 <tr><td>Max sampled energy drift</td><td>1.038%</td><td>0.776%</td><td>0.839%</td><td>1.712%</td></tr>
 </table>
-<div class="narrow-break small-text">The values quoted above are from runs recorded on Windows 11 with Python 3.14.6, Numpy 2.5.0. Users of other platforms
+<div class="narrow-break small-text">The values quoted above are from runs recorded on Windows 11 with Python 3.14.6, NumPy 2.5.0. Users of other platforms
 may get different results, since the reduced softening run is chaotic and sensitive to floating point details. 
 </div>
 
@@ -1474,13 +1477,13 @@ for k in range(max(n_snap - 5, 0), n_snap):    # the last 5 stored snapshots
 	exits with an error before any of this &mdash; see Domain of Validity.) 
 	The filenames are timestamped to avoid collision, and <code>.provenance.txt</code> sidecars are written alongside every saved PNG.</p>
 
-    <h3>Figure panels</h3>
+    <h3 id="figure-panels">Figure panels</h3>
     <p><strong><code>cluster</code> mode</strong> draws a 2&times;3 grid: initial positions (a projection scatter plot), final positions, Lagrangian radii (10/25/50/75/90% mass radii versus time), virial ratio \(2T/|W_{\rm vir}|\) versus time, an unbound/near-escape panel (the instantaneous unbound-body count <code>n_unbound</code> and the near-escape-tail fraction <code>high_velocity_fraction</code> on a shared time axis &mdash; both are often exactly zero for a default-parameter run, since the default softening suppresses the close encounters that would populate either diagnostic; see the note in <a href="#beat0">softening discussion</a>), and energy conservation (total energy relative to its initial value, with the maximum SAMPLED drift &mdash; evaluated only at stored snapshots, not every integration step &mdash; reported in the panel title).</p>
     <p><strong><code>galaxy</code> mode</strong> also draws a 2&times;3 grid: initial cold-sphere positions, the deepest-collapse snapshot (the recorded time step with the smallest half-mass radius), Lagrangian radii through collapse and bounce, final positions (titled with the run's own final scalar virial ratio \(Q_{\rm final}=2T/|W_{\rm vir}|\), never labeled &ldquo;quasi-equilibrium&rdquo; from that number alone &mdash; \(Q\) near 1 is necessary but not sufficient for genuine dynamical equilibrium, and a snapshot still collapsing or expanding can pass through \(Q=1\) in transit), virial ratio through violent relaxation, and energy conservation.</p>
     <p><strong><code>chaos</code> mode</strong> (integrated with <code>method="direct"</code> by default; see Parameters) draws a 2&times;2 grid: final positions of both realizations overlaid in one projection, the position-space divergence between them on a logarithmic axis (with the exponential-growth fit window highlighted, and the panel title reporting the <em>estimated</em> Lyapunov time and fit \(R^2\) when one could be estimated &mdash; a finite-time estimate, not a certified value), energy conservation for both realizations, and a histogram of final per-body separations between the two realizations.</p>
     <p>Position panels use a shared axis-scaling rule: if a small number of bodies have been flung far from the bulk of the mass (common after a close encounter, and especially in <code>galaxy</code> mode's collapse), the axes are framed around the 95th-percentile radius rather than the true maximum, so the bulk of the system remains legible while outliers are still plotted, just possibly near the edge or clipped. This is a display choice only; no data is altered or discarded.</p>
 
-    <h3>CSV columns</h3>
+    <h3 id="csv-columns">CSV columns</h3>
     <p>The CSV, PNG and provenance sidecar for a saved run share the same run-start timestamp and identifying suffix, including when the files are saved in different directories. After its provenance comments, the CSV includes a copy of the console summary headed <code># Console summary:</code>. The data header and snapshot rows follow.</p>
     <p>All three modes write one row per recorded snapshot, with a provenance comment header (mode, parameters, <code>BUILD_ID</code>) prepended as <code>#</code>-prefixed lines before the column header row. Units are mixed and named explicitly per column, not a single system: times and lengths (columns ending <code>_Myr</code>/<code>_pc</code>) are in the astronomer-friendly units used throughout this program's display and printed output, while energies (columns ending <code>_J</code>) are in SI joules, matching the internal unit convention used throughout <code>physics_nbg.py</code>; see the column-by-column notes below.</p>
     <table class="out-table"><thead><tr><th>Mode</th><th>Columns</th></tr></thead><tbody>
@@ -1513,7 +1516,7 @@ for k in range(max(n_snap - 5, 0), n_snap):    # the last 5 stored snapshots
 	  are chosen automatically from the data by a heuristic, not a formal statistical test (see the fit limitations in Domain of Validity)</td>
 	  <td>when a fit is reported, treat it as the program's finite-time estimate for this particular realization, not a certified measurement &mdash; this heuristic 
 	  is a useful discriminator between clearly chaotic and clearly non-chaotic behavior, with expected factor-of-a-few scatter between random seeds
-	  	  for the softened-model; unsoftened systems e-fold faster 
+	  	  for the softened model; unsoftened systems e-fold faster 
 	  	  (Goodman, Heggie &amp; Hut 1993), but it does not have a known false-positive or false-negative rate across the full space of possible inputs; 
 		  a run reporting no fit is not necessarily non-chaotic &mdash; the heuristic can and does miss some genuinely chaotic runs (see the note printed 
 		  with that run and Suggested Experiments EXP-3)</td></tr>
