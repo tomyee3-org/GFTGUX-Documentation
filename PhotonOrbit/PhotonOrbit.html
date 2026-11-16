@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PhotonOrbit · Four-run terminal lab</title>
+<title>PhotonOrbit - Help File</title>
   <!-- MathJax for inline and display equations -->
   <script>
     window.MathJax = {
@@ -358,12 +358,28 @@
 
 /* Keep the version and build line visually separate from boxed callouts. */
 main #version_build { background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 0; font-family: inherit; line-height: inherit; }
-</style></head>
-<body><div class="page-wrap"><header><div class="badge">PhotonOrbit · directed terminal lab</div>
-<h1><em>PhotonOrbit</em> · Where does the photon go?</h1>
-<div class="sub">Follow four runs, then change one control at a time.</div></header>
-<nav><div class="nav-label">At the terminal</div>
-	<a href="#setup">Get ready</a><a href="#beat0">0 · Capture</a>
+</style>
+</head>
+<body>
+<div class="page-wrap">
+<header>
+<div class="badge">Gravity from the Ground Up</div>
+    <h1><em>PhotonOrbit</em> — Photon Trajectories in Schwarzschild Spacetime</h1>
+    <div class="sub">
+      Source Code:
+      <a href="https://github.com/tomyee3-org/GFTGUX-Programs"
+         target="_blank">https://github.com/tomyee3-org/GFTGUX-Programs</a><br/>
+      Documentation:
+      <a href="https://github.com/tomyee3-org/GFTGUX-Documentation"
+         target="_blank">https://github.com/tomyee3-org/GFTGUX-Documentation</a>
+    </div>
+</header>
+<nav>
+<div class="nav-label">Overview</div>
+	<a href="#tutorial-description">Tutorial Aims</a>
+	<a href="#setup">Setup</a>
+<div class="nav-label">Beats</div>    
+    <a href="#beat0">0 · Capture</a>
 	<a href="#beat1">1 · Escape</a><a href="#beat2">2 · Whirl</a>
 	<a href="#beat3">3 · Circle</a><a href="#followup">Try it yourself</a>
 	<div class="nav-label">After the runs</div>
@@ -378,28 +394,165 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 
 <p id="version_build" style="font-size:0.7em; color:#666; margin-top:-32px;">Version 1.5.0&nbsp;&nbsp;&nbsp;&nbsp;Build a8778e60ea78</p>
 <p class="cursor-tip"><strong>Plot tip:</strong> Hover your cursor over a graph in the Matplotlib window. Its (x, y) position in the graph’s coordinates appears in the lower right corner of the window.</p>
-<section id="setup"><h2>Get ready</h2><p>Use Python 3.10+ and Matplotlib. Run from the folder with <code>main.py</code>. Try <code>python main.py --help</code> if a flag is unfamiliar. Each command below opens a plot and saves a PNG and provenance sidecar under <code>./figures</code>. The <a href="SampleOutputs/PhotonOrbit-SampleOutputs_Guide.html">SampleOutputs Guide</a> shows the four current-build figures.</p>
+
+<section id="tutorial-description" style="max-width: 800px; margin: 0 auto; font-family: sans-serif; line-height: 1.6; padding: 0px;">
+    <h2>Tutorial Aims: Exploring Photon Orbits in Curved Spacetime</h2>
+    <p>
+        In this tutorial, you will investigate how light (photons) travels through the extreme gravitational field of a Schwarzschild black hole. While Newtonian physics predicts that gravity affects mass, general relativity reveals that spacetime curvature bends the path of massless light rays just as dramatically.
+    </p>
+
+    <h3>Core Concepts Introduced</h3>
+    <ul>
+        <li><strong>Null Geodesics:</strong> The paths followed by light in curved spacetime, governed by the geometry of the black hole rather than standard straight lines.</li>
+
+
+        <li><strong>Photon Orbit: </strong>An unstable circular path that light can take around a black hole, occurring at the photon sphere.
+		For a non-rotating black hole, this would be at 1.5 times the event horizon radius.</li>
+		
+		
+        <li><strong>Photon Sphere:</strong> A critical boundary where gravity is strong enough that light can be forced into unstable circular orbits.</li>
+        <li><strong>Impact Parameter:</strong> This is a measure of the sideways offset of a light ray relative to a black hole, 
+		defined with respect to the trajectory at infinity rather than the closest approach. 
+		The value determines whether a photon escapes to infinity, orbits, or plunges across the event horizon.
+
+		</li>
+    </ul>
+
+    <h3>How to Use These Beats</h3>
+    <p>
+        In the following interactive <strong>Beats</strong>, you will adjust parameters such as the impact parameter and initial positions. Pay close attention to how small changes near the critical threshold lead to dramatically different outcomes—from direct capture to looping orbits and escape.
+    </p>
+</section>
+
+<section id="setup"><h2>Setup</h2><p>Use Python 3.10+ and Matplotlib. Run from the folder with <code>main.py</code>. Try <code>python main.py --help</code> if a flag is unfamiliar. Each command below opens a plot and saves a PNG and provenance sidecar under <code>./figures</code>. The <a href="SampleOutputs/PhotonOrbit-SampleOutputs_Guide.html">SampleOutputs Guide</a> shows the four current-build figures.</p>
+
+
 <p><b>One question:</b> When does an inward-going light ray escape, and what does the plotted winding really measure?</p></section>
 
-<section id="beat0" class="beat"><h3>0 · Cross the horizon</h3>
-<p><b>Before the run:</b> <code>b=5</code> is below <code>3√3≈5.19615</code>. Point to the dashed <code>r=3</code> photon sphere and the filled <code>r=2</code> horizon. Predict capture or escape.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 5.0 --lambda_max 200.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
-<p><b>Read:</b> status <code>captured</code>; closest radius <code>2</code>; <code>Δφ=4.37461</code> rad; final affine parameter <code>23.8741</code>. The blue curve ends at the horizon, which is located within the last step. Capture does not give an asymptotic deflection angle.</p>
-<p><b>Write down:</b> Which printed field tells you the outcome, and which shows how much Schwarzschild-coordinate azimuth accumulated before it?</p></section>
-<section id="beat1" class="beat"><h3>1 · Make it turn back</h3>
+<section id="beat0"><h2>Beat 0 · Capture</h2>
+<p>
+A photon traveling along a <b><i>null geodesic</i></b> and passing by a black hole may experience any of several fates:
+<ul>
+<li>It can be captured by the black hole and fall to the <b><i>event horizon</i></b>.</li>
+<li>If its <b><i>impact parameter</i></b> is above the capture threshold, it may escape.</li>
+<li>If the photon passes near the <b><i>critical impact parameter</i></b>, it can spend a long time whirling close to the unstable <b><i>photon sphere</i></b>, 
+bending through many radians before finally escaping or falling in.</li>
+</ul>
+
+<h3>Key concepts</h3>
+<p><b>Schwarzschild Geometry and Null Geodesics:</b> The Schwarzschild equation describes the spacetime geometry around 
+      a non-rotating black hole of mass \(M\):
+       \[
+          ds^2 = -\left(1-\frac{2GM}{c^2 r}\right)c^2 dt^2
+                 + \left(1-\frac{2GM}{c^2 r}\right)^{-1} dr^2
+                 + r^2 d\theta^2
+                 + r^2 \sin^2\theta\, d\phi^2.
+      \]
+        PhotonOrbit restricts motion to the equatorial plane \(\theta=\pi/2\), so
+        \(d\theta=0\) and the angular part reduces to \(r^2 d\phi^2\). In empty space, photons follow null geodesics, meaning that \(ds^2 = 0.\) 
+		This program plots proton trajectories by integrating the general-relativistic equations of motion around the
+		non-rotating black hole described by the Schwarzschild equation using a fourth-order Runge–Kutta (RK4) scheme.
+		
+		
+		</p>
+</p>	  
+
+<p><b>Conserved Quantities and Impact Parameter:</b> Stationarity and spherical symmetry imply conserved energy \(E\)
+and angular \(L\) momentum along the geodesic. It is convenient to work with the impact parameter
+     \[
+          b = \frac{L}{E},
+     \]
+which characterizes how “grazing” the trajectory is. Because both \(E\) and \(L\) 
+ are conserved, \(b\) is conserved along the entire geodesic. Large \(b\) 
+ corresponds to more strongly grazing motion, while sufficiently small \(b\) 
+ can lead to capture. The sign of \(L\) would only reverse the sense of azimuthal motion, so PhotonOrbit uses the nonnegative magnitude \(b.\) 
+ The impact parameter has units of length.  It is the distance of closest approach the photon would have had if spacetime were flat.
+<p><b></b></p>
+
+
+<p><b>Photon Sphere and Event Horizon: </b> </p>
+      <p>
+        The Schwarzschild radius (event horizon radius) is
+      </p>
+        \[
+          r_s = \frac{2GM}{c^2},
+        \]
+      <p>
+        and the unstable circular photon orbit—the photon sphere—occurs at
+      </p>
+        \[
+          r_\text{photon} = \frac{3GM}{c^2}.
+        \]
+      <p>
+        PhotonOrbit marks both \(r_s\) and \(r_\text{photon}\) on the plot. Trajectories
+        with impact parameters near the critical value can loop around the black hole
+        many times, skimming the photon sphere before eventually escaping or falling in.
+        An initially ingoing photon started between the event horizon and the photon
+        sphere, \(r_s&lt;r_0&lt;r_\text{photon}\), cannot turn around: every allowed value of
+        \(b\)leads to capture.
+      </p>
+
+<p><b>Critical Impact Parameter: </b> </p>
+<p>Since the unstable circular null orbit is at \(r=3GM/c^2\), then, for a photon arriving from infinity, the capture threshold (critical impact parameter) is</p>
+\[b_{\rm crit}=3\sqrt{3}\,\frac{GM}{c^2}.\]
+<p>Because the program begins at a finite radius \(r_0\), it uses an extrapolated value for the 
+initial radial velocity 
+rather than assuming the photon literally starts at infinity. 
+Values of \(b\) for which that initial radial velocity would be imaginary are rejected. 
+For allowed starts outside the photon sphere, \(b_{\rm crit}\) is the boundary between capture and scattering. 
+For allowed starts inside the photon sphere, however, the photon is already in the inner radial region and is captured even when \(b&gt;b_{\rm crit}\). 
+On the output diagnostics, this value is listed as <code>Critical b (b_crit)</code>.</p>
+
+<h3>Program Output Units and Scaling</h3>
+<p>All lengths must use the same unit. 
+With <code>GM_over_c2 = 1.0</code>, the event horizon is at \(r=2\), the photon sphere at \(r=3\), and \(b_{\rm crit}=3\sqrt{3} \approx 5.1961524 \ldots \) 
+With the chosen \(E=1\) normalization, \(r\) and the "affine parameter" \(\lambda\) use the same length scale. 
+For the purposes of this module, it is sufficient to understand that in general relativity, 
+an affine parameter provides a consistent "ruler" that allows one to measure progress along curves in curved spacetime,
+and <code>d_lambda</code> is the step size used by the RK4 integrator. 
+</p>
+
+<h3>Example run</h3>
+<p>Execute the following:</p>
+<pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 5.0 --lambda_max 200.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
+<p>The impact parameter <code>b=5</code> is less than \( 3 \sqrt{3}≈5.19615 .\) 
+Reading the Matplotlib figure and the console output, one observes that the photon curves around the 
+upper side of the black hole and reaches the event horizon at \(r = 2.\) The shaded disk marks the event 
+horizon and the dashed circle marks the photon sphere at \(r = 3.\)
+<ul>
+<li>With \(GM/c^2 = 1\), the critical impact parameter for a photon arriving from infinity is \(3 \sqrt{3} ≈ 5.19615.\)</li>
+<li>The photon does not actually begin at infinity, but starts from \(r_0 = 20.\)</li>
+<li>The chosen value \(b = 5\) lies below the critical impact parameter, so the ingoing photon cannot turn around.</li>
+<li>The RK4 step boundaries do not lie exactly on the event horizon. However, the plot algorithm interpolates the trajectory endpoint so that it lies
+precisely on the horizon rather than undershooting or overshooting it.
+<li>The interpolated \( \Delta \phi \) is  4.37461 rad.</li>
+<li>The interpolated affine parameter is  23.8741. A total of 2,388 run steps were 
+taken out of a maximum of \(200 / 0.01 = 20,000\) allowed steps.</li>
+</ul>
+
+<h3>Try it yourself</h3>
+<ol>
+<li><code>python main.py --b 0</code>. Why is the blue path straight, and why is \( \Delta \phi = 0 \)?</li>
+<li><code>python main.py --r0 2.5 --b 3</code>. Repeat with different values of the impact parameter between 0 and 5.590. 
+(Values above 5.59017 are disallowed, since the initial radial velocity becomes imaginary inside the photon sphere.)
+Between horizon and photon sphere, can an initially ingoing allowed ray turn back?</li>
+</ol>
+</p>
+
+<section id="beat1"><h2>Beat 1 · Escape</h2>
 <p><b>Before the run:</b> Change only <code>b</code> to <code>6</code>. Predict where the closest point lies relative to <code>r=3</code>.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 6.0 --lambda_max 200.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
 <p><b>Read:</b> status <code>escaped</code>; sampled closest radius <code>4.45336</code>; <code>Δφ=4.40611</code> rad. Follow the path outward to the program's finite escape radius <code>2r0=40</code>; “escaped” does not mean the calculation reached infinity.</p>
 <p><b>Write down:</b> What changed between Beat 0 and Beat 1 besides the outcome? Keep the finite starting radius <code>r0=20</code> in mind.</p></section>
-<section id="beat2" class="beat"><h3>2 · Approach the dividing line</h3>
+<section id="beat2"><h2>Beat 2 · Whirl</h2>
 <p><b>Before the run:</b> Use <code>b=5.205</code>, just above critical. Guess whether the ray escapes immediately or loops near <code>r=3</code>.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 5.205 --lambda_max 400.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
 <p><b>Read:</b> it escapes after a whirl: sampled closest radius <code>3.10571</code>, <code>Δφ=8.72842</code> rad, final affine parameter <code>70.4343</code>. Compare with Beat 1's <code>Δφ</code> at the same <code>r0</code> and RK4 step size.</p>
 <p><b>Try:</b> Repeat with <code>--d_lambda 0.02</code> and <code>0.005</code>. Compare Δφ and the event-located final affine parameter; the sampled minimum radius need not improve monotonically in its last digits.</p></section>
-<section id="beat3" class="beat"><h3>3 · Balance at the photon sphere</h3>
+<section id="beat3"><h2>Beat 3 · Circle</h2>
 <p><b>Before the run:</b> Set <code>r0=3</code> and copy the full-precision <code>b=3√3</code>. What should the initial radial acceleration be?</p><pre><code>python main.py --GM_over_c2 1.0 --r0 3.0 --b 5.196152422706632 --lambda_max 100.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
 <p><b>Read:</b> status <code>lambda_max</code>, radius <code>3</code>, <code>Δφ=57.735</code> rad over <code>100</code> affine units. It circles about 9.19 times during this finite run. <code>lambda_max</code> is a time cutoff, not a surface in space; this orbit is unstable.</p>
 <p><b>Try:</b> Decrease <code>b</code> to <code>5.196152</code> at the same <code>r0</code>: capture. A sufficiently larger <code>b</code> is an invalid initial condition. The code tolerates a few floating-point ulps just over the bound; do not assign that band physical meaning.</p></section>
 <section id="followup"><h2>Try it yourself · one change per run</h2><ol>
-<li><code>python main.py --b 0</code>. Why is the blue path straight, and why is <code>Δφ=0</code>?</li>
-<li><code>python main.py --r0 2.5 --b 3</code>. Between horizon and photon sphere, can an initially ingoing allowed ray turn back?</li>
+
 <li>At fixed <code>r0=20</code>, bracket the transition with <code>--b 5.19</code> and <code>--b 5.20</code>. Narrow the bracket; give both status and step size.</li>
 <li>Compare <code>--b 6</code> with <code>--b 5.205</code> at the same <code>r0</code> and <code>--d_lambda</code>. Which field quantifies the extra winding?</li>
 <li>Repeat Beat 1 with all lengths and affine settings multiplied by ten: <code>--GM_over_c2 10 --r0 200 --b 60 --lambda_max 2000 --d_lambda 0.1</code>. Which dimensionless angular diagnostic stays the same?</li>
