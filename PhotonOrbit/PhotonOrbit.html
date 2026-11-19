@@ -379,20 +379,22 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 	<a href="#tutorial-description">Tutorial Aims</a>
 	<a href="#setup">Setup</a>
 <div class="nav-label">Beats</div>    
-    <a href="#beat0">0 · Capture</a>
-    <a href="#beat1">1 · Radial Motion</a>	
+    <a href="#beat0">0 · Inward Plunge & Capture</a>
+    <a href="#beat1">1 · Radial Kinematics</a>	
 	
     <a href="#first-integral">&nbsp;&nbsp;&bull;&nbsp;1st Integral Radial Motion</a>	
     <a href="#second-order">&nbsp;&nbsp;&bull;&nbsp;2nd Order Radial Equation</a>	
     <a href="#azimuthal-equation">&nbsp;&nbsp;&bull;&nbsp;Azimuthal Equation</a>	
     <a href="#example-application">&nbsp;&nbsp;&bull;&nbsp;Example Application</a>	
 	
-	<a href="#beat2">2 · Escape</a>
-	<a href="#beat3">3 · Whirl</a>
-	<a href="#beat4">4 · Circle</a>
-	<a href="#followup">Try it yourself</a>
+	<a href="#beat2">2 · Deflection & Whirling</a>
+	<a href="#beat3">3 · Unstable Circular Separatrix</a>
+
+	<a href="#experiments">Suggested Experiments</a>
+
+
 	<div class="nav-label">After the runs</div>
-	<a href="#equations">Equations</a>
+
 	<a href="#algorithm">Algorithm and flags</a>
 	<a href="#parameters">Parameters</a>
 	<a href="#validity">Domain of Validity</a>
@@ -438,7 +440,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 
 <p><b>One question:</b> When does an inward-going light ray escape, and what does the plotted winding really measure?</p></section>
 
-<section id="beat0"><h2>Beat 0 · Capture</h2>
+<section id="beat0"><h2>Beat 0 · Inward Plunge and Capture</h2>
 <p>
 A photon traveling along a <b><i>null geodesic</i></b> and passing by a black hole may experience any of several fates:
 <ul>
@@ -545,7 +547,7 @@ taken out of a maximum of \(200 / 0.01 = 20,000\) allowed steps.</li>
 
 </p>
 
-<section id="beat1"><h2>Beat 1 · Radial Motion</h2>
+<section id="beat1"><h2>Beat 1 · Radial Kinematics</h2>
 
 <p>This Beat is more mathematically oriented than Beats 2 through 4. We first derive the radial first integral for photon paths in Schwarzschild spacetime. 
 (If you prefer, you may skip the derivation and jump directly to the final equation.)</p>
@@ -638,30 +640,72 @@ out turning points in this inner region is left as an exercise (<a href="#exp5">
 
 </section>
 
+<section id="beat2">
+<h2>Beat 2 · Deflection and Whirling</h2>
+
+<p>When an ingoing photon is launched outside the photon sphere ($r_0 > 3GM/c^2$) with an impact parameter exceeding the critical 
+threshold ($b > 3\sqrt{3}\,GM/c^2 \approx 5.19615$), it cannot fall into the event horizon. Instead, it reaches a periastron turning point where $dr/d\lambda = 0$ and escapes back to infinity.</p>
+
+<p>The total azimuthal bending $\Delta\phi$ depends continuously on how close $b$ is to $b_{\text{crit}}$. 
+For large $b$, the trajectory suffers mild gravitational deflection; as $b \to b_{\text{crit}}^+$, the photon skims 
+closer to the photon sphere at $r=3$, accumulating multiple complete revolutions (whirling) before escaping.</p>
+
+<h3>1. Mild Deflection ($b = 6.0$)</h3>
+<p><strong>Before the run:</strong> Predict where the closest point lies relative to $r=3$.</p>
+<pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 6.0 --lambda_max 200.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
+<p><strong>Observation:</strong> Status <code>escaped</code>; sampled closest approach $r_{\min} = 4.45336$; 
+accumulated azimuth $\Delta\phi = 4.40611\text{ rad}$ ($\approx 0.70\text{ revolutions}$). 
+The photon turns around well outside the photon sphere.</p>
+
+<h3>2. Multi-Loop Whirling ($b \to b_{\text{crit}}^+$)</h3>
+<p>As $b$ approaches $b_{\text{crit}} \approx 5.1961524$, the photon spends an arbitrarily long affine duration hovering near $r=3$. 
+Execute this sequence to observe multi-loop winding:</p>
+<pre><code># ~1.39 loops:
+python main.py --r0 20.0 --b 5.205 --lambda_max 400.0 --d_lambda 0.01
+
+# ~3.23 loops:
+python main.py --r0 20.0 --b 5.1963 --lambda_max 600.0 --d_lambda 0.01
+
+# >8 loops (deep whirling near the photon sphere):
+python main.py --r0 20.0 --b 5.196153 --lambda_max 1200.0 --d_lambda 0.005</code></pre>
+
+<p><em>Key takeaway:</em> There is no sharp boundary between "escape" and "whirl"—whirling is 
+simply near-critical scattering where $\Delta\phi$ diverges logarithmically according to $\Delta\phi \sim -\ln(b - b_{\text{crit}})$.</p>
+
+<p><em>Experiments that go with this beat:</em> <a href="#exp4">EXP-4</a>, <a href="#exp7">EXP-7</a>, <a href="#exp10">EXP-10</a>, 
+<a href="#exp11">EXP-11</a> in <a href="#experiments">Suggested Experiments</a>.</p>
+</section>
 
 
+<section id="beat3">
+<h2>Beat 3 · Unstable Circular Separatrix</h2>
 
-<section id="beat2"><h2>Beat 2 · Escape</h2>
-<p><b>Before the run:</b> Change only <code>b</code> to <code>6</code>. Predict where the closest point lies relative to <code>r=3</code>.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 6.0 --lambda_max 200.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
-<p><b>Read:</b> status <code>escaped</code>; sampled closest radius <code>4.45336</code>; <code>Δφ=4.40611</code> rad. Follow the path outward to the program's finite escape radius <code>2r0=40</code>; “escaped” does not mean the calculation reached infinity.</p>
-<p><b>Write down:</b> What changed between Beat 0 and Beat 2 besides the outcome? Keep the finite starting radius <code>r0=20</code> in mind.</p></section>
-<section id="beat3"><h2>Beat 3 · Whirl</h2>
-<p><b>Before the run:</b> Use <code>b=5.205</code>, just above critical. Guess whether the ray escapes immediately or loops near <code>r=3</code>.</p><pre><code>python main.py --GM_over_c2 1.0 --r0 20.0 --b 5.205 --lambda_max 400.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
-<p><b>Read:</b> it escapes after a whirl: sampled closest radius <code>3.10571</code>, <code>Δφ=8.72842</code> rad, final affine parameter <code>70.4343</code>. Compare with Beat 2's <code>Δφ</code> at the same <code>r0</code> and RK4 step size.</p>
-<p><b>Try:</b> Repeat with <code>--d_lambda 0.02</code> and <code>0.005</code>. Compare Δφ and the event-located final affine parameter; the sampled minimum radius need not improve monotonically in its last digits.</p></section>
-<section id="beat4"><h2>Beat 4 · Circle</h2>
-<p><b>Before the run:</b> Set <code>r0=3</code> and copy the full-precision <code>b=3√3</code>. What should the initial radial acceleration be?</p><pre><code>python main.py --GM_over_c2 1.0 --r0 3.0 --b 5.196152422706632 --lambda_max 100.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
-<p><b>Read:</b> status <code>lambda_max</code>, radius <code>3</code>, <code>Δφ=57.735</code> rad over <code>100</code> affine units. It circles about 9.19 times during this finite run. <code>lambda_max</code> is a time cutoff, not a surface in space; this orbit is unstable.</p>
-<p><b>Try:</b> Decrease <code>b</code> to <code>5.196152</code> at the same <code>r0</code>: capture. A sufficiently larger <code>b</code> is an invalid initial condition. The code tolerates a few floating-point ulps just over the bound; do not assign that band physical meaning.</p></section>
+<p>At the exact threshold $b = 3\sqrt{3}\,GM/c^2$, the effective potential gradient vanishes at $r = 3GM/c^2$. 
+A photon starting at $r_0 = 3$ with this precise impact parameter satisfies both $dr/d\lambda = 0$ and $d^2r/d\lambda^2 = 0$, 
+placing it in a circular photon orbit.</p>
 
+<p>Because this circular orbit corresponds to a maximum of the effective potential barrier, 
+it is <strong>unstable</strong>. Any infinitesimal perturbation causes the photon to spiral away into space or plunge into the black hole.</p>
 
-<section id="followup"><h2>Try it yourself · one change per run</h2><ol>
+<h3>1. Launching on the Photon Sphere</h3>
+<p><strong>Before the run:</strong> Set $r_0 = 3$ and use full double-precision $b = 3\sqrt{3}$. What is the expected initial radial acceleration?</p>
+<pre><code>python main.py --GM_over_c2 1.0 --r0 3.0 --b 5.196152422706632 --lambda_max 100.0 --d_lambda 0.01 --lw 1.5 --dpi 150</code></pre>
+<p><strong>Observation:</strong> Status <code>lambda_max</code>; radial distance remains $r \approx 3.0$; 
+total azimuth $\Delta\phi = 57.735\text{ rad}$ ($\approx 9.19\text{ orbits}$). The run terminates due to the 
+path parameter limit <code>lambda_max</code>, not a spatial boundary.</p>
 
-<li>At fixed <code>r0=20</code>, bracket the transition with <code>--b 5.19</code> and <code>--b 5.20</code>. Narrow the bracket; give both status and step size.</li>
-<li>Compare <code>--b 6</code> with <code>--b 5.205</code> at the same <code>r0</code> and <code>--d_lambda</code>. Which field quantifies the extra winding?</li>
-<li>Repeat Beat 2 with all lengths and affine settings multiplied by ten: <code>--GM_over_c2 10 --r0 200 --b 60 --lambda_max 2000 --d_lambda 0.1</code>. Which dimensionless angular diagnostic stays the same?</li>
-<li>Run <code>python main.py --r0 6 --b 7.3484692283495345</code> and <code>python main.py --r0 2.5 --b 5.590169943749475</code>. Both start tangentially. Why do their statuses differ? Use the radial acceleration's sign.</li>
-</ol></section>
+<h3>2. Testing Instability</h3>
+<p>Slightly perturb the impact parameter at $r_0 = 3$ to observe the unstable separatrix behavior:</p>
+<pre><code># Slight reduction leads to rapid horizon capture:
+python main.py --r0 3.0 --b 5.196152 --lambda_max 100.0 --d_lambda 0.01
+
+# Slight increase is kinematically forbidden inside r=3 (imaginary initial velocity).
+# Starting just outside at r0=3.001 with b=5.19616 leads to escape:
+python main.py --r0 3.001 --b 5.19616 --lambda_max 200.0 --d_lambda 0.01</code></pre>
+
+<p><em>Experiments that go with this beat:</em> <a href="#exp9">EXP-9</a>, <a href="#exp12">EXP-12</a> 
+in <a href="#experiments">Suggested Experiments</a>.</p>
+</section>
 
 
     <!-- Suggested Experiments -->
@@ -728,9 +772,6 @@ out turning points in this inner region is left as an exercise (<a href="#exp5">
 
 
 
-
-<section id="equations"><h2>Governing Equations</h2>
-<p>In units with <code>E=1</code> and <code>L=b≥0</code>, <code>(dr/dλ)² = 1 − (b²/r²)(1−2M/r)</code>, <code>d²r/dλ² = (b²/r³)(1−3M/r)</code>, and <code>dφ/dλ=b/r²</code>, where <code>M=GM/c²</code>. The event horizon is <code>2M</code>, the photon sphere <code>3M</code>, and the critical impact parameter for infinity launch <code>3√3 M</code>. At finite <code>r0</code>, only a locally allowed range of <code>b</code> can start with real inward or tangential velocity.</p></section>
 <section id="algorithm"><h2>Algorithm and flags</h2><p>A fourth-order Runge–Kutta step advances radial position, radial velocity and azimuth. A crossing of <code>r=2M</code> or the outbound escape radius <code>2r0</code> is linearly located within the last step. The closest radius is a sampled minimum. <code>--GM_over_c2</code>, <code>--r0</code>, <code>--b</code>, <code>--lambda_max</code>, <code>--d_lambda</code>, <code>--lw</code>, <code>--dpi</code>, <code>--outdir</code>, <code>--help</code> and <code>--version</code> are the available controls. The console gives status, closest approach, <code>Δφ</code>, steps, and final affine parameter. A saved PNG has a text provenance sidecar and a lossless reproduction command; Matplotlib environment and style are not recorded, so pixels need not be identical across machines.</p></section>
 <section id="parameters">
       <h2>Parameters</h2>
