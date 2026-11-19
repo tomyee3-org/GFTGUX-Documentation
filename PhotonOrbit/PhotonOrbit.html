@@ -547,141 +547,94 @@ taken out of a maximum of \(200 / 0.01 = 20,000\) allowed steps.</li>
 
 <section id="beat1"><h2>Beat 1 · Radial Motion</h2>
 
-<p>This Beat is rather more mathematically oriented than Beats 2 through 4. In the first section of this Beat, we derive the first integral for the photon paths in Schwarzschild spacetime. 
-For the purposes of this tutorial, you may skip the derivation to get the the final result.</p>
+<p>This Beat is more mathematically oriented than Beats 2 through 4. We first derive the radial first integral for photon paths in Schwarzschild spacetime. 
+(If you prefer, you may skip the derivation and jump directly to the final equation.)</p>
 
-<p>We follow with the second 0rder radial equation and the azimuthal equation, but without deriving them.</p>
-
-<p>Finally, we present an application of these equations.</p>
+<p>We then introduce the second-order radial acceleration equation and the azimuthal motion equation 
+before demonstrating their physical applications.</p>
 
 <h3 id="first-integral">First Integral of the Radial Motion</h3>
-<p>
 
-<p>Begin with the Schrarzschild metric presented above. For light rays (photons), the spacetime interval along the path is 
-strictly zero (\(ds^2 = 0\)). 
-Confining the motion to the equatorial plane (\(\theta = \pi/2\), so \(d\theta = 0\) and \(\sin\theta = 1\)), 
-the line element simplifies to:
+<p>Begin with the Schwarzschild metric in the equatorial plane (\(\theta = \pi/2\), so \(d\theta = 0\) and \(\sin\theta = 1\)). 
+For light rays (null geodesics), the spacetime interval is 
+strictly zero (\(ds^2 = 0\)):</p>
+
 \[0 = -\left(1-\frac{2GM}{c^2r}\right)c^2 \left(\frac{dt}{d\lambda}\right)^2 + \left(1-\frac{2GM}{c^2r}\right)^{-1} \left(\frac{dr}{d\lambda}\right)^2 + r^2 \left(\frac{d\phi}{d\lambda}\right)^2\]
-where \(\lambda\) is an affine parameter along the photon trajectory.
-</p>
 
-<p><b>Constants of Motion (\(E\) and \(L\))</b></p>
-<p>
-Because the Schwarzschild metric coefficients do not depend explicitly on time \(t\) or azimuthal angle \(\phi\), 
-the spacetime possesses two Killing vectors corresponding to staticity and spherical symmetry. 
-These give rise to two conserved quantities along the geodesic:
+<p>where \(\lambda\) is an affine parameter along the photon trajectory.</p>
+
+<p><strong>Constants of Motion (\(E\) and \(L\)):</strong> 
+Because the metric coefficients are independent of \(t\) and \(\phi\), 
+Schwarzschild spacetime has two conserved quantities along any geodesic:</p>
 <ol>
-<li>Conserved Energy (\(E\)):
-\[E = \left(1-\frac{2GM}{c^2r}\right) c \frac{dt}{d\lambda} \implies c \frac{dt}{d\lambda} = \frac{E}{1-\frac{2GM}{c^2r}}\]
-</li>
-<li>
-Conserved Angular Momentum (\(L\)):
-\[L = r^2 \frac{d\phi}{d\lambda}\]
-</li>
+  <li>Conserved Energy (\(E\)):
+  \[E = \left(1-\frac{2GM}{c^2r}\right) c \frac{dt}{d\lambda} \implies c \frac{dt}{d\lambda} = \frac{E}{1-\frac{2GM}{c^2r}}\]
+  </li>
+  <li>
+  Conserved Angular Momentum (\(L\)):
+  \[L = r^2 \frac{d\phi}{d\lambda}\]
+  </li>
 </ol>
-</p>
 
-<p><b>Affine Parameter Normalization and Impact Parameter (\(b\))</b></p>
-<p>
-For null geodesics, the scale of the affine parameter $\lambda$ is arbitrary 
-and can be rescaled by a constant factor without altering the physical path.
-<ul>
-<li>The impact parameter \(b\) is defined geometrically as the ratio of conserved angular momentum to energy:
-\[b \equiv \frac{L}{E}\]
-</li>
-<li>Choosing the standard affine-parameter normalization \(E = 1\) sets:
-\[L = b\]
-</ul>
-Substituting \(E = 1\) and \(L = b\) into the conservation expressions gives:
-\[c \frac{dt}{d\lambda} = \frac{1}{1-\frac{2GM}{c^2r}}\]
-\[\frac{d\phi}{d\lambda} = \frac{b}{r^2}\]
-</p>
+<p><strong>Affine Normalization and Impact Parameter (\(b\)):</strong> 
+For null geodesics, \(\lambda\) 
+can be rescaled by any constant factor without altering the physical path. 
+Defining the impact parameter as \(b \equiv L/E\) and choosing the standard affine normalization \(E = 1\) sets \(L = b\). 
+Substituting these yields:</p>
+\[c \frac{dt}{d\lambda} = \frac{1}{1-\frac{2GM}{c^2r}} \quad \text{and} \quad \frac{d\phi}{d\lambda} = \frac{b}{r^2}\]
 
-<p><b>Assembling the Radial First Integral</b></p>
-<p>
-Now, substitute the expressions for \(c \frac{dt}{d\lambda}\) and \(\frac{d\phi}{d\lambda}\) back into the equatorial null line element:
+<p><strong>Assembling the Radial First Integral:</strong> 
+Substitute \(c \frac{dt}{d\lambda}\) and \(\frac{d\phi}{d\lambda}\) back into the equatorial null line element:</p>
 \[0 = -\left(1-\frac{2GM}{c^2r}\right) \left[ \frac{1}{1-\frac{2GM}{c^2r}} \right]^2 + \left(1-\frac{2GM}{c^2r}\right)^{-1} \left(\frac{dr}{d\lambda}\right)^2 + r^2 \left[ \frac{b}{r^2} \right]^2\]
-</p>
 
-<p>
-Simplify the first and third terms:
-\[0 = -\frac{1}{1-\frac{2GM}{c^2r}} + \left(1-\frac{2GM}{c^2r}\right)^{-1} \left(\frac{dr}{d\lambda}\right)^2 + \frac{b^2}{r^2}\]
-</p>
+<p>Multiplying through by \(\left(1-\frac{2GM}{c^2r}\right)\) and rearranging isolates \((dr/d\lambda)^2\):</p>
 
-<p>
-Multiply the entire equation by \(\left(1-\frac{2GM}{c^2r}\right)\):
-\[0 = -1 + \left(\frac{dr}{d\lambda}\right)^2 + \left(1-\frac{2GM}{c^2r}\right)\frac{b^2}{r^2}\]
-</p>
-
-<p>
-Rearrange to isolate \((dr/d\lambda)^2\) to yield the first integral of the radial motion:
 <div class="eq-block"><div class="eq-label">Radial first integral</div>
 \[\left(\frac{dr}{d\lambda}\right)^2 = 1 - \left(1-\frac{2GM}{c^2r}\right)\frac{b^2}{r^2}\]
 </div>
-</p>
 
-<p><b>Interpretation of the Sign and Turning Points</b></p>
-<p>
-Taking the square root gives:
+<p><strong>Sign Choice and Turning Points:</strong> Taking the square root gives:</p>
 \[\frac{dr}{d\lambda} = \pm \sqrt{1 - \left(1-\frac{2GM}{c^2r}\right)\frac{b^2}{r^2}}\]
-
 <ul>
-<li>Ingoing Ray: At the start of an inward trajectory, \(r\) decreases with \(\lambda\), 
-so the negative branch \(\frac{dr}{d\lambda} = -\sqrt{\dots}\) is chosen.</li>
-
-<li>Turning Point: A photon reaching a point of closest approach (periastron) must have \(\frac{dr}{d\lambda} = 0\), 
-which occurs where the effective potential term \(\left(1-\frac{2GM}{c^2r}\right)\frac{b^2}{r^2} = 1\).</li>
-
-<li>Scattered Ray: If a turning point exists outside the photon sphere (\(r > 3GM/c^2\)), \(\frac{dr}{d\lambda}\) 
-smoothly passes through zero, switching to the positive root \(\frac{dr}{d\lambda} = +\sqrt{\dots}\) as the photon escapes back to infinity.</li>
+  <li><strong>Ingoing Ray:</strong> An inward trajectory starts with \(r\) decreasing with \(\lambda\), selecting the negative root \(\frac{dr}{d\lambda} = -\sqrt{\dots}\).</li>
+  <li><strong>Turning Point:</strong> A point of closest approach (periastron) occurs where \(\frac{dr}{d\lambda} = 0\), requiring \(\left(1-\frac{2GM}{c^2r}\right)\frac{b^2}{r^2} = 1\).</li>
+  <li><strong>Scattered Ray:</strong> If a turning point exists outside the photon sphere (\(r > 3GM/c^2\)), \(\frac{dr}{d\lambda}\) smoothly passes through zero and switches to the positive root \(\frac{dr}{d\lambda} = +\sqrt{\dots}\) as the photon escapes back to infinity.</li>
 </ul>
-</p>
 
 <h3 id="second-order">Second-Order Radial Equation</h3>
-<p>To handle a turning point without manually switching the sign of a square root, PhotonOrbit integrates the equivalent second-order equation</p>
+<p>To avoid manually switching root signs at a turning point, <code>PhotonOrbit</code> integrates the equivalent second-order equation:</p>
 <div class="eq-block"><div class="eq-label">Radial acceleration</div>
-\[\frac{d^2r}{d\lambda^2}=\frac{L^2}{r^3}\left(1-\frac{3GM}{c^2r}\right).\]
+\[\frac{d^2r}{d\lambda^2}=\frac{L^2}{r^3}\left(1-\frac{3GM}{c^2r}\right)\]
 </div>
-<p>Together with \(v_r=dr/d\lambda\), this lets the numerical solution reverse from inward to outward radial motion naturally at closest approach.</p>
+<p>Together with \(v_r = dr/d\lambda\), this allows numerical trajectories to smoothly transition from inward to outward radial motion at periastron.</p>
 
 <h3 id="azimuthal-equation">Azimuthal Equation</h3>
-<div class="eq-block"><div class="eq-label">Azimuthal equation</div>\[\frac{d\phi}{d\lambda}=\frac{L}{r^2}.\]</div>
-<p>The plotted coordinates are \(x=r\cos\phi\) and \(y=r\sin\phi\).</p>
+<div class="eq-block"><div class="eq-label">Azimuthal equation</div>
+\[\frac{d\phi}{d\lambda}=\frac{L}{r^2}\]
+</div>
+<p>The plotted Cartesian coordinates are \(x=r\cos\phi\) and \(y=r\sin\phi\).</p>
+
+<h3 id="example-application">Example Application: Motion Inside the Photon Sphere</h3>
+<p>Run the following commands starting from \(r_0 = 2.5\,GM/c^2\) (which lies between the horizon at \(r=2\) and the photon sphere at \(r=3\)):</p>
+<pre><code>python main.py --r0 2.5 --b 0</code>
+<code>python main.py --r0 2.5 --b 3</code>
+<code>python main.py --r0 2.5 --b 5.3</code></pre>
+
+<p>Notice that every run is captured by the black hole. 
+The equations derived above explain why an initially ingoing photon in this region <strong>can never turn around</strong>:</p>
+
+<p><strong>1. Acceleration Argument:</strong> For any photon located between the horizon and 
+photon sphere (\(2GM/c^2 < r < 3GM/c^2\)), the factor \(\left(1 - \frac{3GM}{c^2r}\right)\) is strictly negative. Thus:</p>
+\[\frac{d^2r}{d\lambda^2} < 0 \quad (\text{for } L = b > 0)\]
+<p>Because the radial acceleration is strictly inward, an ingoing photon (\(dr/d\lambda < 0\)) is continuously 
+pulled faster toward the horizon and can never decelerate to a turning point (\(dr/d\lambda = 0\)).</p>
+
+<p><strong>2. First Integral Argument:</strong> Exploring how the radial first integral also rules 
+out turning points in this inner region is left as an exercise (<a href="#exp5">EXP-5</a>).</p>
 
 
-<h3 id="example-application">Example Application</h3>
-<p>
-Run the following:<br> 
-<code>python main.py --r0 2.5 --b 0</code><br>
-<code>python main.py --r0 2.5 --b 3</code><br>
-<code>python main.py --r0 2.5 --b 5.3</code><br>
-keeping <code>r0 = 2.5</code> between the horizon and the photon sphere. Confirm that every run is captured.
-</p>
-
-<p>
-The radial first integral and radial-acceleration equations can be used to explain why an initially ingoing photon in this region cannot turn around.
-</p>
-<p>
-The most direct approach is to start with the radial application equation. For any photon located between the horizon and the photon sphere:
-\[\frac{2GM}{c^2} < r < \frac{3GM}{c^2}\]
-<ul>
-<li>The factor \(\left(1 - \frac{3GM}{c^2r}\right)\) is strictly negative.</li>
-<li>Since \(L^2 \ge 0\) and \(r^3 > 0\), the radial acceleration is strictly non-positive:
-\[\frac{d^2r}{d\lambda^2} \le 0 \quad \left(\text{and strictly negative for } L = b > 0\right)\]</li>
-</ul>
-</p>
-<p>The radial first integral may also be used to explain this, but the argument is significantly more involved and is left as an exercise.</p>
-
-
-
-<p><em>Experiments that go with this beat:</em> <a href="#exp3">EXP-3</a>, <a href="#exp5">EXP-5</a>
-in <a href="#experiments">Suggested Experiments</a>.</p>
-
-
-</p>
-
-
-
+ <p><em>Experiments that go with this beat:</em> <a href="#exp3">EXP-3</a>, <a href="#exp5">EXP-5</a>, <a href="#exp12">EXP-12</a>
+ in <a href="#experiments">Suggested Experiments</a>.</p>
 
 </section>
 
@@ -729,21 +682,28 @@ in <a href="#experiments">Suggested Experiments</a>.</p>
 		Between horizon and photon sphere, can an initially ingoing allowed ray turn back?</p>
 		</div>
 	  
-        <div class="exp-card" id="exp3"><div class="ec-num">EXP-3 · Introductory</div>
-		<h4>Radial Acceleration</h4>
-		<p>Run <code>python main.py --b 0</code> and then several small positive values, e.g. 
-		<code>python main.py --b 0.5</code>. Record \(\Delta\phi\) and describe how the trajectory changes as angular 
-		momentum is introduced. For <code>b=0</code>, verify from the radial-acceleration equation that the 
-		acceleration vanishes and, with the chosen normalization, the inward radial velocity remains constant.</p>
+		<div class="exp-card" id="exp3"><div class="ec-num">EXP-3 · Introductory</div>
+		  <h4>Radial Acceleration</h4>
+		  <p>Run <code>python main.py --b 0</code> and then small positive values (e.g., 
+		  <code>python main.py --b 0.5</code>). Record \(\Delta\phi\) and describe how the path changes as angular 
+		  momentum is introduced. For <code>b=0</code>, verify from the radial-acceleration equation that 
+		  \(\frac{d^2r}{d\lambda^2} = 0\), meaning inward radial velocity is constant under the \(E=1\) normalization.</p>
 		</div>
+
 		
 	  
         <div class="exp-card" id="exp4"><div class="ec-num">EXP-4 · Introductory</div><h4>Capture and Escape</h4><p>With the default <code>GM_over_c2=1</code> and <code>r0=20</code>, compare <code>python main.py --b 5.0</code> with <code>python main.py --b 6.0</code>. Record the reported status and closest approach. Explain why increasing the impact parameter can permit a turning point and prevent capture.</p></div>
-        <div class="exp-card" id="exp5"><div class="ec-num">EXP-5 · Intermediate</div>
-		<h4>Between the Horizon and the Photon Sphere</h4>
-		<p>Beat 1 used the radial-acceleration equation to demonstrate that between the horizon and the photon sphere,
-		an initially ingoing photon cannot turn around. Repeat the demonstration, but using the radial first integral.</p>
+
+
+		<div class="exp-card" id="exp5"><div class="ec-num">EXP-5 · Intermediate</div>
+		  <h4>Between the Horizon and the Photon Sphere</h4>
+		  <p>Beat 1 used the radial-acceleration equation to show that an 
+		  initially ingoing photon inside the photon sphere cannot turn around. 
+		  Re-derive this using the radial first integral \(\left(\frac{dr}{d\lambda}\right)^2 = 1 - \frac{b^2}{f(r)}\), 
+		  where \(f(r) = \frac{r^2}{1 - 2GM/(c^2 r)}\). Show that for \(2 < r < 3\), \(f(r)\) decreases toward the photon sphere, 
+		  making \(f(r) > b^2\) everywhere inside \(r_0\), so \((dr/d\lambda)^2\) remains strictly positive all the way to the horizon.</p>
 		</div>
+
 
         <div class="exp-card" id="exp6"><div class="ec-num">EXP-6 · Intermediate</div><h4>Locate the Capture Threshold</h4><p>With the default <code>GM_over_c2=1</code> and <code>r0=20</code>, bracket the transition between capture and escape by running <code>python main.py --b VALUE</code> for a sequence of trial values. Refine the bracket and compare your estimate with \(3\sqrt{3}\approx5.19615\). Very near the threshold, increase <code>--lambda_max</code> if needed and repeat with a smaller <code>--d_lambda</code> before trusting the classification.</p></div>
         <div class="exp-card" id="exp7"><div class="ec-num">EXP-7 · Intermediate</div><h4>Closest Approach and the Radial First Integral</h4><p>Choose several escaping trajectories, e.g. <code>python main.py --b 6.0</code>. For each reported closest-approach radius \(r_{\min}\), test \(1=(1-2(GM/c^2)/r_{\min})b^2/r_{\min}^2\), using <code>GM_over_c2</code> for \(GM/c^2\). Compute the absolute residual between the two sides and see how it changes when <code>--d_lambda</code> is reduced.</p></div>
@@ -751,7 +711,18 @@ in <a href="#experiments">Suggested Experiments</a>.</p>
         <div class="exp-card" id="exp9"><div class="ec-num">EXP-9 · Advanced</div><h4>The Circular Photon Orbit</h4><p>Run <code>python main.py --r0 3 --b 5.196152422706632</code>. Verify that the ideal trajectory remains on the photon sphere and normally ends with status <code>lambda_max</code>. This orbit is a finely tuned unstable separatrix. At <code>r0=3</code>, decreasing <code>b</code> slightly (for example <code>--b 5.196152</code>) produces capture; increasing <code>b</code> is not a legal initial condition there — the program will reject anything above the printed critical value, because at <code>r0=3</code> the locally-allowed maximum <code>b</code> and the global critical impact parameter \(b_{\rm crit}=3\sqrt{3}\) coincide exactly. For a nearby escaping case, try <code>python main.py --r0 3.1 --b 5.20</code>.</p></div>
         <div class="exp-card" id="exp10"><div class="ec-num">EXP-10 · Advanced</div><h4>Near-Critical Whirling</h4><p>With the default <code>r0=20</code>, try escaping values such as <code>python main.py --b 5.3</code>, then <code>--b 5.25</code>, <code>--b 5.22</code>, and <code>--b 5.205</code>. Record \(\Delta\phi\) and closest approach. Observe how the photon accumulates increasing azimuth near \(r=3\) as the threshold is approached.</p></div>
         <div class="exp-card" id="exp11"><div class="ec-num">EXP-11 · Advanced</div><h4>Numerical Convergence Near the Photon Sphere</h4><p>Repeat one near-critical case, e.g. <code>b=5.205</code>, with <code>--d_lambda 0.04</code>, <code>0.02</code>, <code>0.01</code>, and <code>0.005</code> in turn. Make a small table of step size, status, closest approach, \(\Delta\phi\), and step count (all printed in the console summary). \(\Delta\phi\) and the final affine parameter are interpolated to the exact stopping surface and converge cleanly as <code>d_lambda</code> shrinks; the reported closest approach, by contrast, is simply the smallest sampled radius along the path, not an interpolated turning point, so it can show a little run-to-run jitter even as the other quantities converge smoothly — note that distinction rather than expecting every column to improve monotonically. Do not use visual smoothness alone as an accuracy test.</p></div>
-        <div class="exp-card" id="exp12"><div class="ec-num">EXP-12 · Advanced</div><h4>Tangential Launches and the Local Kinematic Bound</h4><p>A photon launched exactly tangentially (zero initial radial velocity) at <code>b</code> equal to the locally-allowed maximum for that <code>r0</code> is a legal initial condition, not merely a boundary case. Try <code>python main.py --r0 6.0 --b 7.3484692283495345</code> (this is <code>r0/sqrt(1-2*GM_over_c2/r0)</code> at the default <code>GM_over_c2=1</code>): the photon starts at rest radially and, because <code>r0</code> is outside the photon sphere, is pushed outward immediately and is reported as <code>escaped</code>. Now try the same tangential construction with <code>python main.py --r0 2.5 --b 5.590169943749475</code> (between the horizon and photon sphere): confirm the photon is <code>captured</code> instead, and explain why using the radial acceleration equation's sign for <code>r&lt;3GM/c^2</code> versus <code>r&gt;3GM/c^2</code>. Finally, try <code>--r0 3.0</code> with the exact circular-orbit <code>b</code> from EXP-7: confirm this tangential launch is the one case that does neither, remaining at <code>status=lambda_max</code>.</p></div>
+
+
+		<div class="exp-card" id="exp12"><div class="ec-num">EXP-12 · Advanced</div>
+		  <h4>Tangential Launches and Local Kinematic Bounds</h4>
+		  <p>A photon launched tangentially (zero initial radial velocity) requires \(b = \frac{r_0}{\sqrt{1 - 2GM/(c^2 r_0)}}\). 
+		  Try <code>python main.py --r0 6.0 --b 7.3484692283495345</code>: because \(r_0 > 3GM/c^2\), radial acceleration is positive 
+		  and the ray escapes. Next, try <code>python main.py --r0 2.5 --b 5.590169943749475</code>: confirm capture, 
+		  explaining how the sign of \(\frac{d^2r}{d\lambda^2}\) differs inside versus outside the photon sphere. Finally, 
+		  try <code>--r0 3.0 --b 5.196152422706632</code> (EXP-9) to confirm the stationary circular orbit separatrix.</p>
+		</div>
+
+
       </div>
     </section>
 
