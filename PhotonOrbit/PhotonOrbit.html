@@ -378,6 +378,7 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 <div class="nav-label">Overview</div>
 	<a href="#tutorial-description">Tutorial Aims</a>
 	<a href="#setup">Setup</a>
+	<a href="#algorithm">Algorithm and flags</a>
 <div class="nav-label">Beats</div>    
     <a href="#beat0">0 · Inward Plunge & Capture</a>
     <a href="#beat1">1 · Radial Kinematics</a>	
@@ -393,9 +394,8 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 	<a href="#experiments">Suggested Experiments</a>
 
 
-	<div class="nav-label">After the runs</div>
+	<div class="nav-label">Reference</div>
 
-	<a href="#algorithm">Algorithm and flags</a>
 	<a href="#parameters">Parameters</a>
 	<a href="#validity">Domain of Validity</a>
 	<a href="#related">Related programs</a>
@@ -436,6 +436,17 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
 </section>
 
 <section id="setup"><h2>Setup</h2><p>Use Python 3.10+ and Matplotlib. Run from the folder with <code>main.py</code>. Try <code>python main.py --help</code> if a flag is unfamiliar. Each command below opens a plot and saves a PNG and provenance sidecar under <code>./figures</code>. The <a href="SampleOutputs/PhotonOrbit-SampleOutputs_Guide.html">SampleOutputs Guide</a> shows the four current-build figures.</p>
+
+
+<section id="algorithm"><h2>Algorithm and flags</h2><p>A fourth-order Runge–Kutta step advances radial position, radial velocity and azimuth. 
+A crossing of <code>r=2M</code> or the outbound escape radius <code>2r0</code> is linearly located within the last step. 
+The closest radius is a sampled minimum. <code>--GM_over_c2</code>, <code>--r0</code>, <code>--b</code>, <code>--lambda_max</code>, 
+<code>--d_lambda</code>, <code>--lw</code>, <code>--dpi</code>, <code>--outdir</code>, <code>--help</code> and <code>--version</code> are the available controls. 
+(See <a href="#parameters">Parameters</a> for detailed description.) 
+The console gives status, closest approach, <code>Δφ</code>, steps, and final affine parameter. 
+A saved PNG has a text provenance sidecar and a lossless reproduction command; Matplotlib environment and style are not recorded, 
+so pixels need not be identical across machines.</p></section>
+
 
 
 <p><b>One question:</b> When does an inward-going light ray escape, and what does the plotted winding really measure?</p></section>
@@ -772,7 +783,6 @@ in <a href="#experiments">Suggested Experiments</a>.</p>
 
 
 
-<section id="algorithm"><h2>Algorithm and flags</h2><p>A fourth-order Runge–Kutta step advances radial position, radial velocity and azimuth. A crossing of <code>r=2M</code> or the outbound escape radius <code>2r0</code> is linearly located within the last step. The closest radius is a sampled minimum. <code>--GM_over_c2</code>, <code>--r0</code>, <code>--b</code>, <code>--lambda_max</code>, <code>--d_lambda</code>, <code>--lw</code>, <code>--dpi</code>, <code>--outdir</code>, <code>--help</code> and <code>--version</code> are the available controls. The console gives status, closest approach, <code>Δφ</code>, steps, and final affine parameter. A saved PNG has a text provenance sidecar and a lossless reproduction command; Matplotlib environment and style are not recorded, so pixels need not be identical across machines.</p></section>
 <section id="parameters">
       <h2>Parameters</h2>
       <p>Experiment settings are supplied as command-line options to <code>main.py</code>, which forwards them to <code>driver_photon.py</code>. Run <code>python main.py --help</code> for the current command summary. Most students should begin by running <code>python main.py</code> with no options, then vary one option at a time; if an option is rejected, read the exception message first, since most invalid parameter choices are caught by the physics layer.</p>
@@ -794,26 +804,21 @@ in <a href="#experiments">Suggested Experiments</a>.</p>
 	</p>
 </section>
     <!-- License -->
-    <section id="license">
-      <h2>License</h2>
-      <p>
-        PhotonOrbit is an original Python program accompanying the general-relativistic
-        investigations in Bernard Schutz's <em>Gravity from the Ground Up</em>
-        (Cambridge University Press). It is distributed under the
-        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
-          Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
-        </a>
-        license.
-      </p>
-    </section>
-</main>
+  <section id="license">
+    <h2>License</h2>
+    <p>PhotonOrbit is an original supplemental Python investigation proposed for use with Bernard Schutz's <em>Gravity from the Ground Up</em>. 
+	It is distributed under the 
+	<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" 
+	rel="noopener noreferrer">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a> license.</p>
+  </section>
 
 
   <!-- FOOTER -->
-  <footer>
-    <em>Gravity from the Ground Up</em> — Python Programs ·
-    Bernard Schutz © 2003 (Cambridge University Press) ·
-    Python programs © 2024–2026 Thomas Yee ·
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> ·
-  </footer>
+<footer>
+  <em>Gravity from the Ground Up</em> &middot; 
+  Bernard Schutz © 2003 (Cambridge University Press) &middot;
+  Python programs © 2024&ndash;2026 Thomas Yee &middot;
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a> &middot;
+</footer>
+</main>
 </div></body></html>
