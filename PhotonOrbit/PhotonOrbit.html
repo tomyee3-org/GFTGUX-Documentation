@@ -435,8 +435,10 @@ main #version_build { background: transparent; border: 0; border-radius: 0; box-
     </p>
 </section>
 
-<section id="setup"><h2>Setup</h2><p>Use Python 3.10+ and Matplotlib. Run from the folder with <code>main.py</code>. Try <code>python main.py --help</code> if a flag is unfamiliar. Each command below opens a plot and saves a PNG and provenance sidecar under <code>./figures</code>. The <a href="SampleOutputs/PhotonOrbit-SampleOutputs_Guide.html">SampleOutputs Guide</a> shows the four current-build figures.</p>
-
+<section id="setup"><h2>Setup</h2><p>Use Python 3.10+ and Matplotlib. Run from the folder with <code>main.py</code>. 
+Try <code>python main.py --help</code> if a flag is unfamiliar. Each command below opens a plot and saves a PNG and provenance sidecar under <code>./figures</code>. 
+The <a href="SampleOutputs/PhotonOrbit-SampleOutputs_Guide.html">SampleOutputs Guide</a> shows the four current-build figures.</p>
+</section>
 
 <section id="algorithm"><h2>Algorithm and flags</h2><p>A fourth-order Runge–Kutta step advances radial position, radial velocity and azimuth. 
 A crossing of <code>r=2M</code> or the outbound escape radius <code>2r0</code> is linearly located within the last step. 
@@ -449,7 +451,7 @@ so pixels need not be identical across machines.</p></section>
 
 
 
-<p><b>One question:</b> When does an inward-going light ray escape, and what does the plotted winding really measure?</p></section>
+
 
 <section id="beat0"><h2>Beat 0 · Inward Plunge and Capture</h2>
 <p>
@@ -711,8 +713,8 @@ path parameter limit <code>lambda_max</code>, not a spatial boundary.</p>
 python main.py --r0 3.0 --b 5.196152 --lambda_max 100.0 --d_lambda 0.01
 
 # Slight increase is kinematically forbidden inside r=3 (imaginary initial velocity).
-# Starting just outside at r0=3.001 with b=5.19616 leads to escape:
-python main.py --r0 3.001 --b 5.19616 --lambda_max 200.0 --d_lambda 0.01</code></pre>
+# Starting just outside at r0=3.001 with b=5.196153 leads to escape:
+python main.py --r0 3.001 --b 5.196153 --lambda_max 200.0 --d_lambda 0.01</code></pre>
 
 <p><em>Experiments that go with this beat:</em> <a href="#exp9">EXP-9</a>, <a href="#exp12">EXP-12</a> 
 in <a href="#experiments">Suggested Experiments</a>.</p>
